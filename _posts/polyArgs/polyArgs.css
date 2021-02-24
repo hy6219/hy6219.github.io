@@ -1,0 +1,83 @@
+*
+{
+    font-family: 'Roboto Mono', monospace;
+    line-height: 1.5;
+}
+.til-fin
+{
+    margin-left:10px;
+}
+.topic
+{
+    padding:5px;
+    background-color: rgb(255,192,190);
+}
+.summary
+{
+    margin:.5%;
+}
+.highlight
+{
+    background-color: orangered;
+    color:white;
+    padding:5px;
+}
+.grouping>div
+{
+    float:left;
+    margin:5px;
+}
+.codes
+{
+    width:15%;
+    height:10%;
+    background-color: paleturquoise;
+    padding:10px;
+}
+.clearfix::after
+{
+    clear:both;
+    display:table;
+    content:"";
+}
+.darr
+{
+    
+    border:solid red;
+    /* 위 | 오른쪽 | 아래 | 왼쪽 */
+    border-width:0 3px 3px 0;
+    display:inline-block;
+    padding:3px;
+    transform:rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+.box
+{
+    margin-left:25%;
+}
+.eff
+{
+    float:left;
+    margin-left:17%;
+}
+.highlight2
+{
+    background-color: palegreen;
+    color:green;
+    text-decoration: underline;
+    padding:5px;
+    text-align: center;
+}
+.highlight3
+{
+    background-color: yellow;
+    color:red;
+    padding:5px;
+    text-decoration: underline;
+    text-align: center;
+}
+
+a:hover
+{
+    color:teal;
+}
