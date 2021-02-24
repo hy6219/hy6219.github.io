@@ -1,0 +1,223 @@
+---
+layout: post
+categories: "TIL"
+title: "[JAVA/OOP]상속관계의 두 클래스 내에 동일한 이름을 갖는 멤버변수가 존재할 때, this.x와 super.x의 차이"
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link href="connection.css" rel="stylesheet">
+    <title>[JAVA/OOP]Polymorphism-binding</title>
+</head>
+  <style>
+    *
+{
+    font-family: 'Roboto Mono', monospace;
+    line-height: 1.5;
+}
+.til-fin
+{
+    margin-left:10px;
+}
+.topic
+{
+    padding:5px;
+    background-color: rgb(255,192,190);
+}
+.codes
+{
+    width:50%;
+    height:10%;
+    background-color: paleturquoise;
+    padding:10px;
+}
+.in
+{
+    text-indent:5%;
+}
+.in2
+{
+    text-indent:7%;
+}
+.highlight
+{
+    display:inline;
+    background-color: orangered;
+    color:white;
+    padding:5px;
+    margin-bottom:10%;
+    margin-top:10%;
+}
+.highlight2
+{
+    background-color: orange;
+    color:white;
+    padding:3px;
+    margin:10px;
+    width:22%;
+    text-align: center;
+}
+.subTopic
+{
+    padding:.1%;
+    background-color: greenyellow;
+    width:34%;
+    text-indent:5%;
+    margin:1%;
+}
+a.source
+{
+    text-decoration: none;
+    color:black;
+}
+img
+{
+    margin:2%;
+    width:60%;
+    height:50%;
+}
+  </style>
+<body>
+    <header><h1 class="til-fin"><span class="topic">[JAVA/OOP]Binding(Connection) between Parent and Child</span></h1></header>
+    <div class="summary">
+        <div class="par">
+            <div class="subTopic"><h5>Review&nbsp;<strong>'PARENT REFERENCE VARIABLE'</strong>&nbsp;refers <strong>'CHILD INSTANCE'</strong></h5></div>
+        </div>
+        <p>
+            <ul>
+                <ul>
+                    <h5 class="highlight">Usage</h5>
+                    <li>Parent p=new Child();</li>
+                    <li>(Child) cast display is being ommitted!</li>
+                </ul>
+                <ul>
+                    <h5 class="highlight">Difference with 'Child c=new Child();'</h5>
+                    <li>p can access 'inherited members'</li>
+                    <li>Click <a href="https://hy6219.github.io/TIL-Today-I-Learned-/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/Basic/Concept/Polymorphism.html"target="_blank">HERE!</a></li>
+                </ul>
+            </ul>
+        </p>
+    </div>
+    <div class="keypoint">
+        <div class="highlight2">
+            <h5><strong>Connection between Parent & Child</strong></h5>
+        </div>
+        <a class="source" href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/BindingTest3.java"target="_blank"><div class="codes">
+            <p>package BindingTest3;</p>
+
+<p>class Parent</p>
+<p>{</p>
+<p class="in">	int x=100;</p>
+<p class="in">	void method()</p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("Parent Method");</p>
+<p class="in">	}</p>
+<p>}</p>
+<p>class Child extends Parent</p>
+<p>{</p>
+<p class="in">	int x=200;//this.x!=super.x</p>
+<p>	</p>
+<p class="in">	@Override</p>
+<p class="in">	void method()</p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("Child Method");</p>
+<p class="in2">		System.out.println("this.x: "+this.x);</p>
+<p class="in2">		System.out.println("super.x: "+super.x);</p>
+<p class="in">	}</p>
+<p class="in"> }</p>
+<p></p>
+<p>public class BindingTest3 {</p>
+<p></p>
+<p>	public static void main(String[] args) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in">		Parent p=new Child();</p>
+<p class="in">		Child c=new Child();</p>
+<p class="in">		System.out.println("p.x= "+p.x);</p>
+<p class="in">		p.method();</p>
+<p class="in">		System.out.println();</p>
+<p class="in">		System.out.println("c.x= "+c.x);</p>
+<p class="in">		c.method();</p>
+<p>		</p>
+<p>	}</p>
+<p></p>
+<p>}</p>
+
+        </div></a>
+        <img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/ParentChildConnection_method_membervar.PNG?raw=true"/>
+<p></p>
+<a class="source"href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/BindingTest2.java"target="_blank"><div class="codes">
+    <p>package BindingTest2;</p>
+
+
+<p>class Parent</p>
+<p>{</p>
+<p class="in">	int x=100;</p>
+<p class="in">	void method()</p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("Parent Method");</p>
+<p class="in">	}</p>
+<p class="in">}</p>
+<p>class Child extends Parent</p>
+<p>{</p>
+<p>	</p>
+<p>}</p>
+<p></p>
+<p>public class BindingTest2 {</p>
+<p></p>
+<p>	public static void main(String[] args) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in">		Parent p=new Child();//casting</p>
+<p class="in">		Child c=new Child();</p>
+<p class="in">		/*</p>
+<p class="in">		 * </p>
+<p class="in">		 * IN CHILD CLASS,</p>
+<p class="in">		 *  	"NO MEMBER VARIABLE 'x'"</p>
+<p class="in">		 *  </p>
+<p class="in">		 *  SO, IN THIS TIME, PARENT.X IS INHERITED TO</p>
+<p class="in">		 *  CHILD CLASS WITHOUT CHANGE(VALUE)</p>
+<p class="in">		 *  </p>
+<p class="in">		 *  SO!! THIS.X==SUPER.X</p>
+<p class="in">		 *  </p>
+<p class="in">		 *  PLUS!</p>
+<p class="in">		 *  WE DIDN'T DO @OVERRIDE</p>
+<p class="in">		 *  </p>
+<p class="in">		 *  SO!! THIS.METHOD()==SUPER.METHOD()</p>
+<p class="in">		 */</p>
+<p class="in">		System.out.println("p.x= "+p.x);</p>
+<p class="in">		p.method();</p>
+<p>		</p>
+<p class="in">		System.out.println("c.x= "+c.x);</p>
+<p class="in">		c.method();</p>
+<p>	}</p>
+<p></p>
+<p>}</p>
+
+</div></a>
+<img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/ParentChildConnection_diff_bindingtest2.PNG?raw=true"/>
+    <ol class="cur">
+        <li>DIFFERENCE IS BASED ON <strong>'WHETHER RE-DEFINE(RE-USE) MEMBER VALUE/METHOD OR NOT!' </strong></li>
+        <ol type="a">
+            <li>
+                <a class="source"href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/BindingTest2.java"target="_blank">Case I: didn't do re-define about member or method in child class</a>
+                <ul>
+                    this.x==super.x
+                </ul>
+            </li>
+            <li>
+                <a class="source"href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/RefVar_Instance_Connection/BindingTest3.java"target="_blank">Case II: did re-define about member or method in child class</a>
+                <ul>
+                    <li>this.x!=super.x</li>
+                    <li>MEMBER VAR FOLLOWS <strong>REFERENCE VARIABLE</strong></li>
+                    <li>METHOD FOLLOWS <strong>INSTANCE</strong></li>
+                </ul>
+            </li>
+        </ol>
+    </ol>
+    </div>
+</body>
+</html>
