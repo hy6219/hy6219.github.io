@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Final Modifier</title>
+</head>
+<style>
+    *
+    {
+        font-family: 'Roboto Mono', monospace;
+        line-height: 1.5;
+    }
+    .til-fin
+    {
+        margin-left:10px;
+    }
+    .topic
+    {
+        padding:5px;
+        background-color: rgb(255,192,190);
+    }
+    .main
+    {
+        background-color: orangered;
+        color:white;
+        text-align: center;
+        padding:5px;
+    }
+    .sub
+    {
+        background-color:yellow;
+        color:red;
+    }
+    .highlight
+    {
+        background-color:#90B4A0;
+        text-decoration: underline;
+        padding:5px;
+    }
+    .codes
+    {
+        width:30%;
+        height:10%;
+        background-color: paleturquoise;
+        padding:10px;
+    }
+</style>
+<body>
+    <header><h1 class="til-fin"><span class="topic">Final Modifier + System.out.println(obj)</span></h1></header>
+    <article>
+        <div class="final_mod">
+            <div class="Types">
+                <h3>What types can use <strong class="sub">"final"</strong>&nbsp;&nbsp; modifier?</h3>
+                <ol type="a">
+                    <li>
+                        <ul>
+                            instance variable
+                            <li>Same with "constant value"</li>
+                            <li>
+                                <ol type="i">
+                                    can initialize in: 
+                                    <li>static or instance initilization block</li>
+                                    <li>constructor</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Class
+                    </li>
+                    <li>
+                        Method
+                    </li>
+                </ol>
+            </div>
+            <p></p>
+            <div class="Char">
+                <h3>What is specific characteristic of <strong class="sub">"final"</strong>&nbsp;&nbsp; modifier?</h3>
+                <ol type="a">
+                    <li>
+                        <ul>
+                            instance variable
+                            <li>Can't assign value(like class.var)</li>
+                            <li>NOT IMMUTABLE!
+                                <li>
+                                    Use Setter method!
+                                    <li>
+                                        *in main method, you can initialize final value but can't do re-assign value
+                                    </li>
+                                </li>
+                            </li>
+                            <li>Can't change <strong class="highlight"> reference address</strong></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            Class
+                            <li>Can't define child class</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <ul>
+                            Method
+                            <li>Can't override method</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="sysprt">
+            <h3>Summary of mechanism about <strong class="main">"System.out.println(obj);"</strong>&nbsp;&nbsp;</h3>
+            <ol type="1">
+                <li>System.out.println(obj) calls <strong class="sub">"String valueOf()"</strong>&nbsp;&nbsp;method
+                <p>
+
+                </p>
+                <div class="codes">
+                    public static String valueOf(Object obj) {
+                        <p>
+                        return (obj == null) ? "null" : obj.toString();
+                    </p>
+                        }
+                    </div>
+                </li>
+                <li>String valueOf() calls <strong class="sub">"toString()"</strong>
+                <p>
+
+                </p>
+                <div class="codes">
+                    public String toString() {
+                        <p>
+                        return getClass().getName() + "@" + Integer.toHexString(hashCode());
+                    </p>
+                    }
+                </div>
+                <div class="override">
+                    <ul>
+                        <strong class="sub">Neccessary to @override!</strong>
+                        <li>toString method will return address!</li>
+                        <li>toString access modifier is 'public' ! So, child class must use public to override method</li>
+                    </ul>
+                </div>
+                </li>
+
+            </ol>
+        </div>
+    </article>
+</body>
+</html>

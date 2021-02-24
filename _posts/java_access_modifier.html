@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>[JAVA/OOP]Access Modifier</title>
+</head>
+<style>
+    *
+    {
+        font-family: 'Roboto Mono', monospace;
+        line-height:1.5;
+    }
+    .topic
+    {
+        padding:5px;
+        background-color: rgb(255,192,190);
+    }
+    .amExplain
+    {
+        border:1.5px solid black;
+    }
+    th,td
+    {
+        width:20%;
+        height:20%;
+        padding:5px;
+        border:1.5px solid black;
+    }
+    .blankSpace
+    {
+        background-color: white;
+    }
+    .filled
+    {
+        /*
+        background-image: linear-gradient(135deg, #f8f7fa 2.08%, #ff4500 2.08%, #ff4500 50%, #f8f7fa 50%, #f8f7fa 52.08%, #ff4500 52.08%, #ff4500 100%);
+        background-size: 33.94px 33.94px;
+        */
+        background-color: orangered;
+    }
+    .colorBox
+    {
+        display:inline-block;
+        width:10%;height:5%;
+        padding:10px;
+        background-color: orangered;
+    }
+    .codes
+    {
+        width:50%;
+        margin:5px;
+        padding:10px;
+        background-color: palegreen;
+    }
+    .highlight
+    {
+        display:inline-block;
+        background-color: yellow;
+        color:orangered;
+        padding:5px;
+        width:80%;
+        border:2px dashed orangered;
+        border-radius:2px;
+    }
+    .in
+    {
+        text-indent:5%;
+    }
+    .combImg 
+    {
+        width:80%;
+        height:70%;
+    }
+    .main
+    {
+        background-color: orangered;
+        color:white;
+        text-align: center;
+        padding:5px;
+    }
+</style>
+<body>
+    <header><h1><span class="topic">[JAVA/OOP]Access Modifier</span></h1></header>
+    <div class="amTable">
+        <table class="amExplain">
+            <th></th>
+            <th>public</th>
+            <th>protected</th>
+            <th>default</th>
+            <th>private</th>
+            <!--1st row-->
+            <tr>
+                <td>Same Class</td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+            </tr>
+            <!--2nd row-->
+            <tr>
+                <td>Same Package</td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+                <td class="blankSpace"></td>
+
+            </tr>
+            <!--3rd row-->
+            <tr>
+                <td>Child Class(Another Class)</td>
+                <td class="filled"></td>
+                <td class="filled"></td>
+                <td class="blankSpace"></td>
+                <td class="blankSpace"></td>
+            </tr>
+            <!--4th row-->
+            <tr>
+                <td>Overall</td>
+                <td class="filled"></td>
+                <td class="blankSpace"></td>
+                <td class="blankSpace"></td>
+                <td class="blankSpace"></td>
+            </tr>
+        </table>
+    </div>
+    <p></p>
+    <div class="colExp">
+        <span class="colorBox">&nbsp;</span>
+        <span class="specificExp">→ Can cover</span>
+    </div>
+    <div class="encap">
+        <h3 class="example">OOP characteristic-Encapsulation</h3>
+        <h5><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Modifier/AccessModifier/Basic/TimeTest.java"target="_blank">Show Codes</a></h5>
+        <div class="codes">
+           <p> package class_access_modifier_oop;</p>
+
+<p>class Time</p>
+{
+	/*</p>
+<p>	 * 캡슐화(encapsulation)로 데이터 보호할 시간 변수들 보호</p>
+<p>	 * public으로 메소드 접근을 두어, 어디에서도 사용할 수 있게끔 함</p>
+<p>	 */</p>
+<p>	<span class="highlight"><strong>private int hour,min,sec;</strong></span></p>
+<p>	Time()</p>
+<p>	{</p>
+<p>		this(0,0,0);</p>
+<p>	}</p>
+<p>	Time(int hour, int min, int sec)</p>
+<p>	{</p>
+<p>		this.hour=hour;</p>
+<p>		this.min=min;</p>
+<p>		this.sec=sec;</p>
+<p>	}</p>
+<p>	Time(Time tt)</p>
+<p>	{</p>
+<p class="in">		this.hour=tt.hour;</p>
+<p class="in">		this.min=tt.min;</p>
+<p class="in">		this.sec=tt.sec;</p>
+<p>	}</p>
+<p>	/*</p>
+<p>	 * setters</p>
+<p>	 * 시,분,초 범위제한 설정</p>
+<p>	 * hour: 0~23</p>
+<p>	 * min, sec: 0~59</p>
+<p>	 * </p>
+<p>	 * parameter or local value can't use access modifier</p>
+<p>	 */</p>
+<p>	</p>
+<p>	public void SetHour(int hour)</p>
+<p>	{</p>
+<p>		if(hour<0 ||hour>23)</p>
+<p>		{</p>
+<p class="in">			return;</p>
+<p>		}</p>
+<p>		else</p>
+<p>		{</p>
+<p class="in">			this.hour=hour;</p>
+<p>		}</p>
+<p>	}</p>
+<p>	public void SetMin(int min)</p>
+<p>	{</p>
+<p>		if(min<0 ||min>59)</p>
+<p>		{</p>
+<p class="in">			return;</p>
+<p>		}</p>
+<p>		else</p>
+<p>		{</p>
+<p  class="in">			this.min=min;</p>
+<p>		}</p>
+<p>	}</p>
+<p>	public void SetSec(int sec)</p>
+<p>	{</p>
+<p>		if(sec<0 ||sec>59)</p>
+<p>		{</p>
+<p  class="in">			return;</p>
+<p>		}</p>
+<p>		else</p>
+<p>		{</p>
+<p  class="in">			this.sec=sec;</p>
+<p>		}</p>
+<p>	}</p>
+<p>	public void SetTime(Time obj)</p>
+<p>	{</p>
+<p  class="in">		(this).SetHour(obj.hour);</p>
+<p  class="in">		(this).SetMin(obj.min);</p>
+<p  class="in">		(this).SetSec(obj.sec);</p>
+<p>	}</p>
+<p>	/*</p>
+<p>	 * getters</p>
+<p>	 */</p>
+<p>	public int GetHour()</p>
+<p>	{</p>
+<p class="in">		return hour;</p>
+<p>	}</p>
+<p>	public int GetMin()</p>
+<p>	{</p>
+<p  class="in">		return min;</p>
+<p>	}</p>
+<p>	public int GetSec()</p>
+<p>	{</p>
+<p  class="in">		return sec;</p>
+<p>	}</p>
+<p>	@Override</p>
+<p>	public String toString()</p>
+<p>	{</p>
+<p class="in">		return hour+" : "+min+" : "+sec;</p>
+<p>	}</p>
+<p>}</p>
+<p></p>
+<p>public class TimeTest {</p>
+<p></p>
+<p>	public static void main(String[] args) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in">		Time t=new Time(16,40,10);</p>
+<p class="in">		t.SetTime(t);</p>
+<p class="in">		System.out.println(t);</p>
+<p>	}</p>
+<p></p>
+<p>}</p>
+<p></p>
+        </div>
+        <div class="details">
+            <h5>Why We Used <strong>'private'</strong> member variable?</h5>
+            <ul>
+                <li>To protect member variable</li>
+                <li>To validate value</li>
+            </ul>
+        </div>
+    </div>
+    <div class="private">
+        <div class="codes">
+           <p>package class_oop_access_modifier_constructor;</p>
+
+<p>/*final class*/</p>
+<p>final class Singleton</p>
+<p>{</p>
+<p>	/*</p>
+<p>	 * Why static?</p>
+<p>	 * : must excute method without instance object</p>
+<p>	 * (why no instance?: private)</p>
+<p>	 * </p>
+<p>	 * </p>
+<p>	 * 인스턴스 생성이 private로 인하여 불가능하므로</p>
+<p>	 * 클래스 변수 생성이 필요함!</p>
+<p>	 * 마찬가지로, 클래스 메서드가 필요하므로</p>
+<p>	 * static 선언!</p>
+<p>	 * */</p>
+<p>	private static Singleton s=new Singleton();</p>
+<p>	</p>
+<p>	private Singleton()</p>
+<p>	{</p>
+<p>		</p>
+<p>	}</p>
+<p>	public static Singleton getInstance()</p>
+<p>	{</p>
+<p>		if(s==null)</p>
+<p>		{</p>
+<p class="in">			s=new Singleton();</p>
+<p>		}</p>
+<p class="in">		System.out.println("Hard to access!");</p>
+<p class="in">		System.out.println("Can't be Parent class: ");</p>
+<p class="in">		System.out.println("Because private constructor make</p> hard to"
+<p class="in">				+ " access or call Parent constructor in "</p>
+<p class="in">				+ "Child class");</p>
+<p class="in">		return s;</p>
+<p>	}</p>
+<p>}</p>
+<p></p>
+<p>public class SingletonTest {</p>
+<p></p>
+<p>	public static void main(String[] args) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p>		</p>
+<p>		/*</p>
+<p>		 * 다행히도, class는 final이라서,</p>
+<p>		 * 상속 외에는 문제는 안됨</p>
+<p>		 */</p>
+<p>	/*	Singleton s=new Singleton();</p>
+<p>	 * Warning: 'The constructor is not visible'</p>
+<p>	 * */</p>
+<p  class="in">		Singleton t=Singleton.getInstance();</p>
+<p>	}</p>
+<p></p>
+<p>}</p>
+
+        </div>
+        <ul>
+            <h5>When to use</h5>
+            <li>To protect external access(unnecessary)</li>
+            <li>Like java Math class
+                <p>
+                    <div class="codes">
+                        <p>public final class Math</p>
+                        <p>{</p>
+                        <p class="in">private Math(){}</p>
+                        <p>...}</p>
+                    </div>
+                </p>
+            </li>
+        </ul>
+        <div class="comb">
+            <h5><span class="main">Combination of modifier</span></h5>
+            <ol type="1">
+                <li>Method
+                    <p>
+                        <img class="combImg" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Modifier/AccessModifier/Constructor/%EB%A9%94%EC%84%9C%EB%93%9C_%EC%A0%9C%EC%96%B4%EC%9E%90%EC%A1%B0%ED%95%A9_%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD1%5Bmethod_modifier_combination%5D.jpg?raw=true"/>
+                    </p>
+                </li>
+                <li>Class
+                    <p>
+                        <img class="combImg" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Modifier/AccessModifier/Constructor/%ED%81%B4%EB%9E%98%EC%8A%A4_%EC%A0%9C%EC%96%B4%EC%9E%90%EC%A1%B0%ED%95%A9_%EC%A3%BC%EC%9D%98%EC%82%AC%ED%95%AD1%5Bclass_modifier_combination%5D.jpg?raw=true"/>
+                    </p>
+                </li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
