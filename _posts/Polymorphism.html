@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <title>Polymorphism</title>
+</head>
+<style>
+    *
+    {
+        font-family: 'Roboto Mono', monospace;
+        line-height: 1.5;
+    }
+    .til-fin{
+        margin-left:10px;
+    }
+    .topic
+    {
+        padding:5px;
+        background-color: rgb(255,192,190);
+    }
+    .main
+    {
+        width:25%;
+        padding:3px;
+        text-align: center;
+        background-color: orangered;
+        color:white;
+    }
+    .codes
+    {
+        width:50%;
+        height:10%;
+        background-color: paleturquoise;
+        padding:10px;
+    }
+    .in
+    {
+        text-indent:5%;
+    }
+    .highlight
+    {
+        background-color:yellow;
+        border:2px dashed orangered;
+        border-radius: 2px;
+        padding:5px;
+    }
+    .highlight2
+    {
+        color:orangered;
+    }
+    .h_ul
+    {
+        background-color: orange;
+        color:white;
+        text-decoration-line: underline;
+        padding: 5px;
+    }
+    .img
+    {
+        width:50%;
+        height:30%;
+        margin:5%;
+    }
+    .kp
+    {
+        padding:5px;
+        margin:15px;
+        width:20%;
+        height:10%;
+    }
+    .wrong
+    {
+        background-color:red;
+        color:white;
+        border:2px dashed yellow;
+        border-radius:2px;
+    }
+    .correct
+    {
+        background-color:#61FE2F;
+        color:black;
+    }
+</style>
+<body>
+    <header><h1 class="til-fin"><span class="topic">Polymorphism</span></h1></header>
+    <div class="sum">
+        <div class="main"><h3>KeyPoint!&nbsp;&nbsp;<strong>characteristic of OOP</strong></h3></div>
+        <ol type="a">
+            <li>Encapsulation(캡슐화, 은닉화)</li>
+            <li>Polymorphism(다형성)</li>
+            <li>Inheritance(상속성)</li>
+        </ol>
+    </div>
+    <div class="def">
+        <div class="main"><h3>What&nbsp;is&nbsp;<strong>"Polymorphism"</strong>?</h3></div>
+        <ul>
+            <li>Can get <strong>various type</strong></li>
+            <li>Means like, if two classes have relationship like this,
+                <div class="codes">
+                    <p>package class_oop_polymorphism;</p>
+<p></p>
+                    <p>class TV</p>
+                    <p>{</p>
+                    <p class="in">	boolean power;</p>
+                    <p class="in">	int channel;</p>
+                    <p></p>
+                    <p>	void SetPower()</p>
+                    <p>	{</p>
+                    <p class="in">		power=!power;</p>
+                    <p>	}</p>
+                    <p>	void SetChannelUp()</p>
+                    <p>	{</p>
+                    <p class="in">		if(power==true)</p>
+                    <p class="in">		{</p>
+                    <p class="in">			++channel;</p>
+                    <p class="in">			System.out.println("Now, Channel Up");</p>
+                    <p class="in">		}</p>
+                    <p class="in">		else</p>
+                    <p class="in">		{</p>
+                    <p class="in">			return;</p>
+                    <p class="in">		}</p>
+                    <p>	}</p>
+                    <p>	void SetChannelDown()</p>
+                    <p>	{</p>
+                    <p class="in">		if(power==true)</p>
+                    <p class="in">		{</p>
+                    <p class="in">			--channel;</p>
+                    <p class="in">			System.out.println("Now, Channel Down");</p>
+                    <p class="in">		}</p>
+                    <p class="in">		else</p>
+                    <p class="in">		{</p>
+                    <p class="in">			return;</p>
+                    <p class="in">		}</p>
+                    <p>	}</p>
+                    <p>}</p>
+                    <p class="highlight">public class CaptionTV extends TV{</p>
+                    <p></p>
+                    <p>	public static void main(String[] args) {</p>
+                    <p>		// TODO Auto-generated method stub</p>
+                    <p>    </p>
+                    <p>	}</p>
+<p></p>
+<p></p>
+                    <p>}</p>
+                </div><!--codes-->
+                <p>We can do like <span class="highlight2"><strong>this!↓</strong></span></p>
+                <div class="codes">
+                    <p>public class CaptionTV extends TV{</p>
+<p></p>
+                    <p>    public static void main(String[] args) {</p>
+                    <p>        // TODO Auto-generated method stub</p>
+                    <p class="in">        CaptionTV c=new CaptionTV();</p>
+                    <p class="in highlight">        TV t=new CaptionTV();//polymorphism</p>
+                    <p>        </p>
+                    <p>       </p>
+                    <p>    }</p>
+                    <p>    </p>
+                    <p>}</p>
+                </div><!--codes-->
+                <div class="keypoint">
+                    <p>So, can assign <span class="h_ul"><strong>Child class instance
+                        
+                    </strong></span>&nbsp;to&nbsp;<span class="h_ul"><strong>Parent Class instance</strong></span>
+                    </p>
+                    <p>
+                        <div class="detail">
+                            <h3>Refer pictures(↓)</h3>
+                        </div>
+                        <img class="img" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/Basic/Concept/polymorphism_basic.jpg?raw=true"/>
+                        <img class="img" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/Basic/Concept/Polymorphism_assign.jpg?raw=true"/>
+                    </p>
+                    <p>
+                        <h2 class="highlight2">KEYPOINT! WARNING!</h2>
+                        <div class="kp correct">Parent p=new Child();(OK!)</div>
+                        <div class="kp wrong">Child c=new Parent();(NO!!)
+                            <h5>*Because Child has <strong><u>MORE MEMBERS/METHODS</u></strong></h5>
+                        </div>
+                    </p>
+                </div>
+                <div class="access">
+                    <p>
+                        <a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JAVA/OOP(Object%20Oriented%20Programming/Polymorphism/Basic/Concept/CaptionTV.java"
+                        target="_blank">Show code(↑:CaptionTV.java)</a>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
