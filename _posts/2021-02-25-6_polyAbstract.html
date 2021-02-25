@@ -1,0 +1,122 @@
+---
+layout: post
+categories: "TIL"
+title: "[JAVA/OOP]"
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet"href="polyAbstract.css">
+    <title>[JAVA/OOP]Abstract class & method</title>
+</head>
+<body>
+    <header><h1 class="til-fin"><span class="topic">[JAVA/OOP]Abstract class & method</span></h1></header>
+    <div class="codes">
+        <p>package class_abstract_common;</p>
+
+<p>abstract class unit</p>
+<p>{</p>
+<p class="in">	static int x=10;</p>
+<p class="in">	static int y=20;</p>
+<p class="in">	abstract void move(int x, int y);</p>
+<p class="in">	void stop() </p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("stop");</p>
+<p class="in">	};</p>
+<p>}</p>
+<p>class Tank extends unit</p>
+<p>{</p>
+<p></p>
+<p class="in">	@Override</p>
+<p class="in">	void move(int x, int y) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in2">		x=super.x;</p>
+<p class="in2">		y=super.y;</p>
+<p class="in2">		System.out.println("Move to: ( "+x+", "+y+" )");</p>
+<p>	}</p>
+<p class="in">	void changeMod()</p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("Change the mode");</p>
+<p class="in">	}</p>
+<p>}</p>
+<p class="in">public class Marine extends unit{</p>
+<p>	</p>
+<p>	</p>
+<p></p>
+<p class="in">	public static void main(String[] args) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in2">		Marine m=new Marine();</p>
+<p class="in2">		m.move(0, 1);</p>
+<p class="in2">		m.stimpack();</p>
+<p class="in2">		</p>
+<p class="in2">		System.out.println();</p>
+<p class="in2">		Tank t=new Tank();</p>
+<p class="in2">		t.move(x, y);</p>
+<p class="in2">		t.changeMod();</p>
+<p>	}</p>
+<p></p>
+<p class="in">	@Override</p>
+<p class="in">	void move(int x, int y) {</p>
+<p>		// TODO Auto-generated method stub</p>
+<p class="in2">		System.out.println("Move to: ( "+x+", "+y+" )");</p>
+<p class="in">	}</p>
+<p class="in">	void stimpack()</p>
+<p class="in">	{</p>
+<p class="in2">		System.out.println("use stimpack!");</p>
+<p class="in">	}</p>
+<p></p>
+<p>}</p>
+</div>
+    <div class="ch">
+        <h3><strong class="highlight2">Characteristic of abstract</strong></h3>
+        <ol type="a">
+            <li>Must <strong class="highlight">override abstract class's method</strong> in child class</li>
+            <li>Can define common method in one class(공통된 메서드를 한번만 뽑아내어 정리 후, 오버라이딩하여 사용 가능)
+                <ul>
+                    <p></p>
+                    <strong>Same with this!</strong>
+                    <div class="codes2">
+                        <p>Unit[] group=new Unit[2];</p>
+                        <p>unit[0]=new A();</p>
+                        <p>unit[1]=new B();</p>
+                        <p>for(int i=0;i"<"group.length;i++)</p>
+                        <p>{</p>
+                        <p>    unit[i].move();</p>
+                        <p>}</p>
+                    </div>
+                    <p>
+                        <strong>Didn't CALL abstract class&nbsp;</strong>!!
+                    </p>
+                    <p>
+                        It calls <strong class="highlight">its own method(override)</strong>!!
+                    </p>
+                </ul>
+            </li>
+            <li>Absence of '{}' is difference of instance/static method and abstact class
+                <ul>
+                    <li>
+                        instance/static method
+                        <div class="codes">
+                            void Method1(){};
+                            static int Method2(){};
+                        </div>
+                    </li>
+                    <li>
+                        abstract method
+                        <div class="codes">
+                            abstract Method1();
+                        </div>
+
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    
+</body>
+</html>
