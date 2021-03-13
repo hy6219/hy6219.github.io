@@ -264,9 +264,11 @@ http://iilii.egloos.com/4000476**
 ## 동등성, 조금만 더 알아보자!
 
 **참고자료 : https://www.cs.cornell.edu/courses/cs211/2006sp/Lectures/L14-Comparison/L14cs211sp06.pdf**
+
+
 #추가적으로 확인하는 것은 추후 정리
-Shallow Equality: 단순히 요소들의 주소값이 같은지를 equals()로 확인
-Deep Equality   : 기본형 자료까지 재귀적으로 훑어가면서 주소값이 같은지 확인; Objects.deepEquals(obj1,obj2) --Arrays.deepEquals0(a,b)와 관련
+- Shallow Equality: 단순히 요소들의 주소값이 같은지를 equals()로 확인
+- Deep Equality   : 기본형 자료까지 재귀적으로 훑어가면서 주소값이 같은지 확인; Objects.deepEquals(obj1,obj2) --Arrays.deepEquals0(a,b)와 관련
 
 
 ## equals()관련 규약
