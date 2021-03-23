@@ -31,6 +31,8 @@ public static String toString(Calendar cal)
 }
 ~~~
 
+
+
 2. 말일인데 MONTH 필드를 roll한 경우
 
 ★ roll된 MONTH 월의 말일로 DATE or DAY_OF_MONTH 값이 설정됨
