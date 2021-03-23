@@ -18,8 +18,6 @@
         Locale.getDefault(Locale.Category.FORMAT));
     }
 
-~~~
-~~~java
     private static Calendar createCalendar(TimeZone zone,
                                            Locale aLocale)
     {
