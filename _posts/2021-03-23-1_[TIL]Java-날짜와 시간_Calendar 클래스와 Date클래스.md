@@ -12,7 +12,7 @@
 
 2. getInstance() 메서드가 static인 이유
 ~~~java
-	public static Calendar getInstance()
+    public static Calendar getInstance()
     {
         return createCalendar(TimeZone.getDefault(),
         Locale.getDefault(Locale.Category.FORMAT));
