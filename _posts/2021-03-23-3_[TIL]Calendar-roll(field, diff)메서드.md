@@ -15,7 +15,7 @@ public static void main(String[] args) {
        date.roll(Calendar.MONTH,1);
        System.out.println(toString(date));
 		
-       date.set(2015,12,31);
+       date.set(2015,11,31);
        System.out.println(toString(date));
        date.roll(Calendar.YEAR,1);
        System.out.println(toString(date));
