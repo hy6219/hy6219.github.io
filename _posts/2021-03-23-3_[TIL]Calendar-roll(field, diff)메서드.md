@@ -6,29 +6,29 @@ Calendar 클래스에 있는 roll 메서드는 static field의 값을 diff 만�
 1. Calendar 인스턴스.roll()메서드는 아래의 경우(2)를 제외하고서는 다른 static 상수값에 영향을 끼치지 않는다!
 
 ~~~java
-ublic static void main(String[] args) {
+public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Calendar date = Calendar.getInstance();
+       Calendar date = Calendar.getInstance();
 		
-		date.set(2015, 0, 31);//2번에 해당
-		System.out.println(toString(date));
-		date.roll(Calendar.MONTH,1);
-		System.out.println(toString(date));
+       date.set(2015, 0, 31);//2번에 해당
+       System.out.println(toString(date));
+       date.roll(Calendar.MONTH,1);
+       System.out.println(toString(date));
 		
-		date.set(2015,12,31);
-		System.out.println(toString(date));
-		date.roll(Calendar.YEAR,1);
-		System.out.println(toString(date));
-		date.roll(Calendar.DAY_OF_MONTH,1);
-		System.out.println(toString(date));
+       date.set(2015,12,31);
+       System.out.println(toString(date));
+       date.roll(Calendar.YEAR,1);
+       System.out.println(toString(date));
+       date.roll(Calendar.DAY_OF_MONTH,1);
+       System.out.println(toString(date));
 		
-	}
-	public static String toString(Calendar cal)
-	{
-		return cal.get(Calendar.YEAR)+"년 "+
-				(cal.get(Calendar.MONTH)+1)+"월 "+
-				cal.get(Calendar.DATE)+"일";
-	}
+}
+public static String toString(Calendar cal)
+{
+       return cal.get(Calendar.YEAR)+"년 "+
+	      (cal.get(Calendar.MONTH)+1)+"월 "+
+	     cal.get(Calendar.DATE)+"일";
+}
 ~~~
 
 2. 말일인데 MONTH 필드를 roll한 경우
