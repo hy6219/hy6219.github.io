@@ -99,30 +99,29 @@ public ChoiceFormat(double[] limits, String[] formats) {
 
 ~~~java
 //1.범위는 낮은 값부터 큰값순으로 적어주기
-		double[] limits = {60, 70, 80, 90};
+double[] limits = {60, 70, 80, 90};
 		
-		//2.limits 순서와 갯수를 맞추기
-		String[] grades = {"D","C","B","A"};
-		//limits와 grades는 1:1로 연결된 마치 키-값 관계로 된 map 자료구조와 비슷!
+//2.limits 순서와 갯수를 맞추기
+String[] grades = {"D","C","B","A"};
+//limits와 grades는 1:1로 연결된 마치 키-값 관계로 된 map 자료구조와 비슷!
 		
+int[] scores    = {100,95,88,70,52,60,70};
 		
-		int[] scores    = {100,95,88,70,52,60,70};
+ChoiceFormat form = new ChoiceFormat(limits, grades);
 		
-		ChoiceFormat form = new ChoiceFormat(limits, grades);
-		
-		for(int i = 0 ; i < scores.length; i++)
-		{
-			System.out.println(scores[i]+":"+form.format(scores[i]));
-			/*
-			 * 100:A
-				95:A
-				88:B
-				70:C
-				52:D
-				60:D
-				70:C
-			 */
-		}
+for(int i = 0 ; i < scores.length; i++)
+{
+   System.out.println(scores[i]+":"+form.format(scores[i]));
+   /*
+    * 100:A
+95:A
+88:B
+70:C
+52:D
+60:D
+70:C
+    */
+}
 ~~~
 마지막에는 출력된 결과를 적어두었는데, 원리는 우리가 위에서 값 x(경계값)을 기준으로, x이상이면 format된 범주에 대한 문자열을 반환하게 되는 ChoiceFormat 객체를 우리가 double, String 배열을 통해 만든 것이다.
 
