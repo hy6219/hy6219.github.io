@@ -136,22 +136,22 @@ public ChoiceFormat(double[] limits, String[] formats) {
 ~~~java
 
 String pattern = "60 < D| 70 < C | 80 < B| 90 < A ";
-		int[] scores = {91, 90, 80, 88, 70, 52, 60};
+int[] scores = {91, 90, 80, 88, 70, 52, 60};
 		
-		ChoiceFormat form = new ChoiceFormat(pattern);
-		for(int i = 0 ; i < scores.length; i++)
-		{
-			System.out.println(scores[i]+":"+form.format(scores[i]));
-			/*
-			91: A 
+ChoiceFormat form = new ChoiceFormat(pattern);
+for(int i = 0 ; i < scores.length; i++)
+{
+    System.out.println(scores[i]+":"+form.format(scores[i]));
+	/*
+91: A 
 90: B
 80: C 
 88: B
 70: D
 52: D
 60: D
-			 */
-		}
+	*/
+}
 ~~~
 
 위는 정규화 패키지의 모습과 많이 익숙하다고 생각한다. 여기서는 # 및 < 구분자를 이용하여 범주에 대해서 형식화할 String을 저장해두고, 이를 ChoiceFormat에 저장한다. 이후 범주에 따른 결과를 String으로 반환해주는 NumberFormat.class의 format 메서드로 입력값에 대한 범주에 맞는 형식화된 문자열을 반환받는다. 결과는 아랫줄의 주석과 같다.
