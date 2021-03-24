@@ -18,13 +18,9 @@ public abstract StringBuffer format(Object obj,
                     StringBuffer toAppendTo,
                     FieldPosition pos);
 ~~~
-즉, String format 메서드는 매개변수로 전달받은 새로운 
+즉, String format 메서드는 매개변수로 전달받은 새로운  StringBuffer 객체에 offset/시작 위치를 FieldPosition로 
 
-StringBuffer 객체에 offset/시작 위치를 FieldPosition로 
-
-부터 전달하고, 그 위치부터 패턴을 의미하는 매개변수 
-
-obj에 맞추어 값을 넣고, StringBuffer의 toString()으로 
+부터 전달하고, 그 위치부터 패턴을 의미하는 매개변수 obj에 맞추어 값을 넣고, StringBuffer의 toString()으로 
 
 String 객체를 반환해주는 것이다
 
