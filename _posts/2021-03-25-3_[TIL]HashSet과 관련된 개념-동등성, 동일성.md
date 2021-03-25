@@ -42,7 +42,8 @@ System.out.println("set: "+h);
 
 동일한 객체로 인식할 수 있도록, hashCode메서드를 오버라이딩해주면 된다!
 
-hashCode를 오버라이딩하면, equals 메서드도 적절히 오버라이딩해야 한다!
+hashCode를 오버라이딩하면, equals 메서드도 적절히 오버라이딩해주는 것이 좋을 것이다(equals값이 true이면 hashCode도 같아야 하지만, 반대의 경우는 필수까지는 아니다!)
+★하지만, 컬렉션의 검색성능 향상을 위해서는 equals가 false를 반환하면 hashCode값이 다른 것이 좋기 때문에 권장된다!
 
 따라서 새로운 클래스 Person2.class를 아래와 같이 작성하고, HashSet에 등록해보자
 Person2.class
