@@ -1,3 +1,4 @@
+<meta name="robots" content="nofollow" />
 # [JAVA] 동등성과 동일성, Equals와 hashCode()
 
 참조형 변수에 대한 동등성과 동일성에 대한 고민은 **'동일한 객체를 가리키는 것'**과 같은 관점에서 중요한 개념이므로 짚고 넘어가도록 하자
@@ -266,6 +267,7 @@ a와 b는 아래와 같이 서로 다른 주소값을 반환!
 https://www.baeldung.com/java-equals-hashcode-contracts
 https://blog.weirdx.io/post/3113
 **
+
 <a href="http://iilii.egloos.com/4000476" rel="nofollow" style="text-decoration:none;">건강착실청년님(iilii) 블로그 글을 참고하였습니다! 링크검색을 배제하기 위해서 nofollow되었습니다</a>
 ## 동등성, 조금만 더 알아보자!
 
