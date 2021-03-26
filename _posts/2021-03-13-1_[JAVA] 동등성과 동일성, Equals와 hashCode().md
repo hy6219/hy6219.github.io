@@ -265,7 +265,8 @@ a와 b는 아래와 같이 서로 다른 주소값을 반환!
 :
 https://www.baeldung.com/java-equals-hashcode-contracts
 https://blog.weirdx.io/post/3113
-http://iilii.egloos.com/4000476**
+**
+<a href="http://iilii.egloos.com/4000476" rel="nofollow">hind</a>
 ## 동등성, 조금만 더 알아보자!
 
 **참고자료 : https://www.cs.cornell.edu/courses/cs211/2006sp/Lectures/L14-Comparison/L14cs211sp06.pdf**
