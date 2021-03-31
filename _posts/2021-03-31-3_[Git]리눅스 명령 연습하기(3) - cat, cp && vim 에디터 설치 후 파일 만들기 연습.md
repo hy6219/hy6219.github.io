@@ -50,7 +50,8 @@ b. 파일이 존재하지 않은 경우 : 새 파일 만들기
 ![enter image description here](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/gitStudy/doItStudy/linux/vim/makeFile/vim%20-%20i%EB%82%98%20a%EB%8A%94%20ex%20%EB%AA%A8%EB%93%9C%EB%A5%BC%20%EC%9E%85%EB%A0%A5%EB%AA%A8%EB%93%9C%EB%A1%9C%20%EC%A0%84%ED%99%98,%20esc%EB%8A%94%20%EB%8B%A4%EC%8B%9C%20ex%EB%AA%A8%EB%93%9C%EB%A1%9C,%20wq%EB%8A%94%20%EC%A0%80%EC%9E%A5w%20%ED%9B%84%20%EC%A2%85%EB%A3%8Cq.PNG?raw=true)
 
 
-<ex 모드에서 사용 가능한 기능들>
+- ex 모드에서 사용 가능한 기능들
+
 
 
 | 키 | 기능
@@ -60,10 +61,6 @@ b. 파일이 존재하지 않은 경우 : 새 파일 만들기
 |:wq (파일명)| (파일명)을 뒤에 붙이면 해당 파일명으로 저장됨
 |q!|문서를 저장하지 않고 편집기를 종료(.swp 임시파일이 생성됨)
 
-
-
 ![enter image description here](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/gitStudy/doItStudy/linux/vim/makeFile/vim%20ex%20%EB%AA%A8%EB%93%9C%20q!%20%ED%85%8C%EC%8A%A4%ED%8A%B8%202.PNG?raw=true)
-
-
 
 ![enter image description here](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/gitStudy/doItStudy/linux/vim/makeFile/vim%20ex%20%EB%AA%A8%EB%93%9C%20q!%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EA%B2%B0%EA%B3%BC.PNG?raw=true)
