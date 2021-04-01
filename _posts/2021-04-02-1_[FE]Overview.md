@@ -72,9 +72,9 @@
 
 -   **gif의 대체포맷**으로 개발되었음
 -   특징 
-    a. <span background-color="yellow" color ="red">비손실 압축(→이미지를 해상도를 손실시키지 않으면서 저장되고, 용량이 큼)</span>
+    a. <u><font color="red">비손실 압축</font></u>(→이미지를 해상도를 손실시키지 않으면서 저장되고, 용량이 큼)
     b. 8비트(256 비트)/24비트(약 1600만 색상) 동시 사용 가능 
-    c. 투명도 지원(Alpha channel) 
+    c. <u><font color="red">투명도 지원</font></u>(Alpha channel) 
     d. W3C 권장 포맷
 
 다. GIF; Graphics Interchange Format
