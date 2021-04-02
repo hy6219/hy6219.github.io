@@ -201,4 +201,3 @@ b. HTML 4.01
 
 ```
 
-[HTML 문서의 정보-head 태그 내에서 사용될 수 있는 태그들](https://www.notion.so/HTML-head-01ee874834724069910641d57ffb9288)
