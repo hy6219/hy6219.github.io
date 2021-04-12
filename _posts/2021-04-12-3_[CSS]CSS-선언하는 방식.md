@@ -46,7 +46,7 @@ html1.html
 
 ```html
 <head>
-	**<link rel="stylesheet" href="/css/main.css"><!--절대경로-->**
+	<link rel="stylesheet" href="/css/main.css"><!--절대경로-->
 <!--경로 개념!-->
 </head>
 <body>
