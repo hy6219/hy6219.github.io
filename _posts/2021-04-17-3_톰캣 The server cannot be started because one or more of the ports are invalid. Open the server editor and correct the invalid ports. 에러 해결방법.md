@@ -11,4 +11,4 @@ https://shinye0213.tistory.com/85
 
 <img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/errors/%ED%86%B0%EC%BA%A3%20%ED%8F%AC%ED%8A%B8%20%EB%B3%80%EA%B2%BD%EC%9C%BC%EB%A1%9C%20%ED%95%B4%EA%B2%B0%ED%95%9C%20%EC%97%90%EB%9F%AC.png?raw=true">
 
-와 같이 Tomcat admin port에 ~라고 되어있는 부분을 8005로 수정해주면 된다!
+와 같이 Tomcat admin port에 ~라고 되어있는 부분을 8005로 수정해주면 된다! 창을 닫기 전에 ctrl+s로 꾹! 저장해주는 것도 잊지 말자!
