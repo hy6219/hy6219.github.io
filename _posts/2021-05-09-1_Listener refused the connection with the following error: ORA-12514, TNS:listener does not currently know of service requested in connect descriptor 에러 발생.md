@@ -4,8 +4,9 @@ SQLD 공부 겸 데이터베이스 설계 공부를 하기 위해서 디비버�
 
 여러번 확인해보아도, 서비스네임은 맞았었다. 그래서 추가로 찾아본 내용이 바로
 
-https://tipland.tistory.com/68
-https://ifuwanna.tistory.com/255
+- https://tipland.tistory.com/68
+
+- https://ifuwanna.tistory.com/255
 바로 위의 블로그 부분이었다
 
 즉, tnsnames.ora 파일과 listener.ora 파일을 확인해보라는 것이었다
