@@ -1,0 +1,1546 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>body 태그 내 구조 개념</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="f34f1e11-ab58-4c5b-a894-e0d2e427e0a7" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">body 태그 내 구조 개념</h1></header><div class="page-body"><p id="2406f569-e6c4-4471-8816-65a39b2d889f" class="">
+</p><h2 id="5e5d645f-e5ea-4783-ac4e-78f99b5bd055" class="">I. Block (텍스트) 요소</h2><h2 id="8a7abd93-9f75-4d61-aa9e-6c621bd14f26" class="">1. header 태그</h2><p id="7c848a6b-fc39-4ac0-9db7-addbf41e350b" class="">ref : <a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/header">https://developer.mozilla.org/ko/docs/Web/HTML/Element/header</a></p><ul id="bc8bd7c7-fa83-40ea-b5bb-1a0b1fbd6749" class="bulleted-list"><li>헤더를 만들 때 사용하는 태그</li></ul><ul id="bfb9ef59-586f-4092-8a96-66b66b87ceaf" class="bulleted-list"><li>헤더 = 로고 + 메뉴 + 로그인 + 로그아웃 (일반적으로 들어가 있는 기능들)</li></ul><blockquote id="9c8dc5a1-0cc7-4191-817b-51e437444e42" class="">소개 및 탐색에 도움을 주는 콘텐츠</blockquote><p id="8c012d40-b956-4d2a-913a-326faa27a83f" class="">
+</p><ul id="7dc1a545-ba01-4e6f-8d54-1fda73174ea5" class="block-color-orange_background bulleted-list"><li><mark class="highlight-red"><strong>헤더는 중첩해서 사용할 수 없고, 헤더 내부에 footer를 적어서 사용할 수 없음</strong></mark></li></ul><ul id="3050be2e-1b5c-459b-9f56-61fe26e80827" class="block-color-orange_background bulleted-list"><li><mark class="highlight-red"><strong>address 태그 내부에 header 태그를 넣어서 사용할 수 없음</strong></mark></li></ul><p id="e8e087c2-01f9-4f1e-b220-05b1afb5e759" class="">
+</p><ul id="8dba29b2-79fd-4bbc-b158-97738ede76e8" class="bulleted-list"><li>전역 속성만을 포함하고 있음</li></ul><p id="edbfb997-e249-4b8c-a556-f10ee3c79092" class="">
+</p><h2 id="208555aa-f6f8-4e2e-8fcc-0c7bcd47af68" class="">2. footer 태그</h2><p id="5b83681c-4b71-43cf-ab42-153c7c2f2208" class="">ref : <a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/footer">https://developer.mozilla.org/ko/docs/Web/HTML/Element/footer</a></p><ul id="2dd40455-fcb9-4395-9d35-b5c12acdf417" class="bulleted-list"><li>일반적으로 사이트 가장 최하단에 있는 내용으로,  사이트 저작권을 소유하고 있는 회사 혹은 저작자 등의 정보가 들어가 있음</li></ul><p id="c5da3f5e-0b8b-4b3b-8ab5-a56cd8a626a3" class="">
+</p><ul id="033d4046-461a-48f2-af92-8dc50e80cc5c" class="bulleted-list"><li>footer 내부에는 footer, header 태그가 들어갈 수 없음</li></ul><p id="cc2f8660-ae15-4926-9259-f93e40845e3f" class="">
+</p><ul id="1964b0cb-3d14-4f44-852f-27a97c1327ba" class="bulleted-list"><li>전역 속성만 포함될 수 있음</li></ul><p id="8bb0ad5d-f5c1-47be-954e-17813ae8acf5" class="">
+</p><ul id="90a5ab4a-9a17-4517-a6f1-d1d3b32aa29a" class="bulleted-list"><li>IE 는 IE 9버전에서 호환됨</li></ul><p id="4d3afd74-e21f-45b2-b177-481b8a309a20" class="">
+</p><hr id="816e5bb4-cd74-4cc7-a74a-a61f3d954a27"/><p id="dcbd33ad-c518-4179-bb73-57bb073ad0dc" class="">🍑HTML5로 넘어오면서 의미를 갖는 시맨틱 태그들이 많이 등장하였는데, 이를 주의해서 적재적소해 사용해주어야 함!</p><hr id="12cdadff-8d8e-4d65-a234-102bc1d0ca2d"/><p id="81dc6b38-ff31-477f-8c13-607261b2d93c" class="">
+</p><h2 id="13c77956-69cb-4600-9197-2107665cc5d6" class="">3. h1 ~ h6 태그</h2><p id="d7ded329-bba0-4570-8f70-4813fcca93ec" class="">
+</p><ul id="1f49eb2e-fc8f-4677-983e-d8bde02a2e1a" class="bulleted-list"><li>hx : h1은 대주제, x값이 커질 수록 소주제</li></ul><p id="8f04648f-f0c1-4516-86fa-82ff9f1feac7" class="">
+</p><ul id="09876682-1a2a-45cb-aa59-be83ea7123c3" class="bulleted-list"><li><mark class="highlight-yellow_background"><strong>문서의 목차</strong></mark>에 사용</li></ul><p id="fe6ebf13-7312-43bb-bbe2-a71b1c333624" class="">
+</p><ul id="dfdad9a0-2466-411e-95b4-2a46123e215f" class="bulleted-list"><li>h1~h6의 글자 크기를 초기화해서 그 폰트 크기를 명확하게 css에서 적용해주어야 할 필요가 있음<a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/Heading_Elements">(브라우저마다 headings에 따른 폰트크기가 다르게 지정되어 있기 때문)</a></li></ul><p id="3f2f800e-0ce6-4135-83ca-6b0e044b91b3" class="">
+</p><ul id="538d4170-831f-4274-874c-1edcd35f0b9f" class="bulleted-list"><li>일반적으로 h1 태그부터 시작해서 순차적으로 작성해주자! 그 이유는 검색 엔진에서 인지하는 문제가 있을 수 있기 때문!( ➡️ h1 다음에는 h3이 나오면 안됨!)</li></ul><p id="0574eb7d-c5f6-4057-a462-d678ff23441c" class="">
+</p><ul id="505875d5-077a-4ca0-a11b-43ab2dd40e39" class="bulleted-list"><li>h1은 두 번 이상 나오지 않도록 하기!</li></ul><p id="1f0637f7-f8cf-44c4-b9ad-0ca0a6007c44" class="">➡️ 이런 경우, h2 부터의 하위 headings를 여러번 이용해서 작성해주자[mdn nesting 부분과 관련된 부분]</p><p id="900597c8-469e-4643-a8ca-87876ce742b5" class="">[일반적으로 h3, h4 수준까지만 사용하게 될 것]</p><p id="8c000c63-28a9-4c00-9c06-ab1808f1d9f7" class="">
+</p><ul id="e560920c-702a-4f22-bc5f-7fe140c0aafb" class="bulleted-list"><li>구획을 나타낼 수 있는 div 태그나 nav 태그, footer 태그의 내부에 headings 태그를 넣어서 사용할 수도 있음</li></ul><p id="47c82d5b-491a-48c9-a36a-39a3e3468b3b" class="">
+</p><h2 id="870caa08-e238-40af-aabc-319cd04af2d3" class="">4. main 태그</h2><p id="34d6fb63-293d-47ad-814b-00d2bb91875d" class="">
+</p><ul id="ac571c28-429e-4541-a354-3c5c23817783" class="bulleted-list"><li>body의 주요 컨텐츠를 나타냄</li></ul><p id="13754da2-dc31-4004-b8f5-09b260215393" class="">
+</p><ul id="73a038e0-a9e0-41a3-b779-78b92cc907a7" class="bulleted-list"><li>문서의 핵심 주제에 해당되는 부분을 담기에 적절</li></ul><p id="d70b941d-bd00-4b82-9738-3eeb2ca01958" class="">
+</p><ul id="c3463b4d-22ce-4a27-a837-061eb50b25a8" class="bulleted-list"><li><mark class="highlight-blue_background"><strong>문서에서 1개만 존재</strong></mark>해야 함!</li></ul><p id="0d7305c1-52fa-47da-9f40-393c1f88fa92" class="">
+</p><ul id="4bcb77d2-7c40-44af-92c9-3ba2b8b84845" class="bulleted-list"><li>IE에서는 사용할 수 없음</li></ul><p id="8efe8a91-8025-4205-96d2-91720d738a56" class="">
+</p><ul id="67cdb470-bb51-411d-8bbf-9141b67f4d9d" class="bulleted-list"><li>블럭 요소</li></ul><p id="6c485eff-5c76-40a5-bf84-931070cedeed" class="">
+</p><p id="b8df89a2-c10d-456a-bb80-8ad069228b34" class="">
+</p><h2 id="9becc6bf-b86f-463b-b3af-6ad5f8a8b190" class="">5. article 태그</h2><p id="0cf3080d-a4df-4d14-bebb-77f1ef49fdb3" class="">
+</p><ul id="77272022-9ad8-45ea-8dcf-0f0aa536c871" class="bulleted-list"><li><mark class="highlight-blue_background"><strong>독립적</strong></mark>으로 구분되거나 <mark class="highlight-blue_background"><strong>재사용 가능</strong></mark>한 영역을 설정</li></ul><p id="2a25bad9-2264-491a-acea-b1d11947f954" class="">
+</p><ul id="81299e6a-2a6a-48f5-bdbc-795f3c5de712" class="bulleted-list"><li>예) 매거진/신문 기사, 블로그 등</li></ul><p id="5f4c7625-ce57-4394-8893-79fe10ff57fa" class="">
+</p><ul id="ef5de61b-926f-4362-963a-e85f2a7582a5" class="bulleted-list"><li>일반적으로 headings 태그를 포함하여 식별
+</li></ul><ul id="24cec2cc-0324-479d-a32a-74672a855e84" class="bulleted-list"><li>작성일자, 시간을 time 태그의 datetime 속성으로 작성[해당 요소에 대해서 웹 사이트가 어떤 시간을 의미하는지 해석하게 됨! 육안으로는 차이가 보이지 않음]</li></ul><p id="9cb893aa-395a-4ece-8211-71a0ee749c18" class="">
+</p><pre id="ef9a84f6-5249-4881-a479-16e64d8b7378" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;main&gt;
+        keyPoint
+    &lt;/main&gt;
+    &lt;article class=&quot;forecast&quot;&gt;
+        &lt;h1&gt;forecasst&lt;/h1&gt;
+        &lt;article class=&quot;day-forecast&quot;&gt;
+            &lt;h2&gt;March 2018&lt;/h2&gt;
+        &lt;/article&gt;
+        &lt;article class=&quot;day-forecast&quot;&gt;
+            &lt;h2&gt;March 2018&lt;/h2&gt;
+            &lt;p&gt;Periods of rain&lt;/p&gt;
+        &lt;/article&gt;
+        &lt;article class=&quot;day-forecast&quot;&gt;
+            &lt;p&gt;
+                posted on &lt;time datetime=&quot;2021-04-27 1:21&quot;&gt;March 2018&lt;/time&gt; by js
+            &lt;/p&gt;
+        &lt;/article&gt;
+    &lt;/article&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="c899ffaf-0f1a-4d3c-b5ab-0d480f7bc7af" class="">
+</p><p id="c6ff2261-fea8-4bb8-8384-e3ad5177952e" class="">
+</p><h2 id="be036733-a88d-48de-93ff-dc7305b5efd9" class="">6. section 태그</h2><p id="18f9bd1e-593e-4105-a57c-5ce31fad6f8b" class="">
+</p><ul id="62f70f65-ade5-48ad-8a6e-d468e45b3dee" class="bulleted-list"><li>문서의 일반적인 <mark class="highlight-blue_background"><strong>영역을 설정</strong></mark></li></ul><p id="096695aa-1d3b-4304-b8c1-45df2af24dd2" class="">
+</p><ul id="aa08b840-0f82-4a93-9e2c-bea3784cc166" class="bulleted-list"><li>일반적으로 headings 요소를 포함하여 식별</li></ul><p id="0b994e6b-ab76-4947-b9e7-4c75b828fd2d" class="">
+</p><ul id="f21d6105-cfde-4924-bbc9-955f59c54e0a" class="bulleted-list"><li>section 내부에는 article 요소가 들어갈 수 있음</li></ul><p id="ffa598fb-2cde-42fd-9652-1d89b0876cb9" class="">
+</p><ul id="f1d33780-b22a-45f6-a055-e6a3298d0bfe" class="bulleted-list"><li>article 내부에도 section 요소가 들어갈 수 있음</li></ul><p id="75d120af-c5aa-462d-9876-4b1c81a2da1a" class="">
+</p><ul id="22c173eb-8006-4664-b6a4-91c34db00efd" class="bulleted-list"><li>div 와의 차이점 : section은 제목을 포함시킴으로써 의미를 포함</li></ul><p id="e36dbcc0-3a67-40fa-99f1-b6f49b7d6ab6" class="">
+</p><pre id="9f3dc100-f3f0-4c91-9ff9-95cd2701b554" class="code"><code>&lt;section&gt;
+        &lt;h1&gt;Introduction&lt;/h1&gt;
+        
+        &lt;article&gt;
+            &lt;h2&gt;Intro&lt;/h2&gt;
+            &lt;p&gt;Hi!&lt;/p&gt;
+        &lt;/article&gt;
+    &lt;/section&gt;</code></pre><p id="8ebc5909-b38a-4a59-9ea7-c24a426827e9" class="">
+</p><h2 id="87d490b3-9b0d-4e73-9cae-27bd9b371ff3" class="">7. aside 태그</h2><p id="4f728d4b-b8bd-4b50-bb43-1a704c8ac09a" class="">
+</p><ul id="0149d41f-9504-496c-883a-c5b150c9f807" class="bulleted-list"><li>문서 오른쪽에 들어가는 광고배너와 같이 별도 컨텐츠를 다루는 영역</li></ul><p id="1b40b2fe-7cbb-47a3-8bcb-782226198a87" class="">
+</p><figure id="0d7dacbf-fb6a-451d-bcde-38d2b83f152e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/html%20body%20%EB%B6%80%EB%B6%84%EC%9D%98%20%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8%20%ED%99%94%EB%A9%B4%20%EA%B5%AC%EC%84%B1.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/html%20body%20%EB%B6%80%EB%B6%84%EC%9D%98%20%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8%20%ED%99%94%EB%A9%B4%20%EA%B5%AC%EC%84%B1.png?raw=true"/></a><figcaption>HTML 문서의 화면 구성</figcaption></figure><p id="93cf85a2-d932-4573-b90a-c4b9e46bdad1" class="">
+</p><p id="3a168afc-4893-40a9-9e3c-a77b4a8d8d09" class="">
+</p><h2 id="fd84acd2-59e9-4116-83b0-1d8badd3367a" class="">8. nav 태그(navigation)</h2><p id="753504fb-b37c-4da8-b72e-4ab6adf94c11" class="">
+</p><ul id="cbab14bb-db4b-4da4-842e-55ad3e47b1d2" class="bulleted-list"><li>다른 페이지 링크를 제공하는 영역</li></ul><p id="ead1f1ff-ff19-4c92-b7ad-62eb251bd9af" class="">
+</p><ul id="3f76d3af-7249-46f5-9068-8d4767b517cd" class="bulleted-list"><li>헤더 내부에 들어가는 <mark class="highlight-orange_background"><strong>메뉴</strong></mark>나 contact, about 등이 포함된 태그</li></ul><p id="44037b8f-059f-46d9-9298-6a6213246a26" class="">
+</p><ul id="4994fa0e-11a8-476a-9ba4-35dc0aa5ab13" class="bulleted-list"><li>ol, ul 태그가 많이 포함됨</li></ul><p id="abba3352-a843-4695-ad85-6945fdeccefb" class="">
+</p><ul id="2ccaef33-401e-4ce5-ba73-649c92a15201" class="bulleted-list"><li>nav 태그가 반드시 header 태그 내부에 있을 필요는 없음!</li></ul><p id="51efe150-927e-4730-bd88-1f1bd9e4d2b9" class="">
+</p><p id="6a4d6f90-eab5-4bee-bafa-803003d66d1f" class="">⚠️ <mark class="highlight-blue_background"><strong>&quot;영역을 차지&quot; ➡️ 블록요소!</strong></mark></p><p id="b4d4e9a3-a9f3-4509-a93c-28ee64f9eea6" class="">
+</p><pre id="d7d71065-5bda-4e2e-af9d-03197b321dfc" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./elements.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav class=&quot;clearfix&quot;&gt;
+            &lt;ul&gt;
+                &lt;li&gt;Shorts&lt;/li&gt;
+                &lt;li&gt;Designers&lt;/li&gt;
+                &lt;li&gt;Teams&lt;/li&gt;
+                &lt;li&gt;Community&lt;/li&gt;
+                &lt;li&gt;Jobs&lt;/li&gt;
+                &lt;li&gt;Hiring&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="a758b0d2-40bd-4d31-882e-a6fbe7c3d11b" class="">
+</p><h2 id="385bd7a8-d267-4b8a-8e8b-bbeb0301866d" class="">9. address 태그</h2><p id="a9dd557a-4f8e-4f3f-991e-84281ca11dfa" class="">
+</p><ul id="9ba6e683-190e-4d78-8d77-a82923ec336c" class="bulleted-list"><li>body, article, footer 태그 등에서 연락처 정보를 제공하기 위하여 포함하여 사용(주소, 이메일, 전화번호)</li></ul><p id="c8aad478-c75f-486f-8732-68728760159f" class="">
+</p><ul id="9a93e436-dcd4-4c8e-8fb6-e4c9a94b3053" class="bulleted-list"><li>address 태그 내부에 1 개 이상의 연락처 지정 가능</li></ul><p id="b86372b6-5760-4e91-ad39-2eeb567488a0" class="">— <a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/address">예제 from mdn</a> —</p><pre id="ddbaf83a-b391-4d8c-9280-aa9a7b951a4a" class="code"><code>&lt;section&gt;
+        &lt;article&gt;
+            &lt;p&gt;Contact the author of this page:&lt;/p&gt;
+
+            &lt;address&gt;
+            &lt;a href=&quot;mailto:jim@rock.com&quot;&gt;jim@rock.com&lt;/a&gt;&lt;br&gt;
+            &lt;a href=&quot;tel:+13115552368&quot;&gt;(311) 555-2368&lt;/a&gt;
+        &lt;/address&gt;
+        &lt;/article&gt;
+    &lt;/section&gt;</code></pre><p id="09bfb268-c068-46f0-83e7-1925c218ac8e" class="">
+</p><ul id="67787a81-0f5d-40e6-a394-b830c192947f" class="bulleted-list"><li>&lt;a href=&quot;mailto:~&quot;&gt;: 윈도우에서는 아웃룩&amp;&amp; 맥북에서는 받은 편지함이라는 프로그램이 열리게 됨</li></ul><p id="5c5731f5-ab6b-4461-ace0-d2da04b60ced" class="">
+</p><ul id="74dccb23-6bc2-41aa-97b4-3cd215853ed8" class="bulleted-list"><li>&lt;a href=&quot;tel:~&quot;&gt; : 모바일에서 클릭하게 되면 전화앱이 실행됨</li></ul><p id="25244480-24f1-4d55-b74d-09e2e56eed75" class="">
+</p><p id="802b3570-6c32-42a6-9277-c9ac9af509da" class="">
+</p><h2 id="0e21b269-3238-4b1f-a07a-4491e7a60ee9" class="">10. div 태그</h2><p id="e48688a3-1e8c-4043-9a4b-f714d0aa43c2" class="">
+</p><ul id="e2d2627d-88a8-4fc7-bb03-be141bd199c1" class="bulleted-list"><li>본질적으로 아무것도 나타내지 않는 컨텐츠 영역을 설정</li></ul><p id="2b05691d-7d69-4ba0-9dbd-1642d85a8b90" class="">
+</p><ul id="41705320-2933-4572-a7c8-a4343ef5b43f" class="bulleted-list"><li>레이아웃을 설계하려고 할 때 사용됨</li></ul><p id="f183f603-d162-461f-b337-43438ec8e2c7" class="">
+</p><p id="ff5b7a2e-c66b-46d2-a5d7-0ee9f2c8703c" class="">
+</p><p id="e7d1e84a-d0d5-453b-9385-3cd696f5d547" class="">⚠️<strong><mark class="highlight-blue_background"> 잠깐! Emmet 기능</mark></strong> ⚠️</p><p id="a1e1173a-e5b9-4e5a-88f2-a1689f7082ca" class="">
+</p><ul id="ab9afe8c-3cee-44e4-a3ef-8e27453f3cb4" class="bulleted-list"><li>묶어서 상위 컨테이너 요소가 필요하다면 , vs code에서는 블록을 잡고</li></ul><p id="8eac5f3a-c739-4629-a83c-8a986ed83a87" class="">
+</p><p id="8ec4bf0a-2017-41a3-b654-dc428b959560" class=""><strong>ctrl + shift +P </strong>를 누르기 ➡️ 컨테이너 요소 태그명(예: main태그로 묶고 싶으면 main 입력)</p><p id="0a549951-ac36-41f0-b5c7-2563f2171ebc" class="">
+</p><p id="97052097-1016-4431-9f6e-695bafc933c9" class="">
+</p><p id="5f594bbc-f0b6-45a8-933a-0024d44e74d9" class="">
+</p><p id="22043fde-b617-4eb4-b35a-c7116dabed88" class="">⚠️<strong><mark class="highlight-blue_background"> 잠깐! 단축키 기능</mark></strong> ⚠️</p><p id="04cc7850-6131-454c-9433-e15f7541bec9" class="">
+</p><ul id="e0347c28-7c42-474d-bf3b-fe228188175c" class="bulleted-list"><li>처음에 Beautify 단축키로 설정한 키를 누르면 들여쓰기가 예쁘게 잘 됨!</li></ul><p id="bd3971a9-6a6e-4f79-86cc-03b84be11a26" class="">(저는 Ctrl + Alt + L 로 설정해두었습니다)</p><p id="ac9fad68-dced-47c5-98aa-9ff31d0f3acd" class="">
+</p><hr id="87710ebc-e87d-4c4b-a5ef-3da1ea486efa"/><h3 id="26e72faa-02f3-4074-9644-698a8f045d38" class=""><mark class="highlight-pink_background">HTML5 시멘틱 구조</mark></h3><p id="5adce38f-f646-4bf4-9587-dacf725ea714" class="">지금까지 학습한 태그에 대한 내용을 기반으로, 위에서 짧게 언급한</p><p id="edc4eff7-42b0-49f0-b66f-ac62e484b3ae" class="">
+</p><p id="7ce5a9ee-ad09-404c-93f2-f391f1b56541" class="">브라우저 내부에서 화면의 구조인 시멘틱(semantic) 구조를 구성해보자</p><ul id="dd6038a2-0d28-4120-a7af-c054857449bb" class="bulleted-list"><li>시멘틱 구조에 사용되는 header, nav, article, section , footer 태그와 같이 의미를 부여하는 태그를 <a href="https://developer.mozilla.org/ko/docs/Glossary/Semantics">시멘틱 태그</a>!</li></ul><pre id="d6216e07-8de0-4183-949c-46762900e6e9" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;컨텐츠 구분 예제&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./mains.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;
+            &lt;ul&gt;
+                &lt;li&gt;nav1&lt;/li&gt;
+                &lt;li&gt;nav2&lt;/li&gt;
+                &lt;li&gt;nav3&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/header&gt;
+    &lt;main&gt;
+        &lt;section&gt;
+            &lt;h1&gt;Section&lt;/h1&gt;
+            &lt;article&gt;
+                &lt;h2&gt;Article1&lt;/h2&gt;
+                &lt;p&gt;Contents...&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;h2&gt;Article2&lt;/h2&gt;
+                &lt;p&gt;Contents2...&lt;/p&gt;
+            &lt;/article&gt;
+            &lt;article&gt;
+                &lt;h2&gt;Article3&lt;/h2&gt;
+                &lt;p&gt;Contents3...&lt;/p&gt;
+            &lt;/article&gt;
+        &lt;/section&gt;
+        &lt;aside&gt;
+            Aside
+        &lt;/aside&gt;
+    &lt;/main&gt;&lt;!--한 라인에 묶어서 보이기 위함!--&gt;
+    &lt;footer&gt;
+        &lt;address&gt;
+            &lt;a href=&quot;mailto:123@123.com&quot;&gt;123@123.com
+            &lt;/a&gt;
+            &lt;a href=&quot;tel:+821012345678&quot;&gt;010-1234-5678&lt;/a&gt;
+        &lt;/address&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="c1866675-0a28-40da-ac03-f291957d59d1" class="">
+</p><pre id="4f308a83-c405-4071-a605-dbec000f1f7f" class="code"><code>header{
+    background :yellowgreen;
+    margin: 10px;
+    padding: 20px;
+}
+
+header nav{
+
+}
+
+header nav ul{
+    display:flex;/*요소들이 수평으로 정리될 것*/
+}
+
+header nav ul li{
+    list-style: none;/*list item style 적용x*/
+    margin: 10px;
+}
+/*section에 대해서 main이 부모요소이기 때문에
+section 윗부분에 작성하기*/
+main{
+    display:flex;
+}
+section{
+    width: 70%;
+    background: tomato;
+    padding:10px;
+    box-sizing: border-box;
+}
+
+section h1{
+
+}
+article{
+    background: green;
+    margin-bottom: 10px;
+    padding:10px;
+}
+article h2{
+
+}
+
+article p{
+
+}
+
+aside{
+    width:30%;
+    background: tomato;
+    margin:10px;
+    padding:20px;
+    box-sizing: border-box;
+}
+
+footer{
+    background:tomato;
+    margin:10px;
+    padding:20px;
+}
+
+footer address{
+
+}
+
+address a{
+    display:block;
+}</code></pre><p id="50b06082-1c8b-4d8b-b1aa-819544b550d2" class="">
+</p><p id="297cb6ed-0cb3-49d3-9bd2-39ed725de46c" class="">css 스타일링을 통해서 각 부분을 표시해본다면, 아래와 같이 표시될 수 있다</p><p id="7091db29-a8bb-4551-bc93-a5959caac153" class="">
+</p><p id="a9f95bb2-f86d-4234-a684-ad07dbf9e0f4" class="">
+</p><figure id="dc62a620-1551-4372-b424-a2b6f274f78c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/html%20body%20%EB%82%B4%EB%B6%80%20%EA%B5%AC%EC%A1%B0%20%EC%8B%A4%EC%8A%B5.PNG?raw=true"><img style="width:100%" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/html%20body%20%EB%82%B4%EB%B6%80%20%EA%B5%AC%EC%A1%B0%20%EC%8B%A4%EC%8A%B5.PNG?raw=true"/></a></figure><p id="643b3870-5bc0-4d3c-a6a8-ec1be281ea3d" class="">
+</p><p id="c60b3b32-e3e5-4937-88b7-eb434b17f854" class="">
+</p><h2 id="0668e7ef-6e52-4abe-a95a-c97422532490" class="">11. 문자 컨텐츠 태그 - ol, ul, li 태그</h2><p id="cf32be3b-d375-45a3-a687-14577d4157fd" class="">
+</p><ul id="d47eb463-45b3-4274-b324-1188c08e9267" class="bulleted-list"><li>각 항목(li 태그)에 대해서</li></ul><p id="75e369be-fe53-4310-ba33-d7e3949119a3" class="">
+</p><p id="a6c42cc4-ccc0-4f60-971c-1ab2da5b3a31" class="">➡️ 순서가 정렬된 목록이면 ol 태그 ➡️ ➡️ol 의 항목 순서는 <strong><mark class="highlight-orange">중요도</mark></strong>를 의미할 수 있음</p><p id="d2b032ed-f529-420d-9741-3f3d9d81e07a" class="">
+</p><p id="9fa412ac-d32f-4fdb-8b22-565f01d518a9" class="">
+</p><p id="3a5cfbec-de20-4ec4-8ead-5699b03649f1" class="">➡️ 순서가 정렬되지 않은 목록이면 ol 태그</p><p id="84e92f82-c1ea-4bc6-b594-a1aa4f9f072e" class="">
+</p><ul id="f12ae501-6bfa-40be-88e2-7bc4e6bbaaf9" class="bulleted-list"><li>ol 태그와 ul 태그는 자식으로 li 태그만 포함 가능</li></ul><ul id="a19904c4-e253-4bc3-b1c3-ca172dc47874" class="bulleted-list"><li>li 태그는 단독적으로 사용될 수 없음</li></ul><p id="c22ecb8e-c839-4d9e-a729-16c587e0f05d" class="">
+</p><ul id="5b3b4093-2900-41cf-967d-bb0de427bdf5" class="bulleted-list"><li>ol, ul은 블록요소</li></ul><pre id="3e087435-6a4c-42ee-b161-c8e361f8f7f3" class="code"><code>ol, ul{display:block;}</code></pre><p id="e8597335-b1b1-4f35-a2fb-6d5a16524cae" class="">
+</p><ul id="cd15f01b-31da-401c-a627-eaae863395f3" class="bulleted-list"><li>li는 블록, 인라인 요소 개념이 아님! 하지만, 블록 요소에 감싸져 있기 때문에, 블록 레벨에서 사용되는 요소라고 말할 수도 있음!(이해상)</li></ul><pre id="2db163e7-c8ab-4f62-80cb-b349c206a19e" class="code"><code>li{display:list-item;}</code></pre><p id="e1397dfb-e954-43d5-b478-81e7db373f86" class="">
+</p><ul id="4602b017-4714-478b-b062-2620e2fb52b6" class="bulleted-list"><li>목록 내부에 목록을 삽입하여 작성해줄 수 있고, 그렇게 되면 들여쓰기가 자동으로 완성됨!</li></ul><p id="722089d1-f3fa-447d-bdd5-c53ca9625983" class="">
+</p><p id="6d1d2d6b-292f-468f-a461-b1316217efe4" class="">-ol 내에 ul을 넣어도 좋고, ul 내에  ol을 넣어도 좋음!</p><p id="329bd03f-a0b1-4337-80a4-60e54cf25cc8" class="">
+</p><pre id="fffc08e9-e177-4619-8409-7b0c0f0c6c4e" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;문자 컨텐츠 태그 연습&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;li-ex&quot;&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                Apple
+                &lt;ul&gt;
+                    &lt;li&gt;Apple&lt;/li&gt;
+                    &lt;li&gt;Banana&lt;/li&gt;
+                    &lt;li&gt;Mango&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Banana&lt;/li&gt;
+            &lt;li&gt;Mango&lt;/li&gt;
+        &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="5c16dcbb-e825-46b9-9010-1d4993900e08" class="">
+</p><p id="33217837-6934-4090-9742-b313c5927822" class="">
+</p><ul id="d156044f-80a8-4468-96b4-348a47906c4f" class="bulleted-list"><li>ol 태그 속성</li></ul><p id="f692fcb6-9dbd-436f-9b96-3c301df0aa97" class="">
+</p><ol id="b55c596a-490e-4753-b73f-b9d53ed4f270" class="numbered-list" start="1"><li>type : 항목에 매겨지는 번호의 유형(기본값: 1) - 그 외에 a, A, i, I 존재</li></ol><ol id="cae0dc7d-6fd9-4aa4-8cec-32b9424cef44" class="numbered-list" start="2"><li>reversed : 항목을 역순으로 성정 - IE 지원 불가
+</li></ol><pre id="26262aed-3e7a-4917-b8ef-dc3231dd120c" class="code"><code>&lt;ol type=&quot;a&quot; reversed&gt;
+     &lt;li&gt;Apple&lt;/li&gt;
+     &lt;li&gt;Banana&lt;/li&gt;
+     &lt;li&gt;Mango&lt;/li&gt;
+&lt;/ol&gt;</code></pre><p id="f086555e-9ca3-47d4-a64b-aff4aa6860c1" class="">
+</p><p id="0722b976-6276-4c42-a317-157e62e2fd7e" class="">3. start    : 항목에 매겨지는 번호의 시작값 (해당 속성에 대한 값 = 숫자 ➡️ type=1일때 적용될 수 있음)</p><p id="e108dd57-f4c3-403f-afc8-fbcae89c63a8" class="">
+</p><p id="5ab6eb96-d505-4516-8988-126c75182152" class="">*reversed와 start를 섞은 경우를 잘 보면, 중요한 점을 확인할 수 있는데,</p><p id="3d24c63a-63a1-4019-9f09-5dd612044ad7" class="">
+</p><p id="9ad755e9-849d-459c-8091-6da825e3fc03" class="">start로 시작해서 1씩 번호가 줄어듦을 확인할 수 있다!</p><p id="522639b2-29ff-4036-b0bb-0fec94d2640a" class="">
+</p><pre id="f0821b8c-48e9-470c-b469-9792b3c6fcea" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;문자 컨텐츠 태그 연습&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;li-ex&quot;&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                Apple
+                &lt;ol type=&quot;1&quot; start=&quot;6&quot; reversed=&quot;reversed&quot;&gt;
+                    &lt;li&gt;Apple&lt;/li&gt;
+                    &lt;li&gt;Banana&lt;/li&gt;
+                    &lt;li&gt;Mango&lt;/li&gt;
+                &lt;/ol&gt;
+            &lt;/li&gt;
+            &lt;li&gt;Banana&lt;/li&gt;
+            &lt;li&gt;Mango&lt;/li&gt;
+        &lt;/ul&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="cab15464-3a01-4271-91a3-f891389cdf3f" class="">
+</p><figure id="86a143b0-b6c0-4631-ab54-ab36cb61ca8c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/ol%ED%83%9C%EA%B7%B8%20%EC%86%8D%EC%84%B1.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/ol%ED%83%9C%EA%B7%B8%20%EC%86%8D%EC%84%B1.PNG?raw=true"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bcb1b20d-5db3-4892-b395-b96c290fa183"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">reversed 속성은 위에서처럼,
+[1] reversed = &quot;reversed&quot;
+
+로도 사용할 수 있지만
+
+[2] reversed 
+
+로도 사용이 가능하다![Boolean ( 불린 ) 형식]</div></figure><p id="8ae88b37-2adb-4b61-bf1b-26524edc8b7c" class="">
+</p><ul id="5d86eb41-16d7-4922-8d4e-f7626cc31fa4" class="bulleted-list"><li>li 태그의 속성</li></ul><p id="c85023ef-cd55-4d9d-8818-af8cc8ffa753" class="">
+</p><p id="f4c5da2e-2f1a-49c6-9f39-6bb54c29600b" class="">-value  : 항목의 순서를 설정 ( 값 : 숫자 )</p><p id="95624cd2-4dc1-4f5d-a9f5-35e1b378808b" class="">
+</p><pre id="017ba02a-4dbd-4c1e-8edb-3bfbaa76476b" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;문자 컨텐츠 태그 연습&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;li-ex&quot;&gt;
+        &lt;ol&gt;
+            &lt;li value=&quot;7&quot;&gt;
+                Apple
+                &lt;ul&gt;
+                    &lt;li&gt;Apple&lt;/li&gt;
+                    &lt;li&gt;Banana&lt;/li&gt;
+                    &lt;li&gt;Mango&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt;
+            &lt;li value=&quot;99&quot;&gt;Banana&lt;/li&gt;
+            &lt;li value =&quot;103&quot;&gt;Mango&lt;/li&gt;
+        &lt;/ol&gt;
+
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="08e49a3b-6be5-4a0c-bc8e-1bc64bf3c8ce" class="">
+</p><figure id="723d9df0-4e49-49b8-898e-4e7e225a1305" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/li%20%ED%83%9C%EA%B7%B8%EC%9D%98%20%EC%86%8D%EC%84%B1_value.PNG?raw=true"><img style="width:100%" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/li%20%ED%83%9C%EA%B7%B8%EC%9D%98%20%EC%86%8D%EC%84%B1_value.PNG?raw=true"/></a></figure><p id="d9cf57e1-deaa-47a9-847c-aadde6238439" class="">
+</p><p id="5c47e792-62b7-4e72-b5db-99e714134be3" class="">위의 그림과 코드를 같이 보면서 매치해보자</p><p id="61888d7d-cf22-4120-adff-2e2273887b31" class="">
+</p><p id="7fcd34d4-5e38-4b20-9fd8-ca4677ab102b" class="">먼저 첫번째 li에서 value=&quot;7&quot;로 설정해두고, 그 이후는 value 값을 주지 않는다면,</p><p id="25263adc-622d-4269-b3e0-9d006bc6c4e3" class="">
+</p><p id="10ad93ad-d879-47fa-a6a2-fd833f54d9d0" class="">그림에서 1로 표시한 것과 같이 Apple 에 해당되는 부분 이후에 나오는 Banana나 Mango 아이템에서는 8, 9가 나온다.</p><p id="57d69d03-c4ca-4f20-a1b5-1eb1c1be6754" class="">
+</p><p id="37090a8f-2619-4825-ab3d-1af2b4c6fefc" class="">비슷한 개념으로, 이번에는 Banana 아이템에 value = &quot;99&quot;를 넣어주면, Mango에는 100이 넘버링된다(그림의 2)</p><p id="761631aa-842b-45fc-9337-8de689db1237" class="">
+</p><p id="2a3316cb-7228-4cca-8169-8e9c246fddb4" class="">최종으로, 세 아이템 모두 각각 7, 99, 103을 넣어주면 위의 그림처럼 넘버링되어 보인다</p><p id="979baeb6-ddc3-4814-9f53-92746b31cc54" class="">
+</p><ul id="3b57140c-d6c6-418b-8abf-c031c449fc6b" class="bulleted-list"><li>일반적으로 ul 태그가 ol 태그보다 더 많이 사용되는 편</li></ul><p id="d9c74014-dcb1-41c4-b4d2-7cecf25a934f" class="">
+</p><h2 id="29725e39-9983-4de2-bacc-14ce6042ddd8" class="">12. 용어에 대한 태그- dl, dt, dd 태그</h2><p id="cde6ffe3-33ad-4aa7-b140-e9b44f6d221d" class="">
+</p><ul id="bde41597-a07c-424c-8817-4f3e02a0fd0f" class="bulleted-list"><li>dt 태그: 용어</li></ul><ul id="bca07091-d898-4bd7-ad23-b518007ce25c" class="bulleted-list"><li>dd 태그 : 용어에 대한 정의(설명)</li></ul><ul id="53e5f1d3-a7c5-4791-8ae1-b873398acc44" class="bulleted-list"><li>dl 태그 : (dt, dd 태그) 쌍들의 영역</li></ul><ul id="c078e111-3f8d-4f68-8111-d613e16bb0d1" class="bulleted-list"><li>key, value 형태를 표시할 때 유용</li></ul><ul id="47371575-2016-46cc-8c40-88580dfa82f8" class="bulleted-list"><li> dl 태그 내부에는 dt, dd 태그만을 포함해야 함
+
+➡️ 다른 태그가 올 수 없어서 dl 태그 내부의 용어별 스타일링이 어려움
+
+➡️  이를 스타일링하기 용이하게 하기 위해서 ul 태그로 묶고, 용어를 의미하는 dfn 태그와 문단을 의미하는 p 태그로 설명을 대체하여 많이 사용!(a)</li></ul><p id="06a004af-5079-4bc3-96ff-1cb87c9ef7ed" class="">
+</p><ul id="b8bf7092-e2cb-4303-8507-7f2bcdba12a6" class="bulleted-list"><li>블럭 요소</li></ul><pre id="cba314d5-f4a4-4b73-868e-992b59b71d62" class="code"><code>dl, dt, dd{display: block;}</code></pre><pre id="95805842-948b-4189-a20e-886ccbd677d4" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;문자 컨텐츠 태그 연습&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;def_ex&quot;&gt;
+        &lt;dl&gt;
+            &lt;dt&gt;Coffee&lt;/dt&gt;
+            &lt;dd&gt;Coffee and Donut!&lt;/dd&gt;
+            &lt;dt&gt;Chocolate&lt;/dt&gt;
+            &lt;dd&gt;Yummy!&lt;/dd&gt;
+        &lt;/dl&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="16a0994d-23a9-49c1-86cc-79aa80fb235e" class="">
+</p><p id="d87b08ba-c1ce-4734-ae2c-1ff035a6919e" class="">
+</p><figure id="05af2a27-8d56-4e74-bdaa-7f6fdb794f1d" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/dl,%20dt,%20dd%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/Block_Inline/dl,%20dt,%20dd%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>dt, dd, dl 태그</figcaption></figure><p id="453063c0-e320-4eee-9ead-e29157c39156" class="">
+</p><ul id="7a767b00-0f3f-4572-872a-29ca4a1f8d87" class="bulleted-list"><li>앞서 설명된 것처럼, a 와 같이 사용하는 것은 아래와 같다</li></ul><pre id="3e7a35b3-4fcc-4f50-bee4-fe77abcf3a3f" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;문자 컨텐츠 태그 연습&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;def_ex&quot;&gt;
+        &lt;dl&gt;
+            &lt;dt&gt;Coffee&lt;/dt&gt;
+            &lt;dd&gt;Coffee and Donut!&lt;/dd&gt;
+            &lt;dt&gt;Chocolate&lt;/dt&gt;
+            &lt;dd&gt;Yummy!&lt;/dd&gt;
+        &lt;/dl&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;dfn&gt;Coffee&lt;/dfn&gt;
+                &lt;p&gt;Coffee and Donut!&lt;&lt;/p&gt;
+            &lt;/li&gt;
+            &lt;li&gt;
+                &lt;dfn&gt;Chocolate&lt;/dfn&gt;
+                &lt;p&gt;Yummy!&lt;/p&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="82eb2357-5f81-40e0-8ad9-f19fd9c38c42" class="">
+</p><p id="504095d0-350b-4f16-b74b-58c44520a540" class="">
+</p><h2 id="dfd387ba-3bdb-42ac-83b4-37401510c030" class="">13. p 태그 &lt;p&gt; &lt;/p&gt;</h2><p id="920410a3-4d8a-40eb-b9d7-81f9039b1227" class="">
+</p><ul id="11704dd2-8f3d-4767-9257-18c5a5ceeff1" class="bulleted-list"><li>하나의 문단을 설정(paragraph)</li></ul><ul id="d59f9238-a2ba-4197-824a-721c53990846" class="bulleted-list"><li>문단, 문장 구성 시 사용</li></ul><ul id="b9473783-eea7-43b6-9522-649705bf10c3" class="bulleted-list"><li>웹 접근성을 위한 정보통신보조기기 등에서 사용성을 증대시켜줄 수 있음</li></ul><ul id="79759109-d30b-4e89-bd47-8574b020b02f" class="block-color-teal_background bulleted-list"><li><mark class="highlight-orange"><strong>p 태그에서는 작성된 에디터 등 환경에서 줄바꿈을 해주어도, 실질적으로 개행되지 않고, space 한칸처럼 처리됨(공백 여러칸도 무조건 1칸으로 처리됨)[pre 태그와 비교]
+</strong></mark>- 행 별로 묶고 싶은데, p 태그를 고집하고 싶다면, br 태그나 블록 레벨 요소로 묶어주면 가능</li></ul><pre id="f6aee7c9-8f5c-4330-86ac-aff4d8e2f682" class="code"><code>p{display: block;}</code></pre><p id="82881fd4-d54b-45f9-885e-f15c91a87f3a" class="">
+</p><h2 id="a8474681-5453-4f7b-80da-1c17b9e03f77" class="">14. hr 태그 &lt;hr/&gt;</h2><p id="f9dbf19e-f983-4704-a83c-befa2cbf6719" class="">
+</p><ul id="8e99a7b3-d940-4983-ba4b-2df4204b2a23" class="bulleted-list"><li>수평선을 만듦</li></ul><ul id="49ddd6d2-99cf-4ac6-bc67-40367a5d212d" class="bulleted-list"><li>주제에 의한 문단의 분리를 위해 설정(의미적 관점으로만 사용해야 함)</li></ul><ul id="0f4f6275-80da-4645-ab01-0b0b78bf6b95" class="bulleted-list"><li>css 의 border 속성으로 스타일링 적용, 변경 가능</li></ul><ul id="0441c048-9af7-4fcb-88d7-4a21291732dc" class="bulleted-list"><li>상하좌우에 선이 있는 형태! ➡️ 따라서, 실질적으로 우리가 2px로 지정하면 4px 두께의 선이 적용된 것!(b)</li></ul><p id="ccddb074-23ba-4a7e-953f-e79496712684" class="">
+</p><pre id="3b3f8f1c-6e9e-4ff3-a8b3-55b7d115c8c4" class="code"><code>hr{display:block;}</code></pre><p id="d046b92a-f23f-4278-943a-d5a78f4bd8df" class="">
+</p><ul id="323bdbd7-b330-4ca8-b415-9d94cd875a1b" class="bulleted-list"><li>위에서 말한 b에 대해서 우리가 한줄로만 나타내기 위해서는 css 파일에서 아래와 같이 작성해준다면 더이상 4px 이 아닌 진짜 2px 두께의 선을 사용할 수 있다!</li></ul><pre id="3a4a96df-500e-4ac2-b514-b19e97ef096f" class="code"><code>hr{
+   /* border: none;none선을 사용하지 않겠다*/
+    border:none;
+    /*
+    기본적으로는 2px로 해두어도 상하좌우로 존재해서
+    4px두께임!
+    
+    border의 한줄에만 넣기
+    */
+    border-top:2px dashed salmon;
+}</code></pre><p id="004f6b93-9ad6-43b9-890f-8f4a02cf5a10" class="">
+</p><h2 id="8024d73c-d070-4787-8a9a-de926e79bd38" class="">15. pre 태그</h2><p id="177d7688-6b2f-4f06-ae2e-3de6257b861d" class="">
+</p><ul id="6eb76688-3e1c-4131-af12-9bee3fd52f2d" class="bulleted-list"><li>Preformatted Text</li></ul><ul id="70a3fcf9-24a8-4954-b17b-82e6ff004612" class="bulleted-list"><li>서식이 미리 지정된 텍스트를 설정하는 것</li></ul><ul id="09b1f94b-1a85-487c-b013-b3e4c2e7419e" class="block-color-yellow_background bulleted-list"><li><mark class="highlight-orange"><strong>텍스트의 공백과 개행을 유지하여 표시 가능[ ➡️이것이 바로 그 &quot;서식&quot;!
+입력한 그대로 보여주기!]</strong></mark></li></ul><ul id="6722e538-3e6b-433f-a00d-f76ca96a3c93" class="bulleted-list"><li>기본적으로 Monospace 글꼴 계열로 표시됨</li></ul><ul id="b1a4eb01-80ab-412e-8439-6c24ce856c8f" class="bulleted-list"><li>모든 글자의 가로 너비가 x인 글꼴이 바로 Monospace 글꼴 계열![ ➡️ 이런 점에서 vscode 등에서 사용하는 폰트등도 해당됨을 확인할 수 있음!(코드에서 이동하기 쉬움)]</li></ul><pre id="17c9efa7-63aa-442e-b055-4e661feba3fc" class="code"><code>pre{display: block;}</code></pre><p id="d17584af-ef61-4243-8212-14d2f7ed8645" class="">
+</p><ul id="d1d2cce1-c90e-4fa6-8543-9de2fdc34d73" class="bulleted-list"><li>이러한 pre 태그의 특성 상, 가독성을 위한 들여쓰기도 인식되기 때문에, <mark class="highlight-orange"><strong>문단의 시작과 끝과 태그 사이의 공백을 없앤 아래와 같은 형태</strong></mark>로 많이 사용한다</li></ul><p id="b44de529-75e7-4e1b-b3aa-f196333a7fc8" class="">
+</p><pre id="a1e2eb0c-ac27-4483-b38a-ef15ee8ceaa4" class="code"><code>&lt;div class=&quot;preFormat&quot;&gt;
+        &lt;pre&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+    magna
+    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+    consequat.
+    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+    Excepteur
+    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/pre&gt;
+&lt;/div&gt;</code></pre><p id="43d8116f-0c97-414b-a2b7-0354fb921c7a" class="">
+</p><ul id="aed43b05-307c-413c-a5cc-fb1bd95a8144" class="bulleted-list"><li>블로그나 커뮤니티 등에서 글을 입력한 내용이 DB에 저장되었다가 출력될 경우에 활용될 수 있음(다른 방식도 존재)</li></ul><p id="ebea9200-e9b8-4c9b-897a-870a7c95db77" class="">
+</p><h2 id="117236d9-27e2-438c-8ff9-efdd86c9c2df" class="">16. blockquote 태그</h2><p id="1c5b0f71-f4c0-4486-bf57-859fb641e9a5" class="">
+</p><ul id="665c4680-b2a2-4a85-9265-112f8a4ab3b4" class="bulleted-list"><li>일반적인 인용문을 설정(Block Quotation)</li></ul><p id="bf3e1eeb-4ea1-4a98-9882-4a796eda2861" class="">
+</p><ul id="873be790-e301-4084-aead-13a3dfef44eb" class="bulleted-list"><li>속성 : cite- 인용된 정보의 URL[값: URL]</li></ul><p id="36dc4bbe-6403-4154-895e-ac608562830d" class="">
+</p><pre id="2450ec41-f7f0-4271-9b83-c03a824e2246" class="code"><code>&lt;div class=&quot;refer&quot;&gt;
+        &lt;blockquote cite=&quot;https://baconipsum.com/?paras=5&amp;type=all-meat&amp;start-with-lorem=1&quot;&gt;
+            Bacon ipsum dolor amet turducken burgdoggen tri-tip tenderloin shankle bacon. Flank short ribs burgdoggen chislic shoulder tenderloin, doner shank cupim rump salami. Shankle swine turkey alcatra chuck kevin. Chuck hamburger tongue andouille flank.
+        &lt;/blockquote&gt;
+&lt;/div&gt;</code></pre><p id="a62507ec-28f7-470d-842b-320995e14740" class="">
+</p><p id="37ee53bd-ba9c-4514-be81-5b7514b4d3d5" class="">
+</p><h2 id="3ad690ee-8aeb-4890-9054-53b2697257ce" class="">II. 인라인 텍스트 요소</h2><p id="6c1f052f-6019-4c2c-bfa5-75a4f86d2a9d" class="">
+</p><h3 id="7220ad9c-48fa-493c-99ea-091d83de4c1e" class="">1. a 태그</h3><p id="d2408597-4e08-457b-ba46-e74ba865e3fd" class="">
+</p><p id="66b0b308-7f95-4541-a044-6839986ae13d" class="">ref: <a href="https://developer.mozilla.org/ko/docs/Web/HTML/Element/a">https://developer.mozilla.org/ko/docs/Web/HTML/Element/a</a>
+</p><ul id="d6641faa-1dbf-44c5-8653-5af83b4ff0a3" class="bulleted-list"><li><mark class="highlight-blue_background"><strong>하이퍼링크</strong></mark>를 설정</li></ul><ul id="02cc7b0b-7e76-4130-aea0-fb8815139cd6" class="bulleted-list"><li>anchor</li></ul><ul id="f52a2e43-85b1-4cf0-8016-3005160096a4" class="bulleted-list"><li>현재 문서에서 외부 문서로 이동할 때 사용</li></ul><ul id="310bb21d-0e49-4206-af85-46b98ff3a9ca" class="bulleted-list"><li>현재 문서 내에서 위치를 이동할 때 사용(#id)</li></ul><p id="7526506e-5618-4ed1-b5fa-3f70931b9026" class="">
+</p><p id="220626f7-49d3-4583-8040-c589370a4fd4" class="block-color-orange_background"><mark class="highlight-orange"><strong>⚠️ a 태그 속성 중 집중해서 볼 필요가 있는 속성 ⚠️</strong></mark></p><p id="a303b844-c12f-4e54-a3ac-ff3142180a0e" class="">
+</p><ul id="3aa83a90-708c-4ed0-a935-ce2fd727219f" class="bulleted-list"><li><mark class="highlight-orange"><strong>href</strong></mark> : 링크 URL 혹은 페이지 내에서 이동할 위치에서의 id(#id)
+(1) 속성에 대한 값 : URL
+(2) 필수처럼 사용해야 함[생략은 가능하지만!]
+</li></ul><ul id="0b211a08-988c-4e19-a656-d95d50eeeea4" class="bulleted-list"><li>rel   : 현재 문서와 링크 URL 간의 관계
+(rel 속성의 값 - <a href="https://developer.mozilla.org/ko/docs/Web/HTML/Link_types">https://developer.mozilla.org/ko/docs/Web/HTML/Link_types</a>)
+(1) license : 다음 페이지로 이동될 때 , 다음 페이지가 license에 대한 페이지
+(2) prev
+(3) next</li></ul><ul id="ed85709e-ee67-48bc-8698-4e313f738ef7" class="bulleted-list"><li><mark class="highlight-orange"><strong>target</strong></mark> : 링크 URL의 표시(브라우저 탭) 위치
+(1)  _self: 현재 보여지는 페이지에 표시 ‼️ 기본값‼️
+(2) _ blank : 새 탭에서 열기</li></ul><p id="95ef0fa5-3751-4b13-b03e-48e66fdc7e2f" class="">
+</p><p id="1284f4a1-218e-418c-89a6-f2ae806a1f83" class="">
+</p><p id="91a9cd1d-0a36-4e2c-82ec-b6632bae77aa" class="">*type 속성은, 대부분 브라우저에서 로딩될 때 해석되므로 통상적으로, 생략하고는 함(통상적으로 text/html값을 넣음-MIME Type 과 관련)</p><p id="435788a6-0d12-4192-925a-b06cba17d2c9" class="">*download 속성은 파일을 다운로드할 것인지를 담음
+-boolean 타입으로 작성하여 값을 작성하지 않고 download 까지 작성해주어도 됨!</p><p id="147c9fbb-97a5-41c5-8e1c-216c41c4c2e6" class="">-download 속성이 없는 경우, 해당 파일을 href를 통해서 로딩하게 됨!</p><pre id="c64cf8c5-cf69-46f0-8cfc-f52edacaf4f5" class="code"><code>a{ display: inline;}</code></pre><p id="50ae8933-6793-4928-902a-013fbf7ac16d" class="">
+</p><ul id="b6782d01-6d0d-4a62-8769-0c9d136d08a5" class="bulleted-list"><li>a 태그는 버튼처럼 사용할 수도 있음!</li></ul><p id="810293f0-32a3-452e-87c5-d82e1ffe6043" class="">
+</p><p id="758c7e09-6616-4830-8e07-ff85bbd931f3" class="">-그러려면, display를 block으로 바꾸어 사용해야!</p><p id="1bc2ccaa-508a-4b1c-9e65-81cfd001b60b" class="">
+</p><pre id="ae914c82-800e-4784-882c-ac17c9bf9df6" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;anchor tag&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./style.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;header&gt;목차&lt;/header&gt;
+    &lt;section&gt;
+        &lt;article&gt;
+            &lt;!--target prop--&gt;
+            &lt;a href=&quot;https://www.google.com&quot; target=&quot;_blank&quot;&gt;Google&lt;/a&gt;
+            &lt;!--download prop--&gt;
+            &lt;a href=&quot;./README.md&quot; download=&quot;download&quot;&gt;다운로드할 파일 README.md&lt;/a&gt;
+            &lt;a href=&quot;./README.md&quot; download&gt;다운로드할 파일 README.md&lt;/a&gt;
+            &lt;!--image download using download prop--&gt;
+            &lt;a href=&quot;./img/test_img.jpg&quot; download&gt;Img download&lt;/a&gt;
+
+            &lt;!--a tag as button--&gt;
+            &lt;a class=&quot;btn&quot; href=&quot;https://www.naver.com&quot; target=&quot;_blank&quot;&gt;Naver&lt;/a&gt;
+            &lt;hr&gt;
+            &lt;!--move in same page--&gt;
+
+            &lt;div class=&quot;lists&quot;&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=&quot;#link1&quot;&gt;제목1&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;#link2&quot;&gt;제목2&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=&quot;#link3&quot;&gt;제목3&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+            &lt;hr&gt;
+            &lt;div class=&quot;move&quot;&gt;
+                &lt;div class=&quot;pt1&quot;&gt;
+                    &lt;h2 id=&quot;link1&quot;&gt;제목1&lt;/h2&gt;
+                    &lt;pre&gt;Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!&lt;/pre&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;pt2&quot;&gt;
+                    &lt;h2 id=&quot;link2&quot;&gt;제목2&lt;/h2&gt;
+                    &lt;pre&gt;Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!&lt;/pre&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;pt3&quot;&gt;
+                    &lt;h2 id=&quot;link3&quot;&gt;제목3&lt;/h2&gt;
+                    &lt;pre&gt;Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!Bacon ipsum dolor amet short ribs porchetta jowl andouille pastrami meatball. Andouille fatback brisket, prosciutto filet mignon kielbasa bacon shank jerky tongue short loin sausage. Tenderloin t-bone sausage kielbasa filet mignon flank beef tail pork loin alcatra. Spare ribs pancetta swine chislic porchetta t-bone turducken beef pastrami pork loin shoulder corned beef ball tip.
+
+                        Short ribs venison chuck porchetta cupim, spare ribs chicken buffalo pancetta prosciutto cow ham hock. Biltong tail chicken kevin flank. Ball tip ribeye boudin rump corned beef sirloin. Alcatra turkey porchetta, biltong t-bone beef boudin hamburger ball tip fatback kevin. Rump ham cow fatback jowl capicola landjaeger jerky short loin short ribs turducken. Salami cow ham hock buffalo bacon brisket. Jowl chicken pork chop biltong jerky short loin rump corned beef landjaeger swine cow frankfurter.
+                        
+                        Corned beef pork belly ribeye, turducken chuck drumstick filet mignon sausage salami. Tongue burgdoggen meatball shankle picanha cow. Cupim ribeye capicola ham hock. Shankle shoulder landjaeger, hamburger pork chop capicola kielbasa tenderloin ball tip. Sirloin tongue fatback tail pancetta t-bone. Hamburger turducken capicola picanha ham ribeye, bacon brisket beef ribs pork belly rump leberkas tongue tenderloin meatloaf. Pork belly sausage ham hock, tenderloin jerky meatball turkey andouille brisket sirloin cow pork chop chislic salami bacon.
+                        
+                        Ribeye kielbasa meatball, ham hock meatloaf leberkas tongue. Tail short loin spare ribs pork loin tri-tip beef ribs salami prosciutto bresaola brisket shank chislic short ribs leberkas landjaeger. Sausage strip steak beef ribs doner short ribs cow ham hock kielbasa rump biltong frankfurter shoulder kevin bresaola. Shankle andouille biltong strip steak chicken. Pork loin pancetta jowl alcatra kevin landjaeger shoulder bacon corned beef. Leberkas rump short loin drumstick pork belly turkey meatball shoulder filet mignon strip steak beef corned beef. Filet mignon pork shankle buffalo, kielbasa landjaeger t-bone jowl boudin tri-tip salami ball tip tongue cow tail.
+                        
+                        Pork chop meatball swine, corned beef pork bresaola bacon capicola. Salami jerky cupim swine sausage. Short ribs chislic ball tip, t-bone shank hamburger pork chop jowl. Picanha hamburger chislic jerky brisket pork chop buffalo pork beef ribs chicken pig filet mignon. Cupim ham hock capicola andouille, pancetta t-bone pastrami sirloin. Frankfurter landjaeger alcatra doner pastrami chuck venison fatback sausage filet mignon shoulder ham strip steak pancetta.
+                        
+                        Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!&lt;/pre&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/article&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="9041f742-b671-43f6-998c-bc2a38acbb31" class="">
+</p><p id="aec1a5f7-5acd-47b9-a88a-3f09ecf80bed" class="block-color-blue_background"><mark class="highlight-teal"><strong>⚠️ id, class 속성은 모두 별명, 별칭이지만!!</strong></mark><mark class="highlight-red_background"><strong> id는 고유해야 함!</strong></mark><mark class="highlight-teal"><strong>⚠️</strong></mark></p><p id="e2f3abc4-3336-4383-9a0a-edeaaf459345" class="">
+</p><p id="998458cf-6cc6-4f0d-bc2e-2129a72949ec" class="">위의 예제에서 페이지 내의 이동에 대한 부분에서 link1에 해당되는 제목1을 클릭하면, 주소가 [~]#link1으로 변경, 이동되는 것을 확인해볼 수 있다</p><p id="b99a0ff7-3213-4091-8d00-5e8875857183" class="">
+</p><p id="a0fc51dd-69ad-4066-871a-8270dee51edf" class="">이를 이용해서 특정 위치에 대한 부분부터 볼 수 있도록 공유해줄 수 있음!</p><p id="f3cae1a6-0324-4c1a-96a8-d4d791830d6e" class="">
+</p><h3 id="6826d2df-a209-4b12-b580-51f05699ac58" class="">2. abbr 태그 &lt;abbr&gt;&lt;/abbr&gt;</h3><p id="a349d1e7-0c91-476a-ad7f-294c2ba3716a" class="">
+</p><ul id="7d11abfb-1b9c-4563-8a63-b80957813b83" class="bulleted-list"><li>Abbreviation</li></ul><ul id="62ee8f3e-46d4-44da-aaaf-8a551427345d" class="bulleted-list"><li>title 속성을 통해서 어떤 단어의 약어임을 표시해줄 수 있음</li></ul><ul id="49f9391b-febc-4fea-b90a-6725fd0ec312" class="bulleted-list"><li>보통 title 속성(전역속성)을 사용하여 전체 글자나 설명을 제공</li></ul><ul id="b51e19c3-bca9-4850-8519-6bb6d4cbe005" class="bulleted-list"><li>title 속성에 적어둔 full name을 태그 사이에 존재하는 텍스트 위에 커서를 두면 아래 그림처럼 제공해줌!(뿐만 아니라, dashed 밑줄이 표시됨!)</li></ul><p id="08608a58-20e8-4a2a-81f6-89e6e6ea04e0" class="">*전역속성: 전체 영역에서 사용(적용)가능한 속성</p><p id="ead8cc46-bbb5-49f2-b954-db340fab17f9" class="">
+</p><figure id="ebd63cb3-4032-461f-b61c-e7c140560387" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/abbrevation%20%ED%83%9C%EA%B7%B8.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/abbrevation%20%ED%83%9C%EA%B7%B8.png?raw=true"/></a></figure><pre id="2406be15-dc2f-4cc0-a5f8-810a70379b96" class="code"><code>&lt;abbr title=&quot;HyperText Markup Language&quot;&gt;HTML&lt;/abbr&gt;</code></pre><p id="c0249f07-50f5-4492-ac01-16985ee3298c" class="">
+</p><p id="1ca6324e-8f69-4019-bbb4-ddd6051a0e21" class="">⚠️ 3~7 번에 해당되는 태그들은 비교하여 정리할 필요!</p><h3 id="653f25ad-d0e1-45b1-8af3-8439a045af64" class="">3. 글씨를 굵게 해주는 태그 b 태그</h3><ul id="dea44ac9-27a1-4943-a6e6-c44805e42bf4" class="bulleted-list"><li>문체가 다른 글자의 범위를 설정(주의를 집중시키기 위함)</li></ul><p id="fb516c86-cf4a-48e9-a1cf-eb6af7061df4" class="">➡️ 읽기 흐름에 도움</p><ul id="f5525bd0-5de1-4b3f-a560-10b19a6d869a" class="bulleted-list"><li>특별한 의미 ❌</li></ul><ul id="d5f107d7-ae5d-47df-bd4d-71c849e392d1" class="bulleted-list"><li>다른 태그가 적합하지 않은 경우(집중을 위한) , 최후의 보루로 사용!</li></ul><p id="cef23b48-447b-4c3f-aa04-e87d51efa1e3" class="">
+</p><p id="af5a0e76-f8a6-444e-8d93-c39032ba129c" class="">아래와 같이 연습을 해보면, p 태그 특성상 공백이 구분되지 않지만,</p><p id="b60d828f-519a-43cc-b519-abed3cda50cd" class="">b 태그를 통해서 범위가 나뉘어지는 것 같아 보인다</p><p id="78e7c9ca-6561-4f53-9613-9267cdbc5ac7" class="">
+</p><pre id="c4f96d8e-3086-403c-b45b-fba4797a052b" class="code"><code>&lt;b&gt;1절&lt;/b&gt;
+
+        동해 물과 백두산이 마르고 닳도록
+        하느님이 보우하사 우리나라 만세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;2절&lt;/b&gt;
+
+        남산 위에 저 소나무, 철갑을 두른 듯
+        바람 서리 불변함은 우리 기상일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;3절&lt;/b&gt;
+
+        가을 하늘 공활한데 높고 구름 없이
+        밝은 달은 우리 가슴 일편단심일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;4절&lt;/b&gt;
+
+        이 기상과 이 맘으로 충성을 다하여
+        괴로우나 즐거우나 나라 사랑하세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+    &lt;/p&gt;</code></pre><p id="d7eaff85-f42a-4582-b353-c722b939a3e3" class="">
+</p><figure id="2c6d6663-751a-4edf-b9ba-66f84c90b2db" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/b%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/b%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>b tag - 섹션이 구분되는 시각적 효과</figcaption></figure><p id="c5b43e65-1932-4893-ab64-28d52c0146c3" class="">
+</p><p id="cdbd40f9-2b85-4384-882b-825b6ca09a42" class="">다만, 앞서 언급했던 바와 같이 css를 변경하면 일반 글자와 동일하게 보일 수 있다!-물론 link나 style 태그로 해당 스타일시트를 연결해주어야 한다!</p><pre id="6e3dc569-386e-4b7d-8f62-623e64222090" class="code"><code>b{
+    font-weight:normal;
+}</code></pre><p id="ef3a8653-ccb4-49b0-96a3-c200fcdd9dad" class="">
+</p><p id="e6cb1111-665e-4c89-8a38-4b9d61ae93ba" class="">
+</p><h3 id="9ef62325-b6d1-434f-80d1-c585b49f51eb" class="">4. mark 태그</h3><p id="57648cfa-edea-4820-90dc-9cd9ac670987" class="">
+</p><ul id="a0a8ba40-adc0-43ee-801a-26cd5dba64b8" class="bulleted-list"><li>노란 형광펜 효과를 나타내는 태그</li></ul><ul id="e5c98d56-b6ed-48b6-908b-e8b15c8ebaac" class="bulleted-list"><li>사용자의 관심을 끌기 위한 하이라이팅</li></ul><ul id="44c98aab-194b-4a84-8af2-5b0c95c25319" class="bulleted-list"><li>의미 &lt; 시각적 효과</li></ul><ul id="9260322a-1e6e-48cf-9de0-a358acefcb65" class="bulleted-list"><li>css로 커버가 가능하기 때문에, 꼭 사용하지 않아도 됨</li></ul><pre id="d7600a98-c5ef-423d-a247-59c4c94b4ba7" class="code"><code>mark{display:inline;}</code></pre><p id="e7431cf6-3924-4e9a-8273-0504d6f378c9" class="">
+</p><p id="62ab2ff1-38e4-49db-a967-6aec29363a9b" class="">위에서 연습했던 코드에 mark 태그를 얹어보자</p><pre id="3126c2b8-8194-4dae-ae60-cb4b7c61874f" class="code"><code>&lt;mark&gt;동해 물과 백두산이 마르고&lt;/mark&gt; 닳도록
+        하느님이 보우하사 우리나라 만세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;2절&lt;/b&gt;</code></pre><figure id="2a396d84-6c91-43d9-aad1-f3df4d13d570" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/mark%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/mark%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="9b737a41-d38a-4abc-b161-6f39c83d2d5a" class="">
+</p><p id="4636d217-2bdc-4f40-acdd-cb3273b0695f" class="">그러면, mark에 둘러싸인 부분이 노란 형광펜과 같은 효과를 보이는 것을 확인해볼 수 있다!</p><p id="155bda9f-3079-440a-9892-616bb52be6af" class="">
+</p><p id="63fa7dad-8f67-4ae4-905a-b446954ae5ae" class="">참고로, 연결된 스타일시트에</p><pre id="e27b680c-16dd-4bc0-b99a-a0d8b4239210" class="code"><code>mark{
+    background:salmon;
+}</code></pre><p id="fc4362f3-c69f-4ead-b5fd-b854379a5690" class="">
+</p><p id="97acd04a-b61c-423e-8069-97c39d14917e" class="">를 추가한다면, 아래와 같이 형광펜 색이 변경됨을 확인해볼 수 있다!</p><p id="9f131441-73ae-45a1-8eb1-0f20c910f318" class="">
+</p><figure id="5abc2fe0-44ae-4bc2-89f1-32cd038d8048" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/mark%20%ED%83%9C%EA%B7%B8-%20background%20%EC%86%8D%EC%84%B1%20%EB%B3%80%EA%B2%BD.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/mark%20%ED%83%9C%EA%B7%B8-%20background%20%EC%86%8D%EC%84%B1%20%EB%B3%80%EA%B2%BD.PNG?raw=true"/></a></figure><h3 id="a8127833-881a-4841-a600-b51f88fc42ac" class="">5. em 태그</h3><p id="8053216d-67c1-40c8-bfb3-a5c20177e281" class="">
+</p><ul id="dc21cf3e-6213-4883-b3e5-1e5962e1860e" class="bulleted-list"><li>단순한<mark class="highlight-orange"><strong> 의미 강조(emphasis)</strong></mark> (b, mark 태그 : 단순 범위 지정, 표시 의미가 강)</li></ul><ul id="abcc06b6-c52d-410b-b6b7-58c9adf46512" class="bulleted-list"><li>중첩이 가능 ➡️ <mark class="highlight-yellow_background"><strong>중첩이 될수록, 의미가 강해짐(브라우저나 정보통신보조기기, 검색 엔진에서 인지하는 정도가 달라짐)</strong></mark></li></ul><ul id="c1d396ee-c954-41a1-93fa-9dc4a1bb0eff" class="bulleted-list"><li>웹 접근성을 증대시켜줌(정보통신보조기기 등에서 구두 강조됨)</li></ul><ul id="30aefbf7-b05e-4f81-a72b-c2a1ef07b6da" class="bulleted-list"><li>기본적으로 이탤릭체로 표시됨(css에서 변경 가능)</li></ul><p id="064f958f-5b17-461a-a00c-4278ca2377de" class="">
+</p><pre id="6dd62cc5-898f-49fb-9d43-636f33774d22" class="code"><code>em{
+		display:inline;
+		font-style: italic;/*기본설정*/
+}</code></pre><pre id="23935181-dd23-4758-bd72-a83d14796050" class="code"><code>&lt;em&gt;&lt;em&gt;&lt;/em&gt;&lt;/em&gt;</code></pre><p id="c34606b3-f3ce-4481-8416-c54f3442ad5b" class="">
+</p><p id="b0cce2c3-3356-455c-a12a-3e9d3cb7a403" class="">이번에는 위에서 사용한 애국가를 가져와서, em태그를 적용해보고, css의 속성 중 background를 설정해줌으로써 많은 글자 중에서 변화를 빠르게 확인하고자 하였다</p><p id="ca90ac19-89a1-47b5-b670-4a1e10a5a523" class="">
+</p><pre id="4045636c-46aa-4611-a593-74ac1cef4761" class="code"><code>&lt;b&gt;2절&lt;/b&gt;
+
+        남산 위에 저 소나무, 철갑을 두른 듯
+        &lt;em&gt;바람 서리 불변함&lt;/em&gt;은 우리 기상일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.</code></pre><p id="208167a7-5f0d-4f26-8fa1-27e0a05601d3" class="">
+</p><pre id="4c646d45-fca3-4a07-9336-f8cf2f9b2456" class="code"><code>em{
+    background:yellowgreen;
+}</code></pre><p id="bcb29645-5d47-43bf-9244-7f5bc800a551" class="">
+</p><figure id="9938bfe1-8426-4f07-80cb-309cd2fa52ea" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/em%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/em%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="66411bc9-6da1-486b-9fe4-64cbd02b25b2" class="">
+</p><h3 id="92ba9653-1446-457c-b552-ce9044af1cef" class="">6. strong 태그</h3><ul id="4b659d14-9c27-487a-8ad9-038925cc210e" class="bulleted-list"><li><mark class="highlight-red"><strong>의미의 중요성(b태그와의 차이)</strong></mark>을 나타내기 위함(em 태그는 의미를 강조)</li></ul><ul id="567a55a6-56b6-4c3e-920c-bfbe64ec4182" class="bulleted-list"><li>기본적으로 글자가 bold 표시됨</li></ul><pre id="56e304c2-0922-4c34-aa6e-594a221e8b1d" class="code"><code>strong{display:inline;}</code></pre><p id="900aceef-cf2d-4193-aa10-9dba9f22cfa0" class="">
+</p><p id="9236ed94-7e0b-40ac-b502-5156aa61d521" class="">동일하게 애국가를 이용해서 테스트해보자 💕</p><pre id="b6ce1495-a3e3-446d-a602-9bd67e8a7dfd" class="code"><code>&lt;b&gt;3절&lt;/b&gt;
+
+        &lt;strong&gt;가을 하늘&lt;/strong&gt; 공활한데 높고 구름 없이
+        밝은 달은 우리 가슴 일편단심일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.</code></pre><p id="e41eacfa-c364-444c-bfb7-4cb58c1be56e" class="">
+</p><pre id="3b0ed405-e7a3-4cce-b23a-61d8f943be29" class="code"><code>strong{
+    color:teal;
+}</code></pre><p id="2568be60-3475-4e28-b6fe-31241dbbb45d" class="">
+</p><p id="0b3f4bdb-b882-4d6e-a75c-e02bb6dac3bb" class="">css를 이용해서 다른 부분들과 구분해주었는데, 그 결과, 아래와 같이 bold 처리된 부분이 보인다!</p><figure id="f38d0b82-6667-4573-b3d4-778524583aa9" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/strong%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/strong%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="de8eb1fd-4a33-4f45-a1ab-a155e0f165bb" class="">
+</p><h3 id="6ea6ca22-1f6f-424d-aac8-55685c251ecf" class="">7. i 태그</h3><p id="23f749c9-0abe-49f9-a2a6-7b2696377616" class="">
+</p><ul id="234aef9e-c6e9-4f8a-b72b-08e38249226d" class="bulleted-list"><li>em, strong, mark, cite, dfn 등에서 표현할 수 있는 <mark class="highlight-teal"><strong>적합한 의미가 아닌 경우 </strong></mark>사용(b태그처럼 최후의 보루처럼)</li></ul><ul id="3f74d32f-8a4b-472a-a9bb-b263a74ab70f" class="bulleted-list"><li><mark class="highlight-blue"><strong>평범한 글자와 구분(아이콘, 특수기호)</strong></mark>하기 위해 사용</li></ul><ul id="7f034669-4125-447f-82b0-835cdf137895" class="bulleted-list"><li>이탤릭체로 표시됨</li></ul><p id="3b6a0d1a-1f2f-4345-b52e-fedd0f331fbc" class="">
+</p><pre id="042b4543-fa4a-4570-a44c-7a8e03346f00" class="code"><code>i{display:inline;}</code></pre><p id="dbfdaadd-fc8c-44b0-b514-7c410cc5d7c3" class="">
+</p><p id="3b6d230c-abeb-4f7f-8360-e31317aff141" class=""><strong>주의</strong></p><p id="5426ea84-5fa9-4fd7-85ca-598e757febbf" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7828947e-7ba7-440d-804e-c4bca1d33a6d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">외부에서 가져오는 css 라이브러리는 우리가 작성한 css 파일보다 앞에 오도록 작성해주자!</div></figure><p id="11e69cdb-f4a3-463f-aba5-d1df1c3a19f3" class="">
+</p><p id="11ed8d09-ff90-4bc0-b127-e2163d0b8a13" class="">i 태그는 사실상, 아이콘을 사용, 적용하기에 적합하므로 아래와 같이 font-awesome을 이용해보자!</p><p id="102183db-db57-4cf0-9f2f-c22b62033745" class="">
+</p><pre id="67f232ca-0709-41cb-89f7-dc88cb4b387a" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;!--외부 라이브러리는 우리가 작성한 css 위치보다 앞에 와서 적용될 수 있도록!--&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css&quot;&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./src/style.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;p&gt;
+        &lt;i class=&quot;fa fa-music&quot;&gt;&lt;/i&gt;
+        &lt;b&gt;1절&lt;/b&gt;
+
+        &lt;mark&gt;동해 물과 백두산이 마르고&lt;/mark&gt; 닳도록
+        하느님이 보우하사 우리나라 만세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;2절&lt;/b&gt;
+
+        남산 위에 저 소나무, 철갑을 두른 듯
+        &lt;em&gt;바람 서리 &lt;em&gt;불변함&lt;/em&gt;&lt;/em&gt;은 우리 기상일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;3절&lt;/b&gt;
+
+        &lt;strong&gt;가을 하늘&lt;/strong&gt; 공활한데 높고 구름 없이
+        밝은 달은 우리 가슴 일편단심일세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+        &lt;b&gt;4절&lt;/b&gt;
+
+        이 기상과 이 맘으로 충성을 다하여
+        괴로우나 즐거우나 나라 사랑하세.
+        무궁화 삼천리 화려 강산
+        대한 사람, 대한으로 길이 보전하세.
+    &lt;/p&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="90498587-0965-4a57-9179-6e2cfdc2d821" class="">
+</p><p id="3f3f4609-ca07-4e6e-9108-6f46bc5b4ec7" class="">그러면 아래와 같이 적용이 잘 될 수 있다!</p><p id="0fe7ba7b-504b-4392-8317-dc25ccb9fba7" class="">
+</p><p id="d87e00fc-b277-49dd-8b9c-315f4e22c24c" class="">다만, 간혹 fas fa-~ 로 클래스명을 적용했을 때, 잘 되지 않는다면,</p><p id="dd4d9070-764b-4c2d-b553-c179c905c009" class="">
+</p><p id="c6216d4e-dffc-4199-8009-d302cd72ed54" class="">fa fa-~ 로 클래스명을 변경해보면 잘 될 수 있다!</p><p id="38cc29f4-d6ce-4436-b1c2-472be67c5cbb" class="">
+</p><figure id="6928d647-cbf0-4698-a04f-c5da011631b7" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/i%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/i%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>i 태그- 아이콘</figcaption></figure><p id="a3673244-a5a3-4a77-a7ea-f2648e4d9c51" class="">
+</p><p id="04f8ff0b-9e3c-4352-a133-fe57a301d506" class="">*참고로, 회색으로 표시된 아이콘은, 유료다..!(font-awesome)</p><p id="214ed415-de8b-41bd-b724-bc1a31a44eeb" class="">
+</p><h3 id="998ebbcc-aa28-49cd-b0fd-d7375de481f9" class="">8. dfn 태그 - dl, dt, dd 태그(블럭요소) 중 dt 태그를 대체할 때 사용하기 좋은 태그[dl: 용어 여러개를 정의할 수 있게 도움]</h3><p id="9a1edf7d-f393-42d3-ba8e-02ccd0404008" class="">
+</p><ul id="580ef9ce-eeef-4f79-9016-fdde204083c4" class="bulleted-list"><li>용어를 하나 정의할 때 사용됨</li></ul><p id="b9c796a8-d1a9-4894-b4b2-7d592f051b04" class="">
+</p><pre id="d1506360-d066-426a-99ed-134a6f06e716" class="code"><code>&lt;body&gt;
+    &lt;p&gt;
+        &lt;dfn&gt;Term&lt;/dfn&gt;
+        &lt;p&gt;용어&lt;/p&gt;
+    &lt;/p&gt;
+&lt;/body&gt;</code></pre><p id="b6add137-c19f-4bfc-9421-ed81bc3ed8a6" class="">
+</p><figure id="e9cda044-8ee2-4df9-9ec4-3c812d35bfed" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/dfn%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img style="width:336px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/dfn%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>dfn 태그- 단어를 나타냄</figcaption></figure><p id="db635089-09c7-4cec-b2d0-ce0fa0a844cf" class="">
+</p><h3 id="9cc5a809-f488-41c0-9a4a-4249030dc650" class="">9. cite 태그</h3><p id="b4d756a6-7857-4cdf-a71a-abe9c4d55c20" class="">
+</p><ul id="a3d1c52d-d9f3-4906-a0d8-dbf39edb6827" class="bulleted-list"><li>창작물에 대한 참조를 설정(blockquote 태그의 속성과 관련되어 등장했었음)</li></ul><p id="1c416b6f-cb27-4e4c-aca0-6120dd2a9d4b" class="">
+</p><pre id="05dd36ac-22f5-4751-9c11-bba62fe165fb" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;cite&gt;창작물에 대한 참조&lt;/cite&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="e308c37f-28f4-4dac-aa1a-dbc612ad61ee" class="">
+</p><p id="6c01d644-ed2b-4890-bf7f-0286bcce7d10" class="">
+</p><p id="fe8962fc-bfb7-413f-bc3d-04e609a676e3" class="">와 같은 경우, cite로 둘러싸인 부분이 참조를 <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">&quot;의미</a>&quot;하는데,</p><p id="43cc3504-f695-456a-bb1a-649222ee7fc8" class="">
+</p><p id="e37fc124-a1ee-4829-8d9b-24ade6d641e8" class="">이를 이탤릭체로 표시![시멘틱 태그!]</p><p id="627033d7-5538-4271-9a44-b9a2bcc9de06" class="">
+</p><ul id="a21aca90-25c2-491d-abdb-f14634f25b3b" class="bulleted-list"><li>headings 태그 등을 제외한 대부분의 글자 컨텐츠 태그들은 대부분 인라인요소!</li></ul><p id="784381b5-fb09-4eff-9be6-201db9d3fa99" class="">
+</p><h2 id="948a79be-01e9-4844-abff-53508b050433" class="">10. q태그(Inline Quotation)</h2><p id="1291cdb3-dd93-4d9a-8045-7a57b27cbc88" class="">
+</p><ul id="a6151011-4c81-4ccb-87be-d24bb1c4b705" class="bulleted-list"><li>짧은 인용문을 설정</li></ul><ul id="185c9c51-c0c3-42fc-bdf2-965ea467897d" class="bulleted-list"><li>속성 </li></ul><p id="c85edd61-893d-4aae-a941-9fab56b58451" class="">cite=&quot;url&quot; : 인용된 정보의 url</p><p id="566a18ba-82f8-4a1f-9880-d86d654e7c16" class="">
+</p><ul id="7aad02aa-4ea1-4750-a069-ea01abf965bd" class="block-color-blue_background bulleted-list"><li><mark class="highlight-purple"><strong>긴 인용문은 blockquote.(Blockquote는 들여쓰기처리되고, q태그는 &quot;&quot; 처리됨!)</strong></mark></li></ul><p id="65d07235-3529-4b8a-93ea-7eb45cfb5aea" class="">
+</p><pre id="e981e2c4-af75-491f-9790-3a4b8bbb703d" class="code"><code>&lt;q cite=&quot;https://www.w3schools.com/icons/&quot;&gt;Font Awesome&lt;/q&gt;</code></pre><p id="d11890a3-5f52-4974-ad60-fa46b70f58ef" class="">
+</p><figure id="0068558f-2292-4831-a85d-d64de0f057ff" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/q%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/q%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>q 태그</figcaption></figure><p id="3944ca62-e884-43e6-9083-fba7f57062bf" class="">
+</p><h3 id="a993883d-bb1f-4fb2-b53f-2db4d51aaad9" class="">11. u 태그</h3><p id="c65e45f6-d0f4-4b12-90e2-52f9bdaec457" class="">
+</p><ul id="7b2c26d9-d993-495b-804f-741e70ddb6aa" class="bulleted-list"><li>밑줄이 있는 글자를 설정(underline)</li></ul><ul id="a5d7b45a-6311-467b-ac87-f601c57f8920" class="bulleted-list"><li>순수하게 꾸미는 용도로 사용</li></ul><ul id="7fa543e9-5f2d-4235-b6d3-a5a9e03e258d" class="bulleted-list"><li>링크 생성으로 인한 밑줄과 혼동되지 않도록, a 태그와 혼동될 수 있는 위치에서는 사용을 삼가하기</li></ul><ul id="a6fb98f1-e2fb-41a0-ad85-3513732accf2" class="bulleted-list"><li>아래와 같이 css 속성을 이용할 수 있는 경우, 사용을 권장하지 않음</li></ul><pre id="d37c2674-9d9d-40e3-a584-eebadb69d11d" class="code"><code>&lt;span style=&quot;text-decoration: underline;&quot;&gt;&lt;/span&gt;</code></pre><p id="d3c3c30d-1781-4dba-a9f1-bd5f71f0fdc4" class="">
+</p><h3 id="8e7cc8bb-e871-4086-85e1-9d0596310f72" class="">12. code 태그</h3><p id="bd4695f6-c059-4b85-b560-c8439d0b875d" class="">
+</p><ul id="18ec9188-a9e7-4990-a059-942093df3cb2" class="bulleted-list"><li>컴퓨터 코드 범위를 설정(inline code)</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7694b014-2b1d-42d0-ae7e-27f1c5364eec"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">```java
+```</div></figure><p id="f2c7bb93-36fa-4a81-9f23-a35abf82ddb4" class="">와 같은 기능!</p><ul id="91561921-33dd-4a82-9b9f-f675a312eb19" class="bulleted-list"><li>이전에 나왔던, pre태그와 동일하게 Monospace 글꼴 계열로 표시됨</li></ul><p id="2ae89b7d-cb78-43be-90a7-74e07a903c9d" class="">[Monospace : 글자가 고정폭을 지닌 특징이 있음!]</p><p id="9a74933e-429b-4a59-8e6f-78369afb9759" class="">
+</p><ul id="c509a562-6ec4-4883-8b77-a665fd563aa9" class="bulleted-list"><li>사용자 입장에서 코드임을 자각할 수 있도록 도와줌!</li></ul><pre id="c93261f1-97ef-4851-bcee-8fdbb687e842" class="code"><code>&lt;code&gt;
+    System.out.println(&quot;hahahaha&quot;);
+&lt;/code&gt;</code></pre><p id="10b83d52-397b-47da-a864-9fc3bda3a7e2" class="">
+</p><figure id="7a755c74-03d3-42ce-a3a6-93f2896af0c5" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/code%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/code%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>code 태그</figcaption></figure><p id="05e40892-4238-4fc5-86c0-33d695ad706c" class="">
+</p><h3 id="f78dce5a-aabe-45e9-a29f-087fb3c9d988" class="">13. kbd 태그</h3><p id="02832796-4a11-4ca7-acda-bfdc0442fc57" class="">
+</p><ul id="98ce54e2-9ee0-4d2f-ad49-7b332a0e7e34" class="bulleted-list"><li>텍스트 입력 장치(키보드)에서 사용자의 입력을 나타내는 텍스트 범위를 설정</li></ul><ul id="00cdc01c-1cb4-4c66-b0e6-9d5345ca0e50" class="bulleted-list"><li>Keyboard Input</li></ul><ul id="8880acc3-a4fd-4d02-899f-2c068eb3f498" class="bulleted-list"><li>css 및 js를 이용해서 사용자들에게 어떤 키인지를 인식하도록 도와주는 방향으로 많이 사용됨</li></ul><p id="d41620dd-2683-4157-aaf3-05c2718cbf36" class="block-color-blue_background"><strong>🍑사용자에게 키보드 키를 명시해줄 수 있는 경우🍑</strong></p><pre id="49942110-5995-4f3c-ae63-c86b901376a4" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./style.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;p&gt;&lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;Alt&lt;/kbd&gt; + &lt;kbd&gt;K&lt;/kbd&gt;&lt;/p&gt;, 
+    &lt;kbd&gt;ESC&lt;/kbd&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="42f5cd18-4178-4e5d-ac43-e0cedded7e66" class="">
+</p><pre id="5ae42e6f-4f51-4387-8aa7-6cfde2aa63d5" class="code"><code>kbd{
+    padding:0 3px;
+    border-radius: 3px;
+    border-top: 2px solid teal;
+    border-bottom: 2px solid salmon;
+    border-left: 2px solid yellowgreen;
+    border-right: 2px solid blueviolet;
+}</code></pre><p id="66e87bcd-d02e-436c-a36c-826576a5c567" class="">
+</p><figure id="bd62e70a-6c24-4f0f-88ed-e46ef4a99f8c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/kbd%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/kbd%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><h3 id="1862cbf8-9675-47b0-bb30-7f044f0d89f9" class="">14. 윗첨자를 나타내는 sup 태그, 아래첨자를 나타내는 sub 태그</h3><p id="0f417a85-69a8-4868-b6e2-51d30a4996a3" class="">
+</p><ul id="482bd4dc-fb48-4127-a8ca-c599a7202efe" class="bulleted-list"><li>sup : superscripted text</li></ul><ul id="37bf5192-9cf3-4959-bdc9-15359df1173e" class="bulleted-list"><li>sub : subscript text</li></ul><p id="32a55de3-b15c-4d6c-b461-512593b1ba99" class="">
+</p><pre id="c3d9771f-6504-4075-9c7f-1287d3d7ce5e" class="code"><code>10&lt;sup&gt;2&lt;/sup&gt;
+log&lt;sub&gt;2&lt;/sub&gt;2</code></pre><figure id="5733bb15-2cd6-41d1-a016-45adb3161558" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/sup,%20sub%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/sup,%20sub%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="74f664d5-b5af-4fb6-a9a9-86dd9ad02343" class="">
+</p><h3 id="874626a5-acc8-422b-868b-46a80b7948be" class="">15. time 태그</h3><p id="45ca25be-542a-482b-8e54-b8432bd1d58b" class="">
+</p><ul id="cf7f407c-b917-4115-b2cd-2e7dd428dded" class="bulleted-list"><li>브라우저, 검색 엔진에게 날짜나 시간을 전달하기 위하여 사용</li></ul><ul id="608aa85c-f33b-477f-8d07-fcd2f2d4cc14" class="bulleted-list"><li>속성</li></ul><p id="2037b6eb-1b41-4b04-8509-bdd27f97e499" class="">
+</p><p id="d4009c1f-2a1d-465c-8462-99824c340122" class="">datetime=&quot;값(Date)&quot; : 유효한 날짜 문자[대표적: YYYY-MM-DD 형태로 작성]</p><p id="42b0e737-1c26-49e8-9928-ea544d7c73c6" class="">
+</p><ul id="eb16831a-fdef-4ee1-91e9-02ad1404e198" class="bulleted-list"><li>IE 지원 불가</li></ul><p id="a45f3fe3-54e2-47c8-aea8-a2a8fcb94f08" class="">참고하면 좋을 문헌 : <a href="https://miaow-miaow.tistory.com/51">https://miaow-miaow.tistory.com/51</a></p><p id="a0958f58-b5fb-4166-ac91-9b76a7d763d4" class=""><a href="https://www.w3.org/TR/html51/infrastructure.html#dates-and-times">https://www.w3.org/TR/html51/infrastructure.html#dates-and-times</a></p><p id="e075896c-35f9-437f-a262-08d3a09532d6" class="">
+</p><p id="1fb42cc7-e8a1-461f-9e9e-032b5da42427" class="">
+</p><h3 id="7db4b9fa-6cee-41b2-96f9-a97e47af7e4a" class="">16 span 태그</h3><p id="1d051505-d942-4b76-a5f0-f0a3b17ccef1" class="">
+</p><ul id="01371c00-538d-44a2-b622-01890ae24190" class="bulleted-list"><li>본질적으로 아무것도 나타내지 않는 컨텐츠 영역을 설정</li></ul><ul id="616bb461-3f31-4005-9c3c-d37f8fabebbf" class="bulleted-list"><li>대표적인 인라인 요소</li></ul><ul id="8ce0b63a-e016-4a23-aef9-7815d23dfe5f" class="bulleted-list"><li>대표적으로, 인라인을 다루면서, 텍스트를 다루는 곳에서 주로 사용됨</li></ul><ul id="2d5cebcb-b221-4499-b27c-3e7833b8a75b" class="bulleted-list"><li>가운데 컨텐츠를 선택하여 작업하기에 용이(아래 예제 확인)</li></ul><p id="9394549a-09bf-4737-9fcb-c01161691a5e" class="">
+</p><pre id="3590c665-fffe-4a25-9a6f-9ece83e62aea" class="code"><code>&lt;p&gt;동해물과 &lt;span&gt;백두산&lt;/span&gt;이 마르고 닳도록 하느님이 보우하사 우리나라 만세&lt;/p&gt;</code></pre><p id="f0c2ab1a-2258-41bd-a33d-54050436af9b" class="">
+</p><pre id="973cde8a-32a0-4155-a155-3d7a6fc00f55" class="code"><code>span{
+    background:blueviolet;
+}</code></pre><p id="9936b6ad-4c54-4ec3-a3a3-b006f0b6bb99" class="">
+</p><figure id="16297247-ed9e-48c8-ad40-55016a9a3dad" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/span%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img style="width:672px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/span%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="12f07f99-485e-4541-94e7-3eeebb885657" class="">위의 예제에서 확인할 수 있는것 처럼, span 은 div 와 동일하게 의미가 없지만,</p><p id="db5c651c-f330-41be-9610-7f957357d46a" class="">
+</p><p id="06c83224-ccb4-4cdb-ad41-a97cf5620914" class="block-color-blue_background"><mark class="highlight-purple"><strong>div와 다르게, 중간에 줄바꿈이 되지 않고도 스타일을 적용 가능!</strong></mark></p><p id="d67f020a-15f1-486e-b03c-e6c0013d58ad" class="">[블럭요소: 수직으로 쌓임, 인라인 요소: 수평으로 쌓임]</p><p id="3833d0ec-3b10-4d5b-b3db-fe381f72c8e9" class="">
+</p><p id="ae982ae1-9020-46db-857b-ab9f1c6d3496" class="block-color-orange_background">▶️ <mark class="highlight-red"><strong>텍스트</strong></mark>를 다룰 경우에는 <mark class="highlight-red"><strong>span</strong></mark>이 div 보다 더 적합! ☑️(의미를 부여하지 않는 경우)</p><p id="d8a116db-cf1d-438e-8f25-09c1a378b803" class="">
+</p><p id="93974965-3979-4a04-8f73-42e19c336133" class="">
+</p><h3 id="925675fe-4f7a-48f2-ac61-cb1fdff6fe9c" class="">17. br 태그 &lt;br/&gt;</h3><p id="fd5cfaaa-d3fa-4e3a-90b5-3245f94468de" class="">
+</p><ul id="6c735e85-a96a-46b2-9466-4c874967be26" class="bulleted-list"><li>break</li></ul><ul id="533ee8fc-032b-4d20-a56e-457c88de1330" class="bulleted-list"><li>줄바꿈을 설정</li></ul><ul id="9005b0f1-b50c-499b-8b73-5a9981721f58" class="bulleted-list"><li>빈 태그(&lt;br&gt;로 써도 되지만, 같은 문서 내에서 사용되는 모든 빈태그들도 &lt;/&gt;가 아닌 &lt;&gt;로 통일성을 맞추어 주기!)</li></ul><ul id="d842bc34-9d46-4a4b-855d-d9d7b4288be1" class="block-color-orange_background bulleted-list"><li>br 태그를 여러번 사용해서 화면 간격을 벌리는 것은 하지 말아야!(CSS로 해결하기!) ▶️ (실습 a 에서 확인) 즉, 아래의 경우는 물론 확인하기 위함이지만
+조금 개선시켜줄 필요가 있다!</li></ul><pre id="f9505aaa-ebac-43cf-9f09-b02f871786f8" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+       동해물과 백두산이 마르고 닳도록 &lt;br/&gt;
+        하느님이 보우하사 우리나라 만세&lt;br/&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="ecb1e15b-2e65-43dd-af07-1ef855fcc01e" class="">
+</p><figure id="aeb4ed4a-7a4c-4050-b348-7f08f986f405" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br_break%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br_break%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>br 태그</figcaption></figure><p id="38d1b266-b82a-4647-b024-73212e3323e0" class="">
+</p><p id="b9d8f5b6-2956-4e97-9705-84d509f4912d" class="">(실습 a)- 적합한 경우</p><p id="c2685668-8b31-4d87-b3d9-b315835fed30" class="">
+</p><pre id="ba65e1c8-7954-4791-873c-a2c66d01bc81" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./style.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+       &lt;p&gt;
+           동해물과 백두산이 마르고 닳도록 &lt;br/&gt;
+            하느님이 보우하사 우리나라 만세
+       &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="250d0254-1e55-4ce6-b414-7cb01d520af3" class="">
+</p><pre id="471f8d23-afcb-418f-92e8-fd9effe1ba4f" class="code"><code>p{
+    line-height: 50px;/*기본적으로 폰트사이즈와 
+    동일한 값이 설정되거나 그를 기준으로 1.3~1.4배 
+    크기로 설정됨*/
+}</code></pre><p id="d038e01d-1289-46b2-87a6-2098506ac55e" class="">
+</p><p id="91e2c2ae-325e-4120-9463-e010c30dc4f0" class="">✅ 일반적으로 line-height는 
+1) 폰트사이즈와 동일한 값
+2) 폰트사이즈의 1.3~1.4배 크기로 설정됨(브라우저에 따라 상이)</p><p id="38c81144-d6e4-4970-8ac0-eecefc29386a" class="">
+</p><figure id="1600c4e2-d730-4b92-875c-2f8773c458fb" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br%20%ED%83%9C%EA%B7%B8_%EC%A0%81%ED%95%A9%ED%95%9C%20%EC%82%AC%EC%9A%A9.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br%20%ED%83%9C%EA%B7%B8_%EC%A0%81%ED%95%A9%ED%95%9C%20%EC%82%AC%EC%9A%A9.PNG?raw=true"/></a></figure><p id="279044bf-c4e8-4e96-9e7a-01f2b2d1a8f6" class="">
+</p><ul id="1a3fc110-8be8-4c75-8362-1c3077d444fa" class="bulleted-list"><li>line-height로 css 스타일링을 해주고, 폰트 크기를 따로 명시해주지 않는다면,
+
+기존 폰트 크기가 16px인 점을 고려한다면, 아래와 같이 생각해볼 수 있다</li></ul><p id="f4fd59fa-63b4-444e-b84d-058826f8cb57" class="">
+</p><figure id="01d2a514-3d6d-4133-a231-8aa6a3c8c4a3" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br%20%ED%83%9C%EA%B7%B8%EC%9D%98%20%ED%8A%B9%EC%A7%95.png?raw=true"><img style="width:720px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/br%20%ED%83%9C%EA%B7%B8%EC%9D%98%20%ED%8A%B9%EC%A7%95.png?raw=true"/></a><figcaption>br 태그의 특징</figcaption></figure><p id="5f108dd6-ee94-4616-8e89-2f367b12bd6b" class="">
+</p><ul id="bd44ec69-5ca7-4e43-881a-1764d56e13db" class="block-color-orange_background bulleted-list"><li>즉, br 태그로 인해서 line의 중앙에 문자가 위치하게 되고, 나머지는 여백으로
+처리되면서 다음 줄까지의 실질적인 간격은, 위의 경우, 34px이 된다!
+↔️ line-height-fontSize ➡️ br 태그로 간격을 만들지 않도록! line-height를 이용해서 내가 계산해서 사용하기!</li></ul><p id="99545f53-9fa9-47d1-a6ed-35a19d5eb9a5" class="">
+</p><p id="8fc7b451-a48c-4d62-af13-4c1b2ed50f48" class="">
+</p><h3 id="1f8de251-8e09-4058-a4a6-45102d16c46c" class="">18. 수정과 관련된 태그 del,ins</h3><p id="701e2e49-12ad-4821-a657-919849934000" class="">
+</p><ul id="28ee69d9-81e3-426e-bf75-4c2c6992fddb" class="bulleted-list"><li>특정 컨텐츠가 현재 상태에서는 제거 /수정(추가)되었음을 알리기 위함</li></ul><p id="08667e51-b5c6-4d73-a90a-ce844a77242b" class="">
+</p><ol id="5aa9f78b-b6bd-48f4-945b-d5575e61952f" class="numbered-list" start="1"><li>del : 삭제된(변경된) 텍스트의 범위를 지정[<mark class="highlight-blue"><strong>있었지만 삭제되었음</strong></mark>을 나타내기 위함]</li></ol><ul id="8454f6b0-49c6-4354-9a0e-0871ab44c718" class="bulleted-list"><li>취소선으로 표시됨</li></ul><p id="d28cf12b-64f1-4c37-9f89-93601250812e" class="">
+</p><ul id="9fdb0ec3-f1c5-4f35-a28b-7a5300cdef2f" class="bulleted-list"><li>속성</li></ul><p id="d89735c4-cc33-4881-ba92-97d7841b6a82" class="">-cite=&quot;URL&quot; : 변경을 설명하는 리소스의 url이 값으로 !(권장!)</p><p id="f98cbead-1e37-4409-8209-90e6d81b45ec" class="">-datetime=&quot;변경이 일어난 유효한 날짜 문자(Date)&quot;</p><p id="dd82c7e1-6356-4bcf-b9ae-6433ea85bb5a" class="">
+</p><p id="08c0ed94-0a2f-4398-ad77-df75beea9366" class="">2. ins : del과 반대되는 특징!</p><p id="b5eab803-9ff3-45b5-b288-a79be8e45055" class="">
+</p><ul id="edeb5cb6-e69d-44d4-a224-d265474ee6f0" class="bulleted-list"><li>새로 추가된(변경된) 텍스트의 범위를 지정</li></ul><ul id="489da59e-f986-4ff5-91d2-83172db57ee2" class="bulleted-list"><li>없었는데 이번에 생긴 부분을 나타내기 위해서 사용됨</li></ul><ul id="e28e81d1-8df6-4352-bb7d-f94fa0a9e330" class="bulleted-list"><li>밑줄로 표시됨</li></ul><ul id="a3fce738-ba2c-40e2-b02a-677cf4841db6" class="bulleted-list"><li>속성</li></ul><p id="b3f45d34-e392-47e5-8338-29dd3542a7ae" class="">-cite=&quot;URL&quot; : 변경을 설명하는 리소스의 url이 값으로 !(권장!)</p><p id="c143fda4-1fee-4cab-b46d-9879dedab8f5" class="">-datetime=&quot;변경이 일어난 유효한 날짜 문자(Date)&quot;</p><p id="db3b254f-0dd7-4555-b606-40f49c869468" class="">
+</p><pre id="a92d810b-3fcc-40fa-bc0b-42a201158deb" class="code"><code>&lt;p&gt;My favorite color is &lt;del&gt;blue&lt;/del&gt; &lt;ins&gt;red&lt;/ins&gt;!&lt;/p&gt;</code></pre><p id="95ab1389-200d-4e66-87e5-fdce365b9156" class="">
+</p><figure id="81050959-a1dc-4362-8c9a-ca4b95966f99" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/%EC%88%98%EC%A0%95%EC%9D%84%20%EB%82%98%ED%83%80%EB%82%B4%EB%8A%94%20%ED%83%9C%EA%B7%B8%20del,%20ins.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/%EC%88%98%EC%A0%95%EC%9D%84%20%EB%82%98%ED%83%80%EB%82%B4%EB%8A%94%20%ED%83%9C%EA%B7%B8%20del,%20ins.PNG?raw=true"/></a></figure><p id="e80a9743-6b9d-4ae4-9629-3c3fdc9ee400" class="">
+</p><p id="de417280-0e46-4367-93e8-6d8ff3b02f6d" class="">만약, (그러려면 del 태그를 안쓰는게 더 낫지만 혹시 그래도) del 태그는 그대로 사용하는데, 저렇게 취소선과 함께 안나타내고 싶을때에는</p><p id="604074e9-1326-4e57-b571-0039c61e9d26" class="">
+</p><pre id="fcee8332-21f5-49e9-a0fd-e328baa5b5ec" class="code"><code>del{
+    display:none;
+}</code></pre><p id="f858f9dd-9b23-4221-aa9b-27c4e424abfa" class="">
+</p><p id="11a4f236-149b-44d0-b5f3-044f9edab0a7" class="">와 같이 작성해주면</p><p id="728b686c-f886-48a8-8fe9-4e11c3155083" class="">
+</p><figure id="d3fe2e50-a167-43ca-aa29-949d5025ced1" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/display%20none%20on%20del%20tag.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/display%20none%20on%20del%20tag.PNG?raw=true"/></a></figure><p id="11336f9c-66c4-44e2-83de-8ab02f9c183e" class="">
+</p><p id="0177cc0d-08af-4e1b-9604-999d431a56e3" class="">위와 같이 확인해볼 수 있다!</p></div></article></body></html>

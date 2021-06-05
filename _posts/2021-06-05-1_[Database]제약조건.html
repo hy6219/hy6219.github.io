@@ -1,0 +1,808 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>제약조건</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="4b971e72-59bb-4071-b039-c227b8d9ead5" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📌</span></div><h1 class="page-title">제약조건</h1></header><div class="page-body"><p id="22c4f07d-286f-44d3-b9a1-d8e7f0496f88" class="">I. 제약 조건의 정의 </p><ul id="cd10848a-d29d-4a4f-a304-0ecfb4620900" class="bulleted-list"><li>테이블의 특정 열에 대해서 기존 데이터의 수정 및 삭제 가능 여부에 제한을 두는 기준</li></ul><p id="1905c8b4-fa47-450e-a6c9-4aad9354c82d" class="">
+</p><p id="48b93d81-26cf-4b97-afd9-51b49f713990" class="">II. 제약 조건의 종류</p><p id="c6770faf-6a63-4049-844a-6115b35b5786" class="">
+</p><ul id="c1b86b12-c78c-4472-b960-22da4f623b98" class="bulleted-list"><li>C Type : NOT NULL, CHECK 제약조건</li></ul><ul id="2407300a-aab7-4949-8207-b3955e97e9e0" class="bulleted-list"><li>U Type : UNIQUE 제약조건</li></ul><ul id="f7a39cc4-ddf3-4472-974e-0e45f87c0962" class="bulleted-list"><li>P Type:  Primary Key 제약조건</li></ul><ul id="c8a3e1f5-7ba3-4651-8e18-98b2c805a25f" class="bulleted-list"><li>R Type: Foreign Key 제약조건</li></ul><p id="cf9f1011-67e1-4053-896d-7ba49b8ca4a1" class="">
+</p><h2 id="6808d1a0-5479-4694-bab0-0bfccda1bc6f" class="">제약조건 확인</h2><p id="c069ef6b-1181-412c-b580-9a442d2001e8" class="">
+</p><ul id="603399d6-9a72-4b2a-bc27-eb3706dcd95c" class="bulleted-list"><li>USER_CONSTRAINTS 데이터 사전(Data Dictionary) 활용</li></ul><p id="0e1d139a-5c59-4711-b9fe-2f9c5990c8fe" class="">
+</p><div id="386801f2-70f3-4b8a-8aec-f36a2263d7ec" class="collection-content"><h4 class="collection-title">USER_CONSTRAINTS Data Dictionary</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>열 이름</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="8e22d4af-efaf-4b17-9164-67759f8c2069"><td class="cell-title"><a href="https://www.notion.so/OWNER-8e22d4afefaf4b17916467759f8c2069">OWNER</a></td><td class="cell-uIzb">제약 조건 소유 계정</td></tr><tr id="44de7d05-6f71-4e68-b0ef-b5def00615e0"><td class="cell-title"><a href="https://www.notion.so/CONSTRAINT_NAME-44de7d056f714e68b0efb5def00615e0">CONSTRAINT_NAME</a></td><td class="cell-uIzb">제약조건 이름(직접 지정하지 않은 경우, 오라클이 SYS_XXX형식으로 자동 지정함)</td></tr><tr id="a7703882-85f0-4aa8-9ad1-d2588d7fde53"><td class="cell-title"><a href="https://www.notion.so/CONSTRAINT_TYPE-a770388285f04aa89ad1d2588d7fde53">CONSTRAINT_TYPE</a></td><td class="cell-uIzb">제약 조건 종류
+C: NOT NULL, CHECK
+U: UNIQUE
+P: PRIMARY KEY
+R: FOREIGN KEY</td></tr><tr id="28f4ee3b-2d54-411e-8047-9f8c5045cbf8"><td class="cell-title"><a href="https://www.notion.so/TABLE_NAME-28f4ee3b2d54411e80479f8c5045cbf8">TABLE_NAME</a></td><td class="cell-uIzb">제약조건을 지정한 테이블 이름</td></tr></tbody></table></div><p id="0d466ef9-bce2-40cc-ba87-29f639346170" class="">
+</p><ul id="184aee2d-7ad3-4d1b-beba-1e5fdda61abe" class="bulleted-list"><li>제약 조건을 살펴보는 방법</li></ul><pre id="6b23dd48-e8e8-45f0-8d2c-4ed92ff13825" class="code"><code>SELECT OWNER AS 소유자,
+			 CONSTRAINT_NAME AS 제약조건명,
+			 CONSTRAINT_TYPE AS 제약조건종류
+FROM USER_CONSTRAINTS
+WHERE TABLE_NAME=&#x27;EMP&#x27;;</code></pre><p id="4a5398e9-c740-4905-8e82-94b015870fbd" class="">참고로, 별칭은 생략해도 좋고, 모든 테이블을 보고 싶다면 WHERE 조건절을 작성하지 않으면 된다</p><p id="094e9277-e614-4128-afe0-f663332d88f4" class="">
+</p><p id="55ecb452-3418-4f8c-900a-25595d64e852" class="">또한, &#x27;EMP&#x27;자리에는 원하는 테이블명을 넣어주면 된다</p><p id="d3124d28-2db1-46fb-9db5-e6a9081d8059" class="">
+</p><h1 id="954af942-bd4f-44a7-9388-5307f94a6555" class="block-color-orange_background">📌<mark class="highlight-red">제약 조건의 종류</mark></h1><p id="71bba842-d888-4bef-b63c-e1f48ae28720" class="">
+</p><div id="5f89b94e-7504-413a-862c-f136cb5781c6" class="collection-content"><h4 class="collection-title">Database-제약조건</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>제약조건명</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>컬럼 레벨 제약 조건 정의</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>테이블 레벨 제약 조건 정의</th></tr></thead><tbody><tr id="15577bb6-b526-41c2-81b9-70e3404fdc2c"><td class="cell-title"><a href="https://www.notion.so/NOT-NULL-15577bb6b52641c281b970e3404fdc2c">NOT NULL</a></td><td class="cell-ouZY">해당 컬럼에 대해서 NULL값이 존재해서는 안됨</td><td class="cell-Bfl]">O</td><td class="cell-XqOC">X</td></tr><tr id="c0db444f-2f06-4fcd-b6f0-a80ff0784cda"><td class="cell-title"><a href="https://www.notion.so/UNIQUE-c0db444f2f064fcdb6f0a80ff0784cda">UNIQUE</a></td><td class="cell-ouZY">해당 컬럼에서 중복되는 값이 존재할 수 없음(단, null은 얼마든지 중복 가능)</td><td class="cell-Bfl]">O</td><td class="cell-XqOC">O</td></tr><tr id="2ef300d5-84b3-4516-aa22-3617af7646c7"><td class="cell-title"><a href="https://www.notion.so/PRIMARY-KEY-2ef300d584b34516aa223617af7646c7">PRIMARY KEY</a></td><td class="cell-ouZY">UNIQUE+NOT NULL 의 형태를 보이는 제약조건으로써, 값이 중복되서는 안되고, null값을 가져서도 안됨!</td><td class="cell-Bfl]">O</td><td class="cell-XqOC">O</td></tr><tr id="f55a3340-7252-4ed1-be57-0a2e09f64fa5"><td class="cell-title"><a href="https://www.notion.so/FOREIGN-KEY-f55a334072524ed1be570a2e09f64fa5">FOREIGN KEY</a></td><td class="cell-ouZY">다른 테이블의 열을 참조하게 되는 제약조건</td><td class="cell-Bfl]">O</td><td class="cell-XqOC">O</td></tr><tr id="666b9530-b1ba-41b7-b706-2f4cb2f210b1"><td class="cell-title"><a href="https://www.notion.so/CHECK-666b9530b1ba41b7b7062f4cb2f210b1">CHECK</a></td><td class="cell-ouZY">특정 조건을 만족할 때에만 값이 저장되도록 할 때 사용</td><td class="cell-Bfl]">O</td><td class="cell-XqOC">O</td></tr></tbody></table></div><p id="712ec872-6b42-412a-88af-82b319bc9fef" class="">
+</p><h2 id="875d7387-ad06-4d69-bd4f-edf767cb89e5" class="block-color-red_background">🌟<mark class="highlight-red">제약 조건을 테이블 생성 시에 제약조건에 대한 이름(일종의 별칭)도 붙여주기</mark>🌟</h2><p id="0b9a6859-aa96-497e-a6f3-204b406da466" class="">
+</p><p id="66bd2382-ec5b-4390-9f21-cca6599c14aa" class="">제약 조건 정의 방식이 크게 컬럼레벨제약조건과 테이블레벨제약조건 정의 방식으로 분류된다는 점에서 이 부분을 살펴보겠다</p><p id="5da6285f-2f65-4602-a24b-2b74d5d02ef2" class="">*제약조건명을 붙이고 싶지 않다면, CONSTRAINT+제약조건별칭 부분을 생략!</p><p id="5208133c-0fb1-4f3b-b6cc-2318a89c9b26" class="">
+</p><p id="25c6dbde-fd83-453f-a207-378251a29543" class="">[1] <mark class="highlight-yellow_background"><strong>컬럼 레벨 제약 조건 정의</strong></mark>를 할 때, 제약 조건 지정과 함께 이름도 지어주기</p><p id="48d21f6d-9e1c-4a63-85fb-bc2eae708498" class="">
+</p><ul id="a652a694-2dab-43bf-920e-0a7bed936edc" class="block-color-yellow_background bulleted-list"><li><mark class="highlight-orange"><strong>NOT NULL 제약조건은 테이블 레벨 제약 조건 정의 방식을 사용할 수 없다</strong></mark></li></ul><pre id="8dda5f45-35da-4160-870e-633b8d86d993" class="code"><code>CREATE TABLE 테이블명(
+	컬럼명 자료형 CONSTRAINT 제약조건에_대한_이름(일종의 별칭) 제약조건
+
+예)
+ ENAME     VARCHAR2(20)  CONSTRAINT NN_NAME   NOT NULL,
+ 
+ LOGIN_ID  VARCHAR2(20)  CONSTRAINT PK_TBLG_ID PRIMARY KEY,
+ LOGIN_PWD VARCHAR2(40)  CONSTRAINT CK_TBLG_PWD CHECK(LENGTH(LOGIN_PWD)&gt;8)
+);</code></pre><p id="cf46fadf-81a7-4fde-8889-2028df431506" class="">
+</p><ul id="f0a83d93-09d6-48b1-8471-964a85af2e6d" class="bulleted-list"><li>⚠️Primary Key ⚠️</li></ul><pre id="7a62adcc-bbd4-469f-9b5f-fa0d84e1dcd5" class="code"><code>CREATE TABLE 테이블명(
+	컬럼명 자료형 CONSTRAINT 제약조건별칭 제약조건
+);</code></pre><p id="4ca3fdef-a23c-4560-9b69-00c53b97b2d2" class="">
+</p><p id="6f3fb43a-24da-40a9-b6bc-6a8e78d6ad5d" class="">-Example</p><p id="71594deb-3c36-4403-a235-1bb6fcf2ae9f" class="">
+</p><pre id="5faedfef-b211-4b19-9bd5-025ef0411a5b" class="code"><code>CREATE TABLE TEST(
+	ID VARCHAR2(20) CONSTRAINT PK_UID PRIMARY KEY;
+);</code></pre><p id="a581026f-3384-489c-b9c8-477d78e5d9eb" class="">
+</p><ul id="ffff17f8-6d69-4201-972c-6b0846d3b136" class="bulleted-list"><li><mark class="highlight-pink_background"><strong>⚠️Foreign Key⚠️</strong></mark></li></ul><p id="20ba50bb-9be5-47cf-a871-05b500c7ea5c" class="">(a)제약조건 별칭을 붙일 때</p><pre id="c8264bf3-ca90-4103-8169-ec4c14c47e96" class="code"><code>CREATE TABLE 테이블명(
+	(다른 열 정의)
+	컬럼명 열 자료형 CONSTRAINT 제약조건명(=별칭) REFERENCES 참조 테이블(참조할 열)
+);</code></pre><p id="467dd016-d606-4325-97d7-ea4ce018ded7" class="">
+</p><p id="a39fa64c-12b1-4faa-87cf-12f5de8d5a04" class="">-Example</p><pre id="c56b3365-5525-4521-944d-d77576edd3a8" class="code"><code>CREATE TABLE TEST(
+	DEPT_TITLE VARCHAR2(20) CONSTRAINT FK_DPT REFERENCES REF(DEPT_CODE)
+);</code></pre><p id="6562d240-0a81-49b4-94fa-0204980b611d" class="">
+</p><p id="89a78aeb-a02f-409d-a96f-47f25353a7d7" class="">(b) 제약조건 별칭을 붙이지 않을 때</p><pre id="02e4a982-b983-4ae2-80ef-2f6106bffd2d" class="code"><code>CREATE TABLE 테이블명(
+	(다른 열 정의)
+	컬럼명 열 자료형 REFERENCES 참조테이블(참조할 열)
+);</code></pre><p id="7822883d-f595-451b-93fc-d5deb0bdb422" class="">
+</p><p id="4142b1e7-c0cf-44cc-b2a7-28e6f9f89f19" class="">-Example</p><p id="24042303-c04a-4f3f-9691-d5bce2d41918" class="">
+</p><pre id="ea72c8ba-9c56-4a28-a5a7-c62194995063" class="code"><code>CREATE TABLE TEST(
+	DEPT_TITLE VARCHAR2(20) REFERENCES EMPLOYEE(DEPT_CODE)
+);</code></pre><p id="cd39b1b2-32bc-4002-b04c-08c0385366b4" class="">
+</p><ul id="c827db71-64da-40ae-812c-0edab8072be9" class="bulleted-list"><li>UNIQUE 제약조건</li></ul><p id="c764c419-7095-45a3-9770-9ec827e2664f" class="">
+</p><pre id="51b0bfa3-e0e7-4f79-b979-4a2f73d04a4f" class="code"><code>CREATE TABLE TEST(
+	컬럼명 자료형 CONSTRAINT 제약조건별칭 UNIQUE
+);</code></pre><p id="9d5287a5-0563-4f10-b9c0-74ebeec688b5" class="">
+</p><ul id="fd373cd2-2417-45b6-a2a8-2f94693ff4c0" class="bulleted-list"><li>CHECK 제약조건</li></ul><p id="bd585ba1-27e1-4d38-b305-11e6abc54f73" class="">
+</p><pre id="d817fdc8-62df-4494-aa0f-7457dce73ff4" class="code"><code>CREATE TABLE 테이블명(
+	컬럼명 자료형 CONSTRAINT 제약조건별칭 CHECK(~)
+);</code></pre><p id="80412e3e-8091-4eec-a638-e8f50bb44ce6" class="">
+</p><p id="f02bd82c-1d32-4a76-a66e-cba157fd385c" class="">-Example</p><pre id="be1ea28b-4b98-4f82-ae6a-2c0f296caec6" class="code"><code>CREATE TABLE TEST(
+	TESTER VARCHAR2(20) CONSTRAINT C_TE CHECK(LENGTH(TESTER)&gt;0)
+);</code></pre><p id="8de73e94-eda7-4a35-bf3f-abb8c44c8cad" class="">
+</p><ul id="13b95580-ec2a-45bc-bba9-ecc120a873c6" class="bulleted-list"><li>NOT NULL</li></ul><p id="e7e685f7-964a-4e42-9f31-9e19a15bdc4c" class="">
+</p><pre id="28c2cc4a-473d-4fb7-b6a5-b0475bea7fdd" class="code"><code>CREATE TABLE 테이블명(
+ 컬럼명 자료형 CONSTRAINT 제약조건명NOT NULL
+);</code></pre><p id="186b6ca4-138f-443b-8025-9eb9f558c089" class="">(2) <mark class="highlight-yellow_background"><strong>테이블 레벨 제약 조건 정의</strong></mark>를 할 때, 제약 조건 지정과 함께 이름도 지어주기</p><p id="e5be9dca-eece-4605-8b0f-1c839da0fe18" class="">
+</p><pre id="a2ea2189-fc00-4b8f-9cbd-9d908d7080ef" class="code"><code>CREATE TABLE 테이블명(
+	컬럼명1 자료형,
+  컬럼명2 자료형,
+...(컬럼명 자료형),
+  
+ CONSTRAINT 제약조건에_대한_이름(일종의 별칭) 제약조건(컬럼명)
+
+예)
+ CONSTRAINT PK_TBLG PRIMARY KEY(NO, LOGIN_ID),--기본키제약조건
+ CONSTRAINT FK_TBLG FOREIGN KEY(DEPTNO) REFERENCES DEPARTMENT,--외래키제약조건
+ CONSTRAINT UN_TBLG UNIQUE(EMP_NO, PHONE),--UNIQUE 제약조건
+ CONSTRAINT CK_TBLG CHECK(GENDER IN (&#x27;M&#x27;.&#x27;F&#x27;))--CHECK 제약조건
+);</code></pre><ul id="67f1dd1e-75a5-426e-bf58-30087d08b4c3" class="bulleted-list"><li>UNIQUE(컬럼1, 컬럼2), PRIMARY KEY(컬럼1, 컬럼2): 컬럼1과 컬럼2 중 둘 중 하나라도 기존값과 다르면 다른 개체로 인식!</li></ul><p id="9862d219-a6be-452c-bb57-abb01fcae05d" class="">
+</p><p id="ebbec2c6-ce21-4e67-9ac7-49052beb0ac3" class="">
+</p><ul id="c3b0cddd-b969-4c51-b2d0-888ed2e30891" class="bulleted-list"><li>⚠️Primary Key ⚠️</li></ul><pre id="3beb535c-aa4f-48e4-9556-3017181bbc5e" class="code"><code>CREATE TABLE 테이블명(
+	CONSTRAINT 제약조건별칭 PRIMARY KEY(컬럼명)
+);</code></pre><p id="4bc9ec62-f617-4429-b004-ce3e0fdc88e4" class="">
+</p><p id="e4cb7f1b-243f-4ad0-83cc-381165e1ad64" class="">-Example</p><p id="8ca10f7b-a091-4266-880d-8a82cd8cd5c4" class="">
+</p><pre id="01e9039b-3067-47d1-9f9d-89ca7d401f34" class="code"><code>CREATE TABLE TEST(
+	CONSTRAINT PK_UID PRIMARY KEY(ID)
+);</code></pre><p id="dcc3b5a0-d943-4ec4-9fcb-41249de07364" class="">
+</p><ul id="c5f54439-57f8-408c-8cb6-0558287f7ce4" class="bulleted-list"><li><mark class="highlight-pink_background"><strong>⚠️Foreign Key⚠️</strong></mark></li></ul><pre id="6e707b42-1576-4d72-b84c-33e8912ca1fe" class="code"><code>CREATE TABLE 테이블명(
+	(다른 열 정의)
+	CONSTRAINT 제약조건명 FOREIGN KEY(컬럼명) REFERENCES 참조테이블(참조할 열)
+--참조할 열을 생략하면, 참조 테이블의 기본키가 들어감
+);</code></pre><p id="31d7f970-209c-423d-bead-b1debed2fa28" class="">
+</p><p id="69925207-ee79-42e9-a107-ae6aaf58a471" class="">-Example</p><p id="a9db3381-62db-4907-a606-230a672857b1" class="">
+</p><pre id="aa04a557-3d57-4a04-b043-4e3977ca61de" class="code"><code>CREATE TABLE TEST(
+	CONSTRAINT FK_DPT FOREIGN KEY(DEPT_TITLE) REFERENCES DEPARTMENT(DEPT_CODE)
+);</code></pre><ul id="9bf8be84-8773-4256-be1e-fca928a9800b" class="bulleted-list"><li>UNIQUE 제약조건</li></ul><pre id="7065b9d0-601c-49bd-94d4-d28700e46adf" class="code"><code>CREATE TABLE 테이블명(
+	CONSTRAINT 제약조건별칭 UNIQUE(컬럼명)
+);</code></pre><ul id="41814973-a691-42d4-a4c8-755cc9124c4b" class="bulleted-list"><li>CHECK 제약조건</li></ul><p id="876389e2-3044-43bb-9d03-42261c778ecb" class="">
+</p><pre id="21a61490-39a4-4a5f-8b78-bb3c28625529" class="code"><code>CREATE TABLE 테이블명(
+	CONSTRAINT 제약조건별칭 CHECK(컬럼명을 이용한 조건식)
+);</code></pre><p id="6245f373-e4dc-4ed1-a6ae-aa6853acb3a9" class="">
+</p><p id="277ce8b9-0ea3-4513-94e1-e7c16b7a952b" class="">-Example</p><pre id="81ffe71e-a9b0-4de2-94c5-3d1167881d21" class="code"><code>CREATE TABLE TEST(
+	CONSTRAINT C_GEN CHECK(GENDER IN (&#x27;M&#x27;,&#x27;F&#x27;))
+);</code></pre><h2 id="3cbe1d3c-0421-4621-b727-0884feffc44a" class="">이미 생성된 테이블 내에서 제약조건 수정하기</h2><p id="e2f8219d-822e-49aa-acf4-cbc3762704ac" class="">
+</p><p id="04a3b5f8-4cd4-4349-abc2-28ae21881531" class="">[방법 1]</p><pre id="a429e98f-4d45-44a7-b01e-b417c04d4db1" class="code"><code>ALTER TABLE 테이블명
+MODIFY(컬럼명 제약조건);
+
+예) ALTER TABLE TEST
+    MODIFY(TEL NOT NULL);</code></pre><p id="0b816be8-c153-4d75-bdc2-cbdf30f7c864" class="">
+</p><p id="4aa95496-4554-45bd-a27e-b0bba7b571d5" class="">[방법 2] NOT NULL 외에는 ADD~를 이용</p><p id="733e9014-94b2-41cf-b9cc-cd789f574536" class="">(1) NOT NULL</p><pre id="07f1b12c-1c9c-425d-ac75-d8c2bf36f410" class="code"><code>ALTER TABLE 테이블명
+MODIFY 컬럼명 NOT NULL;
+
+예: ALTER TABLE TEST
+	  MODIFY TEL NOT NULL;</code></pre><p id="6a9f8d70-7723-4ba2-b7c9-41ee8cb4dcfc" class="">
+</p><p id="bbb9eb47-071e-4848-aa92-12642d65e949" class="">(2) FOREIGN KEY</p><pre id="5cc5675e-b67d-4330-99d4-c3ad2072af14" class="code"><code>ALTER TABLE 우리가 제약조건을 부여할 테이블명
+ADD FOREIGN KEY(컬럼명) REFERENCES 참조를 당하는 테이블명(참조하는 컬럼명)
+
+--예:
+
+ALTER TABLE TEST
+ADD FOREIGN KEY(DEPT_TITLE) REFERENCES DEPARTMENT(DEPT_CODE)</code></pre><p id="2dbfb06f-80db-40f2-97f7-bdc377bb73da" class="">
+</p><p id="2f215e80-5dae-443d-bb6e-7ee939dd2c00" class="">(3)  PRIMARY KEY</p><pre id="40757507-47f4-481e-849a-67d58cb2e191" class="code"><code>ALTER TABLE 테이블명
+ADD PRIMARY KEY(컬럼명);
+
+--예:
+ALTER TABLE TEST
+ADD PRIMARY KEY(USER_ID);</code></pre><p id="58e544f3-c728-4404-a62e-9ae0e2edd2dd" class="">
+</p><p id="dc7c3c90-ef79-4afa-a235-7b2f3b26b36c" class="">(4) UNIQUE</p><pre id="88d60a49-e1fe-4488-8c52-b91d2c84ef41" class="code"><code>ALTER TABLE 테이블명
+ADD UNIQUE(컬럼명);
+
+--예
+ALTER TABLE TEST
+ADD UNIQUE(USER_ID);</code></pre><p id="0b61c28e-a5ed-48ae-8f7f-00678c084025" class="">
+</p><p id="7122d38d-07a2-42d2-88ed-0cf5475f90d9" class="">(5) CHECK</p><p id="15e6f59b-ba2d-4dc4-8d9e-408dd374b3fe" class="">
+</p><pre id="5f5f4701-a147-4e20-b393-659d4b075fd4" class="code"><code>ALTER TABLE 테이블명
+ADD CHECK(조건식);
+
+--예
+ALTER TABLE TEST
+ADD CHECK(LENGTH(NAME)&gt;0);</code></pre><p id="c178d8e0-1fbe-48ed-8248-094d116cfaba" class="">
+</p><hr id="f6e942d3-e14d-4f8e-bdb0-17df3c11d9b2"/><p id="69473210-c022-479c-a4bc-efe91dd3e812" class="">
+</p><h1 id="f3a3a722-1b51-4a21-a803-4ebeefe0df9a" class="">DEFAULT : 기본값을 정할 때 사용</h1><p id="bd82e6b6-74c5-472c-925c-6492e2bc6e33" class="">
+</p><ul id="509c23bc-2077-49db-8034-95730e54e762" class="bulleted-list"><li>제약조건과 별개로, 특정 열에 저장할 값이 지정되지 않았을 경우, 지정 가능</li></ul><p id="de08c3e2-6ce1-4625-a895-8b552b23c675" class="">
+</p><p id="7c23ca2d-5367-4ffb-805e-78c469189cad" class="">*테이블 생성 시 , default 제약조건 설정하기</p><p id="498f8a2a-68ac-4e84-80f6-05dbc0f8a051" class="">
+</p><pre id="86816e41-38d1-4f31-aad5-5c813a82c1cc" class="code"><code>CREATE TABLE 테이블명(
+	컬럼명 자료형 DEFAULT 값;
+);
+
+--예
+CREATE TABLE TEST(
+	LOGIN_PWD VARCHAR2(20) DEFAULT &#x27;1111&#x27;
+);</code></pre><p id="b0f46d12-fcba-4d6c-ad8c-31d290d0f818" class="">
+</p><ul id="f302c35d-2381-4103-91d1-48c6c344c3d1" class="bulleted-list"><li>이미 존재하는 테이블에서 제약조건 수정하기</li></ul><p id="5d395fce-db09-43c2-b761-6354bd9f6052" class="">
+</p><p id="e5c9928b-504b-4662-85ef-9057c5d1118a" class="">1) Oracle</p><p id="ec463d56-75ca-40de-816e-769941013dee" class="">
+</p><pre id="b714c675-7d95-4157-9ed1-a8dcd81bb504" class="code"><code>ALTER TABLE 테이블명
+MODIFY 컬럼명DEFAULT 값;
+
+--예: 
+ALTER TABLE TEST
+MODIFY LOGIN_PWD DEFAULT &#x27;1234&#x27;;</code></pre><p id="aa2fa3fe-0378-467d-91ec-7d20e2a7816a" class="">
+</p><p id="98158c4e-bc63-46b5-a0f9-03b327aa62ce" class="">2) MySQL</p><p id="da29ba54-5aa8-4ada-94da-3ede0d2a61a3" class="">
+</p><pre id="e8bc9ad4-36e4-4666-8a7e-54893652c196" class="code"><code>ALTER TABLE 테이블명
+ALTER 컬럼명 SET DEFAULT 값;
+
+--예
+ALTER TABLE TEST
+ALTER LOGIN_PWD DEFAULT &#x27;1234&#x27;;</code></pre><p id="8f22a288-83ed-4150-8c64-e5bf8a77ada8" class="">
+</p><hr id="9739e14c-25ff-4045-b8aa-45c769a72305"/><p id="ffc5db2b-30de-4893-8ed7-470cbe840e34" class="">
+</p><h2 id="2e022e4b-4815-4026-bffa-82d741e73586" class="">제약조건 비활성화, 활성화</h2><p id="77e6da60-5f93-49f8-8f52-2d6de15a5185" class="">
+</p><p id="c26fd3c0-3b93-4409-93fe-f5aaa09877bc" class="">
+</p><ul id="446b05e5-f4fc-4983-ac8e-332b65f5421b" class="bulleted-list"><li>비활성화: DISABLE</li></ul><ul id="1165a398-c8bb-424f-9707-b17c9b78e591" class="bulleted-list"><li>활성화: ENABLE</li></ul><p id="f364ef7a-618b-4e4a-9764-afacb8228c67" class="">
+</p><pre id="dca3329c-fd58-4e2f-ae51-9894b38244d6" class="code"><code>ALTER TABLE 테이블명
+ENABLE/DISABLE [NOVALIDATE/VALIDATE(선택)] CONSTRAINT 제약조건명;</code></pre><p id="5d2a4e7a-400d-41eb-a4b6-f98e16f48c70" class="">
+</p><p id="2e0faca3-3375-4c29-b7e5-f7e5fb292d44" class=""><a href="https://oracle-base.com/articles/8i/constraint-checking-updates#:~:text=ENABLE%20NOVALIDATE%20means%20the%20constraint,is%20the%20same%20as%20DISABLE%20">https://oracle-base.com/articles/8i/constraint-checking-updates#:~:text=ENABLE NOVALIDATE means the constraint,is the same as DISABLE </a>.</p><p id="79d37e11-2b88-4d55-834b-eb44323c6fae" class="">
+</p><p id="b5224868-e6bf-496f-9483-834999a9b0ce" class="">➡️ ENABLE VALIDATE == ENABLE :제약조건이 활성화되어, 모든 행에 대해서 적용</p><p id="fd9dbf6e-1325-44d3-a58e-6fc79e0a5754" class="">
+</p><p id="d88c302c-a5a7-4fb8-bf66-6457ed39aa66" class="">➡️ ENABLE NOVALIDATE :  새로 생성되거나 수정된 행에 대해서만 제약조건이 활성화됨! 
+
+ [단, 기존에 존재했던(existing) 데이터는 제약조건을 위배할 수 있음]</p><p id="629ef7d3-f826-4692-bd7e-dcab5432b870" class="">
+</p><p id="1693adb7-e423-499b-b03c-bb63e5b01186" class="">➡️ DISABLE VALIDATE : 제약조건이 검사되지 않을 수 있지만, 제약조건이 설정된 열은 이러한 경향을 따르지 않을 수 있음</p><p id="a25e7c1d-1b8c-4ba5-8bf1-bdb63993f78f" class="">
+</p><p id="00e84cac-1d3b-433b-9428-d0cb649834d5" class="">➡️ DISABLE NOVALIDATE == DISABLE : 제약조건이 위배되고, 제약조건을 검사하지 않음!</p><p id="a7447d51-b7f1-422d-a3df-9a2aa94b1218" class="">
+</p><p id="08213300-45be-42d7-9cd9-f44f98fa502c" class="">➡️ VALIDATE/NOVALIDATE : ▶️ 제약조건 검사 여부</p></div></article></body></html>

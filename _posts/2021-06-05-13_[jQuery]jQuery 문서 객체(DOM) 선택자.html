@@ -1,0 +1,1117 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>문서 객체(DOM) 선택자</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="babfa44c-3715-44f8-925e-c300e9e32264" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🧸</span></div><h1 class="page-title">문서 객체(DOM) 선택자</h1></header><div class="page-body"><p id="852d20b6-7454-4516-86de-0f784cf7249a" class="">⭐ 선택자 사용하기</p><p id="b4eeb556-098e-4c62-b538-7195956c427d" class="">방법 1- 잘못된 사례</p><pre id="1f4d2136-22fd-4489-9c78-e5c7d4cd3030" class="code"><code>&lt;head&gt;
+...
+&lt;script src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+	$(&quot;#txt&quot;).css(&quot;color&quot;,&quot;red&quot;);
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;p id=&quot;txt&quot;&gt;내용&lt;/p&gt;
+&lt;/body&gt;</code></pre><ul id="913f0da6-206f-4040-b161-50ec3ed09926" class="bulleted-list"><li>위와 같이 html 요소가 아래 body에 있는데 선택자를 먼저 아무런 둘러싸는 윤곽이 없이는 사용할 수 없다!</li></ul><p id="d030f6df-7707-4fee-88bb-6e82d7321a55" class="">
+</p><p id="b97abb97-66ce-4dfc-8499-f815a18c8bcc" class="">방법 2, 3 - 정상 적용</p><pre id="14b77301-768c-4ca8-8785-970e13896ed5" class="code"><code>&lt;head&gt;
+...
+&lt;script src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+	$(document).ready(function(){
+		$(&quot;#txt&quot;).css(&quot;color&quot;,&quot;red&quot;);
+  });
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;p id=&quot;txt&quot;&gt;내용&lt;/p&gt;
+&lt;/body&gt;</code></pre><p id="f7009ee1-d62d-4e45-a45d-bb3e3134029d" class="">
+</p><p id="bdc3836f-1527-4cac-9fdd-54226662de39" class="">.</p><pre id="2f82562a-494a-4cb9-9e31-13a4ad6bfcfd" class="code"><code>&lt;head&gt;
+...
+&lt;script src=&quot;js/jquery.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+	$(function(){
+		$(&quot;#txt&quot;).css(&quot;color&quot;,&quot;red&quot;);
+   });
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+ &lt;p id=&quot;txt&quot;&gt;내용&lt;/p&gt;
+&lt;/body&gt;</code></pre><hr id="73b135bc-a0c9-4df5-8bbb-f553827ee26f"/><p id="fb22b4fe-796f-47be-818a-a1b4f5fb086d" class="">🌺 CSS 선택자 기본형</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b8414b59-ef6d-45c0-a1df-feaf130c233d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">1. $(&quot;CSS선택자&quot;).css(&quot;스타일 속성명&quot;, &quot;값&quot;);</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f7d8b8dd-3a71-4a50-ad94-61328935cfaa"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">2. $(&quot;CSS선택자&quot;).attr(&quot;속성명&quot;, &quot;값&quot;);</div></figure><p id="d0204fac-6d83-4e88-84bf-04a9cfcec265" class="">
+</p><p id="c54b1ad1-ba21-4502-902d-7861e53f5e4c" class="">⭐ 여러 스타일링을 적용하려 할 경우</p><pre id="41dc4631-03a2-4362-b3a7-2903f1f2829f" class="code"><code>&lt;!--객체를 사용하여 CSS 속성과 값을 전달--&gt;
+$(&quot;CSS 선택자&quot;).css({
+	스타일_속성명1 : 값,
+  ...
+  스타일_속성명n : 값
+});</code></pre><pre id="850e5491-b590-41c7-83a2-59d17054dc7e" class="code"><code>&lt;!--인자값을 사용하여 CSS 속성과 값을 전달--&gt;
+$(&quot;CSS 선택자&quot;).css(&quot;속성명1&quot;,&quot;값1&quot;).css(&quot;속성명2&quot;,&quot;값2&quot;);</code></pre><h3 id="36232719-f93c-43b1-9172-236d13056f55" class="">기본 선택자</h3><ol id="49b5e7ee-4512-4699-8771-26bcb9e48f4f" class="numbered-list" start="1"><li>직접 선택자</li></ol><div id="54c3302f-8217-4638-a90e-7f59fc6e46b8" class="collection-content"><h4 class="collection-title">직접 선택자의 종류</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>종류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>사용법</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="d018857b-1710-48ee-baff-ee7d5040ec97"><td class="cell-title"><a href="https://www.notion.so/d018857b171048eebaffee7d5040ec97">전체 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-red">$(&quot;*&quot;)</span></td><td class="cell-S{{~">모든 요소 선택</td></tr><tr id="491d358c-a9ef-4f0d-966f-9883162b0c9c"><td class="cell-title"><a href="https://www.notion.so/491d358ca9ef4f0d966f9883162b0c9c">아이디 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-blue">$(&quot;#아이디명&quot;)</span></td><td class="cell-S{{~">id 속성에 지정한 값을 가진 요소를 선택</td></tr><tr id="af2c21a7-1a39-44dc-bb8f-0121238f7cba"><td class="cell-title"><a href="https://www.notion.so/af2c21a71a3944dcbb8f0121238f7cba">클래스 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-brown">$(&quot;.클래스명&quot;)</span></td><td class="cell-S{{~">class 속성에 지정한 값을 가진 요소를 선택</td></tr><tr id="c5832788-1a14-4e24-8cf9-319dde5793f8"><td class="cell-title"><a href="https://www.notion.so/c58327881a144e248cf9319dde5793f8">요소 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-green">$(&quot;요소명&quot;)</span></td><td class="cell-S{{~">지정한 요소명과 일치하는 요소들만 선택</td></tr><tr id="1ff6787e-c1ea-4d75-8e2c-5e75867a2b59"><td class="cell-title"><a href="https://www.notion.so/1ff6787ec1ea4d758e2c5e75867a2b59">그룹 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-orange">$(&quot;선택 1. 선택 2. 선택 3 ...선택n&quot;)</span></td><td class="cell-S{{~">선택되는 요소들로 지정된 요소들을 한 번에 선택</td></tr><tr id="3a392011-728f-44f8-8b8f-7c93b1d1dc77"><td class="cell-title"><a href="https://www.notion.so/3a392011728f44f88b8f7c93b1d1dc77">종속 선택자</a></td><td class="cell-=Fkp"><span class="selected-value select-value-color-purple">$(&quot;p.txt_1&quot;) $(&quot;p#txt_1&quot;)</span></td><td class="cell-S{{~">p 요소 중 class 혹은 id 값이 txt_1인 요소를 선택</td></tr></tbody></table></div><p id="146f2045-8c6d-4fc8-bd54-d005b6ca29e5" class="">a. 전체 선택자</p><pre id="11988678-d227-4f6a-a03f-7fa904d1d02e" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot; integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //전체 선택자
+            $(&quot;*&quot;).css(&quot;border&quot;,&quot;1px solid blue&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;body&gt;
+        &lt;h1&gt;제이쿼리&lt;/h1&gt;
+        &lt;h2&gt;선택자&lt;/h2&gt;
+        &lt;h3&gt;직접 선택자&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="4e3ed1f4-dcb3-45bb-bf82-38f4b12a7fe1" class="">위와 같이 제이쿼리를 이용하게 되면, 특히 전체 선택자를 이용하면, h1 태그 뿐 아니라 h2, h3, body , head 태그에 대해서도 테두리가 적용되어 나타난다!</p><figure id="cdf486a1-d72d-4bd2-98e9-067d83694208" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>전체 선택자</figcaption></figure><p id="c460e59d-3ba7-42e0-9cfd-b7427f0a0d91" class="">head 부분은 F12를 누르면 적용된 사항을 확인해볼 수 있는데, 눈여겨볼 점은 h1/h2/h3 태그의 텍스트 뿐 아니라 여백 부분에  대해서 각 태그가 모두 블록요소이기 때문에 스타일이 적용되었음을 확인해볼 수 있다(F12 개발자 도구 이용)</p><p id="7ae487fb-0df5-40fc-8951-c4ae7e71e9e9" class="">
+</p><p id="a8df3c9b-2c0d-4a98-9dae-02b002345968" class="">
+</p><p id="20d9e71e-8735-4e59-bc28-f7357fdadef2" class="">b. 아이디 선택자, 클래스 선택자</p><pre id="23136c1b-5df3-435e-b0f8-7c546451c209" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot; integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //아이디 선택자
+            $(&quot;#tit&quot;).css(&quot;color&quot;,&quot;violet&quot;);
+            //클래스 선택자
+            $(&quot;.dir&quot;).css(&quot;color&quot;,&quot;indigo&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;body&gt;
+        &lt;h1&gt;제이쿼리&lt;/h1&gt;
+        &lt;h2 id=&quot;tit&quot;&gt;선택자&lt;/h2&gt;
+        &lt;h3 class=&quot;dir&quot;&gt;직접 선택자&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="63edfb0a-d8e4-46bd-89d0-517a69a5eeea" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/id%20%EC%84%A0%ED%83%9D%EC%9E%90%EC%99%80%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/id%20%EC%84%A0%ED%83%9D%EC%9E%90%EC%99%80%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>제이쿼리-아이디 선택자와 클래스 선택자</figcaption></figure><p id="5981b71e-9d34-4c3b-8b73-b0a089787bc1" class="">위와 같이, CSS에서 사용했던 id 및 class 선택자를 그대로 이용하면, 각각에 대한 스타일링을 적용할 수 있다!</p><p id="cc2f8643-74ed-469f-999f-26bf7d428cc5" class="">
+</p><p id="71b4cf87-d2b2-4202-b22f-97addc88454a" class="">c. 요소명 선택자</p><pre id="32f0d437-d7cd-4522-9e67-fed4efb5eee5" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot; integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //요소명 선택자
+            $(&quot;h1&quot;).css(&quot;text-align&quot;,&quot;center&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;body&gt;
+        &lt;h1&gt;제이쿼리&lt;/h1&gt;
+        &lt;h2 id=&quot;tit&quot;&gt;선택자&lt;/h2&gt;
+        &lt;h3 class=&quot;dir&quot;&gt;직접 선택자&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="cedd570c-1551-43a9-a45b-3c53424f7779" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EB%AA%85%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EB%AA%85%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>요소명 선택자</figcaption></figure><p id="42e12955-f5c6-4fd4-a240-b8428a6c3680" class="">CSS에서 사용했던 요소명 선택자를 그대로 이용한 경우라고 생각하면 된다! 즉, h1 요소에 대해서 텍스트가 가운데 정렬이 되게 된다!</p><p id="369b69b5-4477-411e-a4d0-295c76201218" class="">
+</p><p id="6cce65c7-8b06-40d8-bb75-037477244c3f" class="">d. 그룹 선택자</p><pre id="e261e796-40bb-4206-aa82-19113d756651" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot; integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //그룹 선택자
+            $(&quot;h1, #tit, .dir&quot;).css(&quot;background-color&quot;,&quot;yellow&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;body&gt;
+        &lt;h1&gt;제이쿼리&lt;/h1&gt;
+        &lt;h2 id=&quot;tit&quot;&gt;선택자&lt;/h2&gt;
+        &lt;h3 class=&quot;dir&quot;&gt;직접 선택자&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="e906df07-cbc8-4309-8403-a8e464e9c49f" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B7%B8%EB%A3%B9%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B7%B8%EB%A3%B9%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>그룹 선택자</figcaption></figure><p id="c4089be1-3336-4b36-ad14-ca03bad4ad87" class="">위와 같이, 사용하면, h1 태그 뿐 아니라, id가 tit인 요소, 클래스가 dir인 요소에 대해서 스타일링을 적용해볼 수 있음을 확인해볼 수 있다!</p><p id="d09ee609-80cf-4d26-ad70-348fa8acb1a1" class="">
+</p><p id="cd64c18b-b98f-4af1-9ddb-fec2da8a2305" class="">e. 종속 선택자</p><ul id="585caf2c-27d4-4517-a7b9-99d9d84ca754" class="bulleted-list"><li>종속 선택자는 대표적인 예시로 아래처럼 같은 요소 여러개 중에서 아이디가 a 라던지, 클래스가 b인 경우에 사용할 수 있는 케이스이다!</li></ul><pre id="5d0147b2-1f23-4386-b204-61843b912e7b" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot; integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //종속 선택자
+            $(&quot;h2#tit&quot;).css(&quot;border&quot;,&quot;3px dashed purple&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;body&gt;
+        &lt;h1&gt;제이쿼리&lt;/h1&gt;
+        &lt;h2 id=&quot;tit&quot;&gt;선택자&lt;/h2&gt;
+        &lt;h2&gt;선택자2&lt;/h2&gt;
+        &lt;h3 class=&quot;dir&quot;&gt;직접 선택자&lt;/h3&gt;
+    &lt;/body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="2679577e-fa1d-4c8c-8470-ed64b0179163" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A2%85%EC%86%8D%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A2%85%EC%86%8D%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>종속 선택자</figcaption></figure><p id="e21cf830-73d6-47bc-b5ed-cd1f2aafd2f2" class="">위에서 </p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3d37f75f-eb18-4f71-9797-8a170e1bc127"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;h2#tit&quot;)</div></figure><p id="4e8ffdc1-b3ef-4a81-ac8a-d414bf6b7e78" class="">로 인해서 h2 요소 중에서도 아이디가 tit인 경우에 대해서 테두리 스타일링이 적용되었음을 확인해볼 수 있다!</p><p id="1a6aef1e-ec4c-450e-910d-7970d4257f31" class="">
+</p><p id="b98c4ffc-be88-47fc-a7b2-029e60573383" class="">2. 인접 관계 선택자</p><div id="ca6aeda3-477b-41e1-9223-2eb576e1d6cb" class="collection-content"><h4 class="collection-title">인접 관계 선택자의 종류</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>종류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>사용법</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="6a586f7d-18df-4b87-879a-3f5152d31d59"><td class="cell-title"><a href="https://www.notion.so/6a586f7d18df4b87879a3f5152d31d59">부모 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-pink">$(&quot;요소선택&quot;).parent()</span></td><td class="cell-AQAb">선택한 요소의 부모요소를 선택</td></tr><tr id="7dbea26f-0fdd-401b-94f2-499ca76b0804"><td class="cell-title"><a href="https://www.notion.so/7dbea26f0fdd401b94f2499ca76b0804">상위 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-yellow">$(&quot;요소 선택&quot;).parents()</span></td><td class="cell-AQAb">선택한 요소의 상위 요소를 모두 선택</td></tr><tr id="9763b0bb-c621-4f74-b330-b40ca4f801aa"><td class="cell-title"><a href="https://www.notion.so/9763b0bbc6214f74b330b40ca4f801aa">가장 가까운 상위 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-purple">$(&quot;요소선택&quot;).closest(&quot;요소명&quot;)</span></td><td class="cell-AQAb">선택한 요소의 상위 요소 중 가장 가까운 요소를 선택</td></tr><tr id="5f4c33f7-716a-4eed-bb47-dabc1bce05df"><td class="cell-title"><a href="https://www.notion.so/5f4c33f7716a4eedbb47dabc1bce05df">하위 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-brown">$(&quot;요소선택  하위요소&quot;)</span></td><td class="cell-AQAb">선택한 요소에 지정한 하위 요소를 선택</td></tr><tr id="98455665-6d77-4bd8-bbf2-b2c6b8dd5e19"><td class="cell-title"><a href="https://www.notion.so/984556656d774bd8bbf2b2c6b8dd5e19">자식 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-blue">$(&quot;요소선택 &gt; 자식 요소&quot;)</span></td><td class="cell-AQAb">선택한 요소를 기준으로 자식 관계에 지정한 요소만 선택</td></tr><tr id="7ada8904-4903-4248-833a-813bc2668209"><td class="cell-title"><a href="https://www.notion.so/7ada890449034248833a813bc2668209">자식 요소들 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-orange">$(&quot;요소선택&quot;).children() </span></td><td class="cell-AQAb">선택한 요소의 모든 자식 요소를 선택</td></tr><tr id="64dd048d-19b4-4125-9a42-a5d57eb82bcd"><td class="cell-title"><a href="https://www.notion.so/64dd048d19b441259a42a5d57eb82bcd">형(이전) 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-gray">$(&quot;요소선택&quot;).prev()</span></td><td class="cell-AQAb">선택한 요소의 바로 이전 요소 선택</td></tr><tr id="292c7cb8-efb6-46d5-97c4-0312827d0526"><td class="cell-title"><a href="https://www.notion.so/292c7cb8efb646d597c40312827d0526">형(이전) 요소들 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-default">$(&quot;요소선택&quot;).prevAll()</span></td><td class="cell-AQAb">선택한 요소의 이전 요소 모두를 선택</td></tr><tr id="b924842b-7d7c-4a18-a25c-f257b4848a4c"><td class="cell-title"><a href="https://www.notion.so/b924842b7d7c4a18a25cf257b4848a4c">지정 형(이전) 요소들 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-red">$(&quot;요소선택&quot;).prevUntil(&quot;요소명&quot;)</span></td><td class="cell-AQAb">선택한 요소~지정한 요소의 이전 요소 까지 모두 선택</td></tr><tr id="63765b82-964c-4acd-b98a-2e8c58d8f6bf"><td class="cell-title"><a href="https://www.notion.so/63765b82964c4acdb98a2e8c58d8f6bf">동생(다음) 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-green">$(&quot;요소선택&quot;).next() $(&quot;요소선택+다음요소&quot;)</span></td><td class="cell-AQAb">선택한 요소의 다음 요소를 선택</td></tr><tr id="1a87a6b1-aac2-40a1-98fe-13e96786f2c6"><td class="cell-title"><a href="https://www.notion.so/1a87a6b1aac240a198fe13e96786f2c6">동생(다음) 요소들 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-red">$(&quot;요소선택&quot;).nextAll()</span></td><td class="cell-AQAb">선택한 요소의 다음 요소 모두 선택</td></tr><tr id="c9979446-6ceb-4131-a6cd-ab2ab3b5c39b"><td class="cell-title"><a href="https://www.notion.so/c99794466ceb4131a6cdab2ab3b5c39b">지정 동생(다음) 요소들 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-purple">$(&quot;요소 선택&quot;).nextUntil(&quot;요소명&quot;)</span></td><td class="cell-AQAb">선택한 요소~ 지정한 요소의 다음 요소까지 모두 선택</td></tr><tr id="f1e4bbca-2a1b-48bd-be4b-2f16424764fd"><td class="cell-title"><a href="https://www.notion.so/f1e4bbca2a1b48bdbe4b2f16424764fd">전체 형제 요소 선택자</a></td><td class="cell-kP{Q"><span class="selected-value select-value-color-red">$(&quot;선택자&quot;).siblings()</span></td><td class="cell-AQAb">클래스 혹은 아이디 등의 요소의 형제 요소 전체를 선택</td></tr></tbody></table></div><p id="18ed159d-b8b9-4f8c-a376-8cbc971c3cd3" class="">
+</p><p id="b261fc26-99a9-4869-9782-d2f52887d1d3" class="">a. 부모 요소 선택자</p><pre id="27e18969-0b27-44d6-9a64-d46941a263de" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+        integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+            //부모 요소 선택자
+            $(&quot;#list_1&quot;).parent().css(&quot;background-color&quot;, &quot;orange&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;인접 관계 선택자&lt;/h1&gt;
+    &lt;ul id=&quot;wrap&quot;&gt;
+        &lt;li&gt;
+            리스트1
+            &lt;ul&gt;
+                &lt;li id=&quot;list_1&quot;&gt;리스트1-1&lt;/li&gt;
+                &lt;li&gt;리스트1-2&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;리스트2&lt;/li&gt;
+        &lt;li&gt;리스트3&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="4b8e5aea-9f36-4d89-9e3c-7edf1f52a52b" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9D%B8%EC%A0%91%EA%B4%80%EA%B3%84%EC%84%A0%ED%83%9D%EC%9E%90-%EB%B6%80%EB%AA%A8%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9D%B8%EC%A0%91%EA%B4%80%EA%B3%84%EC%84%A0%ED%83%9D%EC%9E%90-%EB%B6%80%EB%AA%A8%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>부모 요소 선택자</figcaption></figure><p id="4445d8e1-6bed-43d1-b699-c6371fd1c9b7" class="">위의 경우에서</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="87537dd8-2216-4f67-a3a5-672add573754"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;#list_1&quot;).parent()</div></figure><p id="e0ec393c-dcef-4c2a-8455-954748dc8dfa" class="">를 보고, html 구조 골격을 살펴보자</p><p id="f69bc60e-a524-4ddf-98de-a699f60b4103" class="">
+</p><p id="a1bc22d6-fcc5-454a-ba5c-f4315cf9fa20" class="">지금 html 문서에서 아이디 list_1의 부모요소는 ul 태그이다!</p><p id="a8bb749b-28e0-493c-b739-04c6656a8890" class="">즉, 리스트1-1과 리스트1-2를 둘러싸는 하나의 상자가 오렌지 색으로 물들여질 수 있다!</p><p id="2a33640b-d08b-4cda-a0fa-125655725f17" class="">
+</p><p id="7ff75e5c-4d9b-4ad2-9836-8ebb1b193e06" class="">b. 하위 요소 선택자</p><ul id="712d6121-c145-4731-9f79-c141b3d34c46" class="bulleted-list"><li>후손 선택자로도 불릴 수 있다(CSS)!! 즉, 자식 요소 뿐 아니라, 자식의 자식 요소도 포함된다!</li></ul><p id="c73a5d1a-cd35-4ca4-b6c6-3bff8e9e0cf3" class=""> </p><pre id="6d1882bc-6f24-4665-b988-e2c5c0bd8ece" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+        integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function () {
+          //하위 요소 선택자
+          $(&quot;#wrap ul&quot;).css({
+              &quot;border&quot; : &quot;3px dashed blue&quot;,
+              &quot;background-color&quot;:&quot;yellow&quot;
+          });
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;인접 관계 선택자&lt;/h1&gt;
+    &lt;ul id=&quot;wrap&quot;&gt;
+        &lt;li&gt;
+            리스트1
+            &lt;ul&gt;
+                &lt;li id=&quot;list_1&quot;&gt;리스트1-1&lt;/li&gt;
+                &lt;li&gt;리스트1-2&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/li&gt;
+        &lt;li&gt;리스트2&lt;/li&gt;
+        &lt;li&gt;리스트3&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="535743df-4fd4-46b4-b752-8b7359367cec" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%ED%95%98%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%ED%95%98%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>하위 요소 선택자</figcaption></figure><p id="26260a38-13bb-4d26-a578-d4057398d45d" class="">지금 아이디 이름이 wrap인 요소를 기준으로 하위 요소 중 ul 요소인 경우는 리스트1-1과 리스트1-2를 감싸는 ul 태그이므로 해당 부분이 스타일링 된다!!</p><p id="fe881796-224e-4b82-8a7c-d190369f6cd5" class="">
+</p><p id="71d8ee4c-1ce0-45fe-9115-ae1d6f417d45" class="">c. 자식 요소 선택자</p><p id="91f0a0ee-6ba8-49db-87be-a57af891c537" class="">자식 요소 선택자는 크게 </p><p id="324aa69c-896b-4ed6-922b-d4c804340d19" class="">(1) 선택한 요소를 기준으로 지정한 자식 요소만 선택하는 경우</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7594851a-cb8b-41e8-a5c8-a5797bcf53dc"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;요소선택&gt; 자식요소 선택&quot;)</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="be40eabc-b48a-46f7-937d-2893aaa3b51a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;요소선택&quot;).children(&quot;자식요소선택&quot;)</div></figure><p id="f923e365-db9f-4e3a-b30a-c26d8faf0da9" class="">(2) 선택한 요소를 기준으로 모든 자식 요소를 선택하는 경우</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="21d38062-fb5e-4701-aacd-7b9e7054ca54"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;요소선택&quot;).children()</div></figure><p id="79960ffe-3d70-4301-9787-32d239e642e4" class="">의 경우로 나눌 수 있다!</p><p id="c9c44d99-d2bd-434f-b1f2-f9d28be9f1ad" class="">
+</p><pre id="118f4d12-f500-4ea5-b12c-60c21ea5e419" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        
+        $(function(){
+            //자식요소 선택자
+            $(&quot;#wrap &gt; h1&quot;).css(&quot;background-color&quot;,&quot;violet&quot;);
+            $(&quot;#wrap&quot;).children().css(&quot;border&quot;,&quot;1px solid black&quot;);
+            $(&quot;#wrap&quot;).children(&quot;p&quot;).css({
+                &quot;background-color&quot;:&quot;yellowgreen&quot;
+            });
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h1&gt;인접관계선택자&lt;/h1&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;section&gt;
+            &lt;h1&gt;자식요소선택자&lt;/h1&gt;
+            &lt;p&gt;내용2&lt;/p&gt;
+        &lt;/section&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="64918462-f502-4857-b5c6-9c86e9670b20" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9E%90%EC%8B%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9E%90%EC%8B%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>자식 요소 선택자</figcaption></figure><p id="e7055143-e773-458c-acbb-c7f9cb0a1ec3" class="">위의 두 가지 케이스를 기반으로 생각했을 때,</p><p id="43b3d72c-773a-46c3-8e88-bf1a9bebed44" class="">wrap이라는 아이디 이름을 가진 요소를 기준으로, p 자식 요소인 경우는 &quot;내용1&quot;이라는 텍스트를 갖는 요소이므로, 해당 요소의 배경이 yellowgreen으로 스타일링된다</p><p id="bea2b232-6ea8-47b0-b694-77e4d63720e3" class="">
+</p><p id="ac1a07e0-8876-4884-979e-0875f3592b8e" class="">그리고! wrap 이라는 아이디 이름을 가진 요소의 모든 자식은 검은색 테두리로 스타일링된다</p><p id="9394c110-2fcb-48da-be55-9d51bc63ec4a" class="">
+</p><p id="f0daaded-da76-48eb-ac04-317f3c0bc493" class="">또한, wrap 의 자식 요소 중 h1 요소는 바이올렛 배경색을 갖게 되도록 스타일링된다!</p><p id="039c0f7a-6011-46b6-9228-707fc4090c78" class="">
+</p><p id="5c702a29-bf2c-4ed0-a653-53b6cc5c4f55" class="">d. 형/동생 선택자</p><pre id="06575f41-de3f-45c9-931e-855bea466835" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //형 동생 요소 선택자
+            const style1 = {
+                &quot;background-color&quot;:&quot;orange&quot;,
+                &quot;border&quot;:&quot;2px dashed red&quot;
+            };
+            const style2 = {
+                &quot;background-color&quot;:&quot;yellowgreen&quot;,
+                &quot;border&quot;:&quot;2px dashed violet&quot;
+            };
+
+            //형 요소 선택자
+            $(&quot;.txt&quot;).prev().css(style1);
+             //인접 동생 요소 선택자
+             $(&quot;.txt+p&quot;).css(style2);
+            //동생 요소 선택자
+            $(&quot;.txt&quot;).next().next().css(style1);
+           
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h1&gt;인접 관계 선택자&lt;/h1&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p class=&quot;txt&quot;&gt;내용2&lt;/p&gt;
+        &lt;p&gt;내용3&lt;/p&gt;
+        &lt;p&gt;내용4&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="d1a45b5e-79df-4d16-ab09-948c5c6ff81e" class="">천천히 하나씩 접근해보자</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b907e302-0df8-41af-8279-b30257cf7c6d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;.txt&quot;).prev()</div></figure><p id="8479fceb-d58b-4be0-94f0-f15958837221" class="">는 txt 클래스명을 가진 요소인 &quot;내용2&quot;를 기준으로 바로 한 단계 형 요소인 &quot;내용1&quot;부분에 대해서는 style1이 적용될 것이다</p><p id="c84a0bff-dca8-411c-be34-dd204f96960f" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f8b893f8-bf07-4c5e-83b6-64c031cad051"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;.txt+p&quot;)</div></figure><p id="6bb941cd-82f7-4ed6-a602-c36433936b8a" class="">는 CSS의 인접형제요소 선택자를 의미하는데, 그렇기 때문에 &quot;내용3&quot; 요소 부분에 대해서 style2가 적용될 것이다</p><p id="cb8cfad3-83c5-4acd-b8ea-540ba6c278eb" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="a1f2e9bd-9dfb-4a3e-87e1-085101eec033"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;.txt&quot;).next().next()</div></figure><p id="a4d34609-dc11-4fcc-a81f-efe5b0017c23" class="">는 txt 클래스인 요소의 동생요소의 동생요소를 선택하여 style1을 적용된다!</p><p id="8826955d-7186-49e7-973b-0717735b4808" class="">그러면 아래와 같이 스타일링되는 것을 확인해볼 수 있다!</p><figure id="77c6a656-b673-4c19-b024-9c97842c8b5c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%ED%98%95%EB%8F%99%EC%83%9D%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%ED%98%95%EB%8F%99%EC%83%9D%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>형, 동생요소 선택자</figcaption></figure><p id="3071ebbd-ffac-4090-8ff0-c0b25322dde7" class="">
+</p><p id="b6822a6c-59d6-4684-9371-e171bf94c84a" class="">e. 전체 형(이전)/동생(다음) 요소 선택자</p><pre id="4fb48751-6c58-45ac-b839-3f3ed155638f" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //형 동생 요소 선택자
+            const style1 = {
+                &quot;background-color&quot;:&quot;orange&quot;,
+                &quot;border&quot;:&quot;2px dashed red&quot;
+            };
+            const style2 = {
+                &quot;background-color&quot;:&quot;yellowgreen&quot;,
+                &quot;border&quot;:&quot;2px dashed violet&quot;
+            };
+            //전체 형 요소 선택자
+            $(&quot;.txt&quot;).prevAll().css(style1);
+            //전체 동생 요소 선택자
+            $(&quot;.txt&quot;).nextAll().css(style2);
+           
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h1&gt;인접 관계 선택자&lt;/h1&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p class=&quot;txt&quot;&gt;내용2&lt;/p&gt;
+        &lt;p&gt;내용3&lt;/p&gt;
+        &lt;p&gt;내용4&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="9f7a784e-5f5a-4ecf-b5d0-e52af1bc79e6" class="">전체 형 혹은 전체 동생 요소 선택자라는 것은, 특정 선택된 요소를 기준으로 형 요소 전부에 대해서 혹은 동생 요소 전부에 대해서 선택하는 것을 의미한다! 그리고 그 각각은 prevAll , nextAll로 선택할 수 있다!</p><p id="b0072c46-7a07-466f-ac6b-392c4b07a8db" class="">그렇게 된다면, txt 클래스 요소의 형요소는 모두 style1으로, 동생요소는 모두 style2로 스타일링될 것이다!</p><figure id="4f875697-a2b3-4682-8603-fb31a5942a3a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%ED%98%95.%EB%8F%99%EC%83%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%ED%98%95.%EB%8F%99%EC%83%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>전체 형/동생 요소 선택자</figcaption></figure><p id="3a690acc-9fba-46c6-bcf2-c97dd693ad12" class="">f. 전체 형제 요소 선택자</p><ul id="7e6dde74-9a29-402d-b971-fdde60563e14" class="bulleted-list"><li>전체 형제 요소 선택자는 특정 요소를 기준으로 그 요소의 형, 동생 요소를 모두 선택하게 된다.</li></ul><p id="09bc89bb-b0f3-4fee-b5df-7ce65fe4ae07" class="">그렇기 때문에 아래의 예시를 실행해보면, 클래스명이 txt인 요소의 형제 요소 모두가 선택되고 style2로 스타일링되게 된다!</p><pre id="5d46efde-06ce-4ae4-aef8-b3f86bfffac6" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //형 동생 요소 선택자
+            const style1 = {
+                &quot;background-color&quot;:&quot;orange&quot;,
+                &quot;border&quot;:&quot;2px dashed red&quot;
+            };
+            const style2 = {
+                &quot;background-color&quot;:&quot;yellowgreen&quot;,
+                &quot;border&quot;:&quot;2px dashed violet&quot;
+            };
+            //전체 형제 요소 선택자
+            $(&quot;.txt&quot;).siblings().css(style2);
+           
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h1&gt;인접 관계 선택자&lt;/h1&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p class=&quot;txt&quot;&gt;내용2&lt;/p&gt;
+        &lt;p&gt;내용3&lt;/p&gt;
+        &lt;p&gt;내용4&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="7370bb57-4fa7-49de-afd0-6b9e1cffb6ed" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%A0%84%EC%B2%B4%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>전체 형제 요소 선택자</figcaption></figure><p id="f399388c-632c-4c94-be0d-73d8ef555fed" class="">
+</p><p id="c0c38756-6bd3-43d9-b81e-f4454f993e83" class="">g. 범위 제한 전체 형/동생 요소 선택자</p><pre id="03b0150b-7e18-4933-b6af-65baed73852f" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //범위 제한 전체 형 요소 선택자
+            $(&quot;.txt3&quot;).prevUntil(&quot;.title&quot;).css({
+                &quot;color&quot;:&quot;red&quot;,
+                &quot;font-weight&quot;:&quot;bold&quot;
+            });
+            //범위 제한 전체 동생 요소 선택자
+            $(&quot;.txt3&quot;).nextUntil(&quot;.txt6&quot;).css({
+                &quot;text-align&quot;:&quot;center&quot;,
+                &quot;color&quot;:&quot;indigo&quot;,
+                &quot;font-weight&quot;:&quot;bold&quot;
+            });
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h2 class=&quot;title&quot;&gt;선택자&lt;/h2&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p&gt;내용2&lt;/p&gt;
+        &lt;p class=&quot;txt3&quot;&gt;내용3&lt;/p&gt;
+        &lt;p&gt;내용4&lt;/p&gt;
+        &lt;p&gt;내용5&lt;/p&gt;
+        &lt;p class=&quot;txt6&quot;&gt;내용6&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="9dac108d-07fd-4684-85f2-2cde559ff1a4" class="">범위 제한 전체 형동생 요소 선택자는 $기호로 선택한 요소를 기준 이후부터 필터링되는 prevUntil 혹은 nextUntil의 매개변수 요소 이전까지를 선택한다!</p><p id="80f1e512-e298-44bb-a244-950b0170a85c" class="">따라서 아래처럼 내용1과 내용2가 prevUntil로 선택되어 스타일링될 것이고,</p><p id="2e92a451-2675-4a90-8057-f2b0117de3d2" class="">내용4와 내용5가 nextUntil로 선택되어 스타일링될 것이다!</p><figure id="b157eae0-9a8d-459d-a4fd-371da3410e7d" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EB%B2%94%EC%9C%84%20%EC%A0%9C%ED%95%9C%20%EC%A0%84%EC%B2%B4%20%ED%98%95%20%EB%8F%99%EC%83%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EB%B2%94%EC%9C%84%20%EC%A0%9C%ED%95%9C%20%EC%A0%84%EC%B2%B4%20%ED%98%95%20%EB%8F%99%EC%83%9D%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>범위 제한 전체 형 동생 요소 선택자</figcaption></figure><p id="be866bbd-8c39-4731-bbba-5764ba557650" class="">
+</p><p id="f0b0855b-f2ae-4a2a-899b-daf022ddad49" class="">h. 상위 요소 선택자</p><p id="13615b2a-ad12-4ccf-b913-deb700e10d20" class="">상위 요소 선택자는 크게 두 가지 형태로 분류된다</p><ol id="b8d3197f-480b-403c-ab58-9b82d8981a1c" class="numbered-list" start="1"><li>$(&quot;요소선택&quot;).parents() 와 같이 , 특정 요소의 부모요소 전체를 선택하는 경우</li></ol><ol id="d07159a0-32fe-435c-8eb3-4177d28af7e3" class="numbered-list" start="2"><li>$(&quot;요소선택&quot;).parents(&quot;요소선택&quot;) 과 같이 특정 요소의 부모 요소들 중 특정 요소만을 선택하는 경우</li></ol><pre id="4d684fb7-4d52-4ce1-914a-3ac1eb8ac656" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //상위 요소 전체 선택
+            $(&quot;.txt1&quot;).parents().css(&quot;background-color&quot;,&quot;red&quot;);
+            //상위 요소 중 parents로 지정한 요소만 선택
+            $(&quot;.txt2&quot;).parents(&quot;section&quot;).css(&quot;background-color&quot;,&quot;orange&quot;);
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1 class=&quot;title&quot;&gt;선택자&lt;/h1&gt;
+    &lt;section&gt;
+        &lt;div&gt;
+            &lt;p class=&quot;txt1&quot;&gt;내용1&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+        &lt;div&gt;
+            &lt;p class=&quot;txt2&quot;&gt;내용2&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="eb341e90-421e-40bf-bb6d-e6e8c2433a83" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%83%81%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%83%81%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>상위 요소 선택자</figcaption></figure><p id="06b6d2a7-9e18-4078-8fef-fe5ffcaf86b5" class="">위의 경우,  클래스명이 txt1인 요소의 부모 요소 전체에 대해서 배경색을 빨간색으로 지정하여</p><p id="7e0a1bfd-d3e3-46e2-ad35-5d1ddfba06ac" class="">body, section, div 요소에 대해서 배경색이 모두 빨갛게 되었다</p><p id="71c690d0-f58e-440f-b0a5-6ccff812be36" class="">
+</p><p id="83d589f6-b53f-483d-b0db-04db254dc986" class="">그리고 클래스명이 txt2인 요소의 부모 중 section인 부분에 대해서 선택하였기 때문에, 해당 부모요소에 대해서만 주황색 배경으로 스타일링되었다</p><p id="dad6b3d4-d1a9-46c5-85a6-1189e3f9092d" class="">
+</p><p id="12cc02d7-3ae7-4614-9a44-f4d112cac860" class="">i. 가장 가까운 상위 요소 선택자</p><p id="fe75aa46-c74a-49fa-a060-f9e6b024a3f2" class="">가장 가까운 상위 요소 선택자는 어떤 특정 요소에서 가장 인접한 부모요소를 선택한다!</p><p id="a729d5bf-9bc3-4859-98ca-8a916b1b063f" class="">어떻게 보면 위에서 다루어진</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="8d2e6b8a-2103-491f-acde-8ba1de880445"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;~&quot;).parents(&quot;~&quot;)</div></figure><p id="2edf80c9-949e-455a-8894-e4e44c08fc92" class="">와 비슷해보이지만, 상황적으로 부모 요소가 여럿일 때에는, 다른 필터링할 next() 혹은 prev() 등을 붙여야할 필요가 있을 것으로 생각되는데, 이를 closest()로 한 번에 해결할 수 있다는 효율적인 장점이 있는 것 같다!</p><pre id="8e2dc388-77ed-4734-9ede-2962951e6755" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;script src=&quot;https://code.jquery.com/jquery-2.2.4.min.js&quot;
+    integrity=&quot;sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+        $(function(){
+            //상위 요소 전체 선택
+            $(&quot;.txt1&quot;).parents().css(&quot;background-color&quot;,&quot;red&quot;);
+            //상위 요소 중 parents로 지정한 요소만 선택
+            $(&quot;.txt2&quot;).parents(&quot;section&quot;).css(&quot;background-color&quot;,&quot;orange&quot;);
+            //가장 가까운 상위 요소 선택자
+            $(&quot;.txt2&quot;).closest(&quot;div&quot;).css({
+                &quot;background-color&quot;:&quot;yellow&quot;,
+                &quot;width&quot;:&quot;300px&quot;
+            });
+        })
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1 class=&quot;title&quot;&gt;선택자&lt;/h1&gt;
+    &lt;section&gt;
+        &lt;div&gt;
+            &lt;p class=&quot;txt1&quot;&gt;내용1&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section&gt;
+        &lt;div&gt;
+            &lt;p class=&quot;txt2&quot;&gt;내용2&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="287313b3-20be-4ec4-b247-8896942a399d" class="">.</p><figure id="8189e203-5202-4afe-b8e8-5bb4bf3b1b9c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%80%EC%9E%A5%20%EA%B0%80%EA%B9%8C%EC%9A%B4%20%EC%83%81%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%80%EC%9E%A5%20%EA%B0%80%EA%B9%8C%EC%9A%B4%20%EC%83%81%EC%9C%84%20%EC%9A%94%EC%86%8C%20%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>가장 가까운 상위 요소 선택자</figcaption></figure><p id="88c6212a-637d-41cc-85e3-45b3bb3e8c59" class="">위에서 사용했던 html 문서를 그대로 활용했다!</p><p id="4f1101e1-3f85-4f47-84f6-d677780d0e1d" class="">이때, closest의 매개변수로 div 를 지정해줌으로써, txt2 클래스인 요소의 부모 요소 중 가장 인접한 div 요소를 선택하고, 이에 대해서 스타일링됨을 확인해볼 수 있다!</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="726fecec-b78f-40bc-9289-2f14102431a5"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;요소선택&quot;).closest(&quot;요소선택&quot;)</div></figure><p id="8a3689e2-c45e-4055-9e07-a73eeea13687" class="">
+</p></div></article></body></html>

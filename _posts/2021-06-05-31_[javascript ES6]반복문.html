@@ -1,0 +1,707 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>반복문</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="160b1347-1759-41c7-af5e-67f3df6f62d3" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">☕</span></div><h1 class="page-title">반복문</h1></header><div class="page-body"><ul id="b6a6b68b-3af9-43d2-93ef-ff2b6cce737e" class="bulleted-list"><li>특정 작업을 반복적으로 실행할 때 사용</li></ul><ul id="f569d830-308e-46a9-b330-6b5eed1a5825" class="bulleted-list"><li>특정 조건이 만족되는 동안에 구문이 실행되고, 조건이 어긋나면 끝나게 되는 과정으로 실행됨(반복문이 끝나지 않는 경우는 무한루프!)</li></ul><h2 id="c4d22452-dbb9-4300-8bb3-156ff071a3ee" class="">for 문</h2><pre id="ce2780eb-3edc-4aeb-9276-97e733f97cc3" class="code"><code>for(let 반복자=초기값; 조건문; 증감자){
+//...
+}</code></pre><ul id="9401b8aa-10d7-4742-a69f-10212de7274c" class="bulleted-list"><li>let을 사용하는 이유는 값을 변경해야하기 때문!</li></ul><pre id="13ad20ac-638a-4648-90a7-30d238f17603" class="code"><code>for(let i = 10; i &gt; 0; i-=2){
+    console.log(i);//10 8 6 4 2
+}</code></pre><p id="7328bab4-d418-4cf5-a046-57bfff601bb5" class="">
+</p><ul id="495a59b5-d8c3-4615-afe6-ca9d649e4116" class="bulleted-list"><li>이렇게 for문은 증감자에 따라서 처음부터 찬찬히 반복할 수 있다는 점에서 배열과 관련된 반복된 작업도 수행이 가능하다!</li></ul><pre id="c7a58092-d4c7-4392-ada5-4b4c6e90ddd9" class="code"><code>const names=[&#x27;멍멍이&#x27;,&#x27;야옹이&#x27;,&#x27;멍뭉이&#x27;];
+for(let i = 0; i &lt; names.length; i++){
+    console.log(names[i]);//멍멍이 야옹이 멍뭉이
+}</code></pre><p id="397c012f-72ce-4852-8290-15bcffcc12e2" class="">
+</p><h2 id="a8326ef1-3fef-4f87-b1f5-62e946a6bcca" class="">while 문</h2><p id="98850853-26ec-4f10-bafe-b7503a7235eb" class="">
+</p><ul id="c8282d9d-5089-407b-9724-061a2f1c1cf5" class="bulleted-list"><li><strong><mark class="highlight-orange">괄호 내부의 조건이 true인 동안에만</mark></strong> 실행되는 반복문</li></ul><ul id="b723bd1f-5128-431a-8a93-2c83c6c77238" class="bulleted-list"><li>대부분 while문은 숫자를 비교할 때 보다 조건을 비교할 때 보다 가치있음(while 문의 마지막 예제처럼!)</li></ul><pre id="348cb0ea-b9b5-4e32-9b54-b2ef1de38a74" class="code"><code>while(조건식){
+	//...
+}</code></pre><p id="2b8c8d0d-d8a2-473b-95f4-105b5896bbe9" class="">
+</p><pre id="a2fcb68d-baf9-48e2-ad3f-180e77d0a3c4" class="code"><code>let i = 0;
+while(i &lt; 10){
+    console.log(i+=2);//2 4 6 8 10
+}</code></pre><pre id="4db57dbf-a470-4a45-9bd2-1b10e35f981a" class="code"><code>let i = 0 ;
+let isFun =false;
+
+while(!isFun){
+    console.log(i);
+    i++;
+    if(i === 30){
+        isFun = true;
+    }
+}//0 1 2 3 ... 29</code></pre><p id="e6f08e86-ff0d-48fa-8d16-0849a61539e6" class="">
+</p><hr id="0c2df3b5-c017-4768-8b09-a90a4d93ab96"/><p id="e988b6eb-075a-4da5-8cb7-e8bf5987cb33" class="">
+</p><h2 id="b0cf4078-bfa7-4bbf-815f-87cda302200b" class="">for..of 반복문과 for..in 반복문</h2><p id="39fc65ea-a3f0-45de-971d-8484eb1e4ae3" class="">
+</p><ol id="af6f2352-fa6a-4362-b3c0-5e53e523aba3" class="numbered-list" start="1"><li>for ... of  반복문</li></ol><p id="2b3b8a67-792d-4f4b-b226-169a913a537b" class="">[Usage]</p><pre id="903c031b-dcee-49eb-b487-e5f27a2aa0ee" class="code"><code>for(let 반복자이름 of 배열이름){
+	//반복자에는 배열의 x번째 요소의 값이 들어가 있음
+}</code></pre><p id="82b81cb1-2954-4c16-90a5-689a31179ed6" class="">
+</p><p id="223c569d-9788-4f8d-a90a-a195876bd1f4" class="">(예시)</p><pre id="fb668648-4213-4d4f-94d7-8d08f71cbbdc" class="code"><code>const numbers=[10,20,30,40,50];
+
+for(let iter of numbers){
+    console.log(iter);//10 20 30 40 50
+}</code></pre><ul id="db8f45b5-f287-463b-b2fa-e4fe6a2440a4" class="bulleted-list"><li>for of 반복문은 배열안의 값을 순차적으로 접근해서 사용할 수 있도록 도와줌!</li></ul><ul id="3569d7a8-44f1-4a54-aa06-307f43a71d42" class="bulleted-list"><li>위의 예제는</li></ul><pre id="c72152c6-d949-42fa-bf05-f2842ba2c322" class="code"><code>for(let i = 0; i &lt; numbers.length;i++){
+}</code></pre><p id="659c2363-e5ad-4e8c-9ec0-5fb7fbe00092" class="">와 동일한 기능을 한다! 참고로!! 배열의 내장 함수 중에는 for..of 나 위의 for문의 케이스(배열 크기만큼 반복) 함수가 존재!</p><p id="f3e8aa0d-60d7-42fc-a3c7-718518f964be" class="">
+</p><hr id="f164e5c8-6f9b-4d64-b40d-522829e7f007"/><h3 id="0784d695-1540-4949-bbd8-779d9f8a0e45" class="">객체를 배열로 바꾸어주는 방법</h3><p id="de45b7a4-a9ba-49f4-921f-68a0085d473c" class="">
+</p><ol id="d43d54e8-d648-4d21-8bde-61c1044f3fdf" class="numbered-list" start="1"><li>Object.keys(객체명) : 객체의 key만 배열로 만들어줌</li></ol><ol id="3d90c4ad-0db9-4ec8-8202-dbce3198b39d" class="numbered-list" start="2"><li>Object.values(객체명): 객체의 value만 배열로 만들어줌</li></ol><ol id="eb45648f-dbdd-4cd4-8ef5-9de9d9d169b1" class="numbered-list" start="3"><li>Object.entries(객체명): (key,value)쌍이 배열로 만들어짐</li></ol><p id="368874fa-e106-4153-a76f-70f843a3d46f" class="">
+</p><pre id="50a75c36-de65-4e23-9ce2-58cd5deaaf2f" class="code"><code>const doggy={
+    name:&#x27;멍멍이&#x27;,
+    sound:&#x27;멍멍&#x27;,
+    age:2
+};
+console.log(Object.keys(doggy));// [&quot;name&quot;, &quot;sound&quot;, &quot;age&quot;]
+console.log(Object.values(doggy));// [&quot;멍멍이&quot;, &quot;멍멍&quot;, 2]
+console.log(Object.entries(doggy));
+/**
+ * 0: (2) [&quot;name&quot;, &quot;멍멍이&quot;]
+1: (2) [&quot;sound&quot;, &quot;멍멍&quot;]
+2: (2) [&quot;age&quot;, 2]
+ */</code></pre><p id="8e2a1fd4-728d-4c76-abea-ed8c2da66e1d" class="">
+</p><p id="031eca50-f8b5-4547-8433-29f4ac61961e" class="">2. for...in 반복문</p><ul id="0cd55ccc-6aa0-43d4-bede-812463e1ee89" class="bulleted-list"><li>주로 객체에 대한 반복문에서 사용됨</li></ul><pre id="324b4bb7-b026-4d79-8ae0-1e65c67faac3" class="code"><code>for(let key in doggy){
+    console.log(key);
+    /*
+    객체의 key값만 출력됨
+
+    다만, 반복자가 key가 아닌 value였어도
+    동일하게 key값만 반복됨!
+    */
+}</code></pre><p id="ea274710-cc46-4789-b9c2-38918166ca45" class="">
+</p><p id="966654a4-07b7-439b-b4ab-65bdf312d094" class="">위의 경우에서는 반복자를 통해서 키값만 얻을 수 있었는데,</p><p id="4d07de6e-f99e-40b7-ab61-8c4334a1025f" class=""><mark class="highlight-orange"><strong>객체[키값]</strong></mark>을 통해서 <mark class="highlight-orange"><strong>value값</strong></mark>을 얻을 수 있게 된다!</p><pre id="4164c02a-9a44-4bba-950a-04490aee193c" class="code"><code>for(let key in doggy){
+    console.log(`${key}:${doggy[key]}`);
+    /**
+     * name:멍멍이
+     * sound:멍멍
+     * age:2
+     */
+}</code></pre><p id="9863caed-4f86-4ea6-a041-2e6bfed74855" class="">
+</p><hr id="c5675431-d5aa-4c08-bfe1-15f729cc1907"/><h2 id="1059e0a0-3286-4a43-9871-cc7510c6945c" class="">continue와 break</h2><ul id="e5c1f5b2-f2fa-4cbd-8f91-84043360de0a" class="bulleted-list"><li>continue: 다음 루프를 돌도록 하는 것</li></ul><ul id="44dd5ac8-4ea3-4c48-afc3-35ded4a8f832" class="bulleted-list"><li>break: 반복문을 벗어나는 것</li></ul><pre id="8201797b-5e60-4095-bb91-1c5f8b2a6ad2" class="code"><code>for(let i = 0; i &lt; 10; i++){
+    if(i &gt; 5){
+        break;
+    }
+    console.log(i);
+}//0 1 2 3 4 5</code></pre><pre id="ff074798-85d5-49bd-9f23-5b578ac3c46c" class="code"><code>for(let i = 0 ; i &lt; 10; i++){
+    if(i &lt; 3){
+        continue;
+    }
+    console.log(i);
+}//3 4 5 6 7 8 9</code></pre><ul id="d5370c82-8b00-41f6-812e-3a71470b749e" class="bulleted-list"><li>for, for.. of, for..in, while 에서 모두 사용 가능</li></ul><p id="75ca1da5-328e-4e1c-bf27-bbc9950b21fb" class="">
+</p></div></article></body></html>

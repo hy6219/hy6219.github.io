@@ -1,0 +1,1254 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>jQuery-객체 조작</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2ab266d5-49a2-4cca-a14e-8690e9f32491" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🐻</span></div><h1 class="page-title">jQuery-객체 조작</h1></header><div class="page-body"><p id="dc6ab669-309d-4bd9-ade2-abea46c788ed" class="">여기에서 객체 조작은 바닐라 자바스크립트에서 공부했었던, html 의 document 내부에 객체를 만들거나 삭제하거나, 속성을 변경하는 행위를 의미한다!</p><p id="439a0e43-8027-495f-8a05-7edf277ff805" class="">🌟 잠깐 잊지 말자!! html 문서의 구조!</p><p id="1888662c-7578-45e7-be7c-0a5baf834b24" class="">Document ◀️ html 요소 ◀️ head, body 요소</p><h2 id="7ae809b5-9676-41ea-8710-b56efbb60555" class="">1. 속성 조작 메서드</h2><ul id="96aa9e72-70e8-442e-98f0-4ec08a4bbacf" class="bulleted-list"><li>요소의 속성을 바꿀 때 사용하는 메서드</li></ul><div id="1d610193-01d3-4206-8f51-693f499be60d" class="collection-content"><h4 class="collection-title">속성 조작 메서드의 종류</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>이름</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>사용법</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="c22821d7-3469-40c8-9342-e996873ccef4"><td class="cell-title"><a href="https://www.notion.so/html-html-c22821d7346940c89342e996873ccef4">html(), html(&quot;새 요소&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).html();
+$(&quot;요소선택&quot;).html(&quot;새 요소&quot;);</td><td class="cell-~}yK">(1) $(&quot;요소선택&quot;).html(): 
+선택한 요소의 하위 요소를 가져와서 문자열로 보여줌
+
+(2)$(&quot;요소선택&quot;).html(&quot;새 요소&quot;);
+-<mark class="highlight-yellow_background"><strong>선택한 요소의 하위 요소를 모두 제거하고, 그 위치에 지정한 새 요소를 생성</strong></mark></td></tr><tr id="5af68979-132f-4c43-bd9c-fb1ec8a994a6"><td class="cell-title"><a href="https://www.notion.so/text-text-5af68979132f4c43bd9cfb1ec8a994a6">text(), text(&quot;새 텍스트&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).text();
+$(&quot;요소선택&quot;).text(&quot;새 텍스트&quot;);</td><td class="cell-~}yK">(1) $(&quot;요소선택&quot;).text();
+- 선택한 요소의 텍스트만 가져옴
+$(&quot;요소선택&quot;).text(&quot;새 요소&quot;);
+- 선택한 요소의 하위 요소를 전부 제거하고 지정한 텍스트를 생성</td></tr><tr id="fd8e306a-8152-4b79-a45b-8a64921c6250"><td class="cell-title"><a href="https://www.notion.so/attr-attr-fd8e306a81524b79a45b8a64921c6250">attr(&quot;속성명&quot;), 
+attr(&quot;속성명&quot;,&quot;새값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).attr(&quot;속성명&quot;);
+$(&quot;요소선택&quot;).attr(&quot;속성명&quot;,&quot;새값&quot;);</td><td class="cell-~}yK"><mark class="highlight-yellow_background"><strong>(1) $(&quot;요소선택&quot;).attr(&quot;속성명&quot;);
+- 선택한 요소의 지정한 속성명을 가져옴</strong></mark>
+(2) $(&quot;요소선택&quot;).attr(&quot;속성명&quot;,&quot;새값&quot;);
+- 선택한 요소를 선택하여 지정한 속성값을 적용
+(3) $(&quot;요소선택&quot;).attr({&quot;속성명1&quot;:&quot;새값1&quot;, &quot;속성명2&quot;:&quot;새값2&quot;,...,&quot;속성명n&quot;:&quot;새값n&quot;});
+-요소를 선택하여 지정한 여러 개의 속성값을 적용</td></tr><tr id="9062e769-e764-406f-bea0-f97b029c2aec"><td class="cell-title"><a href="https://www.notion.so/removeAttr-9062e769e764406fbea0f97b029c2aec">removeAttr(&quot;속성명&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).removeAttr(&quot;속성명&quot;)</td><td class="cell-~}yK">-선택한 요소의 지정 속성만 제거</td></tr><tr id="8be5f9a9-8213-40af-8ba3-abd09d567773"><td class="cell-title"><a href="https://www.notion.so/prop-prop-8be5f9a9821340af8ba3abd09d567773">prop(&quot;상태 속성명&quot;),
+prop(&quot;상태 속성명&quot;, 새값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).prop(&quot;상태 속성명&quot;)
+$(&quot;요소선택&quot;).prop(&quot;상태 속성명&quot;, 새값&quot;)</td><td class="cell-~}yK">(1) $(&quot;요소선택&quot;).prop(&quot;상태 속성명&quot;)
+-선택한 요소의 상태 속성값을 가져옴
+
+(2) $(&quot;요소선택&quot;).prop(&quot;상태 속성명&quot;, 새값&quot;)
+-선택한 요소의 상태 속성에 새 값을 적용</td></tr><tr id="fb790dab-d2f7-447b-a8ad-5029fdc1e28e"><td class="cell-title"><a href="https://www.notion.so/val-val-fb790dabd2f7447ba8ad5029fdc1e28e">val(), val(&quot;새값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).val();
+$(&quot;요소선택&quot;).val(&quot;새 값&quot;);</td><td class="cell-~}yK">(1) $(&quot;요소선택&quot;).val();
+-선택한 폼 요소의 value값을 가져옴
+
+(2) $(&quot;요소선택&quot;).val(&quot;새 값&quot;);
+-폼 요소를 선택하여 value 속성에 새 값을 적용</td></tr><tr id="0adae89a-e422-4c14-92df-15c4dc15e35f"><td class="cell-title"><a href="https://www.notion.so/css-css-0adae89ae4224c1492df15c4dc15e35f">css(&quot;속성명&quot;),
+css(&quot;속성명&quot;,&quot;새값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).css(&quot;속성명&quot;);
+$(&quot;요소선택&quot;).css(&quot;속성명&quot;,&quot;새값&quot;);</td><td class="cell-~}yK">(1) $(&quot;요소선택&quot;).css(&quot;속성명&quot;);
+- 선택한 요소의 지정한 스타일 속성값을 가져옴
+(2) $(&quot;요소선택&quot;).css(&quot;속성명&quot;,&quot;새값&quot;);
+- 선택한 요소의 지정한 스타일 속성에 새 값을 적용</td></tr><tr id="3189fb16-763c-4b06-872f-fa3cab251427"><td class="cell-title"><a href="https://www.notion.so/addClass-class-3189fb16763c4b06872ffa3cab251427">addClass(&quot;class값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).addClass(&quot;class값&quot;)</td><td class="cell-~}yK">선택한 요소의 class 속성에 새 값을 추가
+-바닐라 자바스크립트의 .classList.add 와 유사!</td></tr><tr id="e1e8ac04-ca4f-45b5-831e-9a55be1e53ed"><td class="cell-title"><a href="https://www.notion.so/removeClass-class-e1e8ac04ca4f45b5831e9a55be1e53ed">removeClass(&quot;class 값&quot;)</a></td><td class="cell-?CNZ">$(&quot;요소선택&quot;).removeClass(&quot;class값&quot;)</td><td class="cell-~}yK">선택한 요소의 class 속성에서 해당 값을 제거
+-바닐라 자바스크립트의 .classList.remove와 유사!</td></tr></tbody></table></div><ol id="941773ad-b350-4cfa-bbfc-512c4fd90ec3" class="numbered-list" start="1"><li>html(), text() 메서드</li></ol><ul id="0d7eae43-7ad8-436a-b6ce-d9f8650b1dce" class="bulleted-list"><li>앞서 설명했던 것처럼, 매개변수가 없다면, 
+-html은 하위 요소를 문자열로 반환하고
+-text는 하위 요소의 텍스트 노드를 반환한다</li></ul><ul id="78b098af-d8a6-41e8-9b6a-56d7768e9eaa" class="bulleted-list"><li>반대로, 매개변수로 새 요소 혹은 새 텍스트가 있다면
+-html은 하위 요소를 전부 제거하고 지정한 텍스트를 생성한다</li></ul><p id="036b1eae-61a1-46ae-ace8-fb7b95e498a9" class="">아래의 예제처럼,  html()과 text()는 기존의 하위 요소 혹은 하위 요소의 텍스트를 모두 반환함을 확인해볼 수 있다. </p><p id="3531229e-8ac0-40a2-b49c-d138b52cebe2" class="">
+</p><p id="7b491282-12f5-4a3e-ba2b-e9e99775bdf0" class="">또한, html내부에는 태그 요소를 넣어줌으로써 기존 하위 요소를 모두 제거 후, 구글 링크로 이동하는 a 태그가 적용될 수 있다</p><p id="4e3ee751-f774-4943-9b99-4b88d9c616d1" class="">
+</p><p id="ba8dcffc-6500-4bdc-9a81-cba7c55c088a" class="">마찬가지로 text 내부에 새 텍스트를 넣어줌으로써 기존의 내용이 아닌 새로운 내용으로 교체됨을 확인해볼 수 있다! 편의를 위해서 만들어진 제이쿼리의 특성인 &#x27;코드 간결화&#x27;가 돋보이는 순간이다!</p><pre id="de0f8cf5-2503-4df0-b145-5668376994eb" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(() =&gt; {
+        const res1=$(&quot;#sec_1&quot;).html();//sec_1의 하위 요소를 모두 저장하여 문자열로 보여줄것
+        console.log(res1);
+        //sec_1의 p요소를 a태그로 바꾸기
+        $(&quot;#sec_1 p&quot;).html(&quot;&lt;a href=&#x27;https://www.google.com&#x27; target=&#x27;_blank&#x27;&gt;내용1&lt;/a&gt;&quot;);
+
+        //sec_2의 하위요소의 텍스트만 가져오기
+        const res2=$(&quot;#sec_2&quot;).text();
+        console.log(res2);
+
+        //sec_2의 p요소의 텍스트를 변경
+        $(&quot;#sec_2 p&quot;).text(&quot;텍스트 변경하자!&quot;);
+    })
+&lt;/script&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;&lt;strong&gt;객체 조작 및 생성&lt;/strong&gt;&lt;/h1&gt;
+    &lt;section id=&quot;sec_1&quot;&gt;
+        &lt;h2&gt;&lt;em&gt;html()&lt;/em&gt;&lt;/h2&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+    &lt;/section&gt;
+    &lt;section id=&quot;sec_2&quot;&gt;
+        &lt;h2&gt;&lt;em&gt;텍스트()&lt;/em&gt;&lt;/h2&gt;
+        &lt;p&gt;내용2&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="be7bba34-0368-4472-8596-9c2f3f8fc708" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/html,text%20%EB%A9%94%EC%84%9C%EB%93%9C.gif?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/html,text%20%EB%A9%94%EC%84%9C%EB%93%9C.gif?raw=true"/></a><figcaption>속성 조작 메서드-html(), text()</figcaption></figure><p id="11b5cfd5-97ec-44ca-b3f9-af8f37c437a0" class="">
+</p><p id="bf5d85fd-721d-4852-948c-58aafc340fca" class="">2. attr(), removeAttr() 메서드</p><p id="2f949501-a211-4fc4-83bf-873aa5a56e16" class="">먼저 attr()을 이용하여 가위바위보 게임을 간단하게 만들어보자</p><pre id="456818a1-3b4f-49d5-81e1-b784d4dc1d08" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(() =&gt; {
+        //이미지의 src 속성을 확인해보기
+        const src = $(&quot;#sec_1 p&gt;img&quot;).attr(&quot;src&quot;);
+        console.log(`사용자 이미지 경로: ${src}`);
+
+        //임의로 컴퓨터측에서 가위,바위,보 뽑기
+        const rdn = [&quot;scissors&quot;, &quot;rock&quot;, &quot;paper&quot;];
+        let comp = rdn[Math.floor(Math.random() * 3)];
+        //요소 생성하기
+        $(&quot;#sec_1 p&quot;).eq(1).html(`&lt;img src=&quot;./img/${comp}.png&quot; alt=&quot;${comp}&quot; style=&quot;border:3px solid red; width:300px;&quot;&gt;`);
+        console.log(`컴퓨터측 이미지 경로: ${$(&quot;#sec_1 img&quot;).eq(1).attr(&quot;src&quot;)}`);
+        if (comp === &#x27;scissors&#x27;) {
+            //내용 바꾸기
+            $(&quot;#sec_1 div&quot;).text(&quot;비겼습니다&quot;);
+        } else if (comp === &#x27;rock&#x27;) {
+            //내용 바꾸기
+            $(&quot;#sec_1 div&quot;).text(&quot;컴퓨터가 이겼습니다&quot;);
+        } else if(comp ===&#x27;paper&#x27;){
+              //내용 바꾸기
+              $(&quot;#sec_1 div&quot;).text(&quot;사용자가 이겼습니다&quot;);
+        }
+    })
+&lt;/script&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;&lt;strong&gt;객체 조작 및 생성&lt;/strong&gt;&lt;/h1&gt;
+    &lt;section id=&quot;sec_1&quot;&gt;
+        &lt;h2&gt;이미지 속성&lt;/h2&gt;
+        &lt;!--사용자--&gt;
+        &lt;p&gt;&lt;img src=&quot;./img/scissors.png&quot; alt=&quot;scissors&quot; style=&quot;border:3px solid purple;width:300px;&quot;&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;/p&gt;
+        &lt;div&gt;&lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="8e2b0aad-0827-4a9a-8922-985a4c9b7d97" class="">위와 같이, img 요소를 통해서 src 속성값을 가져와서 출력하면 속성의 값을 확인해볼 수 있다</p><p id="2a45e765-3ea9-4141-abb4-b091181a90ad" class="">그리고 임의로 배열에서 값을 하나 뽑아서 승부를 내도록 여분의 p요소와 div 요소를 두어 표시하고, html과 text 메서드를 이용하여서 위와 같이 이미지 요소와 텍스트 요소를 추가/교체할 수 있다!</p><figure id="807c7bca-ba70-4885-a106-8bd7fcd75199" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/attr%EB%A9%94%EC%84%9C%EB%93%9C%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EA%B0%80%EC%9C%84%EB%B0%94%EC%9C%84%EB%B3%B4.gif?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/attr%EB%A9%94%EC%84%9C%EB%93%9C%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EA%B0%80%EC%9C%84%EB%B0%94%EC%9C%84%EB%B3%B4.gif?raw=true"/></a></figure><p id="4a4f6010-7d12-4258-bdc8-4f77175cad60" class="">
+</p><p id="29449feb-f69b-46f2-8004-72dc85c618c4" class="">이번에는 attr(속성,속성값) 중에서 여러 속성을 지정하는 경우를 적용하여 이미지를 교체해주면서,</p><p id="c8dd573d-84b2-4369-b1b9-fe21d100296c" class="">removeAttr로 style 속성을 제거해보자!</p><p id="8297f315-4d7e-45f4-878a-48cedea8a552" class="">🌹 replace(a,b): a를 b로 바꾸거나 새로 지정</p><pre id="c3628aa0-e8cc-43a3-96ec-1b523efecac3" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        //이미지를 교체
+        let src = $(&quot;#sec_1 p&gt;img&quot;).attr(&quot;src&quot;);
+        $(&quot;#sec_1 img&quot;).attr({
+            &quot;width&quot;:&quot;200px&quot;,
+            &quot;src&quot;:src.replace(&quot;./img/scissors.png&quot;,&quot;./img/paper.png&quot;),
+            &quot;alt&quot;:&quot;paper&quot;
+        })
+        .removeAttr(&quot;style&quot;);
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;h1&gt;&lt;strong&gt;객체 조작 및 생성&lt;/strong&gt;&lt;/h1&gt;
+    &lt;section id=&quot;sec_1&quot;&gt;
+        &lt;h2&gt;이미지 속성&lt;/h2&gt;
+        &lt;p&gt;&lt;img src=&quot;./img/scissors.png&quot; alt=&quot;scissors&quot; style=&quot;border:3px solid purple;width:300px;&quot;&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;/p&gt;
+        &lt;div&gt;&lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="4a01af38-3228-44f5-8fbe-27f3fbff3d31" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-attr(%EC%86%8D%EC%84%B1,%EA%B0%92)%EA%B3%BC%20removeAttr(%EC%86%8D%EC%84%B1).PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-attr(%EC%86%8D%EC%84%B1,%EA%B0%92)%EA%B3%BC%20removeAttr(%EC%86%8D%EC%84%B1).PNG?raw=true"/></a></figure><p id="500bb9a9-096b-4391-92d6-d0f00e63c020" class="">위에서 img 태그의 src 속성을 가져오고, img 요소에 대해서 여러 속성을 지정해주기 위해서</p><p id="58cf26ec-6821-40a9-9628-8de67f906496" class="">.attr({속성1:값1, 속성2:값2})를 이용하게 되면</p><p id="2a464e4f-4fc4-45ca-b7b1-1fa459b684be" class="">가위 이미지가 보 이미지로 변경되고</p><p id="d5a76d21-3cb3-4935-94eb-ccc47b409b87" class="">너비는 200px로, 대체 텍스트는 paper로 변경된다</p><p id="c73e5e9f-e60d-4e54-9f8c-157615401c38" class="">그리고 removeAttr(속성)을 통해서 기존에 적용되었던 인라인 스타일링이 제거되었음을 확인해볼 수 있다!</p><p id="9bf9f15b-985b-40eb-9c0d-4928e19cf25e" class="">
+</p><p id="59d4262a-469c-4fb6-a75d-620b80d8d473" class="">3. addClass(), removeClass(), toggleClass(), hasClass()</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="322357e9-ed97-48e0-8302-d3511dbe7f5e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).addClass(&quot;class 값&quot;) : 요소를 선택하여 지정한 class 값을 생성</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1115592e-582b-4605-a642-df9a3a0f75ef"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).removeClass(&quot;class 값&quot;) : 요소를 선택하여 지정한 class 값을 삭제</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="8843f5a6-7c5e-4829-bd12-60d3e0e24042"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).toggleClass(&quot;class 값&quot;) : 요소를 선택하여 지정한 class 값이 있으면 삭제하고, 없으면 생성</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="8e71009a-4ce2-4e02-9060-0eaa39299a08"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(4) $(&quot;요소선택&quot;).hasClass(&quot;class 값&quot;) : 선택한 요소에 지정한 class 값이 있으면 true, 없으면 false 반환</div></figure><pre id="db758100-f4bb-47bd-b623-5021e54e27d5" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./jq03_cl.css&quot;&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        //p1에 aqua 클래스 추가
+        $(&quot;#p1&quot;).addClass(&quot;aqua&quot;);
+        //red클래스 제거
+        $(&quot;#p2&quot;).removeClass(&quot;red&quot;);
+        //p3,p4요소에 toggleClass로 green 지정
+        $(&quot;#p3&quot;).toggleClass(&quot;green&quot;);
+        $(&quot;#p4&quot;).toggleClass(&quot;green&quot;);
+        //p5가 yellow 클래스를 가졌는지 여부를 p6의 텍스트로 변경하기
+        $(&quot;#p6&quot;).text($(&quot;#p5&quot;).hasClass(&quot;yellow&quot;));
+    })
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;p id=&quot;p1&quot;&gt;내용1&lt;/p&gt;
+    &lt;p id=&quot;p2&quot; class=&quot;red&quot;&gt;내용2&lt;/p&gt;
+    &lt;p id=&quot;p3&quot;&gt;내용3&lt;/p&gt;
+    &lt;p id=&quot;p4&quot; class=&quot;green&quot;&gt;내용4&lt;/p&gt;
+    &lt;p id=&quot;p5&quot; class=&quot;yellow&quot;&gt;내용5&lt;/p&gt;
+    &lt;p id=&quot;p6&quot;&gt;내용6&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="08784109-df26-4e8f-9905-82712ddb64cd" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-addClass,removeClass,toggleClass,hasClass.PNG?raw=true"><img style="width:864px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-addClass,removeClass,toggleClass,hasClass.PNG?raw=true"/></a><figcaption>속성조작메서드-addClass, removeClass, toggleClass, hasClass</figcaption></figure><p id="6abb4dfb-a100-47b3-9b8b-357970f4ec99" class="">먼저, 제이쿼리의 속성조작을 하기 전에는 red 혹은 green, yellow 클래스(내용2, 내용4, 내용5) 부분에 각각 빨간색, 초록색, 노란색 배경이 칠해져 있었다</p><p id="f59aa04b-b819-4a88-b6da-49a77fe7ddf6" class="">
+</p><p id="11c8c6cc-f772-47b1-8590-b1a515ee71de" class="">하지만, 속성조작을 함으로써,</p><p id="8e29608f-ac5e-44b0-9174-1ed015e2b6d0" class="">aqua 클래스가 추가된 &quot;내용1&quot;에는 아쿠아클래스가 추가되면서 그에 대한 스타일링이 적용되었다</p><p id="97a66120-51d1-48ca-82d0-fac682862e93" class="">내용2의 경우 red 클래스를제거하여 기존의 빨간 배경이 사라지게 되었다</p><p id="9d17ce87-0133-40ae-852d-9f3050c71961" class="">내용3의 경우, 원래 아무런 클래스가 없었는데 toggleClass를 통해서 green 클래스가 대체되었다</p><p id="9dbdc54b-d859-43ac-b3aa-3eb20178f87e" class="">내용4의 경우 원래 green클래스가 있었는데, toggle되어 green 클래스가 제거되어 기존의 초록색 배경이 사라지게 되었다</p><p id="343dac64-daee-497c-a4f4-427cc470624d" class="">
+</p><p id="a9c23806-3b48-431c-a102-1a6c670141cd" class="">내용 6의 경우, 기존 내용 5가 yellow 클래스를 포함하고 있으므로 true를 반환하여 텍스트노드로 true가 새로 작성되었다</p><p id="7c349ee7-f1a8-479a-b8c4-260ddad7b755" class="">
+</p><p id="a4f9077e-9821-4929-8f43-449c8353d4ae" class="">4. val() 메서드</p><pre id="e67f7088-da1a-4dc9-a9b2-eafe730ec7b0" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        //이름 값 가져오기
+        const input1=$(&quot;#form_1 input&quot;).eq(0).val();
+        console.log(`이름 : ${input1}`);
+        //아이디 값 바꾸기
+        $(&quot;#form_1 input&quot;).eq(1).val(&quot;bye&quot;);
+        const input2=$(&quot;#form_1 input&quot;).eq(1).val();
+        console.log(`변경된 아이디 : ${input2}`);
+    })
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;h1&gt;객체 조작 및 생성&lt;/h1&gt;
+    &lt;form action=&quot;#&quot; id=&quot;form_1&quot;&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;user_name&quot;&gt;이름&lt;/label&gt;
+            &lt;input type=&quot;text&quot; name=&quot;user_name&quot; id=&quot;user_name&quot;value=&quot;용대리&quot;&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;user_id&quot;&gt;아이디&lt;/label&gt;
+            &lt;input type=&quot;text&quot; name=&quot;user_id&quot; id=&quot;user_id&quot;value=&quot;hello&quot;&gt;
+        &lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="439edf87-d23f-4bd3-9126-f844a7b245ec" class="">val()은 폼 요소에서 value 값을 가져오고,</p><p id="27ac3a60-c414-47df-8fbd-c292e9513269" class="">val(&quot;값&quot;)은 기존의 폼 요소의 value 값을 대체하게 된다</p><p id="eba65ee4-a09f-4019-bb7b-95cfea528582" class="">그렇기 때문에 input1에는 용대리가, input2에는 bye가 들어가게 된다</p><figure id="b70b18f8-0e8f-461e-9603-a6c28d33b433" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-val().PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-val().PNG?raw=true"/></a><figcaption>속성 조작 메서드-val()</figcaption></figure><p id="a50029b7-7d0f-46d9-b041-0bea3e8a6497" class="">
+</p><p id="ba359bdb-4c99-4e30-a25c-6ab5dee59375" class="">5. prop() 메서드</p><ul id="bc8cde46-10f3-49f3-bda3-cf5a742ff24f" class="bulleted-list"><li>선택한 폼 요소(선택 상자, 체크박스, 라디오 버튼)의 상태 속성 값을 가져오거나 새로 설정</li></ul><ul id="5a5ccabc-9cd2-49c2-bf20-13c8c1fae9da" class="bulleted-list"><li>선택한 요소의 태그명(tagName), 노드 타입(nodeType), 선택 상자의 선택된 옵션의 인덱스(Index) 값도 알 수 있게 됨</li></ul><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="f87ddcb0-dd9c-48a7-a842-0c32e18c23a3"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).prop(&quot;[checked|selected]&quot;) : 선택한 폼 요소가 체크된 상태인지, 선택된 상태인지 확인하여 체크 혹은 선택된 상태이면 true 아니라면 false 반환</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="45eb219c-1fd1-43f7-9c37-2314d539b0e1"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).prop(&quot;[checked|selected]&quot;, [true|false]) : 폼 요소를 선택하여 체크 혹은 선택 상태를 바꿀 수 있음</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="22e8dbf4-b846-42a3-a6f7-d63b77186016"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).prop(&quot;[tagName | nodeType | selectedIndex | defaultValue]&quot;)
+: 선택한 요소의 태그명이나 노드 타입, 선택된 옵션의 인덱스값을 구함
+:defaultValue는 사용자가 value 속성값을 변경해도 초기의 value 속성값을 가져옴</div></figure><div id="39a9db82-cb5f-4506-a1c3-eeae424e7798" class="collection-content"><h4 class="collection-title">nodeType</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>nodeType값</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>노드</th></tr></thead><tbody><tr id="a8d60321-b995-4f97-8948-3579c9676e75"><td class="cell-zdLz"><span class="selected-value select-value-color-red">1</span></td><td class="cell-title"><a href="https://www.notion.so/elementNode-a8d60321b9954f9789483579c9676e75">elementNode</a></td></tr><tr id="25b409fa-11ee-4894-8cea-dff33ea6803f"><td class="cell-zdLz"><span class="selected-value select-value-color-purple">2</span></td><td class="cell-title"><a href="https://www.notion.so/attributeNode-25b409fa11ee48948ceadff33ea6803f">attributeNode</a></td></tr><tr id="73c9c4b2-f0ed-48db-bd4c-2085bdb76507"><td class="cell-zdLz"><span class="selected-value select-value-color-yellow">3</span></td><td class="cell-title"><a href="https://www.notion.so/textNode-73c9c4b2f0ed48dbbd4c2085bdb76507">textNode</a></td></tr><tr id="e5c0acc8-f5d7-417d-a2af-966e95f68a8b"><td class="cell-zdLz"><span class="selected-value select-value-color-gray">8</span></td><td class="cell-title"><a href="https://www.notion.so/commentNode-e5c0acc8f5d7417da2af966e95f68a8b">commentNode</a></td></tr></tbody></table></div><p id="36439d70-972a-43eb-b757-acfd53bd505b" class="">
+</p><p id="344ac26c-0722-44a3-9022-40d787dd87bb" class="">reference: </p><figure id="9625cc8a-51ab-41a1-8f7f-851565228322"><a href="https://www.w3schools.com/jsref/prop_node_nodetype.asp" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">HTML DOM nodeType Property</div><div class="bookmark-description">Element Object Get the node type of the body element: Try it Yourself &quot; More &quot;Try it Yourself&quot; examples below. The nodeType property returns the node type, as a number, of the specified node. If the node is an element node, the nodeType property will return 1.</div></div><div class="bookmark-href"><img src="https://www.w3schools.com/favicon.ico" class="icon bookmark-icon"/>https://www.w3schools.com/jsref/prop_node_nodetype.asp</div></div><img src="https://www.w3schools.com/images/w3lynx_200.png" class="bookmark-image"/></a></figure><pre id="90c765f0-b7dc-4c0c-84bd-5bb74dc18bd4" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(() =&gt; {
+        const res1 = $(&quot;#chk1&quot;).prop(&quot;checked&quot;);
+        $(&quot;#chk3&quot;).prop(&quot;checked&quot;, true); //chk3를 checked로 설정
+        const res2 = $(&quot;#chk3&quot;).prop(&quot;checked&quot;);
+        console.log(`chk1 checked: ${res1}, after set chk3 checked: ${res2}`);
+
+        const selIdx = $(&quot;#se_1&quot;).prop(&quot;selectedIndex&quot;);
+        console.log(`selected Index: ${selIdx}`);
+
+        const tagName= $(&quot;#se_1&quot;).prop(&quot;tagName&quot;);
+        console.log(`tagName: ${tagName}`);
+
+        const nodeType= $(&quot;#se_1&quot;).prop(&quot;nodeType&quot;);
+        console.log(`nodeType: ${nodeType}`);
+    });
+&lt;/script&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;&lt;strong&gt;객체 조작 및 생성&lt;/strong&gt;&lt;/h1&gt;
+    &lt;form action=&quot;#&quot; id=&quot;form_1&quot;&gt;
+        &lt;p&gt;
+            &lt;label for=&quot;chk1&quot;&gt;chk1&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; name=&quot;chk1&quot; id=&quot;chk1&quot;&gt;
+
+            &lt;label for=&quot;chk2&quot;&gt;chk2&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; name=&quot;chk1&quot; id=&quot;chk2&quot; checked&gt;
+
+            &lt;label for=&quot;chk3&quot;&gt;chk3&lt;/label&gt;
+            &lt;input type=&quot;checkbox&quot; name=&quot;chk1&quot; id=&quot;chk3&quot;&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;select name=&quot;se_1&quot; id=&quot;se_1&quot;&gt;
+                &lt;option value=&quot;opt1&quot; selected&gt;option1&lt;/option&gt;
+                &lt;option value=&quot;opt2&quot;&gt;option2&lt;/option&gt;
+                &lt;option value=&quot;opt3&quot;&gt;option3&lt;/option&gt;
+            &lt;/select&gt;
+        &lt;/p&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="44646748-1905-4529-9bce-2085eb42e13e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-prop.PNG?raw=true"><img style="width:1152px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%86%8D%EC%84%B1%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-prop.PNG?raw=true"/></a><figcaption>속성조작메서드-prop</figcaption></figure><p id="356e72d1-bf4d-42c7-80a1-4b73e3c08b82" class="">먼저 chk1 아이디인 요소가 체크되어있지 않으므로 false를 반환하고,</p><p id="dd4899f3-c88c-429a-aee5-d28e8c3d0c97" class="">chk3인 요소에 대해서 체크되어 있도록 설정해주면 chk3의 checked 상태는 true가 된다</p><p id="81b0bcff-0b04-450b-aded-c403b80fb998" class="">그리고 selectedIndex를 통해서 selected된 옵션의 인덱스가 0임을 확인해볼 수 있다</p><p id="81c312ce-9215-422a-817f-083f48dff9c7" class="">그리고 select 요소의 nodeType이 1로 확인되는데, 이는 위에서 확인한 바와 같이,</p><p id="662469ae-577a-4211-adad-bd1a3098d5e7" class="">element 노드임을 나타내는 것이다!</p><p id="8813864c-6741-451b-9c00-94ef87ab4eba" class="">
+</p><h2 id="b64d4b66-010c-4715-866d-c59c8fa5b661" class="">2. 수치 조작 메서드</h2><p id="cc06d77a-fdae-4fb2-a5c2-7c82f3c47bd6" class="">🌺 요소의 높이/너비 메서드</p><figure id="0d279a9e-58ab-49a0-9599-33e006489c3a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%20%EB%84%88%EB%B9%84%20%EB%86%92%EC%9D%B4%20%EB%A9%94%EC%84%9C%EB%93%9C%EC%9D%98%20%EA%B3%84%EC%82%B0%EB%B2%94%EC%9C%84.png?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%20%EB%84%88%EB%B9%84%20%EB%86%92%EC%9D%B4%20%EB%A9%94%EC%84%9C%EB%93%9C%EC%9D%98%20%EA%B3%84%EC%82%B0%EB%B2%94%EC%9C%84.png?raw=true"/></a><figcaption>요소의 높이/너비 계산범위</figcaption></figure><p id="0018db95-6c64-4f2f-b9c7-bf422aaf7c08" class="">html 구조 내에서 어떤 요소에 대해서는 여백(margin, padding) 뿐 아니라 border 두께도 실질적인 너비 및 높이 계산에 포함된다!</p><p id="9ee18a0a-11be-4a06-9127-104a5166b328" class="">이때 구조 내부에는 다양한 너비 및 높이를 아래의 메서드들을 이용하여 도출할 수 있다</p><p id="eae262b4-aaa9-442c-bf1b-e471f68cf4e1" class="">1) width() 나 height()는 요소의 left to right, top to bottom의 길이</p><p id="587d8ebb-f41e-4288-a0d1-11f0e107228e" class="">2) innerWidth() 나 innerHeight()는 요소의 padding까지 고려해서 padding_left to padding_right 혹은 padding_top to padding_bottom의 길이</p><p id="f8f7a0e1-4269-4cc0-a31e-9eea0f3e1626" class="">3) outerWidth()나 outerHeight()는 요소의 border까지 고려해서 border_left to border_right 혹은</p><p id="219619c0-032a-411f-9596-c4b247a1d798" class="">border_top to border_bottom의 길이</p><p id="d1baf9cb-475d-4feb-9c8d-7a9464b86d44" class="">
+</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="9ee404da-13d1-4bc9-9456-8bdba1578127"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).height(); : 요소의 높이값을 반환
+$(&quot;요소선택&quot;).height(값); : 요소의 높이값을 변경</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="9a27e978-1633-454b-b30d-37944d45c1a9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).weight(); : 요소의 너비값을 반환
+$(&quot;요소선택&quot;).weight(값); : 요소의 너비값을 변경</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="b7f795de-e752-4fd2-b9e9-6abb0d5e647f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).innerHeight(); : padding을 포함한 요소의 높이값을 반환
+$(&quot;요소선택&quot;).innerHeight(값); : padding을 포함한 요소의 높이값을 변경</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="8e7d0d0d-8a9a-4289-a42c-a5d397ed08b2"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).innerWeight(); : padding을 포함한 요소의 너비값을 반환
+$(&quot;요소선택&quot;).innerWeight(값); : padding을 포함한 요소의 너비값을 변경</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="8d639d1d-ba2a-48af-9e71-5e0cdb6384b9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).outerHeight(); : padding 및 테두리를 포함한 요소의 높이값을 반환
+$(&quot;요소선택&quot;).outerHeight(값); : padding 및 테두리를 포함한 요소의 높이값을 변경</div></figure><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="3afece06-868b-4b91-8047-27e7dcddee8d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).outerWeight(); :padding 및 테두리를 포함한 요소의 너비값을 반환
+$(&quot;요소선택&quot;).outerWeight(값); : padding 및 테두리를 포함한 요소의 너비값을 변경</div></figure><pre id="c4268abd-1c92-4aaa-8857-190c1b9d4bb6" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./jq03_wh.css&quot;&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        $(&quot;div&quot;).eq(0).text(`수치 조작 전 p1의 너비: ${ $(&quot;#p1&quot;).width()}, 높이: ${$(&quot;#p1&quot;).height()}| 
+        innerWidth: ${$(&quot;#p1&quot;).innerWidth()}, innerHeight: ${$(&quot;#p1&quot;).innerHeight()}| 
+        outerWidth: ${$(&quot;#p1&quot;).outerWidth()}, outerHeight: ${$(&quot;#p1&quot;).outerHeight()}`);
+
+        $(&quot;#p1&quot;).width(&quot;300px&quot;);
+        $(&quot;#p1&quot;).height(&quot;300px&quot;);
+        $(&quot;div&quot;).eq(1).text(`요소 너비, 높이 조작 후 p1의 너비: ${ $(&quot;#p1&quot;).width()}, 높이: ${$(&quot;#p1&quot;).height()}| 
+        innerWidth: ${$(&quot;#p1&quot;).innerWidth()}, innerHeight: ${$(&quot;#p1&quot;).innerHeight()}| 
+        outerWidth: ${$(&quot;#p1&quot;).outerWidth()}, outerHeight: ${$(&quot;#p1&quot;).outerHeight()}`);
+
+        $(&quot;#p1&quot;).innerWidth(&quot;350px&quot;);
+        $(&quot;#p1&quot;).innerHeight(&quot;360px&quot;);
+        $(&quot;div&quot;).eq(2).text(`padding을 포함한 너비, 높이 조작 후 p1의 너비: ${ $(&quot;#p1&quot;).width()}, 높이: ${$(&quot;#p1&quot;).height()}| 
+        innerWidth: ${$(&quot;#p1&quot;).innerWidth()}, innerHeight: ${$(&quot;#p1&quot;).innerHeight()}| 
+        outerWidth: ${$(&quot;#p1&quot;).outerWidth()}, outerHeight: ${$(&quot;#p1&quot;).outerHeight()}`);
+
+        $(&quot;#p1&quot;).outerWidth(&quot;400px&quot;);
+        $(&quot;#p1&quot;).outerHeight(&quot;400px&quot;);
+        $(&quot;div&quot;).eq(3).text(`padding및 border를 포함한 너비, 높이 조작 후 p1의 너비: ${ $(&quot;#p1&quot;).width()}, 높이: ${$(&quot;#p1&quot;).height()}| 
+        innerWidth: ${$(&quot;#p1&quot;).innerWidth()}, innerHeight: ${$(&quot;#p1&quot;).innerHeight()}| 
+        outerWidth: ${$(&quot;#p1&quot;).outerWidth()}, outerHeight: ${$(&quot;#p1&quot;).outerHeight()}`);
+    })
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;h1&gt;수치 조작 메서드&lt;/h1&gt;
+    &lt;p id=&quot;p1&quot;&gt;내용1&lt;/p&gt;
+    &lt;p id=&quot;p2&quot;&gt;내용2&lt;/p&gt;
+    &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="9499480d-1f9d-4ec2-8307-5812060741ed" class="">먼저 결과를 확인해보자</p><p id="f4ad6304-e714-4746-a67a-45c4ecccc32a" class="">아래 사진은 너비와 높이에 대한 조작을 하기 전의 화면이다</p><figure id="42ea8628-6ea1-4681-b7dd-489a9160a6ff" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%88%98%EC%B9%98%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%88%EB%B9%84,%EB%86%92%EC%9D%B4%20%EC%A1%B0%EC%9E%91%20%EC%A0%84.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%88%98%EC%B9%98%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%88%EB%B9%84,%EB%86%92%EC%9D%B4%20%EC%A1%B0%EC%9E%91%20%EC%A0%84.PNG?raw=true"/></a></figure><p id="9120d838-58b6-45b9-a699-46cad3c5277e" class="">다음은 수치 조작 메서드를 이용해서 요소, padding까지 포함된 경우, padding+border까지 포함된 경우의 너비 및 높이를 변경했을 때의 결과화면이다!</p><figure id="f4c82ffa-c400-45ad-9a44-74d58c4d490b" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%88%98%EC%B9%98%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%88%EB%B9%84,%EB%86%92%EC%9D%B4%20%EC%A1%B0%EC%9E%91%20%ED%9B%84.PNG?raw=true"><img style="width:1152px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%88%98%EC%B9%98%EC%A1%B0%EC%9E%91%EB%A9%94%EC%84%9C%EB%93%9C-%EB%84%88%EB%B9%84,%EB%86%92%EC%9D%B4%20%EC%A1%B0%EC%9E%91%20%ED%9B%84.PNG?raw=true"/></a></figure><p id="e8d88543-6af1-430d-8996-ef8e25a7a6f9" class="">여기에서 중요한 점은 사용자가 innerWidth 혹은 outerWidth 등을 설정했을 때, 스타일 시트에서 설정해둔 값이 있다면 그 값을 고려해서 계산된 나머지 길이가 요소의 너비, 높이가 된다는 점이 눈여겨볼만하다!</p><p id="5ea69986-f6f5-41c4-87a2-cd969c7ba72e" class="">
+</p><p id="eee0ee66-ffc2-47b4-8506-41756b264fdd" class="">🌺 요소 위치 메서드</p><figure id="f4fbc1b1-6d9a-46a2-9366-0b0fa72f5abf" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C.png?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C.png?raw=true"/></a><figcaption>요소 위치 메서드</figcaption></figure><p id="1b4d926d-87ce-418e-8691-ea50420137a8" class="">🌹 position() 메서드 : 포지션 기준이 되는 요소를 &quot;기준으로 선택한 요소&quot;에서  왼쪽/오른쪽/윗쪽/아랫쪽으로 얼마나 떨어져 있는지 그 위치의 좌푯값을 반환하거나, 변경할 때 사용</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="1909c328-5746-49d5-b7c1-dac5e372545d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).position().[left|right|top|bottom]</div></figure><p id="fe43e226-7d71-4e0f-bd62-9fc745e54046" class="">🌹 offset()     메서드 : document를 기준으로  선택한 요소가 document의 왼쪽 혹은 윗쪽으로부터 얼마나 떨어져 있는지 그 위치의 좌푯값을 반환하거나 변경할 때 사용</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="ca41f320-4643-4f81-8db9-c363af40e09b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).offset().[left|top]</div></figure><pre id="2f31f528-8ab7-44cf-a845-64b556e3d749" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./jq03_position.css&quot;&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        const txt1 = $(&quot;.txt_1 span&quot;),
+              txt2 = $(&quot;.txt_2 span&quot;),
+              box  = $(&quot;.box&quot;);
+        
+        const offset = box.offset().top;
+        const position= box.position().top;
+
+        txt1.text(offset);
+        txt2.text(position);
+    });
+&lt;/script&gt;
+
+&lt;body&gt;
+    &lt;div id=&quot;box_wrap&quot;&gt;
+        &lt;p class=&quot;box&quot;&gt;박스&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;txt_1&quot;&gt;절대 top위칫값: &lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+    &lt;p class=&quot;txt_2&quot;&gt;상대 top위칫값: &lt;span&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="40abcf08-cf1c-44c2-88e6-8a652897ddbc" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C-position,offset.png?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C-position,offset.png?raw=true"/></a><figcaption>요소 위치 메서드 - offset, position</figcaption></figure><p id="bfc0d68e-3be1-44fc-9797-b44c82eb6abb" class="">위의 경우, offset에 대한 값은 100, position에 대한 값은 50으로 반환되는 것을 확인해볼 수 있다</p><p id="18a2bf9e-ca60-4f1e-9082-8f54eaffbcf2" class="">이는, document의 상단에서 100만큼 요소가 떨어져 있고, 요소를 둘러싸고 있는 div 요소로부터는 50만큼 떨어져 있음을 의미한다!</p><p id="6e3874bd-52f2-47ca-b44c-8083a4306096" class="">이는 아래와 같이 작성한 css 파일에서도 확인해볼 수 있다</p><pre id="ae5161f2-490a-46b3-990d-40e3cab3de83" class="code"><code>*{
+    margin:0;
+    padding:0;
+}
+#box_wrap{
+    width: 300px;
+    height: 200px;
+    margin:50px auto 0;
+    position:relative;
+    background-color: lightgreen;
+}
+.box{
+    width: 50px;
+    height: 50px;
+    position:absolute;
+    left: 100px;
+    top: 50px;
+    background-color: magenta;
+}</code></pre><p id="6de533d0-e497-4a25-83e8-c78703956695" class="">box 요소는 지금 절대적인 top 값을 50으로 두었고, 이를 둘러싼 div 요소인 box_wrap은 margin-top 값을 50으로 주었기 때문에, offset은 100, position은 50이 된다!</p><p id="b7767fa7-9ecd-49c1-b92b-478f7e0dd722" class="">
+</p><p id="87911c03-eaa1-4aed-ae07-d0367d096d1b" class=""><a href="https://api.jquery.com/offset/">https://api.jquery.com/offset/</a></p><p id="59e9d9b7-69f1-4dec-8d46-3d61f5f73492" class="">그리고, 만약, offset 을 바꾸고 싶다면 위의 api에서 기술한 바를 참조해보면,</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="0680e04c-2d1a-49f4-9fa3-1c8d0e3afd3f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">$(&quot;요소선택&quot;).offset({left|top : 값});</div></figure><p id="ae394700-a7ef-484a-a2d0-7f6e279064a5" class="">으로 변경해주면 된다!</p><pre id="72fc4f22-4d3b-4ae0-89aa-d3dac70fae40" class="code"><code>box.offset({top:300});
+
+txt1.text(box.offset().top);
+txt2.text(box.position().top);</code></pre><figure id="85d38dc8-a78a-4861-8b33-57aeb7f18d2c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C%20offset%EC%9D%84%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20document%EB%A1%9C%EB%B6%80%ED%84%B0%EC%9D%98%20%EC%9C%84%EC%B9%98%20%EB%B3%80%EA%B2%BD.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EC%9A%94%EC%86%8C%EC%9C%84%EC%B9%98%EB%A9%94%EC%84%9C%EB%93%9C%20offset%EC%9D%84%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20document%EB%A1%9C%EB%B6%80%ED%84%B0%EC%9D%98%20%EC%9C%84%EC%B9%98%20%EB%B3%80%EA%B2%BD.PNG?raw=true"/></a></figure><p id="54282848-dc0e-40d4-af88-f658db8cef6b" class="">위와 같이 변경되는 부분은 위의 단 세줄만 추가한 것인데,</p><p id="e63671bd-0022-40ba-9d8e-17d2cb94d394" class="">offset을 300으로 잡았고, div의 margin-top이 50이므로 position은 250(=300-50)이 된다!</p><p id="b57060fb-3c5a-42dc-b112-2a758e9478b0" class="">
+</p><p id="84fdcaa5-e510-4159-8559-9a9ca58a1819" class="">🌺 스크롤바 위치 메서드</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="f087e42c-7ace-4fe4-8db6-0ee411902740"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).scrollTop(); - 스크롤바가 수직으로 이동한 위칫값 반환
+$(&quot;요소 선택&quot;).scrollLeft(); - 스크롤바가 수평으로 이동한 위칫값 반환</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="ce6b3221-0fca-4bc0-b793-826d01292afa"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).scrollTop(&quot;새값&quot;); - 스크롤바를 수직으로 입력한 수치만큼 이동
+$(&quot;요소 선택&quot;).scrollLeft(&quot;새값&quot;); - 스크롤바를 수평으로 입력한 수치만큼 이동</div></figure><pre id="4fb7ed67-e879-473e-a248-436a191b452b" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            line-height: 1;
+        }
+        #wrap{
+            height: 5000px;
+            padding-top: 2000px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        const topNum=$(&quot;h1&quot;).offset().top;
+        $(window).scrollTop(topNum);//h1요소가 document로부터 떨어진 만큼 
+        //수직으로 이동
+
+        console.log($(window).scrollTop());
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;h1&gt;위치 메서드&lt;/h1&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="164c1f26-4a19-4d3c-9148-6644827ba52f" class="">위의 경우, topNum 내에는 h1요소가 document 상단으로부터 얼만큼 떨어져 있는지를 담고 있다. 이를 콘솔에서 확인해보면 2000px만큼 떨어져 있음을 알 수 있다! 그 이유는 여백을 모두 초기화한 후, h1 요소를 둘러싼 wrap 요소의 padding-top이 2000으로 주어졌기 때문이다!</p><p id="8e1f4ac9-37e4-416a-8153-3277dbd3b70b" class="">
+</p><p id="88555199-f5aa-4eef-8164-9776121aaf42" class="">그런데 이러한 topNum을 window 객체의 scrollTop에 대한 매개변수로 제공하게 되면, h1요소가 document 상단으로부터 떨어진 만큼 위치로 스크롤이 수직이동된다!</p><p id="12f60fdc-d5db-432e-9237-54c197683f3e" class="">
+</p><h3 id="2fe5ecaa-d5b4-4ff5-be63-693a828d476b" class="">3. 객체 편집 메서드</h3><p id="83f690e8-8f86-4560-9885-3504c0abadb4" class="">
+</p><p id="088bd797-f563-451f-8d21-91e220e065f3" class="">🌺 before(), insertBefore(), after(), insertAfter()</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="81cf3d29-838f-47e1-b341-3f363cf9d822"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).before(&quot;새요소&quot;);
+$(&quot;새요소&quot;).insertBefore(&quot;요소선택&quot;); - 선택한 요소의 이전 위치에 새 요소 생성</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="087a1059-b3e4-4dfe-bb37-ba708cd9ee0b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).after(&quot;새요소&quot;);
+$(&quot;새요소&quot;).insertAfter(&quot;요소선택&quot;); - 선택한 요소의 이후 위치에 새 요소 생성</div></figure><p id="00d3fee0-92a5-4f63-baa0-5ecd3bd4777a" class="">객체 편집 메서드는 기존의 html에 새로운 html 요소를 추가하는 작업을 수행한다!</p><pre id="155a1db9-fd72-404a-8bf5-b52153d80a66" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        $(&quot;#wrap p:eq(2)&quot;).after(&quot;&lt;p&gt;After&lt;/p&gt;&quot;);
+        $(&quot;#wrap p:eq(2)&quot;).next().css(&quot;color&quot;,&quot;red&quot;);
+
+        $(&quot;&lt;p style=&#x27;color:blue;&#x27;&gt;insertAfter&lt;/p&gt;&quot;).insertAfter(&quot;#wrap p:eq(0)&quot;);
+
+        $(&quot;#wrap p:eq(2)&quot;).before(&quot;&lt;a href=&#x27;https://www.naver.com&#x27; target=&#x27;_blank&#x27;&gt;Naver&lt;/a&gt;&quot;);
+        $(&quot;&lt;em&gt;화이팅!&lt;/em&gt;&quot;).insertBefore(&quot;#wrap p:eq(1)&quot;);
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;div id=&quot;wrap&quot;&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p&gt;내용2&lt;/p&gt;
+        &lt;p&gt;내용3&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="7987de59-0daf-4284-924d-9ca20dc59761" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-%20before,after,%20insertBefore,%20insertAfter.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-%20before,after,%20insertBefore,%20insertAfter.PNG?raw=true"/></a><figcaption>객체 편집 메서드 -before, insertBefore, after, insertAfter</figcaption></figure><p id="b24659bf-7148-421c-98cb-7fd2c8b168f1" class="">위의 경우, 처음에는 인덱스2에 해당되는 내용 3의 뒷 부분에 After라는 내용을 가진 요소가 추가되는 것을 확인해볼 수 있다. 이제 After는 인덱스 3이 되었다!</p><p id="2a1fe7b3-7b6c-4fe9-8d3b-9d5c10e15460" class="">
+</p><p id="f0c64d88-38af-4b19-b49f-632a0d188b32" class="">그 다음에는 인덱스 0에 해당되는 내용1의 뒷부분에 insertAfter라는 내용의 요소를 넣고,</p><p id="1ccd3c87-a8af-4ee2-97e6-06e8deb50d2c" class="">그러면 인덱스는 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="599a4700-2728-43a7-9cb2-a71caa4de065"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">인덱스 0 : 내용 1
+인덱스 1: insertAfter
+인덱스 2: 내용 2
+인덱스 3: 내용 3
+인덱스 4 : After</div></figure><p id="0ae38e7b-a239-4183-a972-7271603a4ebe" class="">가 된다</p><p id="107daf27-fbd6-492b-b16c-cbc9a8c269c4" class="">
+</p><p id="d6e31015-1afe-404e-8ac8-79f4b08055f1" class="">이 상황에서 인덱스 2의 앞 부분에 a 요소를 넣게 되면, 인덱스는(before 이용)</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="e337bb9f-4c15-41a0-a2ce-b4a88065e348"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">인덱스 0 : 내용 1
+인덱스 1: insertAfter
+인덱스 2 : Naver
+인덱스 3: 내용 2
+인덱스 4: 내용 3
+인덱스 5 : After</div></figure><p id="8404cf6b-4cb3-4b81-8b1c-4c06728097fd" class="">가 된다</p><p id="88933bee-241d-4332-9d5d-f47356d5659e" class="">
+</p><p id="ca119f9a-6112-44e7-a504-439ceb27ddc8" class="">그 다음, insertBefore를 이용하여 인덱스 1의 앞부분에 추가하고자 하면,</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="19123322-db2c-47e9-a159-d4402ad6dd95"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">인덱스 0 : 내용 1
+인덱스 1: 화이팅!
+인덱스 2 insertAfter
+인덱스 3 : Naver
+인덱스 4: 내용 2
+인덱스 5: 내용 3
+인덱스 6 : After</div></figure><p id="04dcb7f2-c10e-483f-826d-e2b52f83bd79" class="">와 같이 p 요소 그룹 간 관계가 구성, 정리된다!</p><p id="586455f7-76a3-409e-9d9f-dff07e8f0b06" class="block-color-orange_background">🌟 중요한 점은 가상 클래스 요소 선택자인 ::before, ::after가 아니라는 점에 유의하자!!</p><p id="4975bb23-70fa-4294-a00b-a232677ff9b1" class="">
+</p><p id="6c2a113c-bd1a-44c6-954d-29a311973e62" class="">🌺 append(), appendTo(), prepend(), prependTo() 메서드</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="f0411fa7-792f-454b-a282-f618d87db915"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).append(&quot;새요소&quot;);
+$(&quot;새 요소&quot;).appendTo(&quot;요소선택&quot;);
+- <mark class="highlight-red"><strong>선택한 요소 내의 마지막 위치</strong></mark>에 새 요소를 생성하고 추가</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="735220b0-886b-4301-b8a2-6cc33d0b1187"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).prepend(&quot;새요소&quot;);
+$(&quot;새요소&quot;).prependTo(&quot;요소선택);
+-<mark class="highlight-red"><strong>선택한 요소 내의 앞 위치</strong></mark>에 새 요소를 생성하고 추가</div></figure><p id="96dd2e12-6d70-478b-b58b-eeb71fb3cd8d" class="">일부러, before와 after와 개념적으로 혼동이 올 수 있어서, li 요소가 5개인 ul 요소를 이용해서 테스트해보자!</p><pre id="79449221-9958-46e4-96cb-a0c3cd1c93be" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        const ul = $(&quot;#listZone&quot;);
+        $(&quot;&lt;li&gt;prependTo&lt;/li&gt;&quot;).prependTo(ul);
+        $(ul).prepend(&quot;&lt;li&gt;prepend&lt;/li&gt;&quot;);
+
+        $(&quot;&lt;li&gt;appendTo&lt;/li&gt;&quot;).appendTo(ul);
+        $(ul).append(&quot;&lt;li&gt;append&lt;/li&gt;&quot;);
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;ul id=&quot;listZone&quot;&gt;
+        &lt;li&gt;내용1&lt;/li&gt;
+        &lt;li&gt;내용2&lt;/li&gt;
+        &lt;li&gt;내용3&lt;/li&gt;
+        &lt;li&gt;내용4&lt;/li&gt;
+        &lt;li&gt;내용5&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="8b9376f7-351e-458d-b202-41149727ccaa" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/append,%20prepend,%20appendTo,%20prependTo.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/append,%20prepend,%20appendTo,%20prependTo.PNG?raw=true"/></a><figcaption>객체 편집 메서드- append,appendTo, prepend, prependTo</figcaption></figure><p id="81c7cf34-b43f-4859-97cb-a49709bfb78a" class="">위에서 언급한 리스트를 이용해서 테스트해보면,</p><p id="cb063b73-8252-4b0d-9ddd-f5f7132f8039" class="">append, appendTo는 ul 요소 내의 가장 맨 뒷 부분부터 천천히 쌓이고</p><p id="7a7d4e04-0ae6-4d2b-9846-d3f3ed822b0c" class="">prepend,prependTo는 ul 요소 내부의 가장 맨 윗 부분부터 천천히 쌓이는 것을 확인해볼 수 있다!</p><p id="1c185279-176d-464d-9459-3f415261f35a" class="">
+</p><p id="27c7633a-3467-4ff3-9bc5-4a51022d90c7" class="">🌺 clone(), empty(), remove()</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="da4147bf-fe1a-4685-8f31-2d8261aaa35d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).clone([true|false]);
+- 선택한 요소를 복제
+- true 이면 이벤트까지 복제
+- false 이면 요소만 복제 (기본값)</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="b236356e-4ff1-455a-91c8-dbfead5292a6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).empty(); - <mark class="highlight-red"><strong>선택한 요소의 모든 하위 요소를 삭제</strong></mark></div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="b5976226-0e4f-4a8b-bc67-57f2a993b0e9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).remove(); - <mark class="highlight-red"><strong>선택한 요소를 삭제</strong></mark></div></figure><pre id="89e5d31c-d3e8-4b1a-aeca-85edcbc656f0" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        $(&quot;.box1 p:eq(0)&quot;).click((e)=&gt;{
+            const $this=e.target;
+            const target = $this;
+            console.log(target.textContent);
+        });
+
+        const cp1 = $(&quot;.box1 p:eq(0)&quot;).clone();
+        const cp2 = $(&quot;.box1 p:eq(1)&quot;).clone();
+
+        $(&quot;.box3 p:eq(1)&quot;).after(&quot;&lt;hr&gt;&quot;);
+        $(&quot;.box3&quot;).append(cp1);
+        $(&quot;.box3&quot;).append(cp2);
+
+        $(&quot;.box2&quot;).remove();
+
+        $(&quot;.box3 p:eq(1)&quot;).empty();
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;div class=&quot;box1&quot;&gt;
+        &lt;p&gt;내용1&lt;/p&gt;
+        &lt;p&gt;내용2&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;box2&quot;&gt;
+        &lt;p&gt;내용3&lt;/p&gt;
+        &lt;p&gt;내용4&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;box3&quot;&gt;
+        &lt;p&gt;내용5&lt;/p&gt;
+        &lt;p&gt;내용6&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="dafbe682-2e2d-4399-906c-6b01d24eede4" class="">먼저, box1 요소를 복제해서 담은 후, 기존의 box3의 마지막 요소 뒷 부분에 수평선을 긋고, 그 뒤에 복제한 요소들을 붙여넣으면 아래와 같이 box1과 내용이 같은 요소들이 생성된다. 주의할 점은, 아래의 gif 파일에서 확인해볼 수 있듯, 이벤트가 있는 내용1 요소에 대해서 clone 옵션을 true로 주면, 이벤트까지 복제되는 것을 확인해볼 수 있다!(false 혹은 값을 주지 않으면 이벤트는 복제되지 않음을 알 수 있다!)</p><figure id="0f86da5f-d83f-4c96-b93a-4e941d4f1444" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-clone.gif?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-clone.gif?raw=true"/></a><figcaption>객체 편집 메서드- clone()</figcaption></figure><p id="d36613e4-f19e-4f1a-9653-0be35f845cb2" class="">그 후에, box2요소에 대해서 remove를 하게 되면, 하위 요소들이 모두 삭제되고</p><p id="2c413a90-31e4-47e0-81e4-9e5ecfe46c63" class="">empty를 하게 되면 해당 요소를 제거하게 된다</p><p id="f73d3d18-d0e1-4bbd-955a-0ab9de228ebc" class="">다만, 예시처럼 하위요소를 감싸는 상위 요소를 empty하게 되면 remove와 동일한 효과를 얻을 수 있다!</p><figure id="ab90885d-bcf8-4a15-a4ec-b9f639723c0b" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-remove.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-remove.PNG?raw=true"/></a><figcaption>객체 편집 메서드- remove()</figcaption></figure><figure id="9efa1cc1-467a-46cf-9b1e-f5b1d5ae738b" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-empty.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%ED%8E%B8%EC%A7%91%EB%A9%94%EC%84%9C%EB%93%9C-empty.PNG?raw=true"/></a><figcaption>객체 편집 메서드- empty()</figcaption></figure><p id="63054ecb-ff15-46b8-a115-0dd3887a2e70" class="">
+</p><p id="a67ac686-a466-4f08-826e-2bff1d5fb4e5" class="">🌺 replaceAll(), replaceWith() 메서드</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="db1ffa53-6774-48f2-99d2-d1a9b6c7e0d9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).replaceWith(&quot;새 요소&quot;);
+(2) $(&quot;새 요소&quot;).replaceAll(&quot;요소 선택&quot;) ;</div></figure><p id="7b218ac9-3b7f-48ea-8c7f-a48bf6e2e639" class="">-선택한 모든 요소를 한꺼번에 바꿀때 사용</p><p id="cbdb57c0-f93b-40ce-a6b7-544d1007217b" class="">-html()과 유사!</p><pre id="b170b576-9292-4261-a311-656217a3ff75" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        $(&quot;h2&quot;).replaceWith(&quot;&lt;h3&gt;replaceWith반영됨!&lt;/h3&gt;&quot;);
+        $(&quot;&lt;h4&gt;replaceAll적용됨&lt;/h4&gt;&quot;).replaceAll(&quot;div:first-of-type&quot;);
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;section class=&quot;box1&quot;&gt;
+        &lt;h2&gt;제목1&lt;/h2&gt;
+        &lt;div&gt;내용1&lt;/div&gt;
+        &lt;div&gt;내용2&lt;/div&gt;
+    &lt;/section&gt;
+    &lt;section class=&quot;box2&quot;&gt;
+        &lt;h2&gt;제목2&lt;/h2&gt;
+        &lt;div&gt;내용3&lt;/div&gt;
+        &lt;div&gt;내용4&lt;/div&gt;
+    &lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="fa7125dc-189a-44e8-870f-d6e472905f83" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-replaceWith,replaceAll.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-replaceWith,replaceAll.PNG?raw=true"/></a><figcaption>객체 편집 메서드- replaceWith, replaceAll</figcaption></figure><p id="f964c351-6dc4-47ac-98e6-d979cbfa459a" class="">
+</p><p id="b388a943-8f52-4bb4-88f5-f9685ec39f17" class="">🌺 upwrap(), wrap(), wrapAll(), wrapInner()</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="f70376a9-3f64-4e8f-acbe-84364d77cf3d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) $(&quot;요소선택&quot;).unwrap(); - 선택한 요소의 부모요소를 삭제</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="d2b4073f-9077-4b6f-a739-7a47fb2124f0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) $(&quot;요소선택&quot;).wrap(새요소); - 선택한 요소를 새 요소로 각각 감쌈</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="d62e8c74-b057-43ca-a0e6-4fe4e0e9287a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(3) $(&quot;요소선택&quot;).wrapAll(새요소); - 선택한 요소를 새 요소로 한꺼번에 감쌈</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="451846b9-a797-4b60-8aa9-3a7e4b40c7cf"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(4) $(&quot;요소선택&quot;).wrapInner(새요소); - 선택한 요소의 모든 하위 요소를 새 요소로 감쌈</div></figure><pre id="5169b7ce-7c27-4565-8ea9-1bc534d570de" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        div{
+            background-color: aqua;
+        }
+        li{
+            margin:30px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;script src=&quot;./js/jquery-3.6.0.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+    $(()=&gt;{
+        $(&quot;strong&quot;).unwrap();//strong을 감싸는 부모 요소를 삭제
+        $(&quot;.ct1&quot;).wrap(&quot;&lt;div/&gt;&quot;);//class값이 ct1인 요소를 &lt;div&gt;요소로 감쌈
+        $(&quot;.ct2&quot;).wrapAll(&quot;&lt;div /&gt;&quot;);//class값이 ct2인 요소를 모두 묶어서
+            //div요소로 감쌈
+        $(&quot;li&quot;).wrapInner(&quot;&lt;div /&gt;&quot;);
+    });
+&lt;/script&gt;
+&lt;body&gt;
+    &lt;h1 id=&quot;tit_1&quot;&gt;
+        &lt;strong&gt;
+            객체 조작 및 생성
+        &lt;/strong&gt;
+    &lt;/h1&gt;
+    &lt;p class=&quot;ct1&quot;&gt;내용1&lt;/p&gt;
+    &lt;p class=&quot;ct1&quot;&gt;내용2&lt;/p&gt;
+    &lt;p class=&quot;ct2&quot;&gt;내용3&lt;/p&gt;
+    &lt;p class=&quot;ct2&quot;&gt;내용4&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;내용3&lt;/li&gt;
+        &lt;li&gt;내용4&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="c41d73e1-563a-4047-b8da-1c02e2a86299" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C%20-unwrap.PNG?raw=true"><img style="width:1200px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C%20-unwrap.PNG?raw=true"/></a><figcaption>객체 편집 메서드- unwrap</figcaption></figure><p id="51be0c35-c22c-4f12-82c6-fdea754f75b2" class="">먼저 unwrap은 위와 같이 어떤 요소를 감싸는 <span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>부모 요소를 제거</strong></mark></span>하게 된다는 것을 확인해볼 수 있다!</p><figure id="71557b35-42d1-46c1-9299-ea01f6bd3dae" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-wrap.PNG?raw=true"><img style="width:1200px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-wrap.PNG?raw=true"/></a><figcaption>객체 편집 메서드-wrap</figcaption></figure><p id="39612ce4-4943-4cce-9620-1a7062d4a381" class="">그리고 wrap은 <mark class="highlight-red"><strong>어떤 요소 각각에 대해서 그</strong></mark><span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong> 외부</strong></mark></span><mark class="highlight-red"><strong>를 새 요소로 감싼다</strong></mark></p><figure id="50d24de1-9caf-4c00-87fb-2ba9dcf67d14" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-wrapAll.PNG?raw=true"><img style="width:1200px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C-wrapAll.PNG?raw=true"/></a><figcaption>객체 편집 메서드- wrapAll</figcaption></figure><p id="928104b2-1b5c-4044-9e03-965e04c5f1ef" class="">하지만 wrapAll은 해당 요소에<strong><mark class="highlight-red"> 선택될 수 있는 요소를 묶어서 하나로 만들고, 그 외부를 새 요소로 감싼다!</mark></strong></p><figure id="f3407da9-6095-4356-99c9-0291f2b6cfe7" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C%20-%20wrapInner.PNG?raw=true"><img style="width:1200px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/Javascript/jQuery/%EA%B0%9D%EC%B2%B4%20%ED%8E%B8%EC%A7%91%20%EB%A9%94%EC%84%9C%EB%93%9C%20-%20wrapInner.PNG?raw=true"/></a><figcaption>객체 편집 메서드-wrapInner</figcaption></figure><p id="50ed2099-52cb-4236-94e4-f5eaeded83f2" class="">그리고 wrapInner는 존재하고 있던 <strong><mark class="highlight-red">어떤 특정 요소 각각의 </mark></strong><span style="border-bottom:0.05em solid"><strong><mark class="highlight-red">내부</mark></strong></span><strong><mark class="highlight-red">를 새 요소로 감싼다!</mark></strong></p><p id="4642fccd-d65f-4687-a5a2-8528c2425f7a" class="">
+</p></div></article></body></html>

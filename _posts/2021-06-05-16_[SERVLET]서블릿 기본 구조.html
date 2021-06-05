@@ -1,0 +1,776 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>서블릿 기본 구조</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0d57febb-5163-4779-9684-fb23f1b8d7b3" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">서블릿 기본 구조</h1></header><div class="page-body"><p id="31684087-8747-4f1f-8307-da0067bf65a6" class="">서블릿은 Server+Applet의 합성어로, 자바 코드 내부에 html 문서를 품고 있는 형태를 보인다!</p><p id="aa95cc16-c5df-40e8-a79c-e9fcac9b9231" class="">
+</p><ul id="42acf196-4340-4c1e-9350-b5a0ac8c0104" class="block-color-blue_background bulleted-list"><li><mark class="highlight-blue"><strong>서블릿 : HttpServlet클래스(javax.servlet.http 패키지에서 제공하는 클래스)를 상속 받아 만든 서브 클래스</strong></mark></li></ul><p id="cfe4aaad-d5aa-4e31-bf47-df96ca18019c" class="">
+</p><ol id="bb41b1d3-0f0c-4edd-8755-4b164171af30" class="numbered-list" start="1"><li>서블릿을 요청하기 위한 URL</li></ol><figure id="f987414d-486b-49a7-8fcb-fed7c0ff1f25" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%9D%84%20%EC%9A%94%EC%B2%AD%ED%95%98%EA%B8%B0%20%EC%9C%84%ED%95%9C%20url.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%9D%84%20%EC%9A%94%EC%B2%AD%ED%95%98%EA%B8%B0%20%EC%9C%84%ED%95%9C%20url.png?raw=true"/></a><figcaption>서블릿을 요청하기 위한 URL</figcaption></figure><p id="cacd8b2b-5f93-48e5-9b39-9dbb3402539e" class="">서블릿을 요청하기 위한 url(우리가 서블릿 파일을 작성해서 실행하면 뜨는 주소)는 위와 같은 형식을 지닌다. 각각 어떤 의미를 지니는지 조목조목 뜯어보자</p><p id="0edda469-f7be-4496-b354-c6d82e811f90" class="">
+</p><ul id="4a2467dc-6f59-471c-8bc2-ca930494f571" class="bulleted-list"><li><a href="http://localhost:8181">http://localhost:8181</a> - 톰캣서버에 접속하겠음을 의미</li></ul><p id="6954ae35-02d4-44f5-93e0-33f54ba4f2d1" class="">
+</p><p id="1d341a0e-6393-4be7-b89f-8443d97e13e5" class="">1) <a href="http://localhost">http://localhost</a> - 웹 서버에 접속하기 위한<mark class="highlight-teal_background"><strong> IP주소 </strong></mark>[localhost의 ip 주소는 127.0.0.1]</p><p id="8b4081ea-1605-43d1-96da-22f08f59d3a9" class="">
+</p><p id="bdde0ba4-d648-4172-86f6-8282bbd74093" class="">2) : 8181 - 톰캣을 설치하면서 설정한 <mark class="highlight-yellow_background"><strong>포트번호</strong></mark></p><p id="fac106da-cb55-4246-bb86-e5a5cb39b310" class="">
+</p><ul id="aeb898c9-d62e-4eee-95c8-82af266a4ed9" class="block-color-orange_background bulleted-list"><li>/myProject : <mark class="highlight-red"><strong>컨텍스트 패스(Context Path)</strong></mark></li></ul><p id="31194506-6951-4bc4-b2ae-35eae27993f3" class="">
+</p><p id="9b54b27d-3c70-4d30-9b2b-2c6acc236b8f" class="">*웹 서버에서 제공하는 다양한 웹 어플리케이션 중 어떤 어플리케이션을 수행할 것인지를 구분하기 위해 사용되는 개념</p><p id="5a045546-a6c2-4449-b838-6d0a32341ba0" class="">
+</p><p id="8cdb3a86-8205-4193-9fc1-336583516c48" class="">*톰캣 서버에 웹 어플리케이션 등록하기[server.xml 파일]</p><p id="c87c9635-5986-43bf-9077-24229a407b9f" class="">(이클립스에서는 자동으로 작성되는데, ctrl+shift+F 혹은 source-Format을 이용하여 들여쓰기 처리하여 한 줄로 작성된 부분을 구조화해서 확인 가능)</p><pre id="2cced4ff-1472-4c60-914b-abc45e37ea59" class="code"><code>&lt;Context docBase=&quot;프로젝트명&quot; path=&quot;/프로젝트명&quot; reloadable=&quot;true&quot; 
+source=&quot;org.eclipse.jst.jee.server:컨텍스트패스명&quot; /&gt;</code></pre><p id="f048b025-40c2-4386-ba8d-00caf4f77ec9" class="">
+</p><p id="12cd3a2f-2ada-4196-acbd-5558a1577e12" class="">위의 한 줄에서 path에 /프로젝트명 으로 기록을 해둠으로써 톰캣서버입장에서 컨텍스트 패스를 인식할 수 있게 된다!</p><p id="e5da7017-bafc-4dea-bc0b-e1031ebafc2e" class="">
+</p><p id="48557719-b6d0-4ab8-905e-d5c0ed0fd44b" class="">
+</p><p id="bdafa171-d536-4336-aade-1b97388791db" class="block-color-pink_background">2.  URL 매핑(@WebServlet 어노테이션) &amp;&amp; 직렬화를 통한 클래스 버전에 따른 고유 번호 포함 &amp;&amp;</p><p id="476f9877-e686-482d-beaf-e245b32234c0" class="block-color-pink_background">    public + HttpServlet</p><p id="96b2c199-30bd-4e17-8431-c097006ba26e" class="">
+</p><pre id="aad47137-232c-4234-b2ce-6531e6634791" class="code"><code>package unit01;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+📌@WebServlet(&quot;/hello&quot;)📌
+⚠️public class HelloServlet extends HttpServlet⚠️ {
+	🌟private static final long serialVersionUID = 1L;//클래스 버전 고유번호🌟
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HelloServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+
+	
+	}
+
+}</code></pre><p id="88addbcb-8e26-42a8-80e2-a3c4f9227adf" class="">
+</p><p id="3af6dbff-fa4a-488d-aa26-8e0ac2c0fb04" class="block-color-yellow_background"><mark class="highlight-red"><strong>a) URL 매핑(필수)!</strong></mark></p><p id="3ed98248-ad37-4a94-bb77-10ecb2ca1593" class="">
+</p><ul id="032d4d91-a287-41d7-af22-a6db0aaeb2a5" class="bulleted-list"><li>서블릿을 동작시키기 위해서 실제 자바 클래스명을 사용하는 대신 서블릿을 요청하기 위한 문자열을 서블릿 클래스와 매핑시키는 것</li></ul><ul id="a566d522-e050-4e3a-b98a-14903b6a9012" class="bulleted-list"><li>쉽게 말하면, 서블릿 클래스의 별칭!</li></ul><ul id="b455eff3-1496-4caa-b8fe-cefd70aa6bd9" class="bulleted-list"><li>사용 목적 : <p id="146db204-09e0-4d14-8d3c-034ce24d9e7c" class="">-실제 서블릿 클래스를 공개하지 않기 위함(보안)</p><p id="230ae57c-9495-4a7d-be29-df8e8bd4829f" class="">-실제 물리적 위치 정보가 아니기 때문에 사용자가 실제 경로와 파일명을 직접 입력할 필요가 없음</p></li></ul><ul id="faf435ae-4333-49a2-88e9-d580f181027a" class="bulleted-list"><li>사용 방법 : @WebServlet 어노테이션으로 매핑 가능(servlet 3.0~)</li></ul><ul id="82d696f8-0af9-4995-9400-b4dac98e266e" class="bulleted-list"><li>서블릿 3.0 이전에는 web.xml에서 매핑하였는데, 이로 인한 불편함이 존재했음</li></ul><ul id="9d5ec1df-9a62-46b1-a6de-e792fa5d6ebe" class="bulleted-list"><li>이클립스에서는 서블릿을 생성할 때, URL Mapping 탭에서 수정하여 적용 가능</li></ul><p id="8531f6af-f393-4e74-9f35-7b18423ad1ae" class="">
+</p><p id="4ff2d254-bb5a-4a79-a56b-c77c5e13e73b" class="block-color-yellow_background"><mark class="highlight-red"><strong>🌟어노테이션 : 컴파일할 때 환경 설정을 변경해줄 것을 알려주는 주석 형태🌟</strong></mark></p><p id="5b89fd15-1234-4c87-afca-356554807b7d" class="">
+</p><p id="e6f69ce7-bcee-4157-ac90-49e67c0ec31d" class="">b) 직렬화</p><p id="214a5acc-d715-40af-8644-96f1a34c46b2" class="">
+</p><p id="d0a5032d-d7b8-4972-aac8-34f9b278885f" class="">🌟로 표시된 부분을 보면,</p><p id="256130c0-190b-418d-af08-87c17391b24a" class="">
+</p><pre id="a21ae423-d8c9-410a-b3bb-29b29a4414cd" class="code"><code>private static final long serialVersionUID =1L;</code></pre><p id="5a14cd38-fc31-4313-8fde-00103ce718a3" class="">
+</p><p id="14914048-acb4-4d76-8404-42e595bf3cee" class="">로 되어 있는데, 이 부분을 통해서 프로그램 간의 동기화 등 문제를 해결해줄 수 있다</p><p id="3f1cf12a-34a7-4ed4-8bd9-c32bb268579e" class="">
+</p><p id="28ded5b5-75ee-45d0-98ef-d1892badefd5" class="">c) HttpServlet 클래스를 구현한 서브 클래스를 public으로 제한자 설정</p><p id="7e575781-629c-4f88-bbab-559d3c2e2aea" class="">
+</p><ul id="3413b00f-ec0c-43b7-8b6f-1db1cd75c451" class="block-color-yellow_background bulleted-list"><li><mark class="highlight-red"><strong>⚠️로 된 부분을 참고하면, public으로 HttpServlet 클래스를 구현한 서브클래스에 대한 접근을 제한시켜두었는데, 그 이유는 브라우저를 통해 외부에서 실행되기 때문!</strong></mark></li></ul><p id="0c02fb5d-3280-4eeb-9f76-63c859de568e" class="">
+</p><p id="89fc6737-fd14-4a61-af0e-b88b6ae3efb4" class="">
+</p><p id="600c9d6b-7dd6-44be-bb6b-9a8d258ccc6f" class="">3.  요청 메서드 doGet(), doPost()</p><p id="6d339723-56df-436e-8898-cf8b1e0c98c0" class="">
+</p><ul id="a98f7976-9c10-4573-8c24-16739e66aa4f" class="bulleted-list"><li>요청 방식에 따라서 doGet(), doPost()가 수행되기 때문에 적절하게 오버라이딩해주어야 함</li></ul><p id="d5e8e299-b63b-4312-8898-92a5b4cdd4f3" class="">
+</p><p id="ff816c40-3776-4c90-871a-051d661822c2" class="">각각의 메서드는 모두 각각 매개변수로 요청과 응답을 의미하는</p><p id="933c1de3-e184-47b0-a439-268e22cf860c" class="">
+</p><p id="c71afa94-b472-414b-93b6-2f32c66cac9f" class="">HttpServletRequest 객체와 HttpServletResponse 객체를 전달받는다</p><p id="2ca13a92-1aa9-4949-b88a-3b5e9f118374" class="">
+</p><pre id="5c87349d-10e3-4cf5-a4a6-0b0780944aaa" class="code"><code>protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}</code></pre><p id="98c84c31-62de-4eb9-9a59-65f1b499241e" class="">
+</p><ul id="12839ad9-ac9d-4a8b-a89f-325d1b031222" class="bulleted-list"><li>HttpServletRequest: 클라이언트의 요청을 처리
+<mark class="highlight-yellow_background"><strong>- ServletException, IOException에 대한 예외처리를 해주어야 함(일반적으로 throws를 이용)</strong></mark></li></ul><p id="8ace6c06-6d9f-42cb-8693-9809a6af3023" class="">
+</p><ul id="b41140fb-dd2c-4842-91ac-2874be0cc14a" class="bulleted-list"><li>HttpServletResponse: 요청 처리 결과를 클라이언트에게 되돌리기(응답하기) 위해 사용됨</li></ul><p id="6b57c86e-d8f7-411c-b845-1dc47094264c" class="">
+</p><p id="f229ce7f-69ea-4ee2-a785-130a0ad88bb9" class="">⚠️ 하나의 서블릿 내에 get 방식, post 방식에 따라 서로 다른 기능을 제공해야 하는 경우는, doGet 메서드와 doPost 메서드 모두 오버라이딩해야 함!</p><p id="fa0023fb-943a-4616-ab75-0041ca782edb" class="">
+</p><p id="0fc4600f-b1bb-41bd-b007-8700e2737ec0" class="">
+</p><p id="762e2840-68cd-4ed7-bc92-56ca174ae82e" class="block-color-yellow_background">4. <mark class="highlight-blue"><strong>응답 객체</strong></mark>에 <mark class="highlight-red"><strong>콘텐트 타입 지정</strong></mark>하기</p><p id="45a94386-a83e-417f-9a65-31e98efe1e72" class="">
+</p><pre id="60fa08b0-3d8e-4bc4-a2d6-c1748a24274f" class="code"><code>HttpServletResponse 객체.setContentType(&quot;콘텐트 타입(text/html)&quot;);
+
+예) response.setContentType(&quot;text/html&quot;);</code></pre><ul id="63a435a0-acee-4984-b7b4-bfbbb0bccbdd" class="bulleted-list"><li>서블릿에서는 setContentType()메서드를 이용해서 클라이언트에게 응답할 페이지에 대한 환경설정을 해주어야 하는데,</li></ul><p id="e4ed578e-14b1-472d-a514-acdd7e95f447" class=""><div class="indented"><p id="7b4192e6-04cd-404f-a055-29ace7e08b86" class="">위의 코드에서는 &quot;text/html&quot; 로 설정해둠으로써, text나 html로 부여주겠다는 의미를 나타냄</p><p id="1e8aab22-afee-4e40-845b-0a5d45c6f8c0" class="">
+</p></div></p><ul id="d20f073a-be7e-4afc-ace8-b97949d31ef9" class="bulleted-list"><li>서블릿에는 main 메서드가 있는 클래스에서 실행하지 않고, 웹 서버가 실행을 해주는 방식</li></ul><p id="ef8119f6-02bd-44d3-b10f-e01d3e61a06a" class="">
+</p><ul id="a8799109-0fec-44a9-ab7f-635c3285d142" class="bulleted-list"><li>Event-Driven Programming으로 실행됨</li></ul><p id="219fbb33-52e7-4335-b6c8-7358b6608a8d" class="">
+</p><p id="ec90966f-3619-457a-bc69-441e1300fd87" class=""><strong><mark class="highlight-blue_background">사용자 요청</mark></strong> ➡️ <mark class="highlight-blue_background"><strong>톰캣 서버: 서블릿 객체 생성</strong></mark> ➡️<mark class="highlight-blue_background"><strong> init()</strong></mark> ➡️<mark class="highlight-blue_background"><strong> 요청 메서드 호출</strong></mark></p><p id="0e7dc6e5-e27a-4e1a-aeeb-d49639ead6c1" class="">
+</p><p id="671aa224-f0d7-43f0-a25f-5e5e73c880c8" class="">4-1. 한글 인코딩이 깨지지 않도록 콘텐트 타입을 지정할 때 charset 설정해주기</p><p id="7c254e00-9078-4acc-ba6f-d3ab225e86d1" class="">
+</p><pre id="e1e358cd-f3c1-4316-848d-e0c870dc8cb9" class="code"><code>HttpServletResponse 객체.setContentType(&quot;콘텐트 타입; 📌charset=UTF-8📌&quot;);
+
+예) response.setContentType(&quot;text/html; charset= UTF-8&quot;);</code></pre><p id="f1d447fe-5f2e-4953-ac32-8020505a2284" class="">
+</p><ul id="9cc33b12-72c6-4270-be68-f1c61f519ed0" class="bulleted-list"><li>한글이나 한자는 UTF-8 형식을 사용하도록 지정해주어서, 다른 국가에서도 호환이 될 수 있도록 인코딩을 설정해주기</li></ul><p id="5ae5f049-a019-43d0-8e86-def3c40ea118" class="">
+</p><p id="2b206c58-d6df-4858-a9e0-5f40e788999d" class="">5. 출력 스트림 얻어오기</p><p id="1ab26ae2-f34e-405c-b6a7-f38b174dfec7" class="">
+</p><ul id="caf40b1e-c98f-4ba3-bee8-004f51860821" class="block-color-yellow_background bulleted-list"><li>HttpServletResponse 객체의 인코딩을 설정 하기 전 출력 스트림을 얻어올 경우, 인코딩이 깨진 상태에서 결과를 출력할 수 있기 때문에, 📌<span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>꼭! HttpServletResponse 객체의 인코딩을 설정한 후 출력 스트림을 얻어오도록 하자!</strong></mark></span>📌</li></ul><p id="095b3330-c848-4988-b1f1-1bb75784280f" class="">
+</p><ul id="94d8b05e-406c-429b-b797-5b34c3bd97e5" class="bulleted-list"><li>서블릿에서는 출력스트림인 PrintWriter 객체를 아래와 같이 사용하여 HttpServletResponse 객체로부터 얻어냄[java.io 패키지]</li></ul><p id="00da7fc8-b38f-4ef2-a8ec-fde2cb3f4e82" class="">📌</p><pre id="d48aa450-6c52-49e7-8358-a6701efc94da" class="code"><code>PrintWriter 객체명 = HttpServletResponse인스턴스명(매개면수로 전달된 그 이름).getWriter();
+
+예: PrintWriter out = response.getWriter();</code></pre><p id="21c0c69d-6891-4557-9f49-7a76ad9a80ea" class="">
+</p><p id="a385fe54-44c8-4f5f-9ae6-4fbc613f73c1" class="">6. 클라이언트에게 HTML 문서 형태로 결과 출력하기</p><p id="cf9b8531-0d29-4cbe-a659-5650c7c93553" class="">
+</p><ul id="b33669de-8554-4cff-9657-f6588eba49e3" class="bulleted-list"><li>PrintWriter의 메서드인 print() 및 println() 를 이용하여 태그 형태로 출력</li></ul><p id="4f917d1d-19ed-4270-943c-01b112aedad2" class="">
+</p><p id="2a430121-86ca-47c4-84ca-ab7cc951c2d6" class="">예)</p><pre id="abce555d-2e98-421d-ab00-6fde26d361fa" class="code"><code>package unit01;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
+@WebServlet(&quot;/hello&quot;)
+public class HelloServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;//클래스 버전 고유번호
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public HelloServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+
+		//클라이언트에게 응답할 페이지 정보 셋팅
+		response.setContentType(&quot;text/html;charset= UTF-8&quot;);
+		
+		PrintWriter out = response.getWriter();
+		out.println(&quot;&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;hello&lt;/title&gt;&lt;/head&gt;&quot;);
+		out.println(&quot;&lt;body&gt;&lt;h1&gt;&quot;);
+		out.println(&quot;HelloServlet&quot;);
+		out.println(&quot;&lt;/h1&gt;&quot;);
+		out.println(&quot;&lt;/body&gt;&quot;);
+		out.println(&quot;&lt;/html&gt;&quot;);
+		out.close();
+	}
+
+}</code></pre><p id="d0b744d0-2649-4eb7-8845-4b370eb3b28f" class="">
+</p><p id="fb9b8719-497a-44b5-bab9-2347b0ef8719" class="">7. 출력 스트림 닫기</p><p id="a8083d49-03c4-48d2-92de-f5ed7712e657" class="">
+</p><p id="ba582bfb-733d-4a8c-bc38-0e61450defe0" class="">위에서 본 예시 중 최하단에 있는 것과 같이 PrintWriter 객체.close()로 닫아주면 됨</p><p id="623d2c0a-b4af-4893-b6b7-a6c2002aeff3" class="">
+</p><p id="1f5d2d7b-4680-4be2-80b0-bc72275287c5" class="">예) </p><pre id="dff35f53-c828-449c-bc30-856d2a3ffa66" class="code"><code>PrintWriter인스턴스명.close();
+➡️ out.close();
+</code></pre><p id="c8e2bc5b-0f07-4871-bf7c-18d86ca0e2ed" class="">
+</p></div></article></body></html>

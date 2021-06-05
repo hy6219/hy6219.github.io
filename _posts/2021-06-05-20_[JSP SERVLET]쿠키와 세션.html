@@ -1,0 +1,967 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>쿠키와 세션</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="37be79ed-623f-43e2-b89e-2dff74015d6c" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">쿠키와 세션</h1></header><div class="page-body"><p id="14285f3e-1aca-4e31-b5fb-89ac419d5bbc" class="">
+</p><h2 id="3576b101-1e56-4666-ba26-4d4029aae621" class="">프로토콜</h2><ul id="43dae4a9-e7e5-4890-b054-91d45531f7d0" class="bulleted-list"><li>표준 인터넷 규약! 웹 서비스가 준수해야하는 규칙</li></ul><p id="fa0ef231-f829-4828-ae4f-4e986ce1badc" class="">
+</p><ol id="c24b9b74-f930-4c71-934f-3b3a7a5ac3ef" class="numbered-list" start="1"><li>FTP 프로토콜 ; File Transfer Protocol</li></ol><ul id="4dfcc5af-2c79-4b68-a710-fea42b13ce94" class="bulleted-list"><li>파일을 교환하기 위한 TCP/IP 프로토콜</li></ul><ul id="4c156db5-9990-4faa-92c0-02e4d06d76a5" class="bulleted-list"><li>데이터 전송 연결과 명령 연결이 존재</li></ul><p id="38ec86b0-088e-49c5-8b49-a696bd5cacf0" class="block-color-orange"><strong>-명령연결: 21번 포트를 이용</strong></p><p id="8ad4eb01-d0be-44d6-977e-10f638b2c885" class="block-color-orange"><strong>-데이터 전송 연결: 20번 포트를 이용</strong></p><p id="7be22c0b-307e-4d89-a93d-3ddb273cdb06" class="">(1) 능동 모드 Active Mode</p><figure id="a94881f4-4ab0-423a-8727-1ec759602716" class="image"><a href="https://infosys.beckhoff.com/content/1033/cx8110_hw/Images/png/83035147__en-US__Web.png"><img src="https://infosys.beckhoff.com/content/1033/cx8110_hw/Images/png/83035147__en-US__Web.png"/></a><figcaption>Active Mode (image from <a href="https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=">https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=</a>)</figcaption></figure><ul id="5f734e71-e6c3-49d4-ae5c-a481f493437c" class="bulleted-list"><li>능동 모드는 </li></ul><p id="14206c6f-4164-4159-988a-20a7640f1b0f" class="">1) 클라이언트가 1023보다 큰 포트를 명령 포트로써 이용해서 서버의 21번 포트(명령포트)로 두 번째로 접속할 포트 번호(클라이언트의 데이터 포트)를 알려준다!</p><p id="87bba399-32cb-4018-a8bc-a9b1dbd0d7dc" class="">2) 서버의 21번 포트는 ACK 로 클라이언트의 명령 포트로 응답해준다</p><p id="883b6519-29df-404c-b6ed-878b2d6bd898" class="">3) 서버의 20번 포트(데이터 포트)는 앞서 1)에서 클라이언트가 알려주었던 데이터 포트 번호로 접속을 시도한다!</p><p id="81dc32de-315c-4005-9620-5f25bb47a745" class="">4) 클라이언트의 데이터포트가 서버의 데이터 포트로 ACK 신호를 보낸다!</p><p id="edca6dee-38c2-4c89-9b6f-7995f9bff623" class="">
+</p><p id="951523c8-e426-43bb-9053-92a376a5e69c" class="">이런 능동 모드는 클라이언트의 상태에 따른 비정상적인 작동 형태가 보고될 수 있다</p><blockquote id="c2be28e9-7ecc-462c-82bc-f04f582ec528" class="">클라이언트가 방화벽, NAT(IP 마스킹) 등을 사용하는 환경일 때에 잘 동작하지 않을 수 있는데, 이때 수동 모드를 이용하면 된다. -<a href="https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC_%EC%A0%84%EC%86%A1_%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C#:~:text=%ED%8C%8C%EC%9D%BC%20%EC%A0%84%EC%86%A1%20%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C(File%20Transfer,%EC%9D%84%20%ED%95%98%EA%B8%B0%20%EC%9C%84%ED%95%9C%20%ED%94%84%EB%A1%9C%ED%86%A0%EC%BD%9C%EC%9D%B4%EB%8B%A4.">wiki_FTP</a>-</blockquote><p id="9a9f8b74-c745-4dde-b14a-7670fdcce99b" class="">
+</p><p id="38eaebdf-da95-4cc5-9e1b-5166ba374f50" class="">(2) 수동 모드 Passive Mode</p><figure id="4914beaa-1670-4635-9fdb-4d65c259dc17" class="image"><a href="https://infosys.beckhoff.com/content/1033/cx8110_hw/Images/png/83038347__en-US__Web.png"><img src="https://infosys.beckhoff.com/content/1033/cx8110_hw/Images/png/83038347__en-US__Web.png"/></a><figcaption>Passive Mode- image from <a href="https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=">https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=</a></figcaption></figure><p id="4f96bdcd-29d0-4b3a-8490-0d3989d7efe3" class="">
+</p><ul id="dcb89bf0-9c2e-4f84-9c70-aabfb253d7e5" class="bulleted-list"><li>수동 방식은 클라이언트가 서버에 접속할 수 없을 때 사용되는 방식</li></ul><ul id="4f1c2c0b-968e-4d2a-9164-17e6dc561122" class="bulleted-list"><li>서버가 클라이언트가 사용할 수 있는 서버 내의 포트를 알려주는 방식</li></ul><ul id="1319f9ac-c748-42f4-8eb4-d6d862e64ba6" class="bulleted-list"><li>이 방식에서도 클라이언트는 데이터, 명령 포트 모두 1023 보다 큰 포트를 이용</li></ul><ul id="ed002565-9aef-4272-a9e8-5032a9ac1beb" class="bulleted-list"><li>작동 과정</li></ul><p id="59673256-e794-4d19-a154-ca18b8f506c3" class="">1) 클라이언트가 명령포트를 이용하여 서버의 명령포트(21번)로 접속을 시도하면서 PASV 신호를 보낸다</p><p id="261daed0-392c-4e2e-a400-3bc3dc47f96e" class="">2) 서버의 21번 포트(명령 포트)는 클라이언트의 명령 포트로 서버에서 사용할 수 있는 포트 번호를 알려준다</p><p id="ffc2230b-f0d4-4a4b-9d86-89909c15f6f7" class="">3) 클라이언트의 데이터 포트가 2)에서 전달받은 서버 내 포트로 접속하려 시도한다</p><p id="e9941b14-9c48-4208-9e92-0affc69f1ed2" class="">4)  서버 내의 포트(클라이언트와 접속하려는 포트)가 클라이언트의 데이터 포트로 ACK 신호를 보낸다</p><hr id="4c054286-7e9d-456f-9036-43c1b4916a8a"/><p id="1f1895ed-7fa1-4bfc-a803-404f5f5f8ec6" class="">참고 사이트 : <a href="https://hack-cracker.tistory.com/133">https://hack-cracker.tistory.com/133</a></p><p id="3f336faf-022e-43f2-b243-fd3079fadaa4" class="">
+</p><p id="a5da1a9a-ff18-45ec-8e8e-f25f6d39d262" class=""><a href="https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=">https://infosys.beckhoff.com/english.php?content=../content/1033/cx8110_hw/68233610358735665675.html&amp;id=</a></p><hr id="6b39af4c-1aa8-438f-96d8-f8d80d8014f9"/><p id="5a8171f0-c419-4a76-812b-0725e8a26e3d" class="">2. HTTP 프로토콜; Hyper Text Transfer Protocol</p><p id="ee49d135-fe9f-457d-98d9-07fbba8975cc" class="">
+</p><ul id="32b4ed4b-b6f5-4b40-9517-d913a4232e5c" class="bulleted-list"><li>HTML 문서의 송수신을 위해 사용하는 프로토콜</li></ul><ul id="b475223b-caf5-4039-a8a8-0ed8583f7168" class="bulleted-list"><li><mark class="highlight-blue"><strong>비 연결(Connectionless) 지향형 통신 프로토콜</strong></mark></li></ul><p id="531f5960-6593-4cb3-9e30-2b7eef3ea898" class="">↔️ 클라이언트가 서버에 정보를 요청하면, 웹 서버가 해당 페이지를 클라이언트에게 전송(응답)한 후 연결을 끊음</p><ul id="910f9e47-331f-4802-b239-b0030c89b272" class="bulleted-list"><li><mark class="highlight-blue"><strong>포트 80</strong></mark>을 이용하여 수행됨</li></ul><ul id="d6470d96-09a0-43ca-adb6-f7959ac6fb63" class="bulleted-list"><li>이런 웹 서버를 &quot;<mark class="highlight-blue"><strong>무 상태(stateless) 서버</strong></mark>&quot;(현재 상태를 유지하지 못하는 서버)</li></ul><ul id="7d223632-e25e-4bac-b5bf-37c1a2c820b2" class="bulleted-list"><li>장점 : 서버의 자원 낭비를 최소화</li></ul><p id="fab351eb-574c-44a0-b185-d4f53bbc6f3d" class="">
+</p><p id="fb8abbce-aca5-4d16-84a7-4ea20e72ea0b" class="block-color-orange_background">🌟<mark class="highlight-red"><strong> HTTP 상태 코드</strong></mark> ⭐</p><h3 id="c506053a-1fe8-4183-a4dd-d8d84c846e76" class="">2xx : 대부분 요청에 대한 응답이 성공하였음을 의미</h3><p id="91e4e630-1670-485c-9935-0ea4393e6641" class="">
+</p><div id="ba47f919-7c5d-4ec0-9794-ed131807d9b0" class="collection-content"><h4 class="collection-title">HTTP 상태 코드-200번대</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>상태코드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th></tr></thead><tbody><tr id="4ac78425-0aaf-402a-a52a-ff582e4f7494"><td class="cell-title"><a href="https://www.notion.so/200-4ac784250aaf402aa52aff582e4f7494">200</a></td><td class="cell-?eYM">GET 요청에 대한 성공</td></tr><tr id="bb4f3320-a73c-4237-a189-8759fb5bf4b7"><td class="cell-title"><a href="https://www.notion.so/204-bb4f3320a73c4237a1898759fb5bf4b7">204</a></td><td class="cell-?eYM">No Content. 성공했으나 응답 본문에 데이터가 없음</td></tr><tr id="000480f3-aaab-47e7-9fa0-20841e3a169b"><td class="cell-title"><a href="https://www.notion.so/205-000480f3aaab47e79fa020841e3a169b">205</a></td><td class="cell-?eYM">Reset Content. 성공했으나 클라이언트의 화면을 새로고침하도록 권고</td></tr><tr id="a9d36ded-411a-47e2-bb87-abe2c682abde"><td class="cell-title"><a href="https://www.notion.so/206-a9d36ded411a47e2bb87abe2c682abde">206</a></td><td class="cell-?eYM">Partial Content. 성공했으나 일부 범위의 데이터만 반환</td></tr></tbody></table></div><p id="e2399ea7-b948-4622-8789-f867ee41bdae" class="">
+</p><p id="7284bf52-0a23-43f8-bee0-c97c8cf54c7f" class="">
+</p><h3 id="52f3fa8e-3de1-4596-8b31-1f206a5e1fdc" class="">3xx : 리다이렉트 유도</h3><p id="d04f52d4-18db-43fc-b947-675469222d22" class="">
+</p><div id="d1158dc1-8569-4713-b118-7a4619488cab" class="collection-content"><h4 class="collection-title">HTTP 상태 코드-300번대</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>상태코드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th></tr></thead><tbody><tr id="a95c607f-0ab3-4557-9b2d-758953860b6c"><td class="cell-title"><a href="https://www.notion.so/301-a95c607f0ab345579b2d758953860b6c">301</a></td><td class="cell-?eYM">Moved Permanently. 요청한 자원이 새 URL에 존재</td></tr><tr id="da388b2e-ccda-47d6-b6e6-bf6449b23eaa"><td class="cell-title"><a href="https://www.notion.so/303-da388b2eccda47d6b6e6bf6449b23eaa">303</a></td><td class="cell-?eYM">See Other. 요청한 자원이 임시 주소에 존재</td></tr><tr id="311f52cb-3702-4a62-b46a-af9131a335d1"><td class="cell-title"><a href="https://www.notion.so/304-311f52cb37024a62b46aaf9131a335d1">304</a></td><td class="cell-?eYM">Not Modified. 요청한 자원이 변경되지 않았으므로 클라이언트에서 캐싱된 자원을 사용하도록 권고.<a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Headers/ETag"> ETag(서버가 특정 버전의 리소스를 식별하기 위한 식별자)</a>와 같은 정보를 활용하여 변경 여부를 확인</td></tr></tbody></table></div><p id="9672fbfa-70d6-47d0-b1db-3dc487e722eb" class="">
+</p><p id="3635f0a9-71bf-427f-8003-155d455e0bd2" class="">
+</p><h3 id="fdacf307-7275-4c65-81e8-9c0c17b6e097" class="">4xx : 클라이언트의 코드가 잘못된 경우</h3><p id="be0f83b6-7b81-4819-815e-d9c4e4853c93" class="">
+</p><ul id="6d9338a6-68d2-4084-865a-0111fdcf333b" class="bulleted-list"><li>유효하지 않은 자원에 대한 요청 혹은 권한이 잘못된 경우 발생</li></ul><p id="41fba85f-15d2-4fd2-a62d-947b94114275" class="">
+</p><div id="6d0d26be-24dc-42ef-bcbe-d5c60180021f" class="collection-content"><h4 class="collection-title">HTTP 상태 코드-400번대</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>상태코드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th></tr></thead><tbody><tr id="93f73891-d8a6-48c8-a14d-ab002d5f70e2"><td class="cell-title"><a href="https://www.notion.so/400-93f73891d8a648c8a14dab002d5f70e2">400</a></td><td class="cell-?eYM">Bad Request. 잘못된 요청</td></tr><tr id="cfb6f1ba-cb26-4741-b914-d57c2e3e0c8c"><td class="cell-title"><a href="https://www.notion.so/401-cfb6f1bacb264741b914d57c2e3e0c8c">401</a></td><td class="cell-?eYM">Unauthorized. 권한 없이 요청. Authorization 헤더가 잘못된 경우</td></tr><tr id="6d55e245-aa84-4c24-85f0-067c47f10fda"><td class="cell-title"><a href="https://www.notion.so/403-6d55e245aa844c2485f0067c47f10fda">403</a></td><td class="cell-?eYM">Forbidden. 서버에서 해당 자원에 대한 접근 금지</td></tr><tr id="393829b8-dc43-4d2e-8443-4c01386e7ed8"><td class="cell-title"><a href="https://www.notion.so/404-393829b8dc434d2e84434c01386e7ed8">404</a></td><td class="cell-?eYM">Not Found. 서버가 요청받은 리소스를 찾을 수 없는 경우</td></tr><tr id="d3f5c86c-7151-4134-8459-76cde2184e24"><td class="cell-title"><a href="https://www.notion.so/405-d3f5c86c71514134845976cde2184e24">405</a></td><td class="cell-?eYM">Method Not Allowed. 허용되지 않은 요청 메서드</td></tr><tr id="b211fe58-b5ec-40c3-8cf3-acb606e76d6f"><td class="cell-title"><a href="https://www.notion.so/409-b211fe58b5ec40c38cf3acb606e76d6f">409</a></td><td class="cell-?eYM">Conflict. 최신 자원이 아닌데 업데이트하는 경우</td></tr></tbody></table></div><p id="5f11d0a9-8891-4ba7-906f-964ecfeba566" class="">
+</p><p id="71cbd130-87e4-4554-98c0-2c45c5f1b6df" class="">
+</p><h3 id="95ad64d2-dfac-4174-8ad3-410adae82d71" class="">5xx : 서버 에러</h3><p id="37348c60-5f4d-4505-acc0-1656c6eceab1" class="">
+</p><div id="8e7e29c5-fb6b-45cc-8d60-efa6a43388c5" class="collection-content"><h4 class="collection-title">HTTP 상태 코드-500번대</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>상태코드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th></tr></thead><tbody><tr id="7fe5bd5c-e4ad-4052-9a58-a2851bf45281"><td class="cell-title"><a href="https://www.notion.so/501-7fe5bd5ce4ad40529a58a2851bf45281">501</a></td><td class="cell-?eYM">Not Implemented. 요청한 동작에 대해 서버가 수행할 수 없는 경우</td></tr><tr id="b82c3e86-ace5-4279-b8e5-9f3ab269966c"><td class="cell-title"><a href="https://www.notion.so/503-b82c3e86ace54279b8e59f3ab269966c">503</a></td><td class="cell-?eYM">Service Unavailable. 서버가 과부하 또는 유지보수로 내려간 경우</td></tr></tbody></table></div><p id="e49de293-badf-4ca4-a526-c26aebeca437" class="">
+</p><p id="3544337f-cd80-4184-a8f5-b3bff924a7de" class="">정리에 참고한 사이트: <a href="https://joshua1988.github.io/web-development/http-part1/">https://joshua1988.github.io/web-development/http-part1/</a></p><p id="c10c9408-9327-4a51-a882-96061ee3d91c" class="">
+</p><p id="2295ad28-699b-496b-b145-b2fec8223f29" class=""><a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Status">https://developer.mozilla.org/ko/docs/Web/HTTP/Status</a></p><p id="d2d6ddc2-51bf-4e57-a827-93a94c86a868" class="">
+</p><p id="f97984d2-d35b-43cf-95c5-07a5114120a2" class="block-color-yellow_background"><mark class="highlight-red"><strong>⭐ HTTP 요청 메서드 HTTP Verbs ⭐</strong></mark></p><ul id="b7eee669-e5d5-4110-ace3-5dfa354aaec5" class="bulleted-list"><li>데이터에 대한 조회, 생성, 변경, 삭제 동작을 HTTP 요청 메서드로 정의</li></ul><div id="57036fa0-b7e5-418c-9ff7-af96432ef9be" class="collection-content"><h4 class="collection-title">HTTP Methods for Restful API</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>HTTP Verb</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>CRUD</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>특징</th></tr></thead><tbody><tr id="5ad499ef-921c-4143-9aa4-b63a22bf0c34"><td class="cell-title"><a href="https://www.notion.so/POST-5ad499ef921c41439aa4b63a22bf0c34">POST</a></td><td class="cell-&gt;OSa">Create</td><td class="cell-gQD&lt;">새로운 자원을 생성</td></tr><tr id="198b8cd8-66fe-4fd9-8fb0-db08170953d0"><td class="cell-title"><a href="https://www.notion.so/GET-198b8cd866fe4fd98fb0db08170953d0">GET</a></td><td class="cell-&gt;OSa">Read</td><td class="cell-gQD&lt;">존재하는 자원에 대한 요청</td></tr><tr id="98aba3a8-247d-4a87-9068-6d7af43ea74c"><td class="cell-title"><a href="https://www.notion.so/PUT-98aba3a8247d4a8790686d7af43ea74c">PUT</a></td><td class="cell-&gt;OSa">Update/Replace</td><td class="cell-gQD&lt;">존재하는 자원에 대한 변경</td></tr><tr id="b9e3f7da-fa69-4776-948b-dd1d96372aec"><td class="cell-title"><a href="https://www.notion.so/PATCH-b9e3f7dafa694776948bdd1d96372aec">PATCH</a></td><td class="cell-&gt;OSa">Update/Modify</td><td class="cell-gQD&lt;">리소스의 부분 수정</td></tr><tr id="c9cbfe70-817d-4957-a788-296a1b39cb2f"><td class="cell-title"><a href="https://www.notion.so/DELETE-c9cbfe70817d4957a788296a1b39cb2f">DELETE</a></td><td class="cell-&gt;OSa">Delete</td><td class="cell-gQD&lt;">존재하는 자원에 대한 삭제</td></tr></tbody></table></div><p id="09febc83-afda-4b8b-8cf1-e4a33b169ec7" class="">
+</p><ul id="b16bd101-34e1-4577-a736-ad04bc9fb281" class="bulleted-list"><li>경우에 따라서 POST 메서드로 PUT, DELETE 동작도 수행 가능</li></ul><p id="4e155df4-054a-4cff-a751-4a29faf62c80" class="">
+</p><p id="dffe67d9-fbbc-4a0c-8593-eac5fae9eadf" class="">참고 사이트 : <a href="https://joshua1988.github.io/web-development/http-part1/">https://joshua1988.github.io/web-development/http-part1/</a></p><p id="aeebec16-3f3d-4df8-82c4-99416ff2b9f9" class=""><a href="https://developer.mozilla.org/ko/docs/Web/HTTP/Methods">https://developer.mozilla.org/ko/docs/Web/HTTP/Methods</a></p><p id="a1ac8ef9-ae3a-4fcb-9d95-37e11c5eeb29" class=""><a href="https://www.restapitutorial.com/lessons/httpmethods.html#:~:text=The%20primary%20or%20most%2Dcommonly,but%20are%20utilized%20less%20frequently">https://www.restapitutorial.com/lessons/httpmethods.html#:~:text=The primary or most-commonly,but are utilized less frequently</a>.</p><p id="b3bcabdf-a912-4801-b493-fcc8b80d21d1" class="">
+</p><hr id="a07a9877-ddae-4384-98b7-9517f322a170"/><h2 id="e5122746-1585-4c66-98cd-014cbaeae1eb" class="">쿠키 Cookie</h2><ul id="c1f9cd0e-9ffb-4798-8483-515aab262e44" class="bulleted-list"><li>정보를 서버가 아닌, 클라이언트 컴퓨터의 하드디스크에 저장하여, 서버 동작에 무리를 주지 않으면서 정보를 지속적으로 유지하고, 적절하게 사용할 수 있도록 하는 방법</li></ul><p id="9b6a4550-e0f2-401b-9258-2de487ec29a3" class="">▶️ 장점: 서버의 부하  </p><p id="199b5c38-f0dd-46ab-a80d-9e4f6fe75d17" class="">▶️ 단점 : 여러 사람이 PC를 공유하는 경우, 개인 정보가 유출될 수 있어서 보안 유지가 되지 않음<div class="indented"><p id="c8648664-e187-4304-b2ab-a53383c84d11" class="">: 저장할 수 있는 데이터의 한계 존재(1.2MB)</p></div></p><ul id="6052eac4-3e2f-4e4c-9811-9591c32ba4f2" class="bulleted-list"><li>클라이언트에 저장된 적은 양의 정보</li></ul><ul id="a92e2d18-dd2e-487e-93a5-c92581664eb3" class="bulleted-list"><li>쿠키에 대한 정보를 필요로 하는 웹 페이지가 웹 서버에 요청될 때, 클라이언트에 저장되었던 쿠키에 대한 정보를 웹 서버에 다시 건내줌</li></ul><ul id="45cafcb1-70af-47cd-9cd1-9507500993ac" class="bulleted-list"><li>쿠키는 4KB 이하로 그 크기가 제한되어 있고, 최대 300 개(즉, 4KB * 300개= 1200KB= 1.2MB)까지의 데이터 정보 배열을 저장 가능</li></ul><p id="ab0ad2c5-ace1-40cc-82e1-0561c4e8da1d" class="">
+</p><p id="6466ed09-7070-4661-9244-7ef4f38e8c57" class="block-color-pink_background"><mark class="highlight-red"><strong>📌 서버가 클라이언트에 쿠키를 설정하기 위한 방법 📌</strong></mark></p><p id="c831d8e1-443f-426b-abba-1a714edce6eb" class="">① <strong>쿠키 객체 생성 - 쿠키 생성자 호출</strong></p><pre id="83d30939-2e67-4770-8bcb-82359aa071ae" class="code"><code>Cookie(java.lang.String name, java.lang.String value)
+//생성자의 인자 1. 쿠키의 이름 2. 쿠키의 값
+//쿠키에 이름을 지정하는 이유: 쿠키에 저장할 값이 여러 개일 수도 있기 때문!</code></pre><p id="21570741-7125-443f-ab06-cb21e7c88b96" class="">② 쿠키에 <strong>속성 값을 설정</strong></p><p id="96d841ed-0d34-4ed8-a4f0-cfe5ebab0168" class="">③ <strong>response 객체의 addCookie() 메서드</strong>를 이용하여 <strong>쿠키 추가</strong></p><p id="f67e374f-9d5e-46ea-b20a-06f91063e111" class="">
+</p><p id="4969702e-5029-4d72-a795-e4b5fe8d0214" class="">위의 1 과정으로 쿠키가 생성되었다면 쿠키에 관련된 메서드를 사용 가능!(이번에는 2번 과정 수행 내용)</p><p id="31018aee-5f87-4277-a529-aaad4bb9102a" class=""><em>쿠키에 관련된 메서드</em></p><p id="6bb7d07d-925c-44f1-8e3c-226cb78c2e99" class="">1) set~: 쿠키에 새로운 값 설정</p><p id="f47e34b5-e899-4553-b5b8-6eaed7b3d810" class="">2) get~: 쿠키에 설정된 값을 알아내기</p><p id="5787f808-71f1-4e46-87e0-06f4e4a174fc" class="">
+</p><div id="b4bfee7d-57cc-44e8-bdba-2e1f3c68b99d" class="collection-content"><h4 class="collection-title">쿠키에 값을 설정하는 것과 관련된 메서드</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>메서드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="524673a4-ec92-4180-891e-7b1902f6fd08"><td class="cell-title"><a href="https://www.notion.so/void-setComment-String-524673a4ec924180891e7b1902f6fd08">void setComment(String)</a></td><td class="cell-ETVW">쿠키에 대한 설명을 설정</td></tr><tr id="f8e3c2e5-6835-4999-87bd-4c8b0edb9807"><td class="cell-title"><a href="https://www.notion.so/void-setDomain-String-f8e3c2e56835499987bd4c8b0edb9807">void setDomain(String)</a></td><td class="cell-ETVW">쿠키의 유효한 도메인 설정</td></tr><tr id="7a2bec0e-b84a-4e46-b15b-3842889855f8"><td class="cell-title"><a href="https://www.notion.so/void-setMaxAge-int-7a2bec0eb84a4e46b15b3842889855f8">void setMaxAge(int)</a></td><td class="cell-ETVW">쿠키의 유효 기간 설정(초단위)</td></tr><tr id="9887cc76-5d40-4517-9a97-5a8918a77ce2"><td class="cell-title"><a href="https://www.notion.so/void-setPath-String-9887cc765d4045179a975a8918a77ce2">void setPath(String)</a></td><td class="cell-ETVW">쿠키의 유효한 디렉토리를 설정</td></tr><tr id="632361ba-6ae3-44fe-a214-3428de0c3979"><td class="cell-title"><a href="https://www.notion.so/void-setSecure-boolean-632361ba6ae344fea2143428de0c3979">void setSecure(boolean)</a></td><td class="cell-ETVW">쿠키의 보안을 설정</td></tr><tr id="b404b931-074c-46b6-beef-ccc41dffcc49"><td class="cell-title"><a href="https://www.notion.so/void-setValue-String-b404b931074c46b6beefccc41dffcc49">void setValue(String)</a></td><td class="cell-ETVW">쿠키의 값을 설정</td></tr></tbody></table></div><div id="68665146-3933-4074-aeb6-74a809ff355a" class="collection-content"><h4 class="collection-title">쿠키에 대한 값을 알려주는 것과 관련된 메서드</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>메서드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="a3b47e1c-d110-4b88-807c-644e90ed2013"><td class="cell-title"><a href="https://www.notion.so/String-getComment-a3b47e1cd1104b88807c644e90ed2013">String getComment()</a></td><td class="cell-ETVW">쿠키에 대한 설명을 알려줌</td></tr><tr id="f8eba0ed-cd49-4e64-b6da-b9130c1ecf44"><td class="cell-title"><a href="https://www.notion.so/String-getDomain-f8eba0edcd494e64b6dab9130c1ecf44">String getDomain()</a></td><td class="cell-ETVW">쿠키의 유효한 도메인 정보를 알려줌</td></tr><tr id="4ad172c1-51bf-4e37-a5a8-bdc4a59dd046"><td class="cell-title"><a href="https://www.notion.so/int-getMaxAge-4ad172c151bf4e37a5a8bdc4a59dd046">int getMaxAge()</a></td><td class="cell-ETVW">쿠키의 사용할 수 있는 기간에 대한 정보를 알려줌</td></tr><tr id="689820fc-7612-462e-b2e0-6caf476c17cf"><td class="cell-title"><a href="https://www.notion.so/String-getName-689820fc7612462eb2e06caf476c17cf">String getName()</a></td><td class="cell-ETVW">쿠키의 이름을 알려줌</td></tr><tr id="057d4d73-c3bd-4266-8f8e-b9ccbbe8d303"><td class="cell-title"><a href="https://www.notion.so/String-getPath-057d4d73c3bd42668f8eb9ccbbe8d303">String getPath()</a></td><td class="cell-ETVW">쿠키의 유효한 디렉토리 정보를 알려줌</td></tr><tr id="e9b940a0-b0d5-487a-beb0-451ed8f667e3"><td class="cell-title"><a href="https://www.notion.so/boolean-getSecure-e9b940a0b0d5487abeb0451ed8f667e3">boolean getSecure()</a></td><td class="cell-ETVW">쿠키의 보안이 어떻게 설정되어 있는지를 알려줌</td></tr><tr id="7a65f89f-f8c0-4ce6-a522-6844cb465fac"><td class="cell-title"><a href="https://www.notion.so/String-getValue-7a65f89ff8c04ce6a5226844cb465fac">String getValue()</a></td><td class="cell-ETVW">쿠키에 설정된 값을 알려줌</td></tr><tr id="d73e9095-11ac-4388-b73e-813573eca8bd"><td class="cell-title"><a href="https://www.notion.so/int-getVersion-d73e909511ac4388b73e813573eca8bd">int getVersion()</a></td><td class="cell-ETVW">쿠키의 버전을 알려줌</td></tr><tr id="b55438b8-fe29-403d-a80e-eb7d51176341"><td class="cell-title"><a href="https://www.notion.so/Cookies-getCookies-b55438b8fe29403da80eeb7d51176341">Cookies[] getCookies()</a></td><td class="cell-ETVW">클라이언트에 저장된 쿠키들을 알려줌</td></tr></tbody></table></div><p id="84d14e67-5b9d-4c45-9e0b-10951f6b3fe8" class="">
+</p><p id="bd271f6b-65ff-4270-8bcb-08fffac9e049" class="">⚠️ 클라이언트가 쿠키를 저장하는 것을 거부하도록 하지는 못하기 때문에, 보안을 고려해야하는 상황이라면, 세션이나 DB 등을 이용</p><p id="155a21d3-f4b0-4234-89dd-84ad61c8e6e0" class="">
+</p><ul id="ecd218da-3e6c-4202-9771-794e11b1eb10" class="bulleted-list"><li>각 운영체제별로 쿠키가 저장되는 위치는 아래와 같다!</li></ul><p id="85e4a5c4-722c-41a4-b575-51b95b0bcd96" class=""><a href="https://ko.joecomp.com/location-of-cookies-folder-in-windows-10-8-7">https://ko.joecomp.com/location-of-cookies-folder-in-windows-10-8-7</a></p><p id="af962f58-00a7-44b9-b804-76286fd8b4db" class="">
+</p><p id="e296cb49-16e2-473a-994f-00f6ed204d62" class="">뿐만아니라, 아래와 같이 쿠키 저장 경로를 설정할 수도 있다!</p><pre id="9ea997d4-24c4-49e1-824d-bc7386cab387" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Insert title here&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+		response.setCharacterEncoding(&quot;UTF-8&quot;);
+		//A. 쿠키를 생성해서, 속성값을 설정하고, 쿠키를 전송하는 과정을 구분하여 작성
+		//1.Cookie 객체 생성
+		Cookie c = new Cookie(&quot;name&quot;,&quot;떡볶이&quot;);
+		//2.속성값 설정-이번에는 유효기간을 설정해보기(1년)
+		c.setMaxAge(365*24*60*60);
+		//쿠키 저장 경로 설정
+		c.setPath(&quot;D:/(위치)&quot;);
+		//3.클라이언트에 쿠키 전송
+		response.addCookie(c);
+		
+		//B.쿠키를 클라이언트에 전송하는 줄에서 쿠키를 생성하는 과정을 한 줄에 작성
+		//단점은, 한줄에 작성하게 되면 addCookie의 매개변수는 쿠키만 올수 있어서 
+		//속성 지정의 불편함이 있음
+		response.addCookie(new Cookie(&quot;age&quot;,&quot;26&quot;));
+		response.addCookie(new Cookie(&quot;pw&quot;,&quot;test123&quot;));
+		
+		out.println(c.getPath());
+		
+	%&gt;
+	&lt;h3&gt;쿠키 설정&lt;/h3&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="102daf84-9fd7-44be-a0a5-bb8f74c7fbcc" class="">
+</p><figure id="d6a3d380-fef0-4ba1-bd31-83184ba37bd6" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%BF%A0%ED%82%A4.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%BF%A0%ED%82%A4.png?raw=true"/></a></figure><p id="b50ebafd-f1fc-4a0d-8135-307458cbc784" class="">📌클라이언트에 설정된 모든 쿠키 객체들을 얻어오기📌</p><p id="2e594415-1b2a-4298-8d32-00c1485ac9bb" class="">① 쿠키 객체를 얻어오기</p><p id="12122b14-52bb-429d-9528-95e46f0957d7" class="">② 쿠키 객체에 설정된 값을 알아내기</p><p id="39856157-6f2a-4374-8253-c2094ad593eb" class="">
+</p><ul id="6874215b-e2bb-487f-a4b1-af884933da53" class="bulleted-list"><li>request객체의 getCookies()메서드를 통해서 클라이언트에 설정된 모든 쿠키 객체들을 Cookie 배열로 받아올 수 있음!</li></ul><p id="d52e71ae-347e-4030-ae00-c4dc6d562595" class="">
+</p><figure id="6f8e7e2a-f9cc-40d4-a42a-98c3fc4abaae" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EC%97%90%20%EC%A0%80%EC%9E%A5%EB%90%9C%20%EC%BF%A0%ED%82%A4%EB%93%A4%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%ED%81%B4%EB%9D%BC%EC%9D%B4%EC%96%B8%ED%8A%B8%EC%97%90%20%EC%A0%80%EC%9E%A5%EB%90%9C%20%EC%BF%A0%ED%82%A4%EB%93%A4%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0.png?raw=true"/></a><figcaption>request.getCookies()</figcaption></figure><p id="e98677fd-7e2b-44ad-afc2-51cac22d64a4" class="">
+</p><ul id="b7f555df-bf0b-4753-a206-31dfea6c2b7e" class="bulleted-list"><li>쿠키객체.setMaxAge(0) : 특정 쿠키의 유효기간을 만료시킴</li></ul><ul id="5a559176-16c9-42bc-b659-e4e259860890" class="bulleted-list"><li>JSESSIONID : 웹 브라우저로 세션 ID를 보낼 때 쿠키 형태로 만들어 전송할 때, <mark class="highlight-blue"><strong>세션 정보를 저장한 쿠키의 이름 </strong></mark></li></ul><hr id="0a1513f3-b80c-4d52-82db-440c0ef9a2d0"/><h2 id="0ce72af4-5b6f-4874-abfc-be578724aeef" class="">세션</h2><p id="f5cce2c9-f57e-4810-9f90-a735d022f948" class="">
+</p><ul id="23954f26-4e71-4d13-947e-1e78dcb0fc0d" class="bulleted-list"><li>웹 브라우저를 닫기 전까지 페이지를 이동하더라도 사용자의 정보를 잃지 않고 서버에 보관할 수 있도록 하는 객체</li></ul><ul id="e21b344e-62aa-466c-a7c8-760e74ae09a7" class="bulleted-list"><li>서버 상 존재하는 객체로, 브라우저 단위당 한 개씩 존재</li></ul><p id="61b05f67-ff56-4442-b01c-edeb76efa4a7" class="">▶️ 장점: JSP(서버)에서만 접근 가능하기 때문에 보안 유지에 강력<div class="indented"><p id="4d61235f-f747-4241-9609-d517c9a6e93f" class="">: 저장할 수 있는 데이터에 한계가 없음</p></div></p><ul id="c534d43a-f098-456c-bb0a-3fdfb3c0aba3" class="bulleted-list"><li>세션은 서블릿 컨테이너 내부에 존재</li></ul><ul id="73f134e9-8188-4154-9a12-828e88fe6f70" class="bulleted-list"><li>세션 객체는 항상 JSP 내장객체로 존재하지만, 구분하기 위해서 고유의 id 값을 가지고 있음</li></ul><p id="14ee9b49-b4e7-4606-b8b7-8bedb3a61568" class="">
+</p><div id="c0d42eb0-97fe-48a1-8c58-4c2b6f25f41c" class="collection-content"><h4 class="collection-title">세션에서 사용되는 메서드-session 내장 객체 이용</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>메서드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="203255cd-d026-4699-882b-76362b847e34"><td class="cell-title"><a href="https://www.notion.so/Object-getAttribute-String-name-203255cdd0264699882b76362b847e34">Object getAttribute(String name)</a></td><td class="cell-wc|P">이름에 해당되는 객체 값을 가져옴
+-존재하지 않으면 null 반환</td></tr><tr id="b0138f2a-bf16-4389-b140-33e1bdc9af26"><td class="cell-title"><a href="https://www.notion.so/Enumeration-getAttributeNames-b0138f2abf164389b14033e1bdc9af26">Enumeration getAttributeNames()</a></td><td class="cell-wc|P">세션에서 모든 객체의 이름을 Enumeration 형으로 반환해줌</td></tr><tr id="79c1c281-1198-40eb-925f-d0d85dd1ad56"><td class="cell-title"><a href="https://www.notion.so/long-getCreationTime-79c1c281119840eb925fd0d85dd1ad56">long getCreationTime()</a></td><td class="cell-wc|P">세션이 만들어진 시간을 반환</td></tr><tr id="5ab5a2b1-ded6-4a36-bbd3-d10deb99d38e"><td class="cell-title"><a href="https://www.notion.so/String-getId-5ab5a2b1ded64a36bbd3d10deb99d38e">String getId()</a></td><td class="cell-wc|P">해당 세션을 가리키는 고유 id값을 반환</td></tr><tr id="da1af47f-7a55-4747-8ec1-523f169fc26d"><td class="cell-title"><a href="https://www.notion.so/long-getLastAccessedTime-da1af47f7a5547478ec1523f169fc26d">long getLastAccessedTime()</a></td><td class="cell-wc|P">해당 세션이 클라이언트가 마지막으로 request를 보낸 시간을 반환(ms)</td></tr><tr id="036868b3-9913-4e9d-843f-c167ac096f2a"><td class="cell-title"><a href="https://www.notion.so/int-getMaxInactiveInterval-036868b399134e9d843fc167ac096f2a">int getMaxInactiveInterval()</a></td><td class="cell-wc|P">사용자가 다음 요청을 보낼 때까지 세션을 유지하는 최대 시간(s 단위) 반환</td></tr><tr id="f3dab5fa-fdf1-4286-acbd-58d134b46309"><td class="cell-title"><a href="https://www.notion.so/boolean-isNew-f3dab5fafdf14286acbd58d134b46309">boolean isNew()</a></td><td class="cell-wc|P">해당 세션이 처음 생성되었으면 true, 이전에 생성된 세션이면 false</td></tr><tr id="597e8be4-154b-49ad-9dc0-c148b88e3fa9"><td class="cell-title"><a href="https://www.notion.so/void-removeAttribute-String-name-597e8be4154b49ad9dc0c148b88e3fa9">void removeAttribute(String name)</a></td><td class="cell-wc|P">지정된 이름에 해당되는 객체를 세션에서 제거</td></tr><tr id="87b4a31f-107e-4d02-9076-e765bf399a80"><td class="cell-title"><a href="https://www.notion.so/void-setAttribute-String-name-Object-value-87b4a31f107e4d029076e765bf399a80">void setAttribute(String name, Object value)</a></td><td class="cell-wc|P">세션에 지정된 이름에 객체 추가</td></tr><tr id="d62ff25d-b87c-4fc8-b2ee-b9a4ab79dc1b"><td class="cell-title"><a href="https://www.notion.so/void-setMaxInactiveInterval-int-interval-d62ff25db87c4fc8b2eeb9a4ab79dc1b">void setMaxInactiveInterval(int interval)</a></td><td class="cell-wc|P">사용자가 다음 요청을 보낼 때까지 세션을 유지하는 최대 시간(s 단위) 설정
+-해당 시간을 넘기면 서블릿 컨테이너는 세션을 종료함</td></tr><tr id="b2110b37-973e-4ac2-a3d5-52bc0822c122"><td class="cell-title"><a href="https://www.notion.so/void-invalidate-b2110b37973e4ac2a3d552bc0822c122">void invalidate()</a></td><td class="cell-wc|P">해당 세션을 없애고 세션에 속해있는 값들을 없앰</td></tr></tbody></table></div><p id="a9a8a3ec-9b2e-4df7-b71f-b670ce3d2b9c" class="">
+</p><p id="cb501a08-d757-483a-b662-cb6df3dc131b" class="">setAttribute를 이용해서 세션을 설정하고, 세션을 확인해보자</p><p id="37ccbe01-26ed-4f6c-aeee-b3dcf8d4ea1a" class="">
+</p><p id="1eda80fc-c8c9-4105-a0cd-e9fd3a4e2d1f" class="">(1) 세션을 설정</p><pre id="6ed0afdf-9183-4dd7-99be-f4aa043cbdc7" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;세션&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+		session.setAttribute(&quot;id&quot;, &quot;jisoo&quot;);
+		session.setAttribute(&quot;pw&quot;, &quot;test123&quot;);
+		session.setAttribute(&quot;age&quot;, 26);
+	%&gt;
+	&lt;h3&gt;세션 설정&lt;/h3&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="b5a831fb-f17c-43e4-b6ca-76eb1619c311" class="">
+</p><p id="336385e6-40d4-42de-86ce-87a25c958232" class="">(2) 현재 세션에 대한 정보 확인</p><pre id="b865ad6d-8e96-48b3-a6bb-28b405234879" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%
+	String id = String.valueOf(session.getAttribute(&quot;id&quot;));
+	String pw = String.valueOf(session.getAttribute(&quot;pw&quot;));
+	int   age = Integer.valueOf(String.valueOf(session.getAttribute(&quot;age&quot;)));
+%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;세션 값 받아오기&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%=&quot;id: &quot;+id +&quot;&lt;br&gt;&quot; %&gt;
+	&lt;%=&quot;pw: &quot;+pw+&quot;&lt;br&gt;&quot; %&gt;
+	&lt;%=&quot;age: &quot;+age+&quot;&lt;br&gt;&quot; %&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="f889df9d-1c86-48b2-b718-94f8e5aa6ca3" class="">
+</p><figure id="207904ea-4ea7-4401-b813-113452868fc8" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EC%84%A4%EC%A0%95.PNG?raw=true"><img style="width:480px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EC%84%A4%EC%A0%95.PNG?raw=true"/></a><figcaption>세션 생성, 확인하기</figcaption></figure><p id="636ccf46-53e4-49c5-8080-f8af8fee655c" class="">즉, 위의 (1)과 같이 세션을 설정해둔 후, (2)와 같이 세션에 대한 정보를 확인하려고 하면, 브라우저가 에 생성된 세션 관련 정보를 확인해볼 수 있다!</p><p id="c88d7a18-537a-47b9-8cd9-20faf9378bef" class="">
+</p><p id="f74f8f0b-8560-45e1-b3ae-3c8201df8219" class="">JSP에서는 내장객체 session을 이용하면 되지만, 서블릿에서는 요청메서드의 파라미터인 HttpServletRequest 객체를 이용하여</p><p id="a3b75fd9-7ca8-4d1a-bbb0-2af09cf83b03" class="">
+</p><pre id="0cdae8c6-d78d-490e-9166-84e0abbc90e3" class="code"><code>protected void doGet(HttpServletRequest request, HttpServletResponse response) throws 
+	ServletException, IOException{
+
+					HttpSession session = request.getSession();
+					session.setAttribute(&quot;user&quot;,admin);
+}</code></pre><p id="e1245045-17ba-41d7-b978-81508554917a" class="">
+</p><p id="31524c7c-ef35-4fa4-935f-143c3da884c4" class="">와 같이 세션 객체를 가져오고, 세션에 정보를 저장할 수 있다!</p><p id="7386721a-20b9-4d74-9b45-294f62007cd5" class="">
+</p><h3 id="014e9e25-4c61-4410-bc0b-8e07aaba76b5" class="">*session.getAttributeNames()</h3><p id="5229d0c5-1909-430d-865c-66899a6d38eb" class="">
+</p><ul id="bc2f3117-bb83-435e-b55b-f424bc07fafa" class="bulleted-list"><li>getAttributeNames()메서드의 리턴 타입은 Enumeration이다</li></ul><ul id="d01a80d2-3f42-4ad5-8061-e322417ebfbe" class="bulleted-list"><li>Enumeration에서 여러 데이터를 뽑아오기 위해서는 아래와 같은 메서드를 적절하게 사용해야 함!</li></ul><p id="2f7cbd4f-1f7c-4f41-b985-4a6c2e37bfd1" class="">
+</p><div id="f3c39fa4-f3d7-44ac-8deb-3debeaf69e9d" class="collection-content"><h4 class="collection-title">Enumeration에서 데이터를 추출하기 위한 메서드들</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>메서드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="e827c108-7772-485c-8f4e-a498684a94db"><td class="cell-title"><a href="https://www.notion.so/boolean-hasMoreElements-e827c1087772485c8f4ea498684a94db">boolean hasMoreElements()</a></td><td class="cell-kVtB">Enumeration 객체에 뽑아올 데이터가 있는지 검사하여 있다면 true, 아니라면 false 반환</td></tr><tr id="5bc113e5-f97e-4359-8b3d-6b08d7cf206b"><td class="cell-title"><a href="https://www.notion.so/E-nextElement-5bc113e5f97e43598b3d6b08d7cf206b">E nextElement()</a></td><td class="cell-kVtB">다음 아이템이 존재한다는 가정하에서 아이템을 하나씩 뽑아오는 역할</td></tr></tbody></table></div><ul id="c6618ee1-ab78-4b70-aa2e-d6e42ceef9b5" class="bulleted-list"><li>[나의 생각] 세션에 저장된 정보가 많은데, 이 중 사용하려는 정보가 많다면, getAttributeNames가 보다 효율적일것! 다만, 사용하려는 데이터가 많지 않거나, 많은 데이터 중 극소의 데이터만 사용한다면 getAttribute를 사용하는 것이 좋을 것!</li></ul><p id="7dedbf9d-df01-464d-9e60-966c0af82735" class="">
+</p><pre id="a5d38e06-476d-4c0b-8a25-4ce92f59cb14" class="code"><code>&lt;%@ page import=&quot;java.util.Enumeration&quot; %&gt;
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;getAttributeNames&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h3&gt;세션에 설정된 모든 값 얻어오기 getAttributeNames(Enumeration)&lt;/h3&gt;
+	&lt;%
+		Enumeration names =session.getAttributeNames();
+		while(names.hasMoreElements()){
+			//key-value처럼 세션에 저장된 정보의 이름들을 먼저 탐색
+			String name = names.nextElement().toString();
+			//탐색된 정보의 이름으로 값 찾기
+			String value = session.getAttribute(name).toString();
+			out.println(name+&quot; : &quot;+value +&quot;&lt;br&gt;&quot;);
+		}
+	%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="96199a80-2dd3-4c26-838c-bec0bf0e5f0a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98-Enumeration%20getAttributeNames.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98-Enumeration%20getAttributeNames.PNG?raw=true"/></a></figure><p id="e5aea5dc-6b77-45f2-9522-4ea98246ff99" class="">
+</p><h3 id="639da6dd-cb73-4b22-886f-cda5a4fbfc77" class="">세션 객체의 유효 시간, 웹 사이트에 머문 시간, 새로운 세션인지 확인하기</h3><pre id="75e1c61a-e273-4879-a1d8-fff136b52ad1" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%
+		//세션객체의 아이디(고유함)
+		String id_str= session.getId();
+		//새로운 웹 브라우저를 띄우지 않고, 이미 띄워져 있는
+		//브라우저에서 다른 페이지로 이동했다가 돌아오는 경우,
+		//사이트를 떠났을 때의 시간
+		long lastTime=session.getLastAccessedTime();
+		
+		//세션이 생성된 시간
+		long createdTime=session.getCreationTime();
+		//생성된 시간부터 같은 브라우저 내에서 마지막으로 접근한 시간까지 소요된 시간
+		long timeUsed = (lastTime-createdTime)/1000*60;//분단위로 변환
+		
+		//사용자의 다음 요청이 들어오기 전까지 유효한 세션의 시간
+		long inActive = session.getMaxInactiveInterval()/60;//s-&gt;min
+		
+		//새로 생성된 세션인지
+		boolean isNew = session.isNew();
+%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;세션객체의 정보 얻어오기&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;h3&gt;세션객체의 정보&lt;/h3&gt;
+	[1]세션 ID: &lt;%=id_str%&gt;&lt;br&gt;&lt;hr&gt;
+	[2]당신이 웹사이트에 머문 시간은: &lt;%=timeUsed%&gt;분입니다&lt;br&gt;&lt;hr&gt;
+	[3]세션의 유효시간: &lt;%=inActive%&gt;분&lt;br&gt;&lt;hr&gt;
+	[4]세션이 새로 생성되었나요?: &lt;%=isNew%&gt;&lt;br&gt;&lt;hr&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="e218c45a-6355-432a-9996-b765b22f41e8" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EA%B0%9D%EC%B2%B4%EC%9D%98%20%EC%A0%95%EB%B3%B4.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EA%B0%9D%EC%B2%B4%EC%9D%98%20%EC%A0%95%EB%B3%B4.PNG?raw=true"/></a></figure><ul id="1f015da3-2d15-406b-83b1-e95726434987" class="bulleted-list"><li>세션의 유효시간은 마지막 요청으로부터 기본 30분!</li></ul><ul id="51432c67-c7cd-4fc5-919b-03d36e052f98" class="bulleted-list"><li>참고로, 톰캣의 경우, 아래와 같이 세션의 유효기간이 30분으로 설정되어있음을 확인해볼 수 있다(C:/Program Files/Apache Software Foundation/Tomcat 7.0/conf에 있는 web.xml)</li></ul><pre id="5a41a8ef-04fc-4f4c-8546-df12923dd1a6" class="code"><code>&lt;session-config&gt;
+	&lt;session-timeout&gt;30&lt;/session-timeout&gt;
+&lt;/session-config&gt;</code></pre><ul id="1f587f8f-8e85-482a-b063-49b7d99f35c2" class="bulleted-list"><li>다만, 세션의 유효시간을 임의로 변경하려면 setMaxInactiveInterval(초단위)로 변경할 수 있는데, 세션 객체가 사라지지 않도록 하려면 setMaxInactiveInterval(-1)로 설정해두면 됨!</li></ul><ul id="225a6e9e-03f4-4f1f-8eb4-8c8f145c3f64" class="bulleted-list"><li>앞서 설명했던 것과 같이, 새로운 브라우저를 띄우게 되면, 브라우저와 세션이 1:1관계처럼 대응되기 때문에 새로운 id값이 보여진다</li></ul><figure id="e433436b-985c-43ad-84d0-b070da57d0a5" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EA%B0%9D%EC%B2%B4%EC%9D%98%20%ED%8A%B9%EC%A7%95-%EC%83%88%EB%A1%9C%EC%9A%B4%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C%20%EC%83%88%EB%A1%9C%EC%9A%B4%20id.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EA%B0%9D%EC%B2%B4%EC%9D%98%20%ED%8A%B9%EC%A7%95-%EC%83%88%EB%A1%9C%EC%9A%B4%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%97%90%EC%84%9C%20%EC%83%88%EB%A1%9C%EC%9A%B4%20id.PNG?raw=true"/></a></figure><h3 id="ad86d82a-6f68-4a4c-8f1e-a8888ec439d2" class="">세션을 제거 - removeAttribute(), invalidate()</h3><p id="8e0a32c3-8b02-4578-b785-6be0f6fef77b" class="">
+</p><ul id="c4747f2d-9b30-4bdc-910e-79b2f0af454c" class="bulleted-list"><li>로그아웃 등 회원 전용 페이지에서는 로그아웃 후에는 세션에 접근하지 못하도록 세션에 저장된 속성 값을 제거해주어야 함! ▶️ removeAttribute(), invalidate()</li></ul><ul id="6fa4ebb6-c078-4001-8b41-b010790e8aed" class="bulleted-list"><li>invalidate는 세션에 부여되었던 id를 삭제해줌(request.isRequestedSessionIdValid()로 id가 유효한지 확인 가능!)</li></ul><ul id="c399b538-827e-46d8-91f8-1e57f6c38041" class="bulleted-list"><li>removeAttribute()는 해당 name의 세션정보만 삭제</li></ul><pre id="f5205d8d-8705-4174-8d51-c7f884210fdf" class="code"><code>
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Cookie &amp;amp; Session&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;%
+	out.print(&quot;&lt;h3&gt; &gt;&gt; 이전에 설정되었던 세션 정보드들은 모두 삭제 &lt;&lt; &lt;/h3&gt;&quot;);
+	session.invalidate();
+	
+	out.print(&quot;세션 아이디가 유효할까요?: &quot;);
+	if(request.isRequestedSessionIdValid()){
+		out.print(&quot;유효합니다&quot;);
+	}else{
+		out.print(&quot;유효하지 않아요&quot;);//유효하지 않아요
+	}
+%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="8b1194ea-f52e-4bdd-8444-6f90d4ab2a9b" class="code"><code>&lt;%@ page import=&quot;java.util.Enumeration&quot;%&gt;
+&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Insert title here&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+	session.setAttribute(&quot;s_name1&quot;,&quot;저는 세션에 저장된 첫 번째 값이에요&gt;3&lt;&quot;);
+	session.setAttribute(&quot;s_name2&quot;,&quot;저는 세션에 저장된 두 번째 값이에요&gt;3&lt;&quot;);
+	session.setAttribute(&quot;s_name3&quot;,&quot;저는 세션에 저장된 세 번째 값이에요&gt;3&lt;&quot;);
+	
+	out.print(&quot;&lt;h3&gt; &gt;&gt; 세션값을 삭제하기 전&lt;&lt; &lt;/h3&gt;&quot;);
+	
+	Enumeration names = session.getAttributeNames();
+	while(names.hasMoreElements()){
+		String name = names.nextElement().toString();//obj-&gt;str
+		String value = session.getAttribute(name).toString();//obj-&gt;str
+		out.println(name+&quot; : &quot;+value+&quot;&lt;br&gt;&quot;);
+	}
+	
+	//이름을 통해서 제거
+	session.removeAttribute(&quot;s_name2&quot;);
+	
+	out.print(&quot;&lt;h3&gt; &gt;&gt; 세션값을 삭제한 후&lt;&lt; &lt;/h3&gt;&quot;);
+	names = session.getAttributeNames();//enumeration, iterator는 같은 이름이면 
+	//사용할때마다 매번 지정해주기!
+	while(names.hasMoreElements()){
+		String name = names.nextElement().toString();//obj-&gt;str
+		String value = session.getAttribute(name).toString();//obj-&gt;str
+		out.println(name+&quot; : &quot;+value+&quot;&lt;br&gt;&quot;);
+	}
+	%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="c45f8ab8-dfea-4e39-b185-df4a3feefe30" class="">
+</p><p id="ffc331ec-d7e8-49a3-b020-801d382343c1" class="">두 가지 예제를 살펴보자. 먼저 첫 번째 경우는 invalidate를 통해 이전에 설정해두었던 세션의 정보를 모두 제거해서 유효하지 않다는 문구를 띄워준다</p><p id="0d9317a2-3f0b-4f4d-ac18-d8c49753d49e" class="">
+</p><p id="476e9522-c8f3-4e9b-a4a9-c43067d97038" class="">두 번째 예제는 s_name2 요소만 제거되어 s_name1,s_name3 요소만 화면에 띄워주게 된다!</p><p id="28ab871b-75a8-4c50-8c19-5c5c1ce96a92" class="">
+</p><hr id="ed06cfff-dcd3-48a4-be38-74ae66f0f2c4"/><p id="3b2ecfb9-34b4-4059-afdb-b4035af11188" class="">아래는 세션을 이용해서 로그인 로직을 구현해보는 예제이다</p><figure id="c1dc2987-89e7-4a6a-babb-b57dd84cc486" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EC%9D%84%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EC%B2%98%EB%A6%AC%ED%95%B4%EB%B3%B4%EA%B8%B0.png?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EC%9D%84%20%EC%9D%B4%EC%9A%A9%ED%95%B4%EC%84%9C%20%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EC%B2%98%EB%A6%AC%ED%95%B4%EB%B3%B4%EA%B8%B0.png?raw=true"/></a><figcaption>세션을 이용한 로그인 로직</figcaption></figure><ul id="b26bdca3-3b3a-4596-8ad6-58d9cb0733fc" class="bulleted-list"><li>먼저 로그인 폼에서 로그인 정보를 입력한다</li></ul><ul id="1c11ff6d-a26e-441d-98ac-c5d2d15f0a9d" class="bulleted-list"><li>그 후 회원 인증 페이지에서 인증 절차를 밟는다</li></ul><ul id="d94cc0a6-42b8-4a2d-bc39-0f35da783f74" class="bulleted-list"><li>인증에 성공하면 메인페이지로, 실패하면 로그인 폼 페이지로 이동한다</li></ul><ul id="1cc56ec7-12be-4b3c-bd27-ef51a900a447" class="bulleted-list"><li>인증에 성공한 회원은 메인페이지에서 로그아웃 페이지 이용이 가능한데, 로그아웃 페이지에서는 로그아웃 선택 시 세션 객체를 제거하고 로그인 폼으로 이동한다!</li></ul><p id="722abaed-e246-4c07-91f7-c151e0ae340e" class="">
+</p><ol id="73034734-1428-47a5-8185-9d151e5b92b9" class="numbered-list" start="1"><li>로그인폼 loginForm.jsp</li></ol><pre id="2b1b4d63-9b98-41d4-bf2b-4ec1f391e2bc" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;로그인 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;form action=&quot;auth.jsp&quot; method=&quot;post&quot;&gt;
+		&lt;div&gt;
+			&lt;label&gt;아이디: &lt;input type=&quot;text&quot; name=&quot;id&quot; placeholder=&quot;아이디&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+		&lt;/div&gt;
+		&lt;div&gt;
+			&lt;label&gt;비밀번호 : &lt;input type=&quot;password&quot; name=&quot;pw&quot; placeholder=&quot;비밀번호&quot; autocomplete=&quot;off&quot;&gt;&lt;/label&gt;
+		&lt;/div&gt;
+		&lt;input type=&quot;submit&quot; value=&quot;로그인&quot;&gt;
+	&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="d9b46301-f5be-4af0-bd5d-b303414e1402" class="">2. 인증 페이지 auth.jsp(rename하였습니다)</p><pre id="f907f584-4dd1-43c1-8b4b-3d5f46afc6e8" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;회원인증 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+	/*일치 기준*/
+	String dbId=&quot;admin&quot;;
+	String dbPw=&quot;1234&quot;;
+	/*세션에 저장할 추가 정보*/
+	String dbName=&quot;관리자&quot;;
+	/*넘겨받은 값*/
+	String inId=request.getParameter(&quot;id&quot;);
+	String inPw=request.getParameter(&quot;pw&quot;);
+	
+	request.setCharacterEncoding(&quot;UTF-8&quot;);
+	if((dbId.equals(inId)) &amp;&amp; (dbPw.equals(inPw))){
+		//세션에 정보 저장
+		session.setAttribute(&quot;id&quot;, inId);
+		session.setAttribute(&quot;name&quot;,dbName);
+		//세션에 정보를 저장하고 리다이렉트하면 request나 response 객체가 소실되지 않음
+		response.sendRedirect(&quot;main.jsp&quot;);
+	}else{
+		//인증 실패시, 로그인폼으로 이동
+		response.sendRedirect(&quot;loginForm.jsp&quot;);
+	}
+%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="7ec9dc44-5bdd-4fe8-aaba-ba9ddc856bf9" class="">3. 메인페이지 main.jsp</p><pre id="29339bd3-52ec-49f8-8ebb-d6716a80f1e1" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;메인 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+		String id=session.getAttribute(&quot;id&quot;).toString();
+		String name=session.getAttribute(&quot;name&quot;).toString();
+		request.setCharacterEncoding(&quot;UTF-8&quot;);
+		//id나 name이  비어있다면 다시 loginForm으로 이동
+		if(id.equals(&quot;&quot;)||name.equals(&quot;&quot;)){
+			response.sendRedirect(&quot;loginForm.jsp&quot;);
+		}else{
+			%&gt;
+			&lt;%=name %&gt;님 안녕하세요!&lt;br&gt;
+			&lt;form action=&quot;logout.jsp&quot; method=&quot;post&quot;&gt;
+				&lt;input type=&quot;submit&quot; value=&quot;로그아웃&quot;&gt;
+			&lt;/form&gt;
+		&lt;%}
+	%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="c9e27dd2-ed8a-467c-993e-f981bd1c4771" class="">4. 로그아웃 페이지 logout.jsp</p><pre id="2ab7307b-7c76-459c-93f4-07f0a23e304e" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;로그아웃 페이지&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+		session.invalidate();//세션에 저장되었던 모든 정보 삭제
+	%&gt;
+	&lt;script src=&quot;./logout.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="1e479ff7-1c95-42f0-9076-c754e6722cab" class="">-로그아웃 알람 및 위치 변경을 해주는 logout.js</p><pre id="2cd1d02d-d67c-4151-ba05-c2ff5c88d551" class="code"><code>/**
+ * logout alarm
+ */
+alert(&quot;로그아웃 되었습니다! 다시 로그인 폼으로 이동합니다&quot;);
+location.href=&quot;loginForm.jsp&quot;;//location을 loginForm으로 변경</code></pre><figure id="065d2f9f-2531-4141-ac84-e3a8c0bffb7a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%97%B0%EC%8A%B5.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/Basic/%EC%84%B8%EC%85%98%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%97%B0%EC%8A%B5.gif?raw=true"/></a></figure></div></article></body></html>

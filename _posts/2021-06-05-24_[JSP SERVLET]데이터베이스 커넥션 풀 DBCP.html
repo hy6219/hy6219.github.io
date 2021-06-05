@@ -1,0 +1,1824 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>데이터베이스 커넥션 풀 DBCP</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ebaf07ec-1585-4536-a3c0-b4ba8280b742" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💞</span></div><h1 class="page-title">데이터베이스 커넥션 풀 DBCP</h1></header><div class="page-body"><p id="2c7ce0df-1bcc-486a-8ab7-24115cbbc59f" class="">🌹 커넥션</p><ul id="e22bbd98-8bd8-4642-a4b5-bdceaef054f0" class="bulleted-list"><li>데이터베이스 및 DBMS를 사용하기 위한 접속 요청을 통한 연결 상태(꼭 선행되어야 함!)</li></ul><p id="baf06a89-3bdb-40be-9f9f-8fb28754479c" class="">
+</p><h2 id="37c9e5b6-687f-4eb6-bbdd-3f668c54f962" class="">DBCP; Database Connection Pool</h2><p id="084b5062-3dbb-4a8d-a8ab-8d12867af2ab" class="">
+</p><figure id="b513255c-2d55-4bdc-b50b-915b1ecf0d21" class="image"><a href="https://ejbvn.files.wordpress.com/2008/11/95.jpg?w=500&amp;zoom=2"><img style="width:768px" src="https://ejbvn.files.wordpress.com/2008/11/95.jpg?w=500&amp;zoom=2"/></a><figcaption><a href="https://ejbvn.wordpress.com/category/week-2-entity-beans-and-message-driven-beans/day-09-using-jdbc-to-connect-to-a-database/">데이터베이스 커넥션  풀</a></figcaption></figure><ul id="50d5923c-e1bd-4d52-9cab-0f5382b81b49" class="bulleted-list"><li>웹 페이지에 대한 클라이언트 요청이 많은 경우, 서버의 부하 증가로 인한 서버 다운 현상을 해결해주기 위한 방법</li></ul><ul id="5bbc5243-1c7f-4a92-acf4-30518c7d6db1" class="bulleted-list"><li>DB의 효율성 및 속도 향상에 도움</li></ul><ul id="6e201155-20f9-4514-aa87-c8a528b6e8d1" class="bulleted-list"><li>DBCP 매니저가 어느 정도의 연결을 확보해두고 있다가, 클라이언트 요청이 들어오면 연결해주고, 작업이 다 끝나면 클라이언트의 연결을 다시 DBCP 매니저에게 반환하도록 함</li></ul><p id="956b30aa-09e1-437f-9042-2c33e98339ec" class="">      (위의 그림이 그 과정을 잘 보여주고 있음)</p><p id="db1b526c-b39a-4659-b8f9-677b72f83516" class="">
+</p><p id="1f095221-bc26-4c58-a55a-be2c0092c051" class="">🌻 그러면, 만약, 커넥션 풀이 가진 연결 양 &lt; 클라이언트 요청 이라면??</p><p id="645010e8-f6da-412b-b968-26cecadd19bf" class="">▶️ 커넥션 풀이 가진 연결 양이 n개라면, 그 n 개 중 작업이 마무리 되는 대로 빈 자리에 연결된다!</p><p id="e493631e-1343-4b2a-a883-9cf62e3273e8" class="">
+</p><p id="0ba1391f-6d7b-495d-b85e-cd1bbe53866b" class="">🌻 만약, 커넥션 풀이 가진 연결 양 &gt; 클라이언트 요청이라면?</p><p id="dadfe8ca-b3b3-4fdb-9ba5-7ab5c9930b08" class="">▶️ 커넥션 풀이 가진 연결 양이 n개 라면, 클라이언트 요청이 그 숫자보다 적더라도, 항상 n 개 모두 열려있다!</p><p id="4088bb68-e0b1-4e92-b3be-d54c98ade694" class="">
+</p><p id="801e8c9f-d955-4cd6-b28e-b30c06edf4b0" class="">🌺 커넥션 풀이 가진 연결 양은 옵션을 이용해서 수정할 수 있다!!</p><p id="e57f2210-458c-4ec0-b35a-bc02ef9a05ad" class="">
+</p><h3 id="5e6fb7e3-321e-46d4-9449-a5efd7716eed" class="">DBCP 설치하기</h3><p id="51450744-921b-4cad-94c5-ebef07b7673e" class="">
+</p><ol id="847d42a8-ebb2-4371-8105-032432f990af" class="numbered-list" start="1"><li>프로젝트 내부에 ojdbcX.jar 파일과 JSTL을 위한 jar 파일을 복사해두기!(WEB-INF/lib 폴더 내부에!)</li></ol><ol id="858c385c-4dd1-4577-85a8-c31a0be2b61d" class="numbered-list" start="2"><li>jsp 파일을 생성, 실행하여 server.xml에서 context  패스 설정하기(이클립스에서는 실행하면 자동생성됨)</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="592f06c1-4eb3-4867-8bf9-c980486574df"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">&lt;Context docBase=&quot;web-study-09-DBCP&quot;
+					path=&quot;/web-study-09-DBCP&quot; reloadable=&quot;true&quot;
+					source=&quot;org.eclipse.jst.jee.server:web-study-09-DBCP&quot; /&gt;</div></figure><p id="793054cd-53d8-4449-8684-2891cf0bb0ab" class="">3. 위의 context 패스 형태를 아래처럼 바꾸어, DBCP 이용을 위한 Resource 태그를 넣을 준비를 해주기</p><pre id="d2416472-16b5-42d2-ad9a-5e0399c538f1" class="code"><code>&lt;Context docBase=&quot;web-study-09-DBCP&quot;
+					path=&quot;/web-study-09-DBCP&quot; reloadable=&quot;true&quot;
+					source=&quot;org.eclipse.jst.jee.server:web-study-09-DBCP&quot;&gt;&lt;/Context&gt;</code></pre><p id="24a30fa5-1631-44ad-b9c8-f742a5aa97fe" class="">4. 아파치 홈페이지 <a href="http://tomcat.apache.org">http://tomcat.apache.org</a>  에서 Documentation의 Tomcat X.X 선택</p><ul id="dc05e538-8ef4-4091-b264-2a1f33a4fe02" class="bulleted-list"><li>저는 톰캣 버전 9를 이용하고 있으므로 Documentation의 Version 9.0을 선택하겠습니다</li></ul><p id="7b87c323-a10b-4d8f-884e-221b7655d717" class="">
+</p><p id="7d360f67-20d9-408a-a8b0-daae6be7d0a6" class="">5. 버전마다 항목 순서는 다를 수 있는데, &quot;JDBC DataSource(s)&quot;를 선택합니다</p><p id="ec0fe6de-fea6-4003-98e6-e6cea0bb0201" class="">
+</p><p id="0bfae06b-5c59-40c4-a58c-cc82f133861f" class="">6. 나타나는 화면에서 &quot;4. Oracle 8i, 9i &amp; 10g&quot; 선택</p><ul id="1322e4d2-50dd-479a-aaad-485bf63d5756" class="bulleted-list"><li>저는 지금 oracle 11g 를 사용하고 있지만, 문제되지 않을 것임을 확인하였습니다. (현재 아파치에서 업그레이드 되지 않은 상태라고 합니다)</li></ul><figure id="fb2c89df-32f4-4616-8b3e-286c83df6cc2"><div class="source"><a href="https://tomcat.apache.org/tomcat-9.0-doc/jndi-datasource-examples-howto.html#Oracle_8i,_9i_&amp;_10g">https://tomcat.apache.org/tomcat-9.0-doc/jndi-datasource-examples-howto.html#Oracle_8i,_9i_&amp;_10g</a></div></figure><p id="1db80b0d-cc2f-44cf-bd91-90e1f463e287" class="">
+</p><p id="83714880-2a8b-4238-9026-5610e58b6ffb" class="">7. &quot;1. Context Configuration&quot;에 있는 Resource 내용을 복사해서 붙여넣어 줍니다! </p><ul id="5cc88cdb-32ca-4647-bde3-c0cc5c573158" class="bulleted-list"><li>url 부분에서 저는 포트는 1521번, ip 주소는 로컬호스트로 동일하지만, 서비스는 xe로 이용하고 있으므로 mysid부분을 xe로 변경해주도록 하겠습니다!(sid 혹은 서비스네임, 아이디, 비밀번호를 반드시 확인 후 기입해주셔야 합니다!)</li></ul><pre id="50bad964-fe16-46dd-b377-d3401c74a633" class="code"><code>&lt;Context docBase=&quot;web-study-09-DBCP&quot;
+					path=&quot;/web-study-09-DBCP&quot; reloadable=&quot;true&quot;
+					source=&quot;org.eclipse.jst.jee.server:web-study-09-DBCP&quot;&gt;
+					&lt;Resource name=&quot;jdbc/myoracle&quot; auth=&quot;Container&quot;
+             			 type=&quot;javax.sql.DataSource&quot; driverClassName=&quot;oracle.jdbc.OracleDriver&quot;
+              			url=&quot;jdbc:oracle:thin:@127.0.0.1:1521:xe&quot;
+              			username=&quot;scott&quot; password=&quot;tiger&quot; maxTotal=&quot;20&quot; maxIdle=&quot;10&quot;
+              			maxWaitMillis=&quot;-1&quot;/&gt;	
+&lt;/Context&gt;</code></pre><p id="ced75470-9dc6-4d5d-be13-0400c3004376" class="">
+</p><p id="0fd00e17-4dc0-4209-9ee4-781b083f1721" class="">8. 프로젝트에 생성했던 jsp 파일 내부에 위에서 참고한 아파치에 있는 &quot;3. Code example&quot; 부분을 가져와서 스크립트릿으로 넣어줍니다!</p><pre id="f79a63b7-b8e1-4c4c-a7e4-f37582cba900" class="code"><code>Context initContext = new InitialContext();
+Context envContext  = (Context)initContext.lookup(&quot;java:/comp/env&quot;);
+DataSource ds = (DataSource)envContext.lookup(&quot;jdbc/myoracle&quot;);
+Connection conn = ds.getConnection();</code></pre><pre id="f4e55ad5-5051-4ebf-98b9-88c4b59338f4" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ page import=&quot;java.sql.Connection&quot; %&gt;
+&lt;%@ page import=&quot;javax.sql.DataSource&quot; %&gt;
+&lt;%@ page import=&quot;javax.naming.InitialContext&quot; %&gt;
+&lt;%@ page import=&quot;javax.naming.Context&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;DB연동&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;%
+		Context initContext = new InitialContext();
+		Context envContext  = (Context)initContext.lookup(&quot;java:/comp/env&quot;);
+		DataSource ds = (DataSource)envContext.lookup(&quot;jdbc/myoracle&quot;);
+		Connection conn = ds.getConnection();
+	%&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="8e2381a5-1a68-4599-ad8e-0277ea1c55cb" class="">
+</p><p id="ba3b4e0e-c8ee-4689-b1aa-9c20bfcd93c1" class="">하나하나 오목조목 살펴보도록 합시다!</p><p id="f403b25d-f08f-4301-9401-cee51e7816be" class="">(1) InitialContext 객체 생성</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="c8b7c68a-6767-4673-b5de-695a72db798c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Context initContext = new InitalContext();</div></figure><p id="6853e5fd-7676-40a2-9fea-833a1ef5d9af" class="">Context와 InitialContext에 대해서 각각 Open Declaration, Open Select를 통해서 확인해보면</p><p id="55fc148d-8ae0-4c2b-ae94-3aff198e70ae" class="">InitialContext는 Context 라는 인터페이스를 구현한 클래스인 것을 확인해볼 수 있습니다</p><p id="7450eafc-6f8f-4ecb-8657-5789b3745915" class="">이를 바탕으로 이해해보았을 때, 위의 경우는,</p><p id="01fc095c-d2d6-4b8b-88c1-a6841772d659" class="">InitialContext 객체를 생성하는데, 다형성이 적용되어서</p><pre id="d58bd65c-6b86-4f23-b97e-a32e4feb9e32" class="code"><code>Parent p = new Child();</code></pre><p id="0cb89c10-f59b-400e-89bd-70b422c340dd" class="">의 형태임을 나타내고 있음을 알 수 있습니다</p><p id="e69f514c-8476-4410-ba9a-2f10bd95eafb" class="">
+</p><p id="17fc3a73-9581-4f6d-91b1-6a3cad7370b9" class="">상기시켜볼 점은</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4319a972-537d-4adb-8cea-7baf5b6cca5a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Up-casting 
+- 크기가 작은 자료형 ▶️ 크기가 큰 자료형
+- 자식 클래스 ▶️ 부모 클래스</div></figure><p id="8f0afb34-a85c-48fd-94e6-194ea5e29177" class="">되었기 때문에, 암시적인 캐스팅이 되어 형변환자를 생략해도 된다는 점이다!</p><hr id="4c5207d9-a75e-4924-83d1-3ccc9ede528b"/><p id="54500add-3db9-4721-a045-0b6a35774b4a" class="">
+</p><p id="6eb9be6d-4cd0-41b9-948e-2aa0213a471c" class="">🌺 잠깐! 인터페이스의 활용성 중 하나였던, 추상클래스를 이용한 활용도 다시 살펴보자!</p><ul id="8e87ab53-c2ab-4158-8688-7999924cd1a8" class="bulleted-list"><li>아래처럼 하나의 인터페이스에 대해서는 사용할 기능 및 필드를 알려주기만 하고,</li></ul><ul id="e5830370-f455-44ab-abe8-d8ae68b09b46" class="bulleted-list"><li>추상메서드에서 이를 상속받아서 더 상세하게 기능 및 필드를 명시해주는 것이 인터페이스를 사용하였을 때, 기능이 유사한 클래스들에서의 구현이 보다 간편해질 수 있다!</li></ul><p id="d3762a80-6314-41ee-b028-dd15aa4fac7e" class="">-인터페이스</p><pre id="14bab212-ef87-48e1-bde7-d6dbbbc60790" class="code"><code>package com.poly.part01.test06;
+
+public interface Area {
+	
+	String print =&quot; 면적: &quot;;
+	
+	public void print();
+	public void make();
+}</code></pre><p id="bd0d1b07-80c3-4509-9742-1b242ff2b507" class="">-추상메서드</p><pre id="98f5b1c7-dbe9-4690-97d8-2305017391ce" class="code"><code>package com.poly.part01.test06;
+
+//인터페이스를 구현하는데, 메서드를 구현하고 싶지 않다면
+//클래스와 메서드를 추상클래스, 추상메서드로 만들어도 됨
+public abstract class AreaImpl implements Area{
+
+	private String result;
+	@Override
+	public void print() {
+		// TODO Auto-generated method stub
+		System.out.println(Area.print +result);
+	}
+
+	@Override
+	public abstract void make();
+	
+	public void setResult(String result)
+	{
+		this.result = result;
+	}
+}</code></pre><ul id="d799057e-4e15-4962-8780-2755e158fc30" class="bulleted-list"><li>또한 이 방식을 이용했을 때, 추상 클래스의 장점으로써, 상세 기능은 추상클래스를 상속받을 클래스에서 작성할 수 있도록 추상 메서드로 설정해둘 수도 있다는 점도 존재한다!</li></ul><hr id="5acd8942-42ca-4f90-80e4-78122d4fb637"/><p id="b52f9221-7dd1-4332-8c8d-ada9b6985b37" class="">(2) Context 객체의 lookup 메서드로 DBCP에서 지정한 이름찾기</p><ul id="9c96ee81-3524-40c5-94f4-1be73a17ea08" class="bulleted-list"><li>jdbc/myoracle은 Resource 태그에 존재했던 name 속성의 값!</li></ul><ul id="104478cf-c17e-490c-9147-f7e71617a74e" class="bulleted-list"><li>DataSource 객체는 Resource 태그에서 존재했던 type 속성의 javax.sql.DataSource에 해당!</li></ul><pre id="b885bd85-e212-405f-ace0-3e546e8be9f4" class="code"><code>Context envContext  = (Context)initContext.lookup(&quot;java:/comp/env&quot;);
+DataSource ds = (DataSource)envContext.lookup(&quot;jdbc/myoracle&quot;);</code></pre><p id="2fe93c75-67ca-473c-bcd8-0cc5b8193e2a" class="">(3) DataSource 객체로 커넥션 객체 얻어내기(JDBC에서는 DriverManager로 얻어냈던 것과 유사하지만, url이나 id, pwd 부분이 매개변수에 기입되지 않아도 된다는 점이 눈에 띈다! 그 이유는 server.xml에서 url 부분과 아이디, 비밀번호, JDBC 드라이버를 로드하는 데에 필요한 부분이 Resource 태그 내에 기입되어 있기 때문인 것 같다!)</p><pre id="aed217e1-14c4-427b-9a52-78c4ee2211f7" class="code"><code>Connection conn = ds.getConnection();</code></pre><p id="8c340145-f51e-4a2b-9144-1ce10e34c09a" class="">
+</p><h3 id="992a859d-d8a3-498c-9ac5-0f7557342f37" class="">DAO 객체와 VO 객체</h3><p id="81ee9e82-53d1-4c0b-9833-2728e2450340" class="">🌹 DAO: Database Access Object</p><ul id="525c5245-b38f-49d5-ac48-78a2ceff4b4c" class="bulleted-list"><li>DB의 데이터에 접근하기 위한 객체</li></ul><ul id="35ef92ab-aa61-48b5-9eda-7ffead641c4e" class="bulleted-list"><li>DB 레코드의 조회, 추가, 수정, 삭제 역할을 수행</li></ul><ul id="f01c3fad-d905-4018-986a-527ad1c0f07f" class="bulleted-list"><li>DB에서 얻은 데이터를 VO에 저장</li></ul><p id="088750c5-7ca9-434c-abb8-a7777cd104ec" class="">
+</p><p id="423a2cc0-88e4-4509-9b24-3500338d1fee" class="">🌹 VO : Value Object</p><ul id="8a11c6e8-80d3-43c9-bb73-90438e70a035" class="bulleted-list"><li>회원 테이블의 정보를 자바에서 얻어오기 전에 회원 정보를 저장할 공간을 위한 준비 과정</li></ul><ul id="04ba745f-9723-4a98-b5c6-5af1bf0f4713" class="bulleted-list"><li>자바 빈 객체 클래스와 동일한 기능을 한다고 이해하면 쉽다! 데이터를 담고 있는 객체!</li></ul><ul id="575c43db-357b-4fa2-9eff-8219a4ea7924" class="bulleted-list"><li>속성, setter &amp; getter 메서드로 구성됨</li></ul><ul id="af2bfc1c-ee31-4891-bce9-f9d30923df01" class="bulleted-list"><li>데이터를 전달하는 목적으로 사용한다고 해서 DTO(Data Transfer Object)라고도 부름</li></ul><p id="61456289-6a00-49d3-b72b-cec985ad559a" class="">▶️ 자바 빈 == VO == DTO</p><p id="a8998b3e-ad2e-42fd-aca9-00c2ef878267" class="">
+</p><p id="dbf71a8b-b298-467e-be54-b4b02fa7c70b" class="">
+</p><h3 id="fef35b7e-4fe0-4a79-804e-f47eafe9e77f" class="">VO, DAO 객체를 이용하여 회원 관리 시스템 연습해보기</h3><p id="4498bc46-46c8-4993-8a21-ee8f1037de7d" class="">먼저 로그인 로직을 살펴보자</p><figure id="fe08a54e-692c-4091-8b38-dda9c408037e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/DBCP-%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EC%B2%98%EB%A6%AC%20%EB%A1%9C%EC%A7%81.png?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/DBCP-%EB%A1%9C%EA%B7%B8%EC%9D%B8%20%EC%B2%98%EB%A6%AC%20%EB%A1%9C%EC%A7%81.png?raw=true"/></a><figcaption>데이터베이스 풀- 로그인 로직</figcaption></figure><p id="f5e533b3-5618-4682-9bd4-d91deb79de3b" class="">
+</p><p id="a44e556a-3457-4606-9d9d-36ae4c14a780" class="">먼저 구동 원리는 요청과 DB 처리를 위한 DAO, DTO(VO) 처리 단 사이에 컨트롤러가 위치하고, 컨트롤러가 필요에 의해서 DAO에게 일련의 작업을 요청하면, DAO는 DB와 DTO 객체를 주고받음으로써 작업을 수행한다. 그리고 그 결과는 컨테이너에게 전달하게 된다!</p><p id="ff0e44c3-f8b4-4ba5-9fa3-59e614e01411" class="">
+</p><p id="4bf1e8f8-352e-4e47-82ab-ffe1f5e29a1e" class="">컨트롤러는 크게 로그인을 구현하는 LoginServlet, 아이디를 사용할 수 있는지 확인하는 IdCheckServlet,  회원가입을 진행하는 JoinServlet, 회원정보를 수정하는 memberUpdate, 로그아웃을 구현하는 LogoutServlet 으로 구성된다!</p><p id="346874fd-308a-4796-b175-4a9c86b672b6" class="">
+</p><p id="0d6bdaa3-de0b-4be4-beaa-abb04c47dc7f" class="">그리고 각 컨트롤러는 요청에 따라 
+1)LoginServlet 은</p><ul id="72c9034b-18a6-43ee-a527-87b99cd5ddfb" class="bulleted-list"><li><a href="http://login.do">login.do</a> 로 url을 매핑</li></ul><ul id="4806c65a-74a5-4789-9795-900b892b49ab" class="bulleted-list"><li>DB에 존재하는 회원이 확인되면, main.jsp로 이동</li></ul><ul id="b6df8d78-28e3-4d4f-ae81-a4be28bbcf8e" class="bulleted-list"><li>DB에 존재하는 회원이 아니거나, 비밀번호가 일치하지 않으면 기존 페이지에 메시지를 띄우기</li></ul><p id="16b2b22d-efcb-46a0-b55e-1d559ca8e2db" class="">
+</p><p id="771f37c7-cbff-4adc-bfb7-e90ae6ae3504" class="">2) IdCheckServlet은</p><ul id="ec7f2828-131c-4cc5-b4f9-3da102d31e68" class="bulleted-list"><li>IdCheck.do로 url 매핑</li></ul><ul id="6f9dc453-70bb-4555-8380-48c9c0024e06" class="bulleted-list"><li>회원가입 페이지(join.jsp)에서 자바스크립트로 해당 주소로 아이디가 전달되면서 IdCheck.jsp로 이동된다!</li></ul><p id="89f71046-3506-4ca7-ba1b-3088eb6af18f" class="">
+</p><p id="f1ac6ffd-0469-40ea-b6c5-7f9273fed846" class="">3) JoinServlet은</p><ul id="8bdd4b7e-b4bb-4899-a23d-558db299bc46" class="bulleted-list"><li>join.do로 url 매핑</li></ul><ul id="4b8b0c8a-4e28-4976-b102-950bdf8a33f9" class="bulleted-list"><li>각 입력양식의 최대 길이를 만족하고, 기존 사용자 아이디와 겹치지 않으면 회원가입이 완료됨</li></ul><ul id="74cbacbe-7652-4e50-a865-12ddb2b89fb6" class="bulleted-list"><li>회원가입이 완료되거나 되지 않아도 login.jsp로 이동하되, 메시지는 다르게 띄우기</li></ul><p id="78ba952e-2720-45fe-aa69-bfe4b952c121" class="">
+</p><p id="25149dc9-271a-40c6-8da4-2cd210706dfd" class="">4) memberUpdate는</p><ul id="dd4f379b-677e-4491-911b-3c81a427efbc" class="bulleted-list"><li>main.jsp에서 접근할 수 있고, main.jsp로부터 id를 이용해서 dao 객체로부터 사용자 정보를 얻어오고, memberUpdate.jsp로 이동한 후, 수정할 정보를 가져오기</li></ul><ul id="9051338c-49b9-4931-bbfc-825d19ef3929" class="bulleted-list"><li>memberUpdate.do로 url 매핑</li></ul><ul id="d28999dc-56d6-48a5-afda-986c22552d68" class="bulleted-list"><li>memberUpdate.jsp로부터 받은 정보를 VO 객체에 담고, 세션에 갱신된 정보를 저장한 후,  login.jsp로 리다이렉트</li></ul><p id="e7a5a961-6ba8-4b1f-ad73-8814ec17e09e" class="">5) LogoutServlet은</p><ul id="fc6ae25f-d043-4ed5-b9f1-39bb70211abc" class="bulleted-list"><li>session을 invalidate() 메서드를 통해서 무효화 시키면 된다!</li></ul><ul id="92b0a64e-0484-4dc4-88ce-578d6ea2675d" class="bulleted-list"><li>그 후에는 login.jsp페이지로 이동한다!</li></ul><p id="c3f4ab97-41e8-4d46-8cdd-cb3a135df3f0" class="">
+</p><ol id="69c6d2cd-ee36-4e9a-aa9a-e56a0a8b8cbf" class="numbered-list" start="1"><li>VO 클래스 만들기</li></ol><ul id="7d31e2ba-5a20-412d-b9d9-1c8b2ccb13f2" class="bulleted-list"><li>먼저, 데이터를 전달하기 위한 클래스로, VO 클래스를 만들어보자</li></ul><ul id="d956c495-d58e-4a8d-b3c4-374f2f5a89b2" class="bulleted-list"><li>데이터는 아래와 같이 구성해보기로 한다</li></ul><div id="10e273ce-dd4f-4c1e-a083-bccc1a5b94bf" class="collection-content"><h4 class="collection-title">Member_DBCP 테이블 구조</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>컬럼명</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>크기</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="c3c71b14-f72d-48ea-a11c-9bbe01869800"><td class="cell-;IH?"><span class="selected-value select-value-color-green">name</span></td><td class="cell-title"><a href="https://www.notion.so/VARCHAR2-30-c3c71b14f72d48eaa11c9bbe01869800">VARCHAR2(30)</a></td><td class="cell-cDUH">이름</td></tr><tr id="d601c5bc-25e4-477f-873a-20eb4a725ec0"><td class="cell-;IH?"><span class="selected-value select-value-color-gray">userid</span></td><td class="cell-title"><a href="https://www.notion.so/VARCHAR2-30-d601c5bc25e4477f873a20eb4a725ec0">VARCHAR2(30)</a></td><td class="cell-cDUH">아이디</td></tr><tr id="919d70c9-93d2-4af8-86cd-ac777fb17365"><td class="cell-;IH?"><span class="selected-value select-value-color-pink">pwd</span></td><td class="cell-title"><a href="https://www.notion.so/VARCHAR2-20-919d70c993d24af886cdac777fb17365">VARCHAR2(20)</a></td><td class="cell-cDUH">비밀번호</td></tr><tr id="22f80223-ca99-4112-b047-5a8cf7539127"><td class="cell-;IH?"><span class="selected-value select-value-color-brown">email</span></td><td class="cell-title"><a href="https://www.notion.so/VARCHAR2-30-22f80223ca994112b0475a8cf7539127">VARCHAR2(30)</a></td><td class="cell-cDUH">이메일</td></tr><tr id="64c87727-b6f8-4d54-bd84-0c51679ddcc8"><td class="cell-;IH?"><span class="selected-value select-value-color-orange">phone</span></td><td class="cell-title"><a href="https://www.notion.so/char-13-64c87727b6f84d54bd840c51679ddcc8">char(13)</a></td><td class="cell-cDUH">전화번호</td></tr><tr id="387c1d04-d9f1-42cc-9919-a22034ed5f66"><td class="cell-;IH?"><span class="selected-value select-value-color-yellow">admin</span></td><td class="cell-title"><a href="https://www.notion.so/number-1-387c1d04d9f142cc9919a22034ed5f66">number(1)</a></td><td class="cell-cDUH">관리자 구분 번호(0: 사용자, 1:관리자)</td></tr></tbody></table></div><p id="836178d0-d27d-45ee-93f0-8ccf0b2c3d00" class="">위의 데이터를 담기 위한 테이블 MEMBER 테이블을 아래의 질의문으로 생성해보자</p><ul id="07196f6b-1cdc-4921-bb95-085469971135" class="bulleted-list"><li>주석으로 각 데이터에 대한 설명도 넣어주었다!</li></ul><pre id="c9eec036-ad71-4161-a1f9-a35179627bcd" class="code"><code>DROP TABLE MEMBER;
+
+CREATE TABLE MEMBER(
+	USERID VARCHAR2(10) PRIMARY KEY,
+	NAME   VARCHAR2(10),
+	PWD    VARCHAR2(10),
+	EMAIL  VARCHAR2(20),
+	PHONE  CHAR(13),
+	ADMIN  NUMBER(1) DEFAULT 0 --0: 사용자, 1: 관리자
+);
+
+COMMENT ON COLUMN MEMBER.USERID IS &#x27;사용자아이디&#x27;;
+COMMENT ON COLUMN MEMBER.NAME IS &#x27;사용자이름&#x27;;
+COMMENT ON COLUMN MEMBER.PWD IS &#x27;사용자비밀번호&#x27;;
+COMMENT ON COLUMN MEMBER.EMAIL IS &#x27;사용자이메일주소&#x27;;
+COMMENT ON COLUMN MEMBER.PHONE IS &#x27;사용자연락처&#x27;;
+COMMENT ON COLUMN MEMBER.ADMIN IS &#x27;모드식별&#x27;;
+
+SELECT * FROM USER_COL_COMMENTS WHERE TABLE_NAME=&#x27;MEMBER&#x27;;
+
+INSERT INTO MEMBER
+VALUES(&#x27;SOMI&#x27;,&#x27;이소미&#x27;,&#x27;1234&#x27;,&#x27;gmd@gmail.com&#x27;,&#x27;010-2362-5157&#x27;,0);
+INSERT INTO MEMBER
+VALUES(&#x27;SANG12&#x27;,&#x27;하상오&#x27;,&#x27;1234&#x27;,&#x27;ha12@naver.com&#x27;,&#x27;010-5629-8888&#x27;,1);
+INSERT INTO MEMBER
+VALUES(&#x27;LIGHT&#x27;,&#x27;김윤승&#x27;,&#x27;1234&#x27;,&#x27;youn1004@naver.com&#x27;,&#x27;010-9999-8282&#x27;,0);
+
+SELECT USERID, NAME, PWD, EMAIL, PHONE, ADMIN
+FROM   MEMBER;</code></pre><p id="e578143b-e257-4bbe-9d15-b084db005270" class="">
+</p><p id="f4e63d9d-94a4-40b0-8e7f-b28b0b707a1b" class="">com.js.dto 패키지명으로 MemberVO 클래스를 생성하자!</p><pre id="16ed057b-11aa-43cd-a2c7-869c84b08acd" class="code"><code>package com.js.dto;
+
+public class MemberVO {
+	//데이터필드
+	private String name;
+	private String userId;
+	private String pwd;
+	private String email;
+	private String phone;
+	private int admin;
+	
+	//constructors
+	public MemberVO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public MemberVO(String name, String userId, String pwd, String email, String phone, int admin) {
+		this.name = name;
+		this.userId = userId;
+		this.pwd = pwd;
+		this.email = email;
+		this.phone = phone;
+		this.admin = admin;
+	}
+	//getters &amp; setters
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getPwd() {
+		return pwd;
+	}
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public int getAdmin() {
+		return admin;
+	}
+	public void setAdmin(int admin) {
+		this.admin = admin;
+	}
+	
+	//jsp 파일에서 넘어오는 값은 String이므로 integer로 바꾸어주기!(&lt;-오버로딩 이용!)
+	public void setAdmin(String admin) {
+		this.admin = Integer.valueOf(admin);
+	}
+	
+	//toString()
+	@Override
+	public String toString() {
+		return &quot;MemberVO [name=&quot; + name + &quot;, userId=&quot; + userId + &quot;, pwd=&quot; + pwd + &quot;, email=&quot; + email + &quot;, phone=&quot;
+				+ phone + &quot;, admin=&quot; + admin + &quot;]&quot;;
+	}
+}</code></pre><p id="6523e3eb-d5eb-40ed-9f69-d73a61337542" class="">(1) 먼저 위에서 만든 DB 테이블을 참고하여 데이터 필드를 만들고</p><p id="745b4e25-8bd0-4513-a3ff-ce4ef4760807" class="">(2) 생성자, getter, setter 를 만든다</p><p id="9dc6752d-3de8-4c69-81f4-8e9d7f46146d" class="">(3) 그 후에는 toString을 오버라이딩하여 데이터 객체를 String으로 손쉽게 추출할 수 있도록 한다!</p><p id="c8689c25-5b99-45a7-881d-f8494416648f" class="">
+</p><p id="21b8c573-7b31-47cf-a1fb-45fb1941aad1" class="">
+</p><p id="f36ca08f-a0e6-4c52-872e-c5f51866fe7c" class="">2. DAO 객체 만들기</p><p id="b4ad8092-f207-4e6b-912e-14493acc7133" class="">🌟 싱글톤 패턴</p><ul id="6b665926-e7d5-4fdd-bf6b-3294c4a61a56" class="bulleted-list"><li>매번 DB의 데이터를 VO 객체를 통해 얻어오거나, VO 객체에 저장된 값을 DB에 추가할 때 매번 DAO 객체를 생성하는 것은 비효율적!</li></ul><ul id="f889431f-49c9-4d48-96ac-143b88641a2f" class="bulleted-list"><li>따라서, DAO 객체는 싱글톤 패턴으로 설계하는 것이 보다 효율적!</li></ul><ul id="ead77f3f-0d8e-4683-b84a-2c8cc00a9a99" class="bulleted-list"><li>인스턴스는 오로지 단 하나만 존재하여, 객체를 메모리에 단 한 번만 올려놓고 시스템 전반에 걸쳐서 특정 자원(Object, Module, Component)을 공유할 때 사용되는 패턴</li></ul><ul id="c06f0c60-8bec-48ca-8403-c0e57ee7a72c" class="bulleted-list"><li>싱글톤 패턴의 모습을 아래의 구조로 살펴보자!</li></ul><pre id="79579bcf-2819-4ab4-8b15-c594db0fc27e" class="code"><code>public class MemberDao{
+	private MemberDao(){
+	//1.private한 생성자
+  }
+  //2.DAO객체를 클래스객체로, private하게 필드로 만들어두기
+   private static MemberDao dao = new MemberDao();
+  //3. 외부에서 객체에 접근하는 수단으로써 public 메서드를 두기
+  //static 멤버를 반환해주어야 하고, 동시에 메모리에 실행 시 먼저 로드되는 static 특성상
+//static 메서드로 이용
+  public static MemberDao getInstance(){
+		return dao;
+   }
+}</code></pre><p id="37b435ed-ffee-448f-98fc-b74c58ee7943" class="">즉,</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="c5827cd0-677c-4b49-80c6-65a63711f2fc"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">1.private한 생성자</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="dce43d3c-5b50-430c-af81-85b7ec637fd4"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">2.Dao 클래스 내부에 private한  Dao 객체를 필드로 두기</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4af19174-ff93-4cbc-befd-bf0c66936a97"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">🌟3.외부에서 접근할 수 있는 public 메서드를 두기</div></figure><p id="31cb1f41-1c2b-4314-b480-c86fd4dcd605" class="">와 같은 형태로 설계하여 사용할 수 있다!</p><p id="a798703e-6930-481d-9e04-88a4adcce80d" class="">
+</p><p id="7a122e51-babb-4a35-b6cb-3298438770a3" class="">조심할 부분은, 3번인데, public static을 사용한 이유는</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b7a28090-b735-4b1b-9f19-ef3a4b038bbe"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">public으로 두어서 외부에서 dao 객체에 간접적으로 접근할 수 있도록 하기 위함</div></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="32b7fc9d-bc83-43b0-bc72-e46b18d469bd"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">static 메서드 특성상 메모리에 프로그램 실행 시작 시, 먼저 탑재되고
+static 멤버를 전달해줄 수 있다는 점</div></figure><p id="27af0be2-be6b-47a8-a514-ecf89b72056a" class="">에서 사용한 것으로 조심스레 생각해본다!</p><p id="4cdce825-bb62-4570-9bd8-4cb6b278d4d1" class="">
+</p><p id="6c3d117a-1328-468e-a7c0-fbdc20bda5e5" class="">이를 이용하여 DAO 객체를 위한 클래스를 만들어보자!</p><ul id="89e66309-b5f4-4e6b-8196-38fe9a06f8e0" class="bulleted-list"><li>그리고!! DAO 객체에는 VO 객체를 이용한 데이터 송수신이 필요하므로 , 커넥션 객체를 위한 getConnection() 메서드를 작성해두자!</li></ul><pre id="19b7313f-640f-4b8f-a7ee-73ab98588985" class="code"><code>package com.js.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
+import com.js.dto.MemberVO;
+import com.js.invalidException.InvalidException;
+
+public class MemberDao {
+	Connection conn 	 = null;
+	Statement  st   	 = null;
+	PreparedStatement ps = null;
+	ResultSet  rs   	 = null;
+	
+	//싱글톤 패턴
+	//2.클래스 변수로 Dao 클래스 객체 만들어두기
+	private static MemberDao dao = new MemberDao();
+	//1.private 생성자
+	private MemberDao() {
+		
+	}
+	
+	//3.외부에서 객체를 반환받을 수 있는 메서드
+	public static MemberDao getInstance() {
+		return dao;
+	}
+	
+	//4.커넥션 객체  얻어오기
+	public Connection getConnection() throws Exception{
+		//커넥션 객체 준비 
+		Connection conn = null;
+
+		//InitialContext 객체 생성
+		Context context = new InitialContext();
+		//initial context의 lookup 메서드로 name 속성에 접근하기
+		Context envContext = (Context) context.lookup(&quot;java:/comp/env&quot;);//Object-&gt;Context! 따라서 명시적 형변환!!
+		//DataSource
+		DataSource ds   = (DataSource)envContext.lookup(&quot;jdbc/myoracle&quot;);//Object-&gt;DataSource
+		//커넥션 객체 생성
+		conn = ds.getConnection();
+		conn.setAutoCommit(false);//transaction autocommit 방지
+		return conn;
+	}
+	
+	//DAO에서 사용자 인증을 위함
+	public int userCheck(String userId, String pwd) {
+		//성공 or 실패 변수
+		int res 			  = -1;//비밀번호가 일치하면 1, 아이디만 존재하면 0 , 아이디가 존재하지 않으면 -1 
+		String  confirmQuery  = &quot;SELECT PWD FROM MEMBER WHERE USERID=?&quot;;//아이디값으로 비밀번호를 찾아와서 일치 여부 확인
+	
+		try {
+			
+			//dbcp로부터 connection가져오기
+			conn = getConnection();
+			//statement 준비
+			ps   = conn.prepareStatement(confirmQuery);
+			ps.setString(1, userId);
+			//query 실행 -&gt;그 결과를 result set으로 받기
+			rs   = ps.executeQuery();
+			
+			if(rs.next()) {
+				//존재하는 것이 확인된다면
+				//confirm process
+				//null check가 선행되는 것이 보다 검색 성능이 좋을 것! 따라서 이를 먼저 적기!
+				String compPwd =rs.getString(1);
+				if(compPwd!=null &amp;&amp; pwd.equals(compPwd)) {
+					res = 1;//아이디, 비밀번호 모두 존재, 일치
+				}else {
+					res = 0;//아이디만 존재하고 비밀번호는 불일치!
+				}
+			}else {
+				//존재하지 않는다면
+				res = -1;
+			}
+			
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]Failed to identify user &quot;+userId);
+			e1.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				ps.close();
+				conn.close();
+			}catch(Exception e2) {
+				System.out.println(&quot;[ERR]ERROR INDUCED DURING CLOSING CONN IN USERCHECK!&quot;);
+				e2.printStackTrace();
+			}
+		}
+		return res;//성공 케이스 혹은 실패 케이스 여부 변수 전달(from database to was)(from was to web server)
+		//tomcat은 was+web server이므로 위의 두 역할을 모두 수행
+	}
+	
+	//아이디(기본키-&gt;식별자)로 회원 정보를 가져오기
+	public MemberVO getMemberInfo(String userId) {
+		//정보를 담을 vo 객체
+		MemberVO mVo 		      = new MemberVO();
+		//회원 정보를 담기 위한 조회 쿼리
+		String   getUserInfoQuery = &quot;SELECT USERID, NAME, PWD, EMAIL, PHONE, ADMIN FROM MEMBER WHERE USERID=?&quot;;
+		try {
+			//dbcp로부터 커넥션 가져오기
+			conn = getConnection();
+			//statement 준비
+			ps    = conn.prepareStatement(getUserInfoQuery);
+			ps.setString(1, userId);
+			rs    = ps.executeQuery();
+			
+			if(rs.next()) {
+				//조회 결과가 존재한다면, vo객체에 정보를 매핑해주기
+				mVo.setUserId(rs.getString(1));
+				mVo.setName(rs.getString(2));
+				mVo.setPwd(rs.getString(3));
+				mVo.setEmail(rs.getString(4));
+				mVo.setPhone(rs.getString(5));
+				mVo.setAdmin(rs.getInt(6));
+			}else {
+				//조회 결과가 존재하지 않는다면, 즉 그러한 레코드가 전혀 존재하지 않으면 콘솔에 문구 띄우기
+				throw new InvalidException(new StringBuilder(userId+&quot;는 존재하지 않습니다. 다시 확인해보세요&quot;).toString());
+			}
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]GET USER INFO FAILED! CHECK LOG&quot;);
+			e1.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				ps.close();
+				conn.close();
+			}catch(Exception e2) {
+				System.out.println(&quot;[ERR]CLOSING CONN ERR (GET USER INFO)&quot;);
+				e2.printStackTrace();
+			}
+		}
+		return mVo;//정보 넘기기
+	}
+	
+	//아이디 중복 체크
+	public int confirmId(String userId) {
+		//기존 아이디가 존재하면 1, 존재하지 않으면 -1 반환
+		int res = -1;
+		String confirmIdQuery= &quot;SELECT USERID FROM MEMBER WHERE USERID=?&quot;;
+		
+		try {
+			conn = getConnection();
+			
+			ps   = conn.prepareStatement(confirmIdQuery);
+			
+			ps.setString(1, userId);
+			
+			rs   = ps.executeQuery();
+			
+			if(rs.next()) {
+				res = 1;
+			}else {
+				res = -1;
+			}
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]아이디 중복체크 중 에러 발생 !!&quot;);
+			e1.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				ps.close();
+				conn.close();
+			}catch(Exception e2) {
+				System.out.println(&quot;[ERR]CLOSE ERROR(USER ID CHECKING)&quot;);
+				e2.printStackTrace();
+			}
+		}
+		
+		return res;
+	}
+	
+	//DB에 회원 정보 추가(저장)
+	public int insertMember(MemberVO vo) {
+		//insert 성공 여부
+		int resIns = -1;
+		String insertQuery=&quot;INSERT INTO MEMBER VALUES(?,?,?,?,?,?)&quot;;
+		
+		try {
+			conn  = getConnection();
+			ps    = conn.prepareStatement(insertQuery);
+			//USERID, NAME, PWD, EMAIL, PHONE, ADMIN 
+			ps.setString(1, vo.getUserId());
+			ps.setString(2, vo.getName());
+			ps.setString(3, vo.getPwd());
+			ps.setString(4, vo.getEmail());
+			ps.setString(5, vo.getPhone());
+			ps.setInt(6, vo.getAdmin());
+			
+			resIns = ps.executeUpdate();
+			
+			if(resIns&gt;0) {
+				System.out.println(&quot;INSERT 성공&quot;);
+				conn.commit();
+			}else {
+				System.out.println(&quot;INSERT 실패&quot;);
+				conn.rollback();
+			}
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]INSERT FAILED&quot;);
+			e1.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				conn.close();
+			}catch(Exception e2) {
+				System.out.println(&quot;[ERR]Close Error at INSERTING&quot;);
+				e2.printStackTrace();
+			}
+		}
+		
+		return resIns;
+	}
+	
+	//회원 정보 갱신시키기
+	public int updateMember(MemberVO vo) {
+		int resUp = -1;
+		//USERID, NAME, PWD, EMAIL, PHONE, ADMIN
+		String updateQuery=&quot;UPDATE MEMBER SET USERID=?, NAME=?, PWD=?, EMAIL=?, PHONE=?, ADMIN=? WHERE USERID=?&quot;;
+		
+		try {
+			//dbcp에서 커넥션 얻어오기
+			conn = getConnection();
+			
+			//preparedStatement 준비
+			//memberUpdate.jsp의 request객체에 담겨져 있는 정보가 memberUpdate.do에 해당되는
+			//서블릿 내부에서 처리 및 전달될 것이고, 그 내부의 dao객체 호출로 그 정보가 전달되어, 작업이 이루어질 것!
+			ps   = conn.prepareStatement(updateQuery);
+			ps.setString(1, vo.getUserId());
+			ps.setString(2, vo.getName());
+			ps.setString(3, vo.getPwd());
+			ps.setString(4, vo.getEmail());
+			ps.setString(5, vo.getPhone());
+			ps.setInt(6, vo.getAdmin());
+			ps.setString(7, vo.getUserId());
+			System.out.println(updateQuery+&quot;, data:&quot;+vo.toString());
+			//실행
+			resUp = ps.executeUpdate();
+			
+			if(resUp &gt; 0) {
+				conn.commit();
+			}else {
+				conn.rollback();
+			}
+			
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]UPDATE USER INFO ERROR!&quot;);
+			e1.printStackTrace();
+		}finally {
+			try {
+				ps.close();
+				conn.close();
+			}catch(Exception e2) {
+				System.out.println(&quot;[ERR] CLOSE ERROR AT UPDATE USER INFO&quot;);
+				e2.printStackTrace();
+			}
+		}
+		return resUp;
+	}
+}</code></pre><ul id="51ca471e-6b83-45a8-9456-425307b6f1bb" class="bulleted-list"><li>더불어서, DAO 객체는 질의를 담당하므로, 그에 대한 메서드도 준비해두어야 한다!</li></ul><ul id="e23d984f-8c31-4245-851d-6e93944373fe" class="bulleted-list"><li>아래의 표는 위의  DB 정보와 VO 클래스를 바탕으로 필요한 기능을 정리한 것이다!</li></ul><p id="ac8323d2-4d21-4a64-b2f9-fe4d119180fe" class="">[백견불여일타 JSP&amp;SERVLET p.473 참조]</p><div id="e302e956-0dbb-4aa0-a70b-5ebc43709650" class="collection-content"><h4 class="collection-title">MemberDao에서 필요한 메서드</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>메서드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>내용</th></tr></thead><tbody><tr id="9b762430-d4cf-44c8-87c0-608f48978725"><td class="cell-VEgu"><span class="selected-value select-value-color-green">int userCheck(String userId String pwd)</span></td><td class="cell-title"><a href="https://www.notion.so/1-x-0-1-9b762430d4cf44c887c0608f48978725">사용자 인증 시 사용하는 메서드
+* -1 : 아이디가 존재 x
+* 0 : 아이디만 일치
+* 1 : 아이디, 비밀번호 모두 일치</a></td></tr><tr id="d30de65b-1097-4f45-85f1-c9cca38ac437"><td class="cell-VEgu"><span class="selected-value select-value-color-brown">MemberVO getMember(String userId)</span></td><td class="cell-title"><a href="https://www.notion.so/VO-SELECT-d30de65b10974f4585f1c9cca38ac437">사용자 아이디와 일치하는 멤버를 VO 객체를 이용해서 테이블에서 찾아내기(SELECT)</a></td></tr><tr id="69904898-a11f-4a19-b15b-c3fd94c14cf0"><td class="cell-VEgu"><span class="selected-value select-value-color-yellow">int confirmID(String userId)</span></td><td class="cell-title"><a href="https://www.notion.so/1-1-69904898a11f4a19b15bc3fd94c14cf0">회원 가입 시 아이디 중복 확인
+-1: 해당 아이디가 없음
+1: 해당 아이디가 존재</a></td></tr><tr id="0c52ceb0-7174-4b3f-9fed-f39ed8a0b879"><td class="cell-VEgu"><span class="selected-value select-value-color-default">void insertMember(MemberVO vo)</span></td><td class="cell-title"><a href="https://www.notion.so/VO-0c52ceb071744b3f9fedf39ed8a0b879">매개변수로 받은 VO 객체를 테이블에 삽입</a></td></tr><tr id="5b74f9c2-9592-4d11-a8ae-544b8762e962"><td class="cell-VEgu"><span class="selected-value select-value-color-pink">void updateMember(MemberVO vo)</span></td><td class="cell-title"><a href="https://www.notion.so/VO-5b74f9c295924d11a8ae544b8762e962">매개변수로 받은 VO객체로 정보를 수정</a></td></tr></tbody></table></div><p id="be8f711f-3136-48e0-b4d8-1afd8dba1d14" class="">
+</p><h3 id="2aa1aea5-2b72-499d-aa75-0d46c036f91f" class="">회원 인증을 위한 아이디, 비밀번호 입력 폼 login.jsp , LoginServlet.java</h3><ul id="64a120e6-be5c-4923-9f3b-ded697646de4" class="bulleted-list"><li>아이디, 비밀번호를 입력받는 폼 ▶️ jsp 페이지</li></ul><pre id="912adc17-2081-409d-995c-c0aff02aad93" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;회원관리&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+		&lt;h1&gt;로그인&lt;/h1&gt;
+	&lt;/header&gt;
+	&lt;section&gt;
+		&lt;article&gt;
+			&lt;form action=&quot;./login.do&quot; method=&quot;post&quot; name=&quot;frm&quot;&gt;
+				&lt;table&gt;
+					&lt;tr&gt;
+						&lt;td&gt;아이디 &lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;userId&quot; id=&quot;userId&quot; value=&quot;${userId }&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;비밀번호 &lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;password&quot; name=&quot;pwd&quot; id=&quot;pwd&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+							&lt;input type=&quot;submit&quot; value=&quot;로그인&quot; id=&quot;login&quot; onclick=&quot;return loginCheck();&quot;&gt;&amp;nbsp;&amp;nbsp;
+							&lt;input type=&quot;reset&quot; value=&quot;취소&quot; title=&quot;모든 값이 지워집니다&quot;&gt;&amp;nbsp;&amp;nbsp;
+							&lt;input type=&quot;button&quot; value=&quot;회원가입&quot; onclick=&quot;location.href=`join.do`&quot;&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td colspan=&quot;2&quot;&gt;${msg}&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/form&gt;
+		&lt;/article&gt;
+		&lt;%-- &lt;article&gt;
+			&lt;%
+				String connect =&quot;./index.jsp&quot;;
+			%&gt;
+			&lt;jsp:include page=&quot;${connect }&quot;/&gt;
+		&lt;/article&gt; --%&gt;
+	&lt;/section&gt;
+	&lt;script src=&quot;../js/member.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><ul id="c6773d15-134b-4f25-85fa-3abf36e1ab60" class="bulleted-list"><li>로그인을 위한 정보가 null인지 확인하는 방법 ▶️ 자바스크립트를 이용</li></ul><pre id="d6184417-bb70-4575-b926-8bced2fe5d3e" class="code"><code>/**
+ * 아이디, 비밀번호 유효성 검사
+ */
+//const login=document.getElementById(&quot;login&quot;);
+const form    = document.frm;
+const id      = document.frm.userId;
+const pwd     = document.frm.pwd;
+
+
+function loginCheck(){
+	
+	if(id.value.length===0 || id.value===&quot;&quot;){
+		alert(`아이디 확인 요망!`);
+		return false;
+	}
+	
+	if(pwd.value.length===0 || pwd.value===&quot;&quot;){
+		alert(`비밀번호 확인 요망`);
+		return false;
+	}
+	return true;
+}</code></pre><ul id="d692a803-0fd0-4251-928d-ab68e2fb39d3" class="bulleted-list"><li>입력받은 양식은 login.do로 연결되도록 하는데, 이를 통하여 서블릿에서 jsp 페이지를 실행할 수 있도록 하기◀️ url 매핑(pattern)을 login.do로 설정[@WebServlet(&quot;/login.do&quot;)]</li></ul><pre id="4a2df5ad-ca31-4e49-ae10-b3971ad0bf11" class="code"><code>package com.js.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.js.dao.MemberDao;
+import com.js.dto.MemberVO;
+
+/**
+ * Servlet implementation class LoginServlet
+ */
+@WebServlet(&quot;/login.do&quot;)
+public class LoginServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LoginServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String url = &quot;member/login.jsp&quot;;
+		HttpSession session=request.getSession();
+		/*
+		 * 이미 로그인된 사용자라면 메인페이지로,
+		 * 그렇지 않으면 기본적으로 login.jsp로 이동
+		 * 
+		 * */
+		
+		//로그인되어있었다면
+		if(session.getAttribute(&quot;logInUser&quot;)!=null) {
+			//밑에 있는 post 등을 통해서 세션에 저장해둔 obj이 있었는지 확인
+			//MemberDao dao = MemberDao.getInstance();
+			MemberVO mVo = (MemberVO)session.getAttribute(&quot;logInUser&quot;);
+			session.setAttribute(&quot;logInUser&quot;, mVo);
+			url = &quot;main.jsp&quot;;
+		}
+		RequestDispatcher dispatcher= request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//연결되는 url
+		String connUrl = &quot;member/login.jsp&quot;;
+		
+		//url로 연결되었기 때문에 request객체로부터 값을 가져올 수 있음
+		String  userId = request.getParameter(&quot;userId&quot;);
+		String  pwd    = request.getParameter(&quot;pwd&quot;);
+		
+		MemberDao dao  = MemberDao.getInstance();//singleton
+		RequestDispatcher dispatcher = null;
+		
+		//login처리
+		int   logInCk  = dao.userCheck(userId, pwd);
+		
+		if(logInCk ==1) {
+			//성공 시 유저 정보 가져오기
+			MemberVO mVo = dao.getMemberInfo(userId);
+			//세션정보를 얻어와서 세션에 정보 저장해두기
+			HttpSession session = request.getSession();
+			session.setAttribute(&quot;logInUser&quot;, mVo);
+			//로그인[회원가입] 성공 메시지는 세션에 저장할 필요는 없고 request객체 범위에만 저장해도 됨
+			//그 이유는 로그인 정보는 사이트 내에서 사용자 정보가 공유되어야 로그인 이후 서비스 제공이 가능해지기 때문
+			request.setAttribute(&quot;msg&quot;, &quot;로그인/회원가입에 성공했습니다!&quot;);
+			//페이지 포워딩을 위해서 url을 지정
+			connUrl = &quot;./main.jsp&quot;;
+		}else if(logInCk ==0) {
+			//비밀번호가 틀린 경우
+			//메시지만 띄우기
+			request.setAttribute(&quot;msg&quot;, &quot;비밀번호가 맞지 않습니다&quot;);
+		}else if(logInCk == -1) {
+			//그런 사용자가 존재하지 않는 경우
+			request.setAttribute(&quot;msg&quot;, &quot;존재하지 않는 회원입니다&quot;);
+		}
+		
+		dispatcher = request.getRequestDispatcher(connUrl);
+		dispatcher.forward(request, response);
+	}
+
+}</code></pre><p id="70a6fb25-2825-43cb-aab2-0394b2e02242" class="">⚠️ 위에서는 jsp 파일을 실행하지 않고 login.do로 요청하여 수행하도록 하고자 하였으나,  login.jsp로 바로 실행하는 경우도 있으며, 주소 입력란에 직접 입력하기 어렵기 때문에 이를 방지하기 위해서 index.jsp 파일을 만들어 홈페이지로 사용 ▶️ 컨텍스트 패스까지만 입력하면 index.jsp 페이지로 이동됨</p><ul id="9f757ffc-1b06-49ba-93b0-aa0c296a8d3c" class="bulleted-list"><li>원리- 기본적으로 톰캣서버를 이용할 때 web.xml 내부에서</li></ul><pre id="da64fb9e-85b0-4517-97ce-db4326e513c9" class="code"><code>&lt;welcome-file-list&gt;
+		&lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;index.htm&lt;/welcome-file&gt;
+		&lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+	&lt;/welcome-file-list&gt;</code></pre><p id="2e1fc5bf-ab54-43d6-9a82-a1db9cb91f60" class="">위와 같이 프론트 페이지 리스트가 설정되어 있기 때문!! 다른 파일을 프론트 페이지로 하고 싶다면 추가하면 된다!</p><p id="93273902-0bdf-4888-bce3-42acda7f533e" class="">
+</p><h3 id="3d6ad22a-7c09-4706-9362-501ffbc6493e" class="">회원가입을 위한 Join.jsp, JoinServlet.java</h3><ul id="cdf94c79-7635-4f59-bafc-453ce23c051d" class="bulleted-list"><li>회원 가입 부분은 중간에 자바스크립트 오프너를 통해서 idCheck.do와 연결되므로 같이 다루도록 하겠다!</li></ul><p id="e0e2c5e8-b94b-41f6-82bb-792cf3f03436" class="">
+</p><p id="8b7339ec-f616-45f9-a7dc-c3f5e23ed829" class="">먼저, 앞에서 언급했던 연결되는 부분은 자바스크립트 오프너를 이용해서 팝업창처럼 띄워지게 된다!</p><pre id="e188172b-45dd-48b1-92b7-2bcc6426ec26" class="code"><code>/**
+ * 아이디, 비밀번호 유효성 검사
+ */
+//const login=document.getElementById(&quot;login&quot;);
+const form    = document.frm;
+const id      = document.frm.userId;
+const pwd     = document.frm.pwd;
+
+function loginCheck(){
+	
+	if(id.value.length===0 || id.value===&quot;&quot;){
+		alert(`아이디 확인 요망!`);
+		return false;
+	}
+	
+	if(pwd.value.length===0 || pwd.value===&quot;&quot;){
+		alert(`비밀번호 확인 요망`);
+		return false;
+	}
+	return true;
+}
+
+function idCheck(){
+	const url = &quot;http://localhost:8081/web-study-09-DBCP/idCheck.do?userId=&quot;+id.value;//아이디 중복 체크 결과만 &quot;출력&quot;할 것이므로 get!!
+	if(id.value.length===0 || id.value===&quot;&quot;){
+		alert(`아이디 확인 요망!`);
+		id.focus();
+		return false;
+	}
+	
+	window.open(url,&quot;_blank&quot;,&quot;toolbar=no, menubar=no, scrollbars=yes, resizable=no, width=450,height=200&quot;);
+}</code></pre><p id="81a3bd9c-6006-4654-bf23-5448ab95302e" class="">
+</p><p id="8310d9be-ae1f-4af5-93ed-bedca3920ddb" class="">그러면, idCheck.do에서는 dao를 통해 db에서 일치하는 정보가 있는지 찾아서, 그 결과와 아이디를 request객체에 저장한다! 그 이유는 굳이 중복 여부만 확인하는 것인데, 세션에 저장할 필요가 없기 때문이다!</p><pre id="1b949622-dd0b-47b1-8594-c978ed52be00" class="code"><code>package com.saeyan.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.js.dao.MemberDao;
+
+/**
+ * Servlet implementation class IdCheckServlet
+ */
+@WebServlet(&quot;/idCheck.do&quot;)
+public class IdCheckServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public IdCheckServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String userId  = request.getParameter(&quot;userId&quot;);//member.js를 통해서 넘어오게 됨!
+		MemberDao dao  = MemberDao.getInstance();
+		int       res  = dao.confirmId(userId);
+		
+		//그저 중복확인만하는 것이기 때문에, 세션 전체에 알리는 것보다는 request간 알리는 것이 보다 효율적
+		request.setAttribute(&quot;userId&quot;, userId);
+		request.setAttribute(&quot;confirmId&quot;, res);
+		
+		RequestDispatcher dispatcher     = request.getRequestDispatcher(&quot;./member/idCheck.jsp&quot;);
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		// TODO Auto-generated method stub
+//		doGet(request, response);
+//	}
+
+}</code></pre><p id="e94a7db3-33c9-49f4-9190-0d5eaad01dfc" class="">
+</p><pre id="1741e419-93a1-4803-b3d6-8c3abd325875" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot; %&gt;
+&lt;%  request.setCharacterEncoding(&quot;UTF-8&quot;); %&gt;
+&lt;%  response.setContentType(&quot;text/html;charset=UTF-8&quot;); %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;아이디 중복 체크&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+		&lt;h1&gt;아이디 중복 확인&lt;/h1&gt;
+	&lt;/header&gt;
+	&lt;form action=&quot;idCheck.do&quot; method=&quot;get&quot; name=&quot;frm&quot;&gt;
+		&lt;label&gt;아이디&amp;nbsp;&lt;input type=&quot;text&quot; name=&quot;userId&quot; value=&quot;${userId}&quot;&gt;&lt;/label&gt;
+		&lt;input type=&quot;submit&quot; value=&quot;중복 체크&quot;&gt;
+		&lt;br&gt;
+		&lt;c:if test=&quot;${confirmId==1}&quot;&gt;
+			&lt;script&gt;
+				opener.document.frm.userId.value=&quot;&quot;:
+			&lt;/script&gt;
+			${userId}는 이미 사용 중인 아이디입니다
+		&lt;/c:if&gt;
+		&lt;c:if test=&quot;${confirmId==-1}&quot;&gt;
+			${userId}는 사용 가능한 아이디입니다
+			&lt;input type=&quot;button&quot; value=&quot;사용&quot; class=&quot;cancel&quot; onclick=&quot;idOk();&quot;&gt;
+		&lt;/c:if&gt;
+	&lt;/form&gt;
+	&lt;script src=&quot;./js/member.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="d486886b-52fb-4c5b-a11c-fa4ed13a99f5" class="">그리고 사용한다는 버튼을 누르게 되면, 자바스크립트의 idOk 함수를 통해서 idCheck.jsp와 join.jsp 간 값 연결을 명시해준다!</p><pre id="016054f7-bdfe-47c1-a4a2-aa87e8a1bade" class="code"><code>function idOk(){
+	//join.jsp와 연결될 것!(from idCheck.jsp)
+	opener.frm.userId.value=document.frm.userId.value;//오프너를 통해서 아이디값 이어주기
+	opener.frm.reId.value  =document.frm.userId.value;
+	self.close();
+}</code></pre><p id="33496382-41c3-4993-aa5f-30e26fa54188" class="">
+</p><p id="43ca6071-24ed-4aec-9375-3fc319d4428f" class="">JoinServlet은 회원가입 요청이 들어오면, 그저  join.jsp 페이지로 연결해주고</p><p id="7f5549be-ce1b-4882-8b62-53452d80ed51" class="">join.jsp로부터 post 요청(정보 저장 요청으로써)이 들어오면, dao 객체를 통해 insert 작업을 수행하고, 그 결과에 따라 login.jsp 페이지에 띄울 메시지를 저장해준다 ! 최소한 범위가 request이상이면 되나, 세션을 조금 더 공부중인 상황이었기 때문에 session 객체로 메시지와 사용자 아이디를 저장해주었다.</p><p id="baa2b301-4a1d-441a-beab-de5fb0b9beb5" class="">
+</p><pre id="8b7d14e8-ad5f-48b7-8deb-9ac4ea6fffb0" class="code"><code>package com.saeyan.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.js.dao.MemberDao;
+import com.js.dto.MemberVO;
+
+/**
+ * Servlet implementation class JoinServlet
+ */
+@WebServlet(&quot;/join.do&quot;)
+public class JoinServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public JoinServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//연결될 페이지 
+		RequestDispatcher dispatcher= request.getRequestDispatcher(&quot;./member/join.jsp&quot;);
+		dispatcher.forward(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//회원정보를 저장하여 dao로 넘기기
+		//인코딩 설정
+		request.setCharacterEncoding(&quot;UTF-8&quot;);
+		
+		//join.jsp에 명시했던 name속성으로 가져오기
+		String name   = request.getParameter(&quot;name&quot;);
+		String userId = request.getParameter(&quot;userId&quot;);
+		String pwd    = request.getParameter(&quot;pwd&quot;);
+		String email  = request.getParameter(&quot;email&quot;);
+		String phone  = request.getParameter(&quot;phone&quot;);
+		int admin     = Integer.valueOf(request.getParameter(&quot;admin&quot;));
+		
+		MemberVO vo   = new MemberVO();
+		MemberDao dao = MemberDao.getInstance();
+		int     resIns = 0;
+		HttpSession session = request.getSession();
+		
+		vo.setUserId(userId);
+		vo.setName(name);
+		vo.setPwd(pwd);
+		vo.setEmail(email);
+		vo.setPhone(phone);
+		vo.setAdmin(admin);
+		
+		resIns        = dao.insertMember(vo);
+		
+		if(resIns ==1) {
+			session.setAttribute(&quot;userId&quot;,vo.getUserId());
+			session.setAttribute(&quot;msg&quot;, &quot;회원 가입에 성공했습니다&quot;);
+		}else {
+			session.setAttribute(&quot;msg&quot;, &quot;회원 가입에 실패했습니다&quot;);
+		}
+		
+		RequestDispatcher dispatcher=request.getRequestDispatcher(&quot;./member/login.jsp&quot;);
+		
+		dispatcher.forward(request, response);
+	}
+
+}</code></pre><pre id="f023781c-989b-4dd2-a7fc-cb0f63ba05ed" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%  request.setCharacterEncoding(&quot;UTF-8&quot;);%&gt;
+&lt;%  response.setContentType(&quot;text/html; charset=UTF-8&quot;); %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;회원 관리&lt;/title&gt;
+&lt;style&gt;
+	em{
+		color:red;
+	}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+		&lt;h1&gt;회원 가입&lt;/h1&gt;
+	&lt;/header&gt;
+	&lt;section&gt;
+		&lt;article&gt;
+			&lt;div&gt;&lt;em&gt;* 표시 항목은 필수 입력 항목입니다&lt;/em&gt;&lt;/div&gt;
+			&lt;form action=&quot;join.do&quot; method=&quot;post&quot; name=&quot;frm&quot;&gt;
+				&lt;!-- 정보 출력은 get, 저장은 post로 주로 사용됨! --&gt;
+				&lt;table border=&quot;1&quot;&gt;
+					&lt;tr&gt;
+						&lt;td&gt;이름&lt;pre&gt;		&lt;/pre&gt;&lt;/td&gt;
+						&lt;!-- size는 maxlength를 지정 --&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot; size=&quot;20&quot;&gt;*&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;아이디&lt;pre&gt;	&lt;/pre&gt;&lt;/td&gt;
+						&lt;td&gt;
+							&lt;input type=&quot;text&quot; name=&quot;userId&quot; size=&quot;20&quot; id=&quot;userId&quot;&gt;*
+							&lt;input type=&quot;hidden&quot; name=&quot;reId&quot; size=&quot;20&quot;&gt;
+							&lt;input type=&quot;button&quot; value=&quot;중복체크&quot; onclick=&quot;idCheck();&quot;&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;암호&lt;pre&gt;		&lt;/pre&gt;&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;password&quot; name=&quot;pwd&quot; size=&quot;20&quot;&gt;*&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr height=&quot;30&quot;&gt;
+						&lt;td width=&quot;80&quot;&gt;암호 확인&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;password&quot; name=&quot;pwdCheck&quot; size=&quot;20&quot;&gt;*&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;이메일&lt;/td&gt;
+						&lt;!-- string으로 받는 의미를 살리기 위해 text type 이용 --&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;email&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;전화번호&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;phone&quot; size=&quot;20&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;이용모드&lt;/td&gt;
+						&lt;td&gt;
+							&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;0&quot; checked&gt;일반회원
+							&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;1&quot;&gt;관리자
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+							&lt;input type=&quot;submit&quot; value=&quot;확인&quot; onclick=&quot;return joinCheck();&quot;&gt;&lt;pre&gt;		&lt;/pre&gt;
+							&lt;input type=&quot;reset&quot; value=&quot;취소&quot;&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td colspan=&quot;2&quot;&gt;${msg}&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/form&gt;
+		&lt;/article&gt;
+	&lt;/section&gt;
+	&lt;script src=&quot;./js/member.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="9bae830d-a112-41be-aa62-67c83ff9c20f" class="code"><code>//회원정보 유효성 검사
+function joinCheck(){
+	if(document.frm.name.value.length ===0 || document.frm.name.value===&quot;&quot;){
+		//이름 입력이 빠진 경우
+		alert(`이름을 써주세요`);
+		frm.name.focus();
+		return false;
+	}
+	
+	if(document.frm.userId.value.length===0 || document.frm.userId.value===&quot;&quot;){
+		//아이디 입력이 빠진 경우
+		alert(`아이디를 써주세요`);
+		frm.userId.focus();
+		return false;
+	}
+	
+	if(document.frm.userId.length&lt;4){
+		//아이디 입력 크기가 4이상으로 되도록 제한시키기!
+		alert(`아이디는 4글자 이상이어야 합니다`);
+		frm.userId.focus();
+		return false;
+	}
+	
+	if(document.frm.pwd.value.length=== 0 || document.frm.pwd.value===&quot;&quot;){
+		//비밀번호 입력이 빠진경우
+		alert(`비밀번호는 반드시 입력해야 합니다`);
+		frm.pwd.focus();
+		return false;
+	}
+	
+	if(document.frm.pwd.value !== document.frm.pwd_check.value){
+		//비밀번호가 일치하지 않는 경우
+		alert(`비밀번호가 일치하지 않습니다`);
+		frm.pwd.focus();
+		return false;
+	}
+	
+	if(document.frm.reId.value.length ===0 || document.frm.reId.value ===0){
+		//아이디 중복확인 후 입력되는 부분이 비어있는 경우
+		alert(`아이디 중복체크를 하지 않았습니다`);
+		frm.userId.focus();
+		return false;
+	}
+	return true;
+}</code></pre><p id="26eef216-48ce-4582-b15d-3d35d84843ce" class="">
+</p><h3 id="e828a6d8-a358-4279-babe-37cbe702d892" class="">회원 정보를 수정하기</h3><ul id="d2c93e80-a28e-4c8c-af6d-4d0917fcca2d" class="bulleted-list"><li>회원 정보를 수정하기 위해서, 먼저 가입된 회원이기 때문에 main.jsp 에서 요청을 할 수 있도록 한다</li></ul><ul id="8e1d38d7-8aa5-48e1-9afc-a18f477f987d" class="bulleted-list"><li>해당 요청이 들어오면, memberUpdate.do로 사용자 아이디와 함께 이동되는데, 그러면 그 요청을 받은 memberUpdate 서블릿은 memberUpdate.jsp로 연결해준다</li></ul><ul id="67ee4180-ef3d-4629-8d21-f6cde05fa5d9" class="bulleted-list"><li>그 후 memberUpdate.jsp에서 수정할 정보가 입력되면, memberUpdate.do로 요청이 들어오고, dao 객체를 통해서 update 작업이 이루어지고, 세션의 객체를 갱신시킨다</li></ul><ul id="1d3fcfbd-4232-4314-bf70-a4c26116908c" class="bulleted-list"><li>그 다음에는 세션에 저장을 했기 때문에 리다이렉트가 이루어져도 된다</li></ul><pre id="77a85898-c9c4-4429-9daa-d673e4530dfd" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@ taglib uri=&quot;http://java.sun.com/jsp/jstl/core&quot; prefix=&quot;c&quot; %&gt;
+&lt;%  request.setCharacterEncoding(&quot;UTF-8&quot;); %&gt;
+&lt;%  response.setContentType(&quot;text/html;charset=UTF-8&quot;); %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=Edge&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;개인 정보 수정&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;header&gt;
+		&lt;h1&gt;나의 정보 수정&lt;/h1&gt;
+	&lt;/header&gt;
+	&lt;section&gt;
+		&lt;article&gt;
+			&lt;form action=&quot;memberUpdate.do&quot; method=&quot;post&quot; id=&quot;frm&quot;&gt;
+				&lt;table border=&quot;1&quot; &gt;
+					&lt;tr&gt;
+						&lt;td&gt;이름&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot; size=&quot;20&quot; value=&quot;${targetToUpdate.name}&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;아이디&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;userId&quot; size=&quot;20&quot; value=&quot;${targetToUpdate.userId }&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;비밀번호&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;password&quot; name=&quot;pwd&quot; size=&quot;20&quot; value=&quot;${targetToUpdate.pwd }&quot;&gt;*&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;암호확인&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;password&quot; name=&quot;pwd_check&quot; size=&quot;20&quot;&gt;*&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;이메일&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;email&quot; size=&quot;20&quot;  value=&quot;${targetToUpdate.email }&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;전화번호&lt;/td&gt;
+						&lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;phone&quot; size=&quot;20&quot; value=&quot;${targetToUpdate.phone }&quot;&gt;&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td&gt;등급&lt;/td&gt;
+						&lt;td&gt;
+							&lt;c:choose&gt;
+								&lt;c:when test=&quot;${targetToUpdate.admin==0 }&quot;&gt;
+									&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;0&quot; checked&gt;일반회원&lt;/label&gt;
+									&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;1&quot;&gt;관리자&lt;/label&gt;
+								&lt;/c:when&gt;
+								&lt;c:otherwise&gt;
+									&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;0&quot;&gt;일반회원&lt;/label&gt;
+									&lt;label&gt;&lt;input type=&quot;radio&quot; name=&quot;admin&quot; value=&quot;1&quot; checked&gt;관리자&lt;/label&gt;
+								&lt;/c:otherwise&gt;
+							&lt;/c:choose&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+					&lt;tr&gt;
+						&lt;td colspan=&quot;2&quot; align=&quot;center&quot;&gt;
+							&lt;input type=&quot;submit&quot; value=&quot;확인&quot; onclick=&quot;return joinCheck();&quot;&gt;&lt;pre&gt;		&lt;/pre&gt;
+							&lt;input type=&quot;reset&quot;  title=&quot;입력한 정보가 모두 지워집니다&quot; value=&quot;취소&quot; onclick=&quot;location.href=&#x27;./main.jsp&#x27;;&quot;&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/form&gt;
+		&lt;/article&gt;
+	&lt;/section&gt;
+	&lt;script src=&quot;./js/member.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="a4b8314d-f8d7-4671-8a48-eaf1a8fcb79b" class="code"><code>package com.saeyan.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.js.dao.MemberDao;
+import com.js.dto.MemberVO;
+
+/**
+ * Servlet implementation class memberUpdate
+ */
+@WebServlet(&quot;/memberUpdate.do&quot;)
+public class memberUpdate extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public memberUpdate() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//메인페이지의 request 객체로부터 정보 가져오기
+		String userId = request.getParameter(&quot;userId&quot;);
+		MemberDao dao = MemberDao.getInstance();
+		//userId로 사용자 정보 가져오기
+		MemberVO  mVo = dao.getMemberInfo(userId);
+		HttpSession session = request.getSession();
+		session.setAttribute(&quot;targetToUpdate&quot;,mVo);//정보를 수정할 대상임을 나타내도록 변수 네이밍
+		//get을 이용해서는 정보수정을 위한 정보를 받아올 폼페이지로 이동
+		RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;member/memberUpdate.jsp&quot;);
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//doGet(request, response);
+		//dao로 정보 갱신을 위한 정보를 넘기기 위한 일련의 작업 수행
+		MemberVO mVo = new MemberVO();
+		//dao instance
+		MemberDao dao = MemberDao.getInstance();
+		HttpSession session = request.getSession();
+		
+		//0.encoding setting for post method
+		request.setCharacterEncoding(&quot;UTF-8&quot;);
+		
+		//1. get info from memberUpdate.jsp
+		String name=request.getParameter(&quot;name&quot;);
+		String userId = request.getParameter(&quot;userId&quot;);
+		String pwd    = request.getParameter(&quot;pwd&quot;);//js에서 이미 validation이 수행되었으므로
+		//request중 pwd_check를 가져올 필요는 없음
+		String email  = request.getParameter(&quot;email&quot;);
+		String phone  = request.getParameter(&quot;phone&quot;);
+		int    admin  = Integer.valueOf(request.getParameter(&quot;admin&quot;));
+		
+		//2.mapping vars to membervo obj
+		mVo.setName(name);
+		mVo.setUserId(userId);
+		mVo.setPwd(pwd);
+		mVo.setEmail(email);
+		mVo.setPhone(phone);
+		mVo.setAdmin(admin);
+		
+		//3.dao에게 update를 수행시키기
+		dao.updateMember(mVo);
+		//4세션에 저장하기
+		session.setAttribute(&quot;logInUser&quot;,mVo);
+		//5.정보를 넘길 필요없이 리다이렉트로 페이지만 넘겨도 됨
+		response.sendRedirect(&quot;login.do&quot;);
+	}
+
+}</code></pre><p id="935f65b4-7b43-4fd3-83f9-6483e9d51605" class="">
+</p><h3 id="e9c224c6-dc3c-40f9-ae5f-5f0fbe3ea86f" class="">로그아웃하기</h3><ul id="5bc4de48-d742-4b74-8fa3-89b977cb3034" class="bulleted-list"><li>로그아웃은 가장 간단하다! 지금 세션에 로그인된 사용자 정보가 담겨져 있었는데 이를 무효화하면서, login.jsp 페이지로 이동하면 된다!</li></ul><pre id="c66147f6-6fcb-4042-8b5c-d99eaf86bac1" class="code"><code>package com.saeyan.controller;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class LogoutServlet
+ */
+@WebServlet(&quot;/logout.do&quot;)
+public class LogoutServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public LogoutServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		//세션무효화-&gt;로그아웃
+		HttpSession session = request.getSession();
+		
+		session.invalidate();
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher(&quot;./member/login.jsp&quot;);
+		dispatcher.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
+}</code></pre><figure id="e1715797-c5da-4951-8fc2-f0254f1f9dd0" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/DBCP-%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%B2%98%EB%A6%AC-%EB%A1%9C%EC%A7%81.gif?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/DBCP-%EB%A1%9C%EA%B7%B8%EC%9D%B8%EC%B2%98%EB%A6%AC-%EB%A1%9C%EC%A7%81.gif?raw=true"/></a><figcaption>데이터베이스 커넥션풀을 이용한 로그인 로직 구현</figcaption></figure></div></article></body></html>

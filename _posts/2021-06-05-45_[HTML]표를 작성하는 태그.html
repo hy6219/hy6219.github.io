@@ -1,0 +1,847 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>표를 작성하는 태그</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="3dd1ddf0-630b-40a9-b3bf-4f208a81e2cc" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">표를 작성하는 태그</h1></header><div class="page-body"><p id="c00fb5e1-8aa4-4468-aa1d-121edb206940" class="">
+</p><p id="0a204860-db3e-4116-80ee-2fc47af3ad63" class="">Overview</p><pre id="af0ce388-b32b-43e0-ad2f-d63095bb5de1" class="code"><code>&lt;table&gt;
+  &lt;caption&gt;Fruits&lt;/caption&gt;
+  &lt;colgroup&gt;
+    &lt;col span=&quot;2&quot; style=&quot;background-color: yellowgreen;&quot;&gt;
+    &lt;col style=&quot;background-color: tomato;&quot;&gt;
+  &lt;/colgroup&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ID&lt;/th&gt;
+      &lt;th&gt;Name&lt;/th&gt;
+      &lt;th&gt;Price&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;F123A&lt;/td&gt;
+      &lt;td&gt;Apple&lt;/td&gt;
+      &lt;td&gt;$22&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;F098B&lt;/td&gt;
+      &lt;td&gt;Banana&lt;/td&gt;
+      &lt;td&gt;$19&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre><p id="980312ce-31f8-4af7-8a2c-fd5ed33be372" class="">
+</p><figure id="23e12e11-32ff-4644-bd25-3aa586d3f094" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/table%20%EB%8C%80%EB%9E%B5%EC%A0%81%EC%9D%B8%20%EA%B5%AC%EC%84%B1.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/table%20%EB%8C%80%EB%9E%B5%EC%A0%81%EC%9D%B8%20%EA%B5%AC%EC%84%B1.PNG?raw=true"/></a></figure><p id="28bf8378-1bd5-449d-aeb6-0906d2c3e7fb" class="">Example from: <a href="https://heropy.blog/2019/05/26/html-elements/">Heropy님</a></p><p id="b8c416ee-1ad1-4aa7-bbd6-a15f07f4acc9" class="">
+</p><p id="15e6d091-3565-4ebd-b831-548aa23a4d7c" class="">알 수 있는 것은 아래와 같다</p><p id="bfad0080-c01e-453c-8a47-66c64fc05ec2" class="">
+</p><ul id="2089e92a-4a51-4b46-bbbf-6b87d0c459e5" class="bulleted-list"><li>colgroup : 열에 대한 속성을 지정
+-이 colgroup 내부의 속성으로 span을 이용하면 위와 같이 특정 열에 대한 스타일링을 구분하여 작성 가능</li></ul><ul id="e2f29eb9-329e-4061-9823-f827f823fdbb" class="bulleted-list"><li>구조 상 테이블은
+-thead : 헤더부분
+-tbody: 표 내용 부분
+-tfoot : tbody와 비슷해보이지만, 표의 최하단 행을 채우는 부분
+임을 추측해볼 수 있다!</li></ul><ul id="fc74deba-0b19-4ae9-bd7b-8791fb2052bd" class="bulleted-list"><li>tr 은 테이블의 행을, td는 tr로 둘러싸인 해당 행의 열을 의미!</li></ul><ul id="59d63e92-e222-4516-8bdf-aa399e42f105" class="bulleted-list"><li>caption은 표의 제목을 의미</li></ul><p id="6ecd313b-1687-4133-8a5b-d9d86448efa8" class="">
+</p><ol id="904f67b6-2d1d-4aa8-8d9b-d406b1f5fa40" class="numbered-list" start="1"><li>table, tr, th, td 태그</li></ol><pre id="bd630b24-54b4-46c5-97bb-aab645f5f9cf" class="code"><code>table{display:table;}/*display: table--&gt;
+완벽하게 동일하지는 않지만, 기본적으로 블럭요소와
+유사한 특성을 지님*/
+tr{display:table-row;}
+th, td{display:table-cell;}</code></pre><ul id="b02dc88c-d14b-4a05-a356-cd2ecd7f9993" class="bulleted-list"><li>&lt;table&gt;: 테이블 골격! 틀!</li></ul><ul id="23796e50-5285-4210-8a64-e182c366a104" class="bulleted-list"><li>&lt;th&gt;: 테이블의 헤더</li></ul><ul id="37a3dc56-a362-46ce-b049-04ed86c88e66" class="bulleted-list"><li>&lt;tr&gt;: 테이블의 행</li></ul><ul id="34b15dfa-4ecc-4c76-8861-70374487d3ca" class="bulleted-list"><li>&lt;td&gt;: 테이블의 행에 대한 열!(th도 어떻게 보면 열을 만든다고 생각해도 되지만, 헤더로써의 의미가 존재!)</li></ul><ul id="f723e00a-6615-4250-ac21-4c38ddf6d820" class="bulleted-list"><li>표에 대해서는 display에 대한 스타일을 바꾸는 일은 없을 것</li></ul><p id="34fa4806-d46b-4f0f-bc43-f318e926602d" class="">⚠️ css에서 스타일링할 때, 부모요소가 자식요소보다 앞에 와서, 유지보수의 효율성을 올리자! ⚠️</p><p id="b93922a0-262b-4ff9-8197-111d67f1b318" class="">
+</p><p id="64d805d7-0f21-48c0-8ae8-35067b1a00fe" class="">🍑 표 사이의 border 간의 간격을 없애려면 border-collapse를 이용하자!</p><p id="66e3fa66-b1f8-484a-884e-add370f7a3e2" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="66f92970-d16d-47a2-ac8b-25284e8f76c8"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">border-collapse:collapse;</div></figure><pre id="5cc84f84-3c6d-4d2b-af67-0c91ad0707ba" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./table1.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1행 1열&lt;/td&gt;
+            &lt;td&gt;1행 2열&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;2행 1열&lt;/td&gt;
+            &lt;td&gt;2행 2열&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;3행 1열&lt;/td&gt;
+            &lt;td&gt;3행 2열&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="601c07ed-d30e-4aff-ab31-5e59f3f65dbd" class="code"><code>table{
+    border-collapse: collapse;
+}
+td{
+    border: 1px solid teal;
+}</code></pre><figure id="65e5063b-74dd-4464-96bf-9b4752b18365" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/table-border%20collapse.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/table-border%20collapse.PNG?raw=true"/></a></figure><p id="7cdf4632-66b8-4d1e-b15f-a43f071598ca" class="">다만, 만약, 어떠한 타입과 값으로 된 경우, 의미상으로</p><p id="0fb8f9b2-4327-44c3-ac16-98b4d1d05e28" class="">
+</p><p id="00814248-53a8-4701-b27a-6041ce3ea56e" class="">타입과 값에 대한 알림이 헤더로써 명시될 필요가 있을 것이다! 바로 아래처럼 말이다!</p><p id="84c9cfc2-847f-4761-b1c7-0bfaf8f5425c" class="">
+</p><pre id="516093da-6798-4e18-bb7d-28b4671e4430" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./table1.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;th&gt;타입&lt;/th&gt;
+            &lt;th&gt;값&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;알파벳&lt;/td&gt;
+            &lt;td&gt;A&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;숫자&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="d653038a-2d92-4274-94fd-de42db68ef9c" class="">
+</p><figure id="a9fcbfb2-b67c-4d11-8614-e57d741ff1e5" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/th_header%20of%20table.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/th_header%20of%20table.PNG?raw=true"/></a><figcaption>th tag</figcaption></figure><p id="1d037f64-24ca-4c8c-afee-ba87e03fb796" class="">
+</p><p id="035a152b-733d-4314-b6a6-8e7b01495892" class="">(참고로, 테두리로 확인을 해보고 싶어서, 위에 th 태그선택자에 대한 스타일링을 추가해주었습니다!)</p><p id="298a38c4-281b-44f2-9306-c6e4dd45140e" class="">
+</p><p id="b64cbb40-aad3-49b4-ba85-995c8658c08b" class="">⚠️ 행이 먼저 오고! 그 다음은 열을 만들기! ⚠️</p><p id="4b6bae98-b53c-41ae-bcf8-ca6d43fdd12b" class="">
+</p><p id="ec685c52-4e55-4084-9155-3e4bf5cbad42" class="">🍑 th 태그의 속성 🍑</p><div id="ecbf5b47-61e5-4979-b843-978b2382fe68" class="collection-content"><h4 class="collection-title">th 태그의 속성</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>속성</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>의미</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>값</th></tr></thead><tbody><tr id="91ecd949-9f72-4528-be21-1aae71f9c780"><td class="cell-title"><a href="https://www.notion.so/abbr-91ecd9499f724528be211aae71f9c780">abbr</a></td><td class="cell-:_N|">열에 대한 간단한 설명(abbreviation)</td><td class="cell-IuYU"></td></tr><tr id="567dd815-21ba-4543-aa40-e807cf72fbe6"><td class="cell-title"><a href="https://www.notion.so/headers-567dd81521ba4543aa40e807cf72fbe6">headers</a></td><td class="cell-:_N|">관련된 하나 이상의 다른 머리글 칸 id 속성값
+-상위 헤더 칸에 연결할 때 사용</td><td class="cell-IuYU"></td></tr><tr id="ea06f62c-2996-4c31-b5ce-a9dc80d1eaea"><td class="cell-title"><a href="https://www.notion.so/colspan-ea06f62c29964c31b5cea9dc80d1eaea">colspan</a></td><td class="cell-:_N|">확장하려는(병합) 열의 수</td><td class="cell-IuYU">기본값 1</td></tr><tr id="c6bdc81d-c7a2-4b2b-b57c-ddf58ef8b2ed"><td class="cell-title"><a href="https://www.notion.so/rowspan-c6bdc81dc7a24b2bb57cddf58ef8b2ed">rowspan</a></td><td class="cell-:_N|">확장하려는(병합) 행의 수</td><td class="cell-IuYU">기본값 1</td></tr><tr id="8d83b169-2443-4bd0-830f-2dceba524069"><td class="cell-title"><a href="https://www.notion.so/scope-8d83b16924434bd0830f2dceba524069">scope</a></td><td class="cell-:_N|">자신이 누구의 머리글 칸인지 명시</td><td class="cell-IuYU">col : 자신의 열
+colgroup: 모든열
+row:자신의 행
+rowgroup:모든 행
+auto : 기본값</td></tr></tbody></table></div><p id="2eb13b96-e118-445a-8ad3-1bc6190251db" class="">
+</p><p id="6c462e02-f78d-4afc-a9a1-7d0a8503e8d0" class="">
+</p><p id="741ac7bc-e276-4291-b51c-cb0abf833492" class="">*scope 속성은 머릿글이 왼쪽에 있는 경우 등에 사용하기 적합함!</p><p id="7c62b0e4-04cd-4d69-abef-4e743c39c8a9" class="">⚠️ id 이름은 일반적이지 않은 이름으로 지어주자!</p><p id="495ee6d7-b147-4131-95c7-f2a787783c2d" class="">-headers 속성과 scope 속성이 다소 어려워서 확인하기!</p><ul id="a73bf799-229b-4471-be16-f32321c83438" class="bulleted-list"><li>scope: th 태그가 열을 대상으로 적용되는지 어디로 적용되는지 지정하는 것</li></ul><ul id="bb66ee9f-e6bc-4b5b-a2a9-7ff2bb8c51ac" class="bulleted-list"><li>headers: 상위 헤더가 있다면, 그 상위 헤더의 id에 연결시킴으로써 의미적 종속을 명시해줌</li></ul><pre id="48ace251-f4b6-415b-93f6-24d91b7efa26" class="code"><code>&lt;table&gt;
+        &lt;tr&gt;
+            &lt;th colspan=&quot;2&quot; id=&quot;th-data&quot;&gt;데이터&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th abbr=&quot;type&quot; scope=&quot;col&quot; headers=&quot;th-data&quot;&gt;타입&lt;/th&gt;
+            &lt;th abbr=&quot;value&quot; scope=&quot;col&quot; headers=&quot;th-data&quot;&gt;값&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;알파벳&lt;/td&gt;
+            &lt;td&gt;A&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;숫자&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;</code></pre><p id="435bb332-c8e9-46e7-a9c8-9957735149dd" class="">
+</p><p id="ad50c612-8935-4c06-aecc-b07d0c3d66c9" class="">⚠️테이블 태그를 이용해서 레이아웃을 잡지 말기!(옛날에 css가 보편화되기 전에는 레이아웃을 잡기위해 사용하곤 했음)</p><p id="c9f041a7-fccc-4bf0-894e-8d1ef025118c" class="">
+</p><p id="e12f4981-7319-43b6-9e0b-754d7cfe36b6" class="">🍑td 태그의 속성🍑</p><div id="990930c3-a6b0-4f6c-bb83-c32b4eae99b2" class="collection-content"><h4 class="collection-title">td 태그의 속성</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>속성</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>의미</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>값</th></tr></thead><tbody><tr id="d2ec7803-12cd-4a6c-8bef-f9a89fcbc0c4"><td class="cell-title"><a href="https://www.notion.so/headers-d2ec780312cd4a6c8beff9a89fcbc0c4">headers</a></td><td class="cell-:_N|">관련된 하나 이상의 다른 머리글 칸 id 속성값
+-th 태그의 id값이 headers 속성값이 됨</td><td class="cell-IuYU"></td></tr><tr id="427d3937-6323-4409-b3d9-4903378d1cd3"><td class="cell-title"><a href="https://www.notion.so/colspan-427d393763234409b3d94903378d1cd3">colspan</a></td><td class="cell-:_N|">확장하려는(병합) 열의 수</td><td class="cell-IuYU">기본값 1</td></tr><tr id="10192e5d-a3b8-40ca-a0ea-f972e2ad56c0"><td class="cell-title"><a href="https://www.notion.so/rowspan-10192e5da3b840caa0eaf972e2ad56c0">rowspan</a></td><td class="cell-:_N|">확장하려는(병합) 행의 수</td><td class="cell-IuYU">기본값 1</td></tr></tbody></table></div><p id="f15a730e-5c9f-4e46-b605-7d5c53f6bb32" class="">
+</p><p id="c24d367b-a0e2-48ef-b88a-cf941dcbec3e" class="">이번에는 헤더가 왼쪽에 있는 경우로 연습해보자</p><p id="9e79c797-d390-4b50-9347-f63e64214155" class="">
+</p><pre id="3deb8e78-1d2f-4f1e-ae95-7e3b43e2f79d" class="code"><code>&lt;table&gt;
+        &lt;tr&gt;
+            &lt;th rowspan=&quot;2&quot; id=&quot;th-header2&quot;&gt;데이터&lt;/th&gt;
+            &lt;th headers=&quot;th-header2&quot; id=&quot;th-type&quot;&gt;타입&lt;/th&gt;
+            &lt;td headers=&quot;th-type&quot;&gt;알파벳&lt;/td&gt;
+            &lt;td headers=&quot;th-type&quot;&gt;숫자&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th headers=&quot;th-header2&quot; id=&quot;th-value&quot;&gt;값&lt;/th&gt;
+            &lt;td headers=&quot;th-value&quot;&gt;A&lt;/td&gt;
+            &lt;td headers=&quot;th-value&quot;&gt; 7&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;</code></pre><p id="9e29d126-40d4-48d8-8d52-35c9be37d240" class="">이런 경우, 왼쪽에 2행이 통합된 헤더 &quot;데이터&quot;와 그 오른쪽에 헤더 &quot;타입&quot;과</p><p id="20621433-c897-41c1-8303-11c77682a6da" class="">헤더 &quot;값&quot;이 나타날 것이다. 그리고 headers는 th태그에 있는 id로 묶어줄 수 있으므로, 위와 같이 기입해줄 수 있다! 그러면 결과적으로 아래와 같은 표가 만들어진다!</p><p id="2989521a-237d-425b-bc12-1d105b63f2db" class="">
+</p><figure id="b084242a-5bf8-4661-8fcc-b2aa9fc6f306" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/td%ED%83%9C%EA%B7%B8%EC%9D%98%20headers%20%EC%86%8D%EC%84%B1.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/td%ED%83%9C%EA%B7%B8%EC%9D%98%20headers%20%EC%86%8D%EC%84%B1.PNG?raw=true"/></a></figure><p id="88fe5dbe-614a-47ff-b2b3-cd4bcecfc89e" class="">
+</p><ul id="a4cbfcb7-141e-433c-98ee-5900706c4a9d" class="bulleted-list"><li>표의 시각적 표현에만 집중한다면 굳이 headers 속성을 이용할 필요는 없음</li></ul><p id="ff3e85be-42c0-4ff1-b680-aac256099d22" class="">
+</p><p id="a49a77d4-c9c9-478f-80cc-3cc2f77bb184" class="">2. caption 태그</p><ul id="3ee41cad-e667-4c5b-9899-9dcff5e3641a" class="bulleted-list"><li>표의 제목을 설정</li></ul><ul id="9afe8958-ec8e-484b-8e3e-ca6f68dc21be" class="bulleted-list"><li>table 1개당 caption 최대 1개 사용 가능</li></ul><ul id="aef450c5-71cb-4929-8739-c71bb8bdd18c" class="bulleted-list"><li>열리는 table 태그 바로 다음에 작성해야 함</li></ul><pre id="75a8a815-98bb-4ae6-95e1-5fa79e099cb8" class="code"><code>&lt;table&gt;
+        &lt;caption&gt;데이터 타입과 값&lt;/caption&gt;
+        &lt;tr&gt;
+            &lt;th rowspan=&quot;2&quot; id=&quot;th-header2&quot;&gt;데이터&lt;/th&gt;
+            &lt;th headers=&quot;th-header2&quot; id=&quot;th-type&quot;&gt;타입&lt;/th&gt;
+            &lt;td headers=&quot;th-type&quot;&gt;알파벳&lt;/td&gt;
+            &lt;td headers=&quot;th-type&quot;&gt;숫자&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;th headers=&quot;th-header2&quot; id=&quot;th-value&quot;&gt;값&lt;/th&gt;
+            &lt;td headers=&quot;th-value&quot;&gt;A&lt;/td&gt;
+            &lt;td headers=&quot;th-value&quot;&gt;7&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;</code></pre><figure id="6edf99aa-4b2c-492d-ac31-80394778b3bd" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table-caption%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table-caption%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="00237cd9-8d2a-4a54-b1af-b18f75a269ac" class="">위와 같이 테이블에 캡션을 달면 표의 윗부분에 표 제목이 가운데 정렬으로 들어감을 확인해볼 수 있다</p><p id="004f05bf-2f49-4738-b741-9cceb1044eb2" class="">
+</p><p id="9c29c4d9-3c41-4eb2-a381-2a9a6d1f0302" class="">3. colgroup, col 태그</p><ul id="2ccad9dc-d841-4f3e-a78e-b3fa9ac6b11f" class="bulleted-list"><li>col: 표의 열들을 공통적으로 정의</li></ul><ul id="94df01f7-567e-445d-a670-0de25c90db6e" class="bulleted-list"><li>colgroup: 표의 열들을 공통적으로 정의한 집합체</li></ul><ul id="bc810780-10a0-4691-86d3-aae31b43f57f" class="bulleted-list"><li>속성 : span - 연속되는 열 수(기본값 1)</li></ul><pre id="e4196fcd-cfc2-4264-a483-0b477bd9a6aa" class="code"><code>colgroup{display: table-column-group;}
+col{display: table-column;}</code></pre><p id="5d81cdc8-a437-4446-a63a-64f1e1d71d96" class="">*참고로, 나중에 display:table; 은 많이 다루어지겠지만, 그 외의 table-column 등은 많이 등장하지 않음! 이부분 주의!</p><p id="b8b8fd12-98cd-4953-8f9f-330ff35352fc" class="">
+</p><ul id="f669d5be-79d1-47f7-bffe-ea0000a0c085" class="bulleted-list"><li>colgroup은 특정열에 대해서 모든 행에 걸쳐 스타일을 일괄 적용할 때, 번거로움을 감소시켜줄 수 있음!(colgroup이 없다면 th 태그에만 스타일이 적용되므로
+해당 th태그에 매치되는 td 태그에도 스타일을 적용해주어야 함)
+-단, 기존 th 태그에 css가 적용되어 있다면 th 태그에 스타일 적용이 어려움</li></ul><ul id="35b2920d-9100-4a32-9afa-87ecd1a757f2" class="bulleted-list"><li>caption 태그 밑, 첫번째 tr 태그 윗부분에 적어주기!</li></ul><ul id="02b37b66-66d0-4498-8435-5677efec08a5" class="bulleted-list"><li>열 1개에 대해서만 적용한다면 col, 2개 이상은 col과 colgroup 태그를 이용해주기!</li></ul><p id="2b070006-2c90-489c-944f-007aad3d1180" class="">
+</p><p id="72a3c7ef-3f4e-4f7d-b7d4-49b83aadace0" class="">아래의 예제를 확인해보고 넘어가자</p><pre id="013c1398-9989-4f99-8ddf-ee051872e6a8" class="code"><code>&lt;table&gt;
+        &lt;caption&gt;데이터 타입과 값&lt;/caption&gt;
+        &lt;colgroup&gt;
+            &lt;col span=&quot;1&quot; style=&quot;background-color: tomato;&quot;&gt;
+            &lt;col span=&quot;2&quot; style=&quot;background-color: yellow;&quot;&gt;
+        &lt;/colgroup&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;/th&gt;
+            &lt;th&gt;타입&lt;/th&gt;
+            &lt;th&gt;값&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;1&lt;/td&gt;
+            &lt;td&gt;알파벳&lt;/td&gt;
+            &lt;td&gt;A&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+            &lt;td&gt;2&lt;/td&gt;
+            &lt;td&gt;숫자&lt;/td&gt;
+            &lt;td&gt;7&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;</code></pre><figure id="05c8ee90-420c-40d0-bfca-d01779f9c8c8" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/colgroup%EA%B3%BC%20col%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/colgroup%EA%B3%BC%20col%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a></figure><p id="75a85597-22d2-406c-9b9a-efb267b60073" class="">
+</p><ul id="895aef77-cc3a-4d07-95a4-eb9473106ec6" class="bulleted-list"><li>한가지 확인, 주의할 점은 span을 통해서 연속한 x 개의 컬럼에 대해서 스타일을 적용해줄 수 있다는 것이다!</li></ul><p id="02c116f3-ef56-4032-a1f6-1903b4193423" class="">
+</p><p id="99d46725-6bd3-4833-a71a-86966d503d1f" class="">4. thead, tbody, tfoot</p><p id="c297d239-352e-4978-a76a-c17c7c3f0056" class="">
+</p><ul id="ed6c303f-1168-41c7-b042-7efcfce5c5b0" class="bulleted-list"><li>thead : 표의 머리글</li></ul><ul id="fd24caef-117f-4e48-ae82-36ccda1fde8e" class="bulleted-list"><li>tbody: 표의 본문</li></ul><ul id="d5b280ae-1680-4340-9299-603b7dd245a6" class="bulleted-list"><li>tfoot: 표의 머릿글</li></ul><ul id="24f1e398-3dd1-490e-b6d2-aac89abc4d65" class="bulleted-list"><li>기본적으로 테이블의 레이아웃에 영향 ❌</li></ul><p id="3e65f5d9-0f06-440a-9238-b10747460c90" class="">
+</p><pre id="2b49f96b-a47a-47b5-96e4-c0c820366c36" class="code"><code>&lt;table&gt;
+        &lt;caption&gt;Fruits&lt;/caption&gt;
+        &lt;colgroup&gt;
+          &lt;col span=&quot;2&quot; style=&quot;background-color: yellowgreen;&quot;&gt;
+          &lt;col style=&quot;background-color: tomato;&quot;&gt;
+        &lt;/colgroup&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;
+            &lt;th&gt;ID&lt;/th&gt;
+            &lt;th&gt;Name&lt;/th&gt;
+            &lt;th&gt;Price&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td&gt;F123A&lt;/td&gt;
+            &lt;td&gt;Apple&lt;/td&gt;
+            &lt;td&gt;$22&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;F098B&lt;/td&gt;
+            &lt;td&gt;Banana&lt;/td&gt;
+            &lt;td&gt;$19&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+            &lt;td colspan=&quot;2&quot;&gt;Total&lt;/td&gt;
+            &lt;td&gt;$41&lt;/td&gt;
+        &lt;/tfoot&gt;
+      &lt;/table&gt;</code></pre><figure id="13c92803-d65e-417f-8c5f-0663e173005c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/thead,tbody,tfoot.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/HTML/Tags/table/thead,tbody,tfoot.PNG?raw=true"/></a><figcaption>thead, tbody, tfoot</figcaption></figure><ul id="6b10b454-8437-4c3e-b7ed-ec39721a07f2" class="bulleted-list"><li>간단하게, thead는 의미상 헤더부분영역을 강조한다고 생각해볼 수 있다!
+-즉, th 태그 부분을 둘러싸서 표시해줄 수 있음!</li></ul><ul id="5ecd92df-1493-487b-b6ac-bf4c9d4bf2d2" class="bulleted-list"><li>tfoot은 표의 최하단 부분을 의미한다고 생각해보면 됨!</li></ul><p id="069719b3-57ee-4773-b4b5-1a6a35a21611" class="">-그 외에 tfoot과 tbody는 데이터를 다룬다는 점에서 차이는 보이지 않음</p><p id="258f7c17-7e21-447e-a9c8-8ef025a094d7" class="">
+</p></div></article></body></html>

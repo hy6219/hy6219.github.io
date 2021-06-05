@@ -1,0 +1,822 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>커서와 예외처리</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="eb7852f4-17cc-4591-9cb3-ced4d450b527" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🐻</span></div><h1 class="page-title">커서와 예외처리</h1></header><div class="page-body"><p id="4da6292b-3056-49d8-bb6e-e5600a60b6c4" class="">🌺 커서란?</p><ul id="fbe46cb8-514d-487a-82ad-ac9c559785f7" class="bulleted-list"><li>SQL 문을 처리하는 정보를 저장한 메모리 공간(Private SQL Area)에서의 포인터(즉, 해당 SQL문에 대한 위치 정보를 담고 있는 것)</li></ul><h2 id="36fe1b81-d164-4501-83c2-48dae2d11199" class="">커서</h2><h2 id="2de0bd79-fb0d-4060-834b-c651f3ff4176" class="">1. SELECT INTO 방식</h2><ul id="d6633b34-6ffa-4ab5-ba53-6428c3fa2cbf" class="bulleted-list"><li>이전에 참조형 변수에서 살펴본 적 있었는데 그 기억과 연계해보자!</li></ul><div id="95ed42a6-39cb-465c-8d6e-845d048d483d" class="collection-content"><h4 class="collection-title">커서 vs SELECT INTO</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>커서</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>SELECT INTO</th></tr></thead><tbody><tr id="8fb49432-97a2-4abd-aef4-fb52e004d1f2"><td class="cell-title"><a href="https://www.notion.so/8fb4943297a24abdaef4fb52e004d1f2">결과 행이 하나이든 여러 개이든 상관없이 사용 가능</a></td><td class="cell-AhaZ"><mark class="highlight-orange"><strong>조회되는 데이터가 단 하나의 행</strong></mark>일 때 사용</td></tr></tbody></table></div><ul id="0db2b551-32d0-4fc5-b74d-91a77505becb" class="bulleted-list"><li>SELECT 절에 명시한 열의 자료형, 갯수 == INTO 절에 명시한 변수의 자료형, 갯수</li></ul><pre id="3c2ff741-66db-4eaf-a1c3-5aea37106e00" class="code"><code>SELECT 열1, ...,열N INTO 변수1,...,변수N --실행순서5
+FROM 테이블명--실행순서1
+[WHERE절]--실행순서2
+[GROUP BY 절]--실행순서3
+[HAVING 절]--실행순서4
+[ORDER BY 절]--실행순서6</code></pre><pre id="5c594e07-e44e-4369-a1b2-052df0e63056" class="code"><code>DECLARE
+    V_DEPT_ROW DEPT%ROWTYPE;
+BEGIN
+    SELECT DEPTNO, DNAME, LOC INTO V_DEPT_ROW
+    FROM DEPT
+    WHERE DEPTNO=40;
+    
+    DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;||V_DEPT_ROW.DEPTNO);
+    DBMS_OUTPUT.PUT_LINE(&#x27;DNAME: &#x27; ||V_DEPT_ROW.DNAME);
+    DBMS_OUTPUT.PUT_LINE(&#x27;LOC :&#x27; || V_DEPT_ROW.LOC);
+END;
+/</code></pre><p id="df202b7b-497f-43eb-8695-8621b35c271d" class="">위의 경우는, 한 행 전체를 참조하였고, 그 참조한 행을 담은 변수에 SELECT INTO를 이용해서 데이터 정보를 저장해주었다!</p><p id="e2120923-3dc1-4dd8-a16c-5cb366e0d831" class="">그 결과, 아래와 같이 DEPTNO가 40인 경우의 DEPTNO와 DNAME, LOC을 확인해볼 수 있었다</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="ee099b17-71b3-45f0-be56-9556b001dae0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">DEPTNO: 40
+DNAME: OPERATIONS
+LOC :BOSTON</div></figure><p id="6c3ac21b-3d83-46fc-ab69-29143fe18ccd" class="">
+</p><p id="f5b0d48a-cc3b-4ea7-a20d-39e8989fe459" class="">🌟 데이터 조회 결과값은 여러 행일 경우가 흔하고, 그리고 결과 행이 하나일지 여럿일지는 알 수 없는 경우도 존재하기 때문에 대부분 커서를 사용하는 것이 권장된다!</p><p id="ef25c6e1-c299-4414-9074-35d1d95eafb3" class="">
+</p><h2 id="41bf41b3-9eb0-4976-925c-88c0c326283d" class="">2. 커서의 종류</h2><p id="3a35ba9e-a0dc-450e-a37a-a13322aef9d0" class="">🌺 명시적 커서</p><ul id="1d39a548-4c2c-4dd3-97ef-b13996b62648" class="bulleted-list"><li>사용자가 직접 커서를 선언하고 사용하는 커서</li></ul><p id="e2e25bb5-99ac-499d-8ab8-26315749b6dc" class="">[커서 사용 방법]</p><ol id="4e32c383-6605-466b-98cf-15e22c8573a7" class="numbered-list" start="1"><li>커서 선언(declaration) - 사용자가 직접 이름을 지정하여 사용할 커서를 SQL문과 함께 선언</li></ol><ol id="c3485a0d-8764-4ee9-8e11-c6bcb31349e5" class="numbered-list" start="2"><li>커서 열기(open) - 커서를 선언할 때 작성한 SQL문을 실행(* active set: 실행한 SQL문에 영향을 받는 행)</li></ol><ol id="3c3affe2-ef0e-4518-a094-710fad895dec" class="numbered-list" start="3"><li>커서에서 읽어온 데이터 사용(fetch) - 실행된 SQL문의 결과 행 정보를 하나씩 읽어와서 변수에 저장한 후 필요한 작업을 수행함. 각 행별로 공통 작업을 반복해서 실행하기 위해 여러 종류의 LOOP 문을 함께 사용 가능</li></ol><ol id="8353d4fb-3389-4b99-afd7-d8f99484ad40" class="numbered-list" start="4"><li>커서 닫기(close) - 모든 행의 사용이 끝나고 커서를 종료</li></ol><p id="3d4c78e4-313a-47c0-9f64-84a18b62cbea" class="">[USAGE]</p><pre id="9881b1d9-c399-48f0-9256-8f7ed6822af4" class="code"><code>DECLARE
+	CURSOR 커서이름 IS SQL문; --커서 선언
+BEGIN
+	OPEN   커서이름; --커서 열기(open)
+	FETCH  커서이름 INTO 변수; --커서로부터 읽어온 데이터 사용(FETCH)
+  CLOSE  커서이름; --커서 닫기
+END;
+/</code></pre><p id="b67020ec-0130-4982-b50a-155dd4051484" class="">(1) 단일 행이 조회되는 경우</p><pre id="eb109074-9494-4b1a-aa85-d3be18d5dc1a" class="code"><code>DECLARE
+    V_DEPT_ROW DEPT%ROWTYPE;
+    CURSOR CUR1 IS
+    SELECT DEPTNO, DNAME, LOC
+    FROM DEPT
+    WHERE DEPTNO=40;
+
+BEGIN
+    OPEN CUR1;
+    FETCH CUR1 INTO V_DEPT_ROW;
+    
+    DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;||V_DEPT_ROW.DEPTNO);
+    DBMS_OUTPUT.PUT_LINE(&#x27;DNAME: &#x27; ||V_DEPT_ROW.DNAME);
+    DBMS_OUTPUT.PUT_LINE(&#x27;LOC :&#x27; || V_DEPT_ROW.LOC);
+    
+    CLOSE CUR1;   
+END;
+/</code></pre><p id="52ad67ab-5746-4175-a0cd-fecda388efcf" class="">위와 같이, 단일 행이 조회되는 경우에는 굳이 LOOP를 사용하지 않아도 되고, 커서를 변수에 담아서 사용하고, 다 사용한 후에는 닫아주면 된다</p><figure id="07d33806-eed4-415f-a82b-6ed2f401bf10" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EB%8B%A8%EC%9D%BC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EB%8B%A8%EC%9D%BC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC.PNG?raw=true"/></a><figcaption>명시적 커서- 단일행이 조회되는 경우</figcaption></figure><p id="8425d546-33df-4978-9725-40109b2f1f70" class="">(2) 여러 행이 조회되는 경우-LOOP문 이용</p><pre id="acc4f43e-4e67-4e81-a369-32ccf1ec781f" class="code"><code>DECLARE
+    V_DEPT_ROW DEPT%ROWTYPE;
+    CURSOR CUR2 IS
+    SELECT DEPTNO, DNAME, LOC
+    FROM DEPT;
+    
+BEGIN
+    OPEN CUR2;
+    LOOP
+        FETCH CUR2 INTO V_DEPT_ROW;
+        --커서의 모든 행을 읽어오기 위해서 %NOTFOUND 속성 지정
+        📌EXIT WHEN CUR2%NOTFOUND;📌
+    DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;||V_DEPT_ROW.DEPTNO||&#x27; | DNAME: &#x27; ||V_DEPT_ROW.DNAME||
+                                           &#x27; | LOC :&#x27; || V_DEPT_ROW.LOC); 
+    END LOOP;
+    
+    CLOSE CUR2;
+END;
+/</code></pre><p id="067d33e7-7ec8-468f-8264-6951d011b746" class="">만약, 여러 행이 조회한다면, 변수에 커서를 담고, 그 후에는 LOOP로 반복작업을 시키되, 위와 같이 더이상 추출할 수 있는 데이터가 없으면 빠져나가도록 하고, 아니라면 해당 주기에서의 데이터를 반환해주도록 한다. 그리고 마침내 데이터가 더이상 없으면 LOOP를 종료하고, 커서도 반환한다</p><figure id="6ae7bdab-4d72-42e8-a8d4-14953b628009" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EC%97%AC%EB%9F%AC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EC%97%AC%EB%9F%AC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC.PNG?raw=true"/></a><figcaption>명시적 커서- 여러행이 조회되는 경우</figcaption></figure><p id="b3341d49-9241-4e9f-b1ed-be74de42f809" class="">아래는 커서를 fetch를 통해서 데이터를 획득하는 과정 중의 상태와 관련된 몇 가지 속성들이다</p><div id="04670be9-a29c-468b-af02-e61260673e80" class="collection-content"><h4 class="collection-title">커서의 속성</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>속성</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="141fc3ce-42dc-402d-ba95-abf0f45a3da0"><td class="cell-title"><a href="https://www.notion.so/NOTFOUND-141fc3ce42dc402dba95abf0f45a3da0">커서이름%NOTFOUND</a></td><td class="cell-l&gt;kp">수행된 FETCH 문을 통해 추출된 행이 있으면 false, 없으면 true 반환
+-즉, <mark class="highlight-orange_background"><strong>추출된 행이 없는가? </strong></mark>에 대한 답!</td></tr><tr id="a7705ebc-7218-4c26-9d1e-1ab3e7d1e595"><td class="cell-title"><a href="https://www.notion.so/FOUND-a7705ebc72184c269d1e1ab3e7d1e595">커서이름%FOUND</a></td><td class="cell-l&gt;kp">수행된 FETCH 문을 통해 추출된 행이 없으면 false, 있으면 true 반환
+-즉, <mark class="highlight-orange_background"><strong>추출된 행이 있는가? </strong></mark>에 대한 답!</td></tr><tr id="f72871fe-dc1a-46d1-bdfb-506e4da64744"><td class="cell-title"><a href="https://www.notion.so/ROWCOUNT-f72871fedc1a46d1bdfb506e4da64744">커서이름%ROWCOUNT</a></td><td class="cell-l&gt;kp">현재까지 추출된 행 수를 반환</td></tr><tr id="2e2b92bc-be58-4f57-835d-6755b3384016"><td class="cell-title"><a href="https://www.notion.so/ISOPEN-2e2b92bcbe584f57835d6755b3384016">커서이름%ISOPEN</a></td><td class="cell-l&gt;kp">커서가 열려있으면 true, 닫혀있으면 false 반환</td></tr></tbody></table></div><p id="1d8a1e1c-2529-4527-b07a-6c3eeb01818c" class="">
+</p><p id="73181edf-3a92-4543-adf0-ce66002b328e" class="">(3) 여러 개의 행이 조회되는 경우- FOR LOOP 문 이용</p><pre id="9a3ef8f2-efda-4e85-85ab-a30d7568b4b2" class="code"><code>FOR 루프 인덱스 이름 IN 커서 이름 LOOP
+	결과 행별로 반복 수행할 작업;
+END LOOP;</code></pre><p id="5d752880-b51f-4165-bd6b-4d70e1d819d5" class="">*루프 인덱스 : 커서에 저장된 각 행이 저장되는 변수 ▶️ 루프인덱스.필드명 으로 각 행의 필드에 접근 가능 ▶️ FETCH 커서 INTO 변수를 하지 않아도 됨!!</p><p id="37f294f8-a6da-41c7-9524-b6aca96523f1" class="">🌟 FOR LOOP를 커서와 함께 사용하면 좋은 점!(여러 행 조회시)</p><ul id="c996b74a-432a-4d29-9ce9-28c0f8db32e4" class="bulleted-list"><li>OPEN, FETCH, CLOSE문을 작성하지 않아도 됨!(일련의 자동수행)</li></ul><pre id="dc7ae342-b140-4ee6-a14b-6416194db966" class="code"><code>DECLARE
+    --명시적 커서 선언
+    CURSOR CUR1 IS
+    SELECT DEPTNO, DNAME, LOC
+    FROM DEPT;
+BEGIN
+    FOR CIDX IN CUR1 LOOP
+      DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;  ||CIDX.DEPTNO||&#x27; , DNAME: &#x27;||CIDX.DNAME||&#x27; , LOC: &#x27; ||CIDX.LOC);
+    END LOOP;
+END;
+/</code></pre><figure id="3b9fcc94-5962-4a9b-814e-9b49b1cba356" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EC%97%AC%EB%9F%AC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC-FOR%20LOOP.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%EC%97%AC%EB%9F%AC%ED%96%89%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%B2%98%EB%A6%AC-FOR%20LOOP.PNG?raw=true"/></a><figcaption>명시적 커서-여러 행 데이터가 조회될 때 FOR LOOP를 이용하는 경우</figcaption></figure><p id="efbfd2aa-649e-427a-b800-ad0b7570d16e" class="">위와 같이 FOR LOOP를 이용하게 되면 코드가 간결해질 수 있다!</p><p id="8b989627-f30b-4044-a35c-e525b69b02c2" class="">(4) 커서에 파라미터 사용하기</p><ul id="ff46c37a-281a-4af1-aaa3-0fbc508ab17b" class="bulleted-list"><li>고정 값이 아닌 직접 입력한 값 또는 상황에 따라 여러 값을 번갈아서 사용할 경우에 사용</li></ul><pre id="0a434116-c222-4490-8b53-b1225375c4f1" class="code"><code>CURSOR 커서이름(파라미터 이름  자료형,...) IS
+SELECT ~~</code></pre><pre id="bcab9369-e752-49ae-b44b-4cc1d3be6cfa" class="code"><code>DECLARE
+    V_DEPT_ROW DEPT%ROWTYPE;
+    CURSOR CUR1(PARA DEPT.DEPTNO%TYPE) IS
+        SELECT DEPTNO, DNAME, LOC
+        FROM DEPT
+        WHERE DEPTNO = PARA;
+BEGIN
+    OPEN CUR1(30);
+    LOOP
+        FETCH CUR1 INTO V_DEPT_ROW;
+        EXIT WHEN CUR1%NOTFOUND;
+        
+        DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;||V_DEPT_ROW.DEPTNO||&#x27;, DNAME: &#x27;||V_DEPT_ROW.DNAME||&#x27;, LOC: &#x27;||V_DEPT_ROW.LOC);
+    END LOOP;
+    CLOSE CUR1;
+    OPEN CUR1(20);
+    LOOP
+        FETCH CUR1 INTO V_DEPT_ROW;
+        EXIT WHEN CUR1%NOTFOUND;
+        
+        DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27;||V_DEPT_ROW.DEPTNO||&#x27;, DNAME: &#x27;||V_DEPT_ROW.DNAME||&#x27;, LOC: &#x27;||V_DEPT_ROW.LOC);
+    END LOOP;
+    CLOSE CUR1;
+END;
+/</code></pre><p id="904c62a8-55c6-47d2-a0d2-4b2597e9133b" class="">커서 실행에 필요한 파라미터 값을 사용자에게 직접 입력받고 싶은 경우</p><p id="ec2645c3-55ba-4665-bf16-91a657cd1d71" class="">&amp;기호를 치환 변수를 사용할 수 있다!</p><pre id="c6589de0-21b8-4049-882c-f745df781a47" class="code"><code>DECLARE
+    --사용자가 입력한 부서번호를 저장할 변수
+    V_DEPTNO DEPT.DEPTNO%TYPE;
+    CURSOR CUR1(PARA DEPT.DEPTNO%TYPE) IS
+    SELECT DEPTNO,DNAME,LOC
+    FROM DEPT
+    WHERE DEPTNO=V_DEPTNO;
+
+BEGIN
+    --입력을 위한 임시 변수 역할인 치환변수 INPUT_DEPTNO를 잠시 사용
+    V_DEPTNO :=&amp;INPUT_DEPTNO;
+    FOR CIDX IN CUR1(V_DEPTNO) LOOP
+        DBMS_OUTPUT.PUT_LINE(&#x27;DEPTNO: &#x27; || CIDX.DEPTNO||&#x27;, DNAME: &#x27; ||CIDX.DNAME||&#x27;, LOC: &#x27;||CIDX.LOC);
+    END LOOP;
+END;
+/</code></pre><p id="b5b7e9ed-b814-4c2a-818e-1f5a1ee434f5" class="">위와 같이 FOR LOOP를 이용하게 되면 , 앞서 연습해본 것처럼 OPEN, FETCH, CLOSE의 번거로움이 줄어들 수 있다! 그리고 입력을 받는 &amp; 기호와 치환 변수를 이용함으로써 보다 동적인 실행을 해볼 수 있다!</p><figure id="eef41c08-f80a-4de2-aa29-9e3fe8c2c43d" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%EC%9E%85%EB%A0%A5%EB%B0%9B%EA%B8%B0.gif?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EB%AA%85%EC%8B%9C%EC%A0%81%20%EC%BB%A4%EC%84%9C-%ED%8C%8C%EB%9D%BC%EB%AF%B8%ED%84%B0%20%EC%9E%85%EB%A0%A5%EB%B0%9B%EA%B8%B0.gif?raw=true"/></a><figcaption>명시적 커서- 파라미터를 입력받기</figcaption></figure><p id="094e6f09-2000-4f2c-88f9-f10609a50f8a" class="">🌺 묵시적 커서</p><ul id="41e05c33-952a-402e-89cb-afd1adb5ff0c" class="bulleted-list"><li>별다른 선언 없이 SQL 문을 사용했을 때 오라클에서 자동으로 선언되는 커서</li></ul><p id="0afcb0ec-21f8-442a-9c24-0ad5e15851ae" class="">▶️ OPEN, FETCH, CLOSE를 지정하지 않아도 됨!</p><div id="025744dc-5fde-4ba9-9245-bce23f907b5b" class="collection-content"><h4 class="collection-title">묵시적 커서의 속성</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>속성</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="b67212a2-fa0b-4e1e-a8d3-f4216884ab0e"><td class="cell-title"><a href="https://www.notion.so/SQL-NOTFOUND-b67212a2fa0b4e1ea8d3f4216884ab0e">SQL%NOTFOUND</a></td><td class="cell-X:UW">묵시적 커서 안에 추출한 행이 있으면 false, 없으면 true 반환
+-DML 명령어로 영향을 받는 행이 없을 경우에도 true 반환</td></tr><tr id="352abb8f-381c-42d7-b806-b264d0c39c28"><td class="cell-title"><a href="https://www.notion.so/SQL-FOUND-352abb8f381c42d7b806b264d0c39c28">SQL%FOUND</a></td><td class="cell-X:UW">묵시적 커서 안에 추출한 행이 없으면 false, 있으면 true 반환
+-DML 명령어로 영향을 받는 행이 있을 경우에도 true 반환</td></tr><tr id="803e9035-4cc0-411f-9d0e-9ae4e8bd15be"><td class="cell-title"><a href="https://www.notion.so/SQL-ROWCOUNT-803e90354cc0411f9d0e9ae4e8bd15be">SQL%ROWCOUNT</a></td><td class="cell-X:UW">묵시적 커서에 현재까지 추출한 행 수 혹은 DML 명령어로 영향받는 행 수 반환</td></tr><tr id="1658a175-dce7-46c3-b205-fb178232118a"><td class="cell-title"><a href="https://www.notion.so/SQL-ISOPEN-1658a175dce746c3b205fb178232118a">SQL%ISOPEN</a></td><td class="cell-X:UW">묵시적 커서는 자동으로 SQL문을 실행한 후 CLOSE 되므로 이 속성은 항상 false 반환</td></tr></tbody></table></div><pre id="04900fc1-c732-4931-8758-bab709afd54a" class="code"><code>BEGIN
+    UPDATE DEPT_IMP
+    SET DNAME=&#x27;DATABASE&#x27;
+    WHERE DEPTNO=50;
+    
+    DBMS_OUTPUT.PUT_LINE(&#x27;갱신된 행 수 : &#x27; ||SQL%ROWCOUNT);
+    
+    IF(SQL%FOUND) THEN
+        DBMS_OUTPUT.PUT_LINE(&#x27;갱신 대상 행 존재 여부 : TRUE&#x27;);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(&#x27;갱신 대상 행 존재 여부: FALSE&#x27;);
+    END IF;
+    
+    IF(SQL%ISOPEN) THEN
+        DBMS_OUTPUT.PUT_LINE(&#x27;커서의 OPEN 여부 : TRUE&#x27;);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(&#x27;커서의 OPEN 여부: FALSE&#x27;);
+    END IF;
+    
+END;
+/</code></pre><p id="ec4c5c0d-6dae-4197-9b8a-53d7f6bcae35" class="">위의 경우는 묵시적 커서를 통해서 사용할 수 있는 속성을 보여주는 예시이다!</p><p id="fd7754ab-0d7b-4017-b3a9-01fdb6b6096b" class="">위와 같이 DEPTNO가 50인 경우에 대해서 갱신하고자 한다면, DEPTNO가 50인 경우는 존재하지 않기 때문에 FOUND는 FALSE를 반환하게 되고, 갱신된 행이 없으므로 ROWCOUNT도 0을 반환하게 된다. 그리고 묵시적 커서는 자동 실행된 후 CLOSE되므로 FALSE를 반환하는 것을 확인해볼 수 있다.</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="3f287e9d-3e32-445c-8fce-9c5bd0b3c378"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">갱신된 행 수 : 0
+갱신 대상 행 존재 여부: FALSE
+커서의 OPEN 여부: FALSE</div></figure><p id="21261e0d-632b-4f94-9fc6-79f2c915297a" class="">
+</p><h2 id="76255ef4-d2db-4353-8358-25bc0c00b8ce" class="">예외처리</h2><p id="c851c397-5a40-46cc-8e7c-7c136ac27b41" class="">
+</p><p id="b12169ff-3911-4350-93df-ed9dd625d70d" class="">🌹 오류(error) : SQL 또는 PL/SQL 문이 정상 수행되지 못하는 상황</p><p id="8f152f02-85a2-4276-bc57-72986fdd5a6f" class="">[오류의 분류]</p><ol id="1afd26ff-8fe6-4b0d-b944-e22eb8c32d18" class="numbered-list" start="1"><li>컴파일 오류 Compile Error 혹은 문법 오류 Syntax Error : 문법이 잘못되었거나 오타로 인한 오류로 발생</li></ol><ol id="5839f1b6-626b-4d61-9b98-70972284477d" class="numbered-list" start="2"><li>런타임 오류 Runtime Error 혹은 실행 오류 Execute Error : 명령문 실행 중 발생한 오류 ▶️ &quot;예외&quot;</li></ol><p id="b9178e79-e544-4026-a5eb-c1b9e359ce72" class="">
+</p><p id="702f5a47-b1f9-463f-9ec0-5a7833f4c94c" class="">🌺 예외 처리 : PL/SQL 실행 중 예외가 발생했을 때 프로그램의 비정상 종료를 막기 위해서 특정 명령어를 작성하는 행위</p><p id="8c9c2482-2315-433b-a00c-ee37413b66ac" class="">[USAGE]</p><pre id="576c13a8-47d6-4658-a7a1-e6399dbee76d" class="code"><code>DECLARE
+	~~
+BEGIN
+	예외발생
+EXCEPTION
+	WHEN 예외종류1[OR 예외이름2] THEN
+		예외처리
+	WHEN 예외종류3[OR 예외이름4] THEN
+		예외처리
+  ...
+	WHEN OTHERS THEN
+		예외처리
+END;
+/</code></pre><p id="35ec48b9-04d8-4adf-b7ca-30cd328afd26" class="">위에서처럼 EXCEPTION 키워드 뒤에 나온 부분을 예외 처리부 혹은 예외 처리절이라고 한다!</p><p id="4b117f13-600a-42b3-8be0-053e14aaf60b" class="">WHEN 절은 &quot;예외 핸들러(Exception Handler)&quot;!</p><p id="e763ed5a-281d-4b43-bb2a-7e499b6fbdfa" class="">🌟 예외 처리부가 실행되면, 예외가 발생한 코드 이후의 내용은 실행되지 않음!</p><p id="e7ee876c-e157-46b7-b0c8-a863b203611c" class="">
+</p><h3 id="f9ea8b38-3b00-4b2b-92a8-95bf56b9faf2" class="">예외 종류</h3><ol id="9ece6fb1-8529-41f7-ae62-211aa0e84bd6" class="numbered-list" start="1"><li>내부 예외 internal exceptions : 오라클에서 미리 정의한 예외</li></ol><ol id="58b09f1d-04a2-4a52-831f-2f51d1814141" class="numbered-list" start="2"><li>사용자 정의 예외 user-defined exceptions : 사용자가 필요에 따라 추가로 정의한 예외</li></ol><div id="98b3bdf8-c107-40dc-a3eb-53e191e336f1" class="collection-content"><h4 class="collection-title">예외 분류/</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>예외 대분류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>예외 중분류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="7f2d6a65-30aa-442d-88ba-8e105ea875a3"><td class="cell-title"><a href="https://www.notion.so/7f2d6a6530aa442d88ba8e105ea875a3">내부예외</a></td><td class="cell-dQy=">사전 정의된 예외(Pre-defined name exceptions)</td><td class="cell-uX&gt;~"><mark class="highlight-yellow_background"><strong>내부 예외 중 예외 번호에 해당하는 이름이 존재</strong></mark>하는 예외</td></tr><tr id="17342bf6-8ffa-472a-817f-8c8f2016465d"><td class="cell-title"><a href="https://www.notion.so/17342bf68ffa472a817f8c8f2016465d">내부예외</a></td><td class="cell-dQy=">이름이 없는 예외(Un-named exceptions)</td><td class="cell-uX&gt;~">내부 예외 중 예외 번호는 존재하지만, 이름이 존재하지 않는 예외(사용자가 필요에 따라 이름 지정 가능)</td></tr><tr id="ab99afb0-4b21-4c77-ba60-01246e920b5b"><td class="cell-title"><a href="https://www.notion.so/ab99afb04b214c77ba6001246e920b5b">사용자 정의 예외</a></td><td class="cell-dQy="></td><td class="cell-uX&gt;~">사용자가 필요에 따라 직접 정의한 예외</td></tr></tbody></table></div><div id="d4b47813-9f41-4b9e-a94a-24be7db53a51" class="collection-content"><h4 class="collection-title">사전 정의된 예외의 종류</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>예외이름</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>예외 번호(SQLCODE)</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="5b1a738a-8c65-4b83-9520-5d15208060d6"><td class="cell-tinE"><span class="selected-value select-value-color-pink">ACCESS_INTO_NULL</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-06530-6530-5b1a738a8c654b8395205d15208060d6">ORA-06530:-6530</a></td><td class="cell-]&lt;Zm">초기화되지 않은 객체 속성 값 할당</td></tr><tr id="0a42a586-fc7b-4e98-ba85-85c075a6f3b4"><td class="cell-tinE"><span class="selected-value select-value-color-gray">CASE_NOT_FOUND</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-06592-6592-0a42a586fc7b4e98ba8585c075a6f3b4">ORA-06592:-6592</a></td><td class="cell-]&lt;Zm">CASE문의 WHEN절에 조건이 없고 ELSE 절도 없는 경우</td></tr><tr id="99656485-6280-43de-a603-cdbe08120fb5"><td class="cell-tinE"><span class="selected-value select-value-color-brown">COLLECTION_IS_NULL</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-06531-6531-99656485628043dea603cdbe08120fb5">ORA-06531:-6531</a></td><td class="cell-]&lt;Zm"><strong>초기화 되지 않은 중첩 테이블, VARRAY에 EXIT 외 컬렉션 메서드</strong>를 사용하려 할 경우, 또는 초기화되지 않은 중첩 테이블이나 VARRAY에<strong> 값을 대입</strong>하려 할 경우</td></tr><tr id="48360946-bda7-4342-bc75-3ca2c3a5c399"><td class="cell-tinE"><span class="selected-value select-value-color-green">CURSOR_ALREADY_OPEN</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-06511-6511-48360946bda74342bc753ca2c3a5c399">ORA-06511:-6511</a></td><td class="cell-]&lt;Zm">이미 OPEN된 커서를 OPEN 시도할 경우</td></tr><tr id="66a38746-2c25-4896-a31f-2cd115348555"><td class="cell-tinE"><span class="selected-value select-value-color-orange">DUP_VAL_ON_INDEX</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-00001-1-66a387462c254896a31f2cd115348555">ORA-00001:-1</a></td><td class="cell-]&lt;Zm">UNIQUE 인덱스가 있는 열에 중복된 값을 저장하려고 했을 경우</td></tr><tr id="c3f6e1f3-c907-4d99-9391-50ca2eea322f"><td class="cell-tinE"><span class="selected-value select-value-color-yellow">INVALID_CURSOR</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-01001-1001-c3f6e1f3c9074d99939150ca2eea322f">ORA-01001:-1001</a></td><td class="cell-]&lt;Zm">OPEN되지 않는 커서를 CLOSE 시도하는 경우와 같이 잘못된 커서 작업을 시도하는 경우</td></tr><tr id="e055d1c7-9b3c-4937-85a6-77aa07f23ff7"><td class="cell-tinE"><span class="selected-value select-value-color-purple">INVALID_NUMBER</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-01722-1722-e055d1c79b3c493785a677aa07f23ff7">ORA-01722:-1722</a></td><td class="cell-]&lt;Zm">문자에서 숫자로의 변환이 실패한 경우</td></tr><tr id="ad7b5ce1-b554-438a-bef9-60ca261b8434"><td class="cell-tinE"><span class="selected-value select-value-color-blue">LOGIN_DENIED</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-01017-1017-ad7b5ce1b554438abef960ca261b8434">ORA-01017:-1017</a></td><td class="cell-]&lt;Zm">사용자가 이름이나 패스워드가 올바르지 않은 상태에서 로그인을 시도한 경우</td></tr><tr id="79f3c069-4c98-4fcd-8cda-2f29e77f9653"><td class="cell-tinE"><span class="selected-value select-value-color-default">ZERO_DIVIDE</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-01476-1476-79f3c0694c984fcd8cda2f29e77f9653">ORA-01476:-1476</a></td><td class="cell-]&lt;Zm">숫자 데이터를 0으로 나누려고 했을 경우</td></tr><tr id="1a491c44-4685-447b-aa24-a4fd3ee474de"><td class="cell-tinE"><span class="selected-value select-value-color-red">TOO_MANY_ROWS</span></td><td class="cell-title"><a href="https://www.notion.so/ORA-01422-1422-1a491c444685447baa24a4fd3ee474de">ORA-01422:-1422</a></td><td class="cell-]&lt;Zm">SELECT INTO문의 결과 행이 여러 개인 경우</td></tr></tbody></table></div><p id="7cc92280-a9db-415f-8674-d58cc8894e94" class=""><a href="https://docs.oracle.com/cd/E11882_01/timesten.112/e21639/exceptions.htm#TTPLS195">https://docs.oracle.com/cd/E11882_01/timesten.112/e21639/exceptions.htm#TTPLS195</a></p><p id="465a7829-cf40-4f00-84bb-d345e7270e80" class="">사전 정의된 예외는 위와 같이 예외 이름을 지정해주고, 그 예외를 WHEN 절에서 명시해주고 예외처리를 해줌으로써 프로그램의 비정상적인 종료를 막을 수 있다!</p><figure id="87adad46-532d-4c79-a0fc-20d112b7350c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%82%AC%EC%A0%84%EC%A0%95%EC%9D%98%EB%90%9C%20%EC%98%88%EC%99%B8.PNG?raw=true"><img style="width:864px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%82%AC%EC%A0%84%EC%A0%95%EC%9D%98%EB%90%9C%20%EC%98%88%EC%99%B8.PNG?raw=true"/></a><figcaption>사전 정의된 예외</figcaption></figure><p id="46b6e48d-1a5a-4e35-96b6-356b6fcd5ea0" class="">
+</p><p id="f8e514ab-4764-4755-a0f2-0d4b33d6f76f" class="">🌺 이름 없는 예외</p><ul id="322361e5-9863-4ed8-bc80-66907b766e8d" class="bulleted-list"><li>PRAGMA : 특정 코드의 에러코드와 예외메시지를 연결해줌!</li></ul><pre id="e05c680a-8ccd-49b0-9e84-ed20f2d20858" class="code"><code>DECLARE 
+	예외이름1 EXCEPTION;
+	PRAGMA EXCEPTION_INIT(예외이름1,예외번호);
+...
+EXCEPTION
+	WHEN 예외이름1 THEN
+	예외처리;
+END;
+/</code></pre><figure id="44cd6f41-0059-4862-a709-b10ccc4cc140" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%9D%B4%EB%A6%84%EC%97%86%EB%8A%94%20%EC%98%88%EC%99%B8%20%EC%82%AC%EC%9A%A9.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%9D%B4%EB%A6%84%EC%97%86%EB%8A%94%20%EC%98%88%EC%99%B8%20%EC%82%AC%EC%9A%A9.PNG?raw=true"/></a><figcaption>이름없는 예외</figcaption></figure><p id="3b8b01dd-8145-4030-949a-49c6793a0ead" class="">
+</p><p id="fbda14d4-c792-4b76-9a9a-e30245866653" class="">🌺 사용자 정의 예외 사용</p><p id="bfed2da0-02e7-4a18-b1f8-f2fef2689a2f" class="">[USAGE]</p><pre id="36c6aa60-b30e-4b94-992c-bdb317c9380f" class="code"><code>DECLARE
+	사용자 예외 이름 EXCEPTION;
+BEGIN
+	IF 사용자 예외를 발생시킬 조건 THEN
+	  RAISE 사용자 예외 이름
+	END IF;
+
+EXCEPTION
+	WHEN 사용자 예외 이름 THEN
+		예외 처리에 사용할 명령어;
+END;
+/</code></pre><ul id="e4c9e91e-e48f-448d-8ce3-20fda771f0da" class="bulleted-list"><li>사용자 정의 예외는 이름없는 예외(non-predefined exceptions)처럼, 미리 내가 지정한 이름을 통해서 예외를 식별!</li></ul><pre id="a8d6fbbb-2770-4b8c-9db4-a4cc127d7319" class="code"><code>DECLARE
+    MYERR EXCEPTION;
+    V_WRONG NUMBER;
+BEGIN
+    V_WRONG :=&amp;INPUT_DEPTNO;
+    INSERT INTO DEPT_IMP
+    VALUES(V_WRONG,&#x27;DEVELOPMENT&#x27;,&#x27;SEOUL&#x27;);
+    --사용자 예외 조건
+    IF V_WRONG &gt; 100 THEN
+        RAISE MYERR;
+    END IF;
+EXCEPTION
+    WHEN MYERR THEN
+        DBMS_OUTPUT.PUT_LINE(&#x27;사용자 정의 예외 MYERR 발생&#x27;);
+END;
+/</code></pre><figure id="f8153bfb-690c-4c9e-910a-66a67c94ae83" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%A0%95%EC%9D%98%20%EC%98%88%EC%99%B8.gif?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/cursor_exception/%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%A0%95%EC%9D%98%20%EC%98%88%EC%99%B8.gif?raw=true"/></a><figcaption>사용자 정의 예외</figcaption></figure><p id="d8900b35-e065-4e50-b226-182c3bab88f5" class="">위와 같이, 사용자 정의 예외는 특정 조건일 때 사용자가 RAISE 키워드를 이용해서 해당 오류가 발생했을 때, 예외를 정의해두었기 때문에 이에 대한 예외 처리를 할 수 있게 해준다!</p><p id="b2833395-12be-4a68-9cd6-06071d8c371f" class="">
+</p></div></article></body></html>

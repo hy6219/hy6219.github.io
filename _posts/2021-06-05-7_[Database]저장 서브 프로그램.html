@@ -1,0 +1,1016 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>저장 서브 프로그램</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="b7bee192-f8f4-46e2-85ce-06f853e3b2a1" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🐻</span></div><h1 class="page-title">저장 서브 프로그램</h1></header><div class="page-body"><p id="b72b9264-0cfa-4028-897f-b4ca38ee2fcf" class="">앞서 사용했던 PL/SQL 블록은 <mark class="highlight-blue"><strong>익명 블록</strong></mark>으로, 오라클에 저장되지 않는 블록이었다!</p><p id="e2d15978-8fec-4179-a07f-96a4968f2fcf" class="">이런 익명 블록은 반복적인 PL/SQL의 블록단위에 대한 작업 수행의 어려움이 있다!</p><p id="10838d31-e793-4ad8-a056-e66b1226e697" class="">그래서 필요한 것이 &quot;<mark class="highlight-red"><strong>저장 서브 프로그램</strong></mark>&quot;, 여러 번 PL/SQL로 작성된 프로그램을 사용하기 위해서 오라클에 특정 이름으로 저장해두고 사용하는 PL/SQL 프로그램!</p><p id="fcbb3fe1-aa27-4d85-a1b5-fa86e679ba12" class="">🌟 메모리, 성능, 재사용성 등의 면에서 장점!!</p><p id="030ce623-04d9-412e-bc21-0b25ac6b754f" class="">
+</p><div id="38fbec98-10ec-48d0-a554-79ee03d111f4" class="collection-content"><h4 class="collection-title">익명 블록 vs 저장 서브 프로그램</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>기준</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>익명 블록</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>저장 서브 프로그램</th></tr></thead><tbody><tr id="0fc44ad3-ab9d-483c-bae7-b163eb4b3b47"><td class="cell-title"><a href="https://www.notion.so/0fc44ad3ab9d483cbae7b163eb4b3b47">이름</a></td><td class="cell-{`sz">이름 없음</td><td class="cell-Y|]?">이름 지정</td></tr><tr id="ce30becb-db91-4552-90b4-ab67327a0f55"><td class="cell-title"><a href="https://www.notion.so/ce30becbdb91455290b4ab67327a0f55">오라클 저장</a></td><td class="cell-{`sz">🚫</td><td class="cell-Y|]?">⭕</td></tr><tr id="1e6a01f6-f1df-4d4a-9b64-03bbc370b2b7"><td class="cell-title"><a href="https://www.notion.so/1e6a01f6f1df4d4a9b6403bbc370b2b7">컴파일</a></td><td class="cell-{`sz">실행할 때마다 컴파일</td><td class="cell-Y|]?">저장될 때 한 번 컴파일</td></tr><tr id="d6d2cc6d-a0c0-43ab-b115-c14380cb71da"><td class="cell-title"><a href="https://www.notion.so/d6d2cc6da0c043abb115c14380cb71da">공유</a></td><td class="cell-{`sz">🚫</td><td class="cell-Y|]?">⭕</td></tr><tr id="785f96eb-ab9c-4b04-98bc-44f66579a400"><td class="cell-title"><a href="https://www.notion.so/785f96ebab9c4b0498bc44f66579a400">다른 응용 프로그램에서의 호출 가능 여부</a></td><td class="cell-{`sz">🚫</td><td class="cell-Y|]?">⭕</td></tr></tbody></table></div><p id="a48ffe79-ee2f-483a-8482-d6b722260e5a" class="">
+</p><p id="f8254865-1442-4cb2-938b-8d291f26035b" class="">🌺 저장 서브 프로그램의 종류 🌺</p><ol id="5746818f-1561-4d28-9271-6c3573846c6d" class="numbered-list" start="1"><li>프로시져(저장 프로시져 Stored Procedure)</li></ol><ul id="fa0de782-cc72-4683-865e-a420a76e0bff" class="bulleted-list"><li>특정 처리 작업을 수행하는 데 사용</li></ul><ul id="717c6557-dae6-4425-8cc6-5968eb1115c3" class="bulleted-list"><li>용도에 따라 파라미터 사용할 수도, 사용하지 않을 수도 있음</li></ul><ul id="5e6a88cf-fc8e-4d7e-a5d3-7e40b035a5e7" class="bulleted-list"><li>SQL문에서는 사용 불가</li></ul><p id="cd76402b-de04-4726-8699-1fc6327da7bc" class="">
+</p><p id="668ce0af-5502-4bbe-9f1e-07fff84f4fa4" class="">-프로시져 생성하기</p><p id="db3387b4-b8cc-4a36-9431-421b0c0a4d73" class="">[USAGE]</p><pre id="dafd270e-bf5b-44f2-9599-51bdfa7eacd2" class="code"><code>CREATE [OR REPLACE] PROCEDURE 프로시져_이름
+IS | AS
+	선언부
+BEGIN
+	실행부
+EXCEPTION
+	예외처리부
+END 프로시져이름;</code></pre><ul id="2473494a-1069-4955-b1bd-dcc50fff60a9" class="bulleted-list"><li>프로시져는 뷰를 생성할 때 처럼 REPLACE도 가능하게 하여, 존재하는 경우에는 덮어쓸 수 있도록 한다!</li></ul><ul id="1ab0bee0-1be5-42a9-a930-635a7d36159b" class="bulleted-list"><li>프로시져를 생성할 때, 선언부는 DECLARE 대신 IS나 AS를 사용하는데 , 선언부가 존재하지 않더라도 해당 키워드는 꼭 명시해야 한다!</li></ul><ul id="db8f3567-b4a9-422a-9c92-e378dfb216f7" class="bulleted-list"><li>예외처리부와 END 뒤에 붙는 프로시져 이름은 생략할 수 있다!</li></ul><pre id="860b83c2-2a5f-4601-98cf-32f91d646468" class="code"><code>CREATE OR REPLACE PROCEDURE PC_EX
+IS
+    V_EMPNO NUMBER:=7788;
+    V_ENAME VARCHAR2(10);
+BEGIN
+    V_ENAME:=&#x27;SCOTT&#x27;;
+    DBMS_OUTPUT.PUT_LINE(&#x27;NAME: &#x27;||V_ENAME||&#x27;, EMPNO: &#x27;||V_EMPNO);
+END;
+/</code></pre><p id="2652c4d1-d3a3-4ad9-b93e-f38094acf34e" class="">프로시져를 위와 같은 형태로 만들게 되면 ,저장할 때에, 처음에는</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="a5ac337c-683b-4f8d-80de-40c8d427f36c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">PL/SQL 프로시저가 성공적으로 완료되었습니다.
+
+
+Procedure PC_EX이(가) 컴파일되었습니다.</div></figure><p id="f15a500a-beb2-4b54-9364-1f8ac11a35db" class="">와 같이 출력되고</p><p id="dec938ca-cb03-42da-b2c3-242194143566" class="">그 이후에는 &quot;컴파일되었습니다&quot;만 출력된다. 그 이유는 REPLACE 속성을 주었기 때문이다!</p><p id="2f4fdb72-16f6-439b-824c-e2ddfb031cf6" class="">만약 OR REPLACE를 제거하면</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="d23fc70c-baf1-4869-aeba-76d0bef66a81"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">오류 보고 -
+ORA-00955: name is already used by an existing object
+00955. 00000 -  &quot;name is already used by an existing object&quot;</div></figure><p id="cd83f321-d8c1-4229-9881-a4104e442191" class="">와 같은 오류가 보고된다!</p><p id="d6e32e05-4249-44bd-b9d0-69ba76f9454e" class="">
+</p><p id="f1cc85f3-5daf-4dfe-b28b-eeb058e4609a" class="">
+</p><p id="c802d7ee-d311-4e23-aa30-084af5a1f150" class="">-프로시져 실행하기</p><p id="e54a63bc-4ccd-4250-b615-068f9a7b90d2" class="">[USAGE]</p><pre id="52ff7dcf-f265-4c5d-b56c-d9893528fa39" class="code"><code>EXECUTE 프로시져_이름;</code></pre><p id="3bc528c3-1e05-414d-8c58-f9ed3f211181" class="">
+</p><p id="5980dcb7-fed3-4895-81e1-e28ba16c34dc" class="">-🌻 특정 블록 및 익명 블록에서 프로시져 실행하기</p><pre id="3ba8c915-4727-402a-8459-ae6f937598a7" class="code"><code>BEGIN
+	프로시져 이름;
+END;
+/</code></pre><p id="0dcf8795-507c-4464-a842-54867fb3a7c3" class="">
+</p><p id="9333b080-b89f-4866-b756-936c09631073" class="">-프로시져 내용 확인하기 : USER_SOURCE 데이터 사전 뷰에서 조회</p><ul id="9f7b40a5-2c26-4f2f-84cc-08a364c5f238" class="bulleted-list"><li>NAME : 서브프로그램(생성 객체) 이름</li></ul><ul id="a58e915f-8062-4811-926f-cb509fcffa2f" class="bulleted-list"><li>TYPE: 서브 프로그램 종류(프로시져, 함수 등)</li></ul><ul id="98fd202c-d232-4e01-a5ba-a6b1574cd8e7" class="bulleted-list"><li>LINE : 서브 프로그램에 작성한 줄 번호</li></ul><ul id="96072f90-11f7-433d-a8c8-d88a5813ccf8" class="bulleted-list"><li>TEXT : 서브 프로그램에 작성한 소스 코드</li></ul><p id="5910a14f-f932-4258-b6b7-5549fc4db906" class="">
+</p><p id="48d48f93-3b80-498e-9df6-0e10cd9f2c04" class="">-프로시져 삭제하기</p><pre id="0e3834a3-62ed-4ca9-a330-3747e3dce1a6" class="code"><code>DROP PROCEDURE 프로시져_이름;</code></pre><p id="b0fca809-60c5-4c25-80f9-f95b7e3044e5" class="">
+</p><p id="0cd7a398-71ca-4ddc-8d46-ab051b427fae" class="">-파라미터를 사용하는 프로시져</p><pre id="6c891db6-922f-4d86-b0ea-396bb492c8e8" class="code"><code>CREATE [OR REPLACE] PROCEDURE 프로시져 이름
+[(파라미터_이름1 [MODES] 자료형 [:=값],...
+ (파라미터_이름N [MODES] 자료형 [DEFAULT 기본값])]
+IS | AS
+	선언부
+BEGIN
+	실행부
+EXCEPTION
+	예외처리부
+END [(프로시져 이름)];</code></pre><ul id="b68a195e-8252-40f4-9024-3ab0f513c40c" class="bulleted-list"><li>자료형은 자릿수 지정 및 NOT NULL 제약조건 사용 불가!</li></ul><ul id="efe2cc0c-c382-4dbf-a57e-b7ab8a665782" class="bulleted-list"><li>MODES: 파라미터 모드</li></ul><ul id="3c953837-0931-4427-9e80-90ccb176186d" class="bulleted-list"><li>예외처리부는 생략 가능</li></ul><p id="f0105e6b-3d48-494d-9099-240c65107fac" class="">🌹 파라미터 모드</p><div id="d87d6678-3f3c-44a1-b013-8e36cc317c3b" class="collection-content"><h4 class="collection-title">프로시져 파라미터 모드</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>파라미터 모드</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="16d421f6-0d44-4326-b099-7a4a75adc577"><td class="cell-title"><a href="https://www.notion.so/IN-16d421f60d444326b0997a4a75adc577">IN</a></td><td class="cell-@hn|"><mark class="highlight-red"><strong>지정하지 않으면 기본값으로 프로시져 호출 시 값을 받음</strong></mark></td></tr><tr id="36d036ed-bdd7-4d47-bfba-508f479f38c3"><td class="cell-title"><a href="https://www.notion.so/OUT-36d036edbdd74d47bfba508f479f38c3">OUT</a></td><td class="cell-@hn|">호출할 때 값을 반환</td></tr><tr id="abed1d02-cf69-4ee6-80bf-61d187d877d6"><td class="cell-title"><a href="https://www.notion.so/IN-OUT-abed1d02cf694ee680bf61d187d877d6">IN OUT</a></td><td class="cell-@hn|">호출할 때 값을 입력받은 후 실행 결과 값 반환</td></tr></tbody></table></div><p id="5a452f74-6b9a-4a19-a771-76f6ac2ac2dc" class="">🌟 자릿수 지정이 불가함을 확인해보자!</p><pre id="777c03cc-a87e-4ecb-a3ec-c393c184581a" class="code"><code>CREATE OR REPLACE PROCEDURE PR_EX
+(
+    PARAM1 IN NUMBER(4),
+    PARAM2 NUMBER DEFAULT 5
+)
+IS
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM1: &#x27; || PARAM1);
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM2: &#x27;||PARAM2);
+END;
+/</code></pre><p id="38d9cf1c-aace-4e2c-bdb1-0f577ec6c7ac" class="">만약 위와 같이 실행하게 된다면</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="ae2a5edd-b58c-4248-887c-9f8b5b684f0c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">LINE/COL  ERROR
+--------- -------------------------------------------------------------
+3/21      PLS-00103: Encountered the symbol &quot;(&quot; when expecting one of the following:     := . ) , @ % default character The symbol &quot;:=&quot; was substituted for &quot;(&quot; to continue. 
+오류: 컴파일러 로그를 확인하십시오.</div></figure><p id="f1ac22fd-409a-418d-9ea4-78e14b329601" class="">위와 같이 ( 기호가 := 로 대체되었다라는 권장 문구를 확인해볼 수 있다!</p><p id="a6315046-ec1d-4b9f-88af-a784ee7356bf" class="">*NOT NULL도  동일한 권장 문구를 확인해볼 수 있다!</p><p id="4d670308-5c1a-4a78-9659-765bb5a5fa3a" class="">🌟 파라미터가 있는 프로시져를 실행하려면</p><pre id="9d95c66a-feca-4d29-88cf-2398a73922d8" class="code"><code>EXECUTE 프로시져명(파라미터1, ...,파라미터N);</code></pre><p id="58d00b2d-d536-462e-a3e4-5049abbc3db5" class="">와 같이 실행해주면 되는데, 기본값이 있는 경우가 있다면 최소한 그 파라미터를 제외한 파라미터들에 대해서는 값을 입력해주어야 한다!</p><p id="63842abb-b4db-4fa5-be95-f5f4ba487b1e" class="">(A) IN 모드</p><pre id="a851155b-df49-4cf9-a08f-d221b3d0b421" class="code"><code>CREATE OR REPLACE PROCEDURE PR_EX
+(
+    PARAM1 IN NUMBER,
+    PARAM2 NUMBER DEFAULT 5
+)
+IS
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM1: &#x27; || PARAM1);
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM2: &#x27;||PARAM2);
+END;
+/</code></pre><p id="316fe873-d2c9-4da7-a43c-c66483d58836" class="">만약 IN 모드로 파라미터의 모드를 설정해주고, 위와 같이 두 개의 파라미터 중 하나는 기본값을 설정해두었다면</p><pre id="cab1585d-b93f-4dd2-8323-4499cbcadd47" class="code"><code>EXECUTE PR_EX(3);</code></pre><p id="9e0490f2-0430-4329-bc21-94a4bedae5bb" class="">로 입력값을 PARAM1에만 넣어주면 PARAM2는 기본값 5가 , PARAM1에는 3이 입력되어</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="b98ed0eb-e23f-405a-8ee3-d88f709e34ed"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">PARAM1: 3
+PARAM2: 5</div></figure><p id="3b6ea0db-13e5-4b38-a7db-71a668e1aa25" class="">을 출력하게 된다!</p><p id="e9abf699-f17d-4352-be69-52a2a686954e" class="">
+</p><p id="9c7a611f-cded-4939-8889-b7dfb1fd8c27" class="">❓ 그러면 기본값이 설정된 파라미터에 값을 넣으면 어떻게 될까 ❓</p><pre id="1bf89e23-af4d-42ef-9ebb-b55c1d2bc5d4" class="code"><code>EXECUTE PR_EX(3,10);</code></pre><p id="36409d52-c5a2-4140-b700-ae31d670ef63" class="">위와 같이 IN 모드 파라미터에 3을, DEFAULT값이 설정된 PARAM2에는 10을 넣게 되면</p><p id="5f986503-7dce-411f-84eb-c1912d2f9071" class="">더이상 PARAM2는 기본값이 아닌 10이라는 값이 들어가게 되어</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="945e0d1b-d692-4ecd-bdbc-9e3272202797"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">PARAM1: 3
+PARAM2: 10</div></figure><p id="057fad57-38cf-4206-a17f-5ae6b9380d1b" class="">을 출력하게 된다!</p><p id="8dac8fce-fac1-4655-8d81-093512a35d70" class="">
+</p><p id="a8676748-18d6-4c86-a070-daf9262a4616" class="">❓ 그런데 만약에 기본값이 주어진 파라미터 외의 파라미터들에도 값을 넣지 않는다면 ❓</p><p id="fdec0d62-4eaa-4cf0-9adc-39c37c4c88cb" class="">만약 동일 프로시져에 대해서</p><pre id="8604d168-1bbe-4a21-a8d9-ac8ea38b6f21" class="code"><code>EXECUTE PR_EX();</code></pre><p id="3eb8e3c7-1400-4265-a563-baa4d29b92b9" class="">위와 같이 기본값이 설정된 파라미터는 괜찮지만, 그 외의 파라미터들에 대해서 어떤 값도 넣지 않는다면</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="d3bc97c0-a4b0-4b53-be01-240d889789ce"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">BEGIN PR_EX(); END;
+오류 보고 -
+ORA-06550: line 1, column 7:
+PLS-00306: wrong number or types of arguments in call to &#x27;PR_EX&#x27;
+ORA-06550: line 1, column 7:
+PL/SQL: Statement ignored
+06550. 00000 -  &quot;line %s, column %s:\n%s&quot;
+*Cause:    Usually a PL/SQL compilation error.
+*Action:</div></figure><p id="d6c1ab65-fe44-4588-8325-e58aa61a42d8" class="">위와 같이 인자의 갯수  혹은   인자의 유형이 잘못되었다는 오류를 보고받게 되고, 프로시져는 실행에 실패하고 만다!</p><p id="c8353b22-142d-4e17-bccd-60d92520bd7e" class="">
+</p><div id="2e724b5d-0498-43e4-bbba-494020fdebc9" class="collection-content"><h4 class="collection-title">파라미터에 값을 지정하는 방식</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>종류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="3fce7e8f-0c84-4c8a-b71a-deaaa6615de5"><td class="cell-title"><a href="https://www.notion.so/3fce7e8f0c844c8ab71adeaaa6615de5">위치 지정</a></td><td class="cell-&lt;lot">지정한 파라미터 순서대로 값을 지정하는 방식</td></tr><tr id="70e9ce36-fd82-42aa-9bce-cca4917c386b"><td class="cell-title"><a href="https://www.notion.so/70e9ce36fd8242aa9bcecca4917c386b">이름 지정</a></td><td class="cell-&lt;lot">⇒ 연산자로 파라미터 이름을 명시하여 값을 지정하는 방식</td></tr><tr id="31071e09-a881-4e4a-9aef-3f3446335b0b"><td class="cell-title"><a href="https://www.notion.so/31071e09a8814e4a9aef3f3446335b0b">혼합 지정</a></td><td class="cell-&lt;lot">일부 파라미터는 순서대로 값만 지정, 일부 파라미터는 ⇒ 연산자로 값을 지정(11g부터 사용 가능)</td></tr></tbody></table></div><ul id="9b51b921-d0d7-4f0d-8140-4f16626fa71d" class="bulleted-list"><li>파라미터에 값을 지정하는 방식은 크게 위치 지정, 이름 지정, 혼합지정이 있다</li></ul><pre id="04e32c9e-9f8d-4eb0-84a8-bd2b682874b1" class="code"><code>CREATE OR REPLACE PROCEDURE PR_EX
+(
+    PARAM1 IN NUMBER,
+    PARAM2 NUMBER DEFAULT 5
+)
+IS
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM1: &#x27; || PARAM1);
+    DBMS_OUTPUT.PUT_LINE(&#x27;PARAM2: &#x27;||PARAM2);
+END;
+/</code></pre><p id="8210b901-e3a8-4ce1-ad63-c8dafb2ce848" class="">각각을 이해해보고자 위에서 사용한 프로시져를 이용하자면,</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="87e5413c-3f80-4ff9-839e-3259b11320a9"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">EXECUTE PR_EX(3,10);</div></figure><p id="11332e9e-eabb-456b-a160-ed4c3586449b" class="">위와 같이 생성할 때 지정한 파라미터의 순서에 맞추어 넣는 것이 바로 &quot;위치 지정&quot; 방식이다!</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="b29466dd-2127-40ec-9b6c-b0f2e99d5645"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">EXECUTE PR_EX(PARAM1=&gt;3,PARAM2=&gt;10);</div></figure><p id="397962a0-6a1b-45c1-814a-c7674ce232ad" class="">위와 같이 ⇒ 기호를 이용하여 어떤 파라미터에 어떤 값이 대입되는지를 명시하는 것을 &quot;이름 지정&quot; 방식</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="87a29e21-5410-44cc-b0cf-1f87dfbab279"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">EXECUTE PR_EX(3,PARAM2=&gt;10);</div></figure><p id="d5ca8fdb-9bce-4608-bfc3-98c47720ef9f" class="">위와 같이 어떤 파라미터는 순서대로 입력하는 위치 지정방식으로 표시하여 대입하고, 어떤 파라미터는 ⇒기호를 이용해서 이름지정 방식으로 대입하는 것을 &quot;혼합 방식&quot;이라고 한다!</p><p id="59d38e90-2313-4762-9c79-f53a719b342b" class="">
+</p><p id="23e433ed-aa7b-4a6e-bdb5-5d96dc2325b2" class="">🌟 파라미터 갯수가 많아지면 다소 복잡해지는데, 이러한 이유에서 이름 지정방식이 편리해질 수 있다!</p><p id="bb0b19bd-d8e0-403a-a372-8e8f8184dce4" class="">
+</p><p id="11486271-78ef-4dd3-a8b2-852c2a56f5ea" class="">(B) OUT 모드</p><p id="debb46c2-61bb-44c9-8015-dccaeda300b3" class="">.</p><pre id="c5a6db7d-d533-4a3f-a8bb-d91c5930b13e" class="code"><code>CREATE OR REPLACE PROCEDURE PR_OUT
+(
+    NO_INPUT IN EMP.EMPNO%TYPE,
+    ENAME_OUTPUT OUT EMP.ENAME%TYPE,
+    SAL_OUTPUT OUT EMP.SAL%TYPE
+)
+IS
+
+BEGIN
+    SELECT ENAME, SAL INTO ENAME_OUTPUT, SAL_OUTPUT
+    FROM EMP
+    WHERE EMPNO = NO_INPUT;
+    
+END PR_OUT;
+/</code></pre><p id="9d482c48-714d-4c02-8f77-33873d92b74d" class="">OUT 모드는 OUT 키워드를 이용해서 위와 같이 사용할 수 있다!</p><p id="e19d9ceb-6788-4644-bbc3-4f3c5e60c80d" class="">주의할 점은 실행하는 방법이다!</p><pre id="325108c4-22c0-4952-8947-0bdbf30c5071" class="code"><code>DECLARE
+	OUT 파라미터를 위한 변수들
+BEGIN
+	프로시져이름(IN 파라미터에 대한 값, OUT파라미터를 위한 변수들);
+END;
+/</code></pre><p id="87bc3e5e-7e8d-4e16-975b-97ac5e48cdb8" class="">실행할 때에는 OUT 파라미터에 대한 변수를 선언해두고 값을 해당 변수에서 반환받아야 사용할 수 있다!</p><pre id="e6343983-27b8-48c6-9dcd-1633eed75565" class="code"><code>DECLARE
+    O_NAME EMP.ENAME%TYPE;
+    O_SAL    EMP.SAL%TYPE;
+BEGIN
+    PR_OUT(7788,O_NAME,O_SAL);
+    DBMS_OUTPUT.PUT_LINE(&#x27;ENAME: &#x27;||O_NAME);
+    DBMS_OUTPUT.PUT_LINE(&#x27;SAL    :&#x27; ||O_SAL);
+END;
+/</code></pre><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="44f412c7-55d6-4d51-8533-d9b1252860d6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">ENAME: SCOTT
+SAL    :3000</div></figure><p id="ecbbad2f-88de-47d1-82d7-d6768165066b" class="">
+</p><p id="257a3cc2-9d16-436c-b205-ef8534cf2c47" class="">(C) IN OUT 모드</p><ul id="82941f75-b0c6-4057-afaa-6a33d8612560" class="bulleted-list"><li>IN OUT 모드는 IN, OUT 모드를 동시에 수행하는 모드이다!</li></ul><p id="fc74b159-0fd6-4d90-8963-22ecc2833ba7" class="">IN OUT 모드는 실행할 때 아래와 같이</p><pre id="a156f8b1-5a82-4e75-bf90-ce8a9b1ae4c2" class="code"><code>DECLARE
+	IN OUT 모드를 위한 변수;
+BEGIN
+	IN OUT 모드를 위한 변수에 값을 대입;
+END;
+/</code></pre><p id="f1091332-4e10-4dc2-b64b-374a7ee8b456" class="">OUT 모드처럼 변수를 설정해두고,  그 변수에 값을 대입해준 후 사용할 수 있다!</p><p id="223886a3-c77a-4696-b666-ba4abc9665d1" class="">IN모드와 비교했을 때, 값을 대입하는 방식이 다소 간접적이라는 부분만 제외하고는 비슷하다!</p><pre id="307fc80e-bcfc-4d07-b0f3-df257c33cf3e" class="code"><code>CREATE OR REPLACE PROCEDURE PR_IO
+(
+    IO_NO IN OUT EMP.EMPNO%TYPE,
+    O_NAME OUT EMP.ENAME%TYPE,
+    O_SAL OUT EMP.SAL%TYPE
+)
+IS
+
+BEGIN
+    SELECT ENAME, SAL INTO O_NAME, O_SAL
+    FROM EMP
+    WHERE EMPNO = IO_NO;
+END;
+/</code></pre><pre id="c3fd86d9-9d3e-42ec-864a-783f2f3889e2" class="code"><code>DECLARE
+    IO_NO        EMP.EMPNO%TYPE;
+    O_NAME    EMP.ENAME%TYPE;
+    O_SAL        EMP.SAL%TYPE;
+BEGIN
+    IO_NO:=7788;
+    PR_IO(IO_NO,O_NAME,O_SAL);
+    DBMS_OUTPUT.PUT_LINE(IO_NO||&#x27;       &#x27;||O_NAME||&#x27;        &#x27;||O_SAL);
+END;
+/</code></pre><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="459c0551-ba8a-43c9-9bb7-f13702ad8fd6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">7788       SCOTT        3000</div></figure><p id="adea40e7-d65d-438e-816c-aff042dd6958" class="">
+</p><p id="17bc293d-ecb3-4bbb-b53c-5543f14a656a" class="">-프로시져 오류 정보 확인하기</p><p id="c18483b3-b9ae-48f6-bec0-912ab5eb1292" class="">(1) 오류가 발생하는 프로시져를 먼저 만들어 보자!</p><pre id="53b589ea-d6c2-480b-84de-3a460ed42d6c" class="code"><code>CREATE OR REPLACE PROCEDURE PRO_ERR
+IS
+    ERR_NO NUMBER;
+BEGIN
+    --:=를 사용하지 않았음-&gt;에러 발생
+    ERR_NO = 100;
+    DBMS_OUTPUT.PUT_LINE(ERR_NO);
+END;
+/</code></pre><p id="f2552ccb-22f6-4236-9f24-aae7b8b12022" class="">위의 프로시져를 생성하려 하면, </p><figure id="2c587afd-64e4-44af-b35d-ec1f5a8bde0a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%98%A4%EB%A5%98%EB%A5%BC%20%EA%B3%A0%EC%9D%98%EB%A1%9C%20%EB%B0%9C%EC%83%9D%EC%8B%9C%ED%82%A8%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%B8%20%EC%83%9D%EC%84%B1.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%98%A4%EB%A5%98%EB%A5%BC%20%EA%B3%A0%EC%9D%98%EB%A1%9C%20%EB%B0%9C%EC%83%9D%EC%8B%9C%ED%82%A8%20%ED%94%84%EB%A1%9C%EC%8B%9C%EC%A0%B8%20%EC%83%9D%EC%84%B1.PNG?raw=true"/></a></figure><p id="ded296d9-1b25-4a1d-8727-1d9c68af26b5" class="">:= 문자 가 아닌 = 문자로 값을 대입하려고 했으므로 에러가 발생하지만, 컴파일된다</p><p id="0acf3a22-0498-4635-a1e0-46e33af61861" class="">이러한 프로시져에 대한 오류는 아래와 같이</p><p id="d8c64045-5456-40cc-a7b5-9f49f7ff5e53" class="">
+</p><p id="7a0d2ef1-3bc3-4dbf-ac0b-1cdfa5772503" class="">🌹 SHOW ERRORS 혹은 SHOW ERR</p><ul id="07ec7030-1973-4cff-8f8a-ca3c1290f5fc" class="bulleted-list"><li>SHOW ERRORS 혹은 SHOW ERR는 일련의 명령어로써, 가장 최근에 생성되거나 변경된 서브 프로그램의 오류 정보를 출력해준다!</li></ul><figure id="06f6467a-ea32-4e50-b24a-91a4d592c6ba" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERRORS.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERRORS.PNG?raw=true"/></a><figcaption>저장 서브 프로그램의 가장 최근 오류 정보를 확인하는 명령어- SHOW ERRORS</figcaption></figure><figure id="0222468a-b2e6-4a6c-9ade-40191b4aadcd" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERR.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERR.PNG?raw=true"/></a><figcaption>저장 서브 프로그램의 가장 최근 오류 정보를 확인하는 명령어 - SHOW ERR</figcaption></figure><p id="3e304e58-3d8d-47e2-8246-f85d3f689f9b" class="">❓ 만약, 특정 저장 서브 프로그램의 오류 정보를 확인하고 싶다면 ❓</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="51ae76e9-d1e3-4746-9b33-2244ae7454ca"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">SHOW ERR 프로그램_종류 프로그램_이름;</div></figure><p id="5814b339-7f53-4c1e-b17c-1f13a2f840f7" class="">을 이용하면 어떤 저장 서브 프로그램의 어떤 프로시져/함수/패키지/트리거 에 대한 오류 정보만 파악할 수 있다!</p><figure id="a961c7fb-60c2-42bc-b8f6-3d78616f2167" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8A%B9%EC%A0%95%20%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERR%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%A2%85%EB%A5%98%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%B4%EB%A6%84.PNG?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8A%B9%EC%A0%95%20%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%20%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0-%20SHOW%20ERR%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%A2%85%EB%A5%98%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%B4%EB%A6%84.PNG?raw=true"/></a><figcaption>저장 서브 프로그램- 특정 프로그램의 오류 확인하기 SHOW ERR 프로그램 종류 프로그램 이름;</figcaption></figure><p id="9c00bef2-676b-40bc-8fa1-eb548ebf5e31" class="">
+</p><p id="2ec4acdb-a23d-4980-9688-8d7c17c84a8c" class="">🌹 USER_ERRORS 라는 데이터 사전 뷰를 이용한 오류 확인하기!</p><ul id="dad1ce0b-c8b3-4194-85b0-d3c45920fd2a" class="bulleted-list"><li>USER_ERRORS 라는 데이터 사전 뷰를 이용하면, 위에서 이용했던 SHOW ERR를 통한 특정 프로그램에서의 오류를 테이블 형태로 확인해볼 수 있다!</li></ul><figure id="e7eebc8c-c44a-427e-93cf-9b53f624f2be" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%EB%A5%BC%20%ED%99%95%EC%9D%B8%ED%95%98%EB%8A%94%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%20%EB%B7%B0%20USER_ERRORS.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%A0%80%EC%9E%A5%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%98%20%EC%98%A4%EB%A5%98%20%EC%A0%95%EB%B3%B4%EB%A5%BC%20%ED%99%95%EC%9D%B8%ED%95%98%EB%8A%94%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%20%EB%B7%B0%20USER_ERRORS.PNG?raw=true"/></a><figcaption>데이터 사전 뷰 USER_ERRORS를 이용한 오류 확인</figcaption></figure><ul id="29d48fe6-ecbd-4cbb-80e6-4d5871d59b51" class="bulleted-list"><li>NAME은 저장 서브 프로그램의 이름</li></ul><ul id="4ea747f4-c7eb-4613-a4b7-add8892db9d6" class="bulleted-list"><li>TYPE은 저장 서브 프로그램의 종류</li></ul><ul id="b1ae46a5-d15d-42a9-b442-4b1777bcf329" class="bulleted-list"><li>TEXT는오류 정보와 메시지</li></ul><ul id="eaf2ea88-d3f2-4f61-aefc-b8d065207a82" class="bulleted-list"><li>ATTRIBUTE에는 오류임을 나타내는 ERROR 가 값으로 들어간 상태!</li></ul><p id="7d6dbc7d-da14-4ed8-bb84-8f54bb0ceccc" class="">USER_ERRORS 를 통해 반환받을 수 있는 표에서 각각의 속성 중에서는 위와 같은 속성을 통해서 어떤 오류가 있었는지 확인할 수 있다!</p><hr id="93e7c10e-5bd1-488e-b79e-071fdd2c2d88"/><p id="040306e2-9c92-4cfd-adea-32601c99783a" class="">
+</p><p id="200158af-97b5-48fd-bb97-c3ae1698cded" class="">2. 함수 Stored Function</p><ul id="61a0cc71-b830-4c1e-86e7-689f3f17eab7" class="bulleted-list"><li>특정 연산을 거친 결과 값을 반환</li></ul><ul id="b5f649fb-a4c4-4b1b-b7c5-0543b0176810" class="bulleted-list"><li>SQL 문에서 사용 가능</li></ul><div id="5360ad9f-e896-4ed1-a834-c63bca359d25" class="collection-content"><h4 class="collection-title">프로시져와 함수의 차이점</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>구분</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>프로시져</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>함수</th></tr></thead><tbody><tr id="30f4f5ec-f1e3-4201-8c68-b966a9bb368b"><td class="cell-title"><a href="https://www.notion.so/30f4f5ecf1e342018c68b966a9bb368b">실행</a></td><td class="cell-x`My">EXECUTE 명령어 혹은 다른 PL/SQL 서브 프로그램 내부에서 프로시져 이름으로 실행</td><td class="cell-HdRp">변수를 사용한 EXECUTE 명령어 혹은 <mark class="highlight-yellow_background"><strong>SQL문 </strong></mark>혹은 다른 PL/SQL 서브 프로그램 내부에서 호출</td></tr><tr id="97f0c9c6-2f84-4563-b0a4-ed9fa086fb60"><td class="cell-title"><a href="https://www.notion.so/97f0c9c62f844563b0a4ed9fa086fb60">파라미터 지정</a></td><td class="cell-x`My">필요에 따라서 유동성 있게 선택!
+-IN, OUT, IN OUT 모드 존재</td><td class="cell-HdRp">필요에 따라서 유동성 있게 선택!
+- IN 모드만 제공 가능!</td></tr><tr id="d1ff8a3a-81d4-47e6-aa9a-0bf4173d856e"><td class="cell-title"><a href="https://www.notion.so/d1ff8a3a81d447e6aa9a0bf4173d856e">값의 반환</a></td><td class="cell-x`My">실행 후 값의 반환이 없을 수도 있고, OUT, IN OUT 모드의 파라미터 수에 따라 여러 개 값을 반환할 수 있음</td><td class="cell-HdRp"><span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>반드시 값을 반환</strong></mark></span><mark class="highlight-orange_background"><strong>해야 하며, RETURN 절과 RETURN 문을 통해서 값을 반환!</strong></mark></td></tr></tbody></table></div><p id="af69bd66-d29b-4714-ba26-7fad01a29d77" class="block-color-orange_background">🌟 RETURN 문이 실행되면 함수 실행은 즉시 종료됨!</p><p id="46e59948-0236-44b6-9117-684ee91c4d36" class="">
+</p><pre id="d3df9156-5831-4cb4-a48c-5bed36c5e775" class="code"><code>CREATE [OR REPLACE] FUNCTION 함수 이름
+[(파라미터_이름1 [IN] 자료형1 :=값,
+파라미터_이름2 [IN] 자료형2 DEFAULT 기본값
+...
+파라미터_이름N [IN] 자료형N
+)]
+RETURN 자료형
+IS | AS
+	선언부
+BEGIN
+	실행부
+	RETURN(반환값);
+EXCEPTION
+	예외처리부
+END [함수 이름];</code></pre><p id="d45035e4-8279-4122-ad69-f6400a7db11f" class="">
+</p><p id="ad64d9b0-6099-4274-8613-8dfc36de0c95" class="">🌻 먼저, 선언부를 살펴보자!</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="69afa342-9850-496a-bfdd-295f4d2cdf65"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">CREATE [OR REPLACE] FUNCTION 함수 이름
+[(파라미터_이름1 [IN] 자료형1 :=값,
+파라미터_이름2 [IN] 자료형2 DEFAULT 기본값
+...
+파라미터_이름N [IN] 자료형N
+)]</div></figure><p id="e58317ef-b24b-4920-929f-6f8fbb3689d5" class="">이 부분에서 눈여겨 볼 만한 것은, 파라미터를 사용할 수도, 아닐 수도 있다는 점과!</p><p id="09c8cdab-e13f-45e6-8b9b-0930408a811a" class="">
+</p><p id="a4ceed27-dbe9-4450-b15f-99f5e416b2e0" class="">모드는 IN 모드만이 지원된다는 점,</p><p id="e3f43ca3-d9b2-4cb3-94f6-9d0a3af46bd6" class="">값은 프로시져에서와 동일하게 := 혹은 DEFAULT를 이용해서 지정해줄 수 있다는 점</p><p id="4bbac842-3edd-49be-a3a3-3a1a52223463" class="">이 주목할만 하다!</p><p id="94887afb-f34a-49b9-a0da-1e6dccbd267d" class="">
+</p><p id="856b0d11-ec91-4a59-83d6-02f964e6e96b" class="">🌻 그 다음은, 파라미터 밑에 있는 RETURN절을 살펴보자!</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="b000ef4b-b2d2-4db5-9d4d-90b78f8f15ec"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">RETURN 자료형</div></figure><p id="85f88b69-5eff-4fbd-b3b9-fae23be4583c" class="">RETURN 절에서 조심해줄 부분은!</p><p id="e3119198-7164-46bb-aac0-919f1274fefb" class="">뒤에 ; (세미 콜론)이 붙지 않는다는 점이다!</p><p id="02a64ab9-5e99-4b6e-8c28-aa0881fbd555" class="">이 부분을 통해서는 반환 값의 자료형을 지정해줄 수 있다!</p><p id="f9f8cc3c-a866-4c49-9731-3c01960fe631" class="">
+</p><p id="e9bc2db2-7736-421f-96e0-ddbc0ad26c0c" class="">🌻 다음은, 실행부의 RETURN 문을 살펴보자!</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="ef3210a9-d7c9-4afa-ac58-b6ca05bd7adc"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">BEGIN
+	실행부
+	RETURN(반환값);</div></figure><p id="7e23d690-1572-41c9-9f79-aae22588dd6f" class="">위의 RETURN 문에서는 함수의 반환값을 지정해줄 수 있다!</p><p id="826d587a-daf4-4919-a3b4-1e81e212022d" class="">
+</p><p id="42db50b7-c2d5-460d-85e4-77fe07c3209e" class="">이제 간단한 예시를 통해서 함수라는 저장 서브 프로그램을 접해보자!</p><pre id="6dd9f040-00fd-4896-86e6-db25844f5e10" class="code"><code>CREATE OR REPLACE FUNCTION FUNC_AFTERTAX(
+    SAL IN NUMBER
+)
+RETURN NUMBER
+IS
+    TAX NUMBER:=0.05;
+BEGIN
+    RETURN (ROUND(SAL-(SAL*TAX)));
+END FUNC_AFTERTAX;
+/</code></pre><p id="62147284-a84a-4278-bd17-50771248682f" class="">위의 경우는 FUNC_AFTERTAX라는 함수 프로그램인데, 파라미터로 NUMBER형의 IN 모드 파라미터 SAL을 이용하며, NUMBER형태로 지불한 세금에서 다시 돌려받을 금액을 반환하는 형태이다!</p><p id="8aa6fcd4-9d9b-4fa4-9ab6-c3e77891cd09" class="">위와 같이 함수를 이용할 때에는 꼭!! RETURN을 통해서 최소 하나의 반환은 있어야 한다!</p><p id="ca8e87c0-eef4-43aa-8ae6-dfe394b25dc7" class="">
+</p><p id="3d74639c-00d0-4d98-a885-190481620318" class="">❓ 함수는 어떻게 실행할까요 ❓</p><pre id="8814c949-f6da-4117-b72f-b875a0c18b8a" class="code"><code>DECLARE
+	반환값을_저장할_변수 자료형;
+BEGIN
+	반환값을_저장할_변수 := 함수이름(IN 파라미터에 대한 값);
+END;
+/</code></pre><pre id="e754cc15-4932-40ba-802e-70785e0ed36b" class="code"><code>DECLARE
+    AFTERTAX NUMBER;
+BEGIN
+    AFTERTAX := FUNC_AFTERTAX(3000);
+    DBMS_OUTPUT.PUT_LINE(&#x27;AFTER TAX: &#x27;||AFTERTAX);
+END;
+/</code></pre><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="63d3af01-4142-4806-b477-36e7bd391e58"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">AFTER TAX: 2850</div></figure><p id="ca879706-5a40-481c-88c9-41b54cbd9efd" class="">
+</p><p id="956a3c23-782e-463a-8d9a-a3679bba66c4" class="">그리고! 함수는 DUAL 테이블을 이용해서 SQL문에서도 실행할 수 있다!</p><pre id="5782706b-7840-4f93-b2aa-9c574853a8ce" class="code"><code>SELECT 함수명(IN 파라미터 값)
+FROM DUAL;</code></pre><pre id="0fef45d0-aea8-4b5e-b955-bc10fca10b8a" class="code"><code>SELECT FUNC_AFTERTAX(3000)
+FROM DUAL;</code></pre><figure id="14415add-b09a-4f4e-8b18-d10edb489860" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%95%A8%EC%88%98%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%20SQL%EB%AC%B8%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%95%A8%EC%88%98%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-%20SQL%EB%AC%B8%EC%97%90%EC%84%9C%20%EC%8B%A4%ED%96%89%ED%95%98%EA%B8%B0.PNG?raw=true"/></a><figcaption>SQL 문에서 함수 실행하기</figcaption></figure><p id="34e0e06f-5ad5-4cbb-a18c-a4d8ec49d297" class="">또한, 함수는 값을 반환한다는 점에서, </p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="ef179ba6-bf5f-4d7d-9514-2652e85ed2ae"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">함수에 정의한 파라미터의 자료형 == 테이블에서의 자료형</div></figure><p id="7e06ba4c-be29-485a-9ec5-917b90ade865" class="">이면, 내장함수처럼 특정 열 혹은 데이터 간 연산 가공된 데이터 입력도 가능하다!</p><figure id="6c788ec5-be74-4edc-ac34-721552d21a96" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%95%A8%EC%88%98%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-SQL%EB%AC%B8%EC%97%90%EC%84%9C%20%EC%97%B0%EC%82%B0%20%EA%B0%80%EA%B3%B5%EB%90%9C%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%9E%85%EB%A0%A5%ED%95%98%EA%B8%B0.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%95%A8%EC%88%98%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8-SQL%EB%AC%B8%EC%97%90%EC%84%9C%20%EC%97%B0%EC%82%B0%20%EA%B0%80%EA%B3%B5%EB%90%9C%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%9E%85%EB%A0%A5%ED%95%98%EA%B8%B0.PNG?raw=true"/></a><figcaption>함수를 이용해서 테이블에 값 입력하기</figcaption></figure><p id="572fb66d-3f5e-4030-8f92-e69b6189c4df" class="">
+</p><p id="8c5421e2-dd46-46a9-86fd-8584caa66cdd" class="">❓ 함수 삭제하기</p><figure class="block-color-blue_background callout" style="white-space:pre-wrap;display:flex" id="7ef7f1cb-4d1a-4e11-a4a8-b08ad939f5cf"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">DROP FUNCTION 함수이름;</div></figure><pre id="041b5fcd-aacb-4116-98f6-bdb5a14a2e43" class="code"><code>DROP FUNCTION FUNC_AFTERTAX;</code></pre><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="d2e71b52-0db2-4332-b6c8-28b4fbf1a929"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Function FUNC_AFTERTAX이(가) 삭제되었습니다.</div></figure><p id="7608425d-2c95-48af-b6d4-436cd5576cc3" class="">
+</p><hr id="cc5ba75f-da3d-457a-886c-d3047a8f54e1"/><p id="9726739a-7674-4cd4-af5e-1716a41c4046" class="">3. 패키지</p><ul id="e536b953-49fb-47d3-9728-666d928b0fac" class="bulleted-list"><li>업무나 기능 면에서 연관성이 높은 여러 개의 PL/SQL 서브 프로그램을 그룹화(=하나의 논리 그룹으로 묶는 것)하여 통합 및 관리하는 데 사용하는 객체</li></ul><p id="a50da07b-0e83-44a3-bbf0-88ea6dc5d282" class="">[프로시져, 함수 등 : 각각 개별 기능 수행을 위해서 제작 후 따로 저장했음]</p><p id="9d388c85-9758-42c6-a684-04bceb3e8f4f" class="">🌟 장점 - 모듈성, 쉬운 응용 프로그램 설계, 정보 은닉, 기능성 향상, 성능 향상</p><ul id="1e014a7f-3ec8-4fb8-8b7a-2317e5043382" class="bulleted-list"><li>패키지에 포함된 모든 서브 프로그램은 메모리에 한 번에 로딩되는데, 로딩 후 호출은 <a href="https://www.znetlive.com/blog/monitor-disk-io-windows-linux/#:~:text=Disk%20I%2FO%20includes%20read,active%20disk%20I%2FO%20time.">디스크 I/O(=물리적 디스크에 관해서 입출력 수행을 하거나 읽고 쓰는 행위)</a>를 일으키지 않기 때문에 성능이 향상됨!</li></ul><ul id="a3555f44-607a-4cd1-b04f-5637748ddc60" class="bulleted-list"><li>패키지는 크게 명세(specification)과 본문(body)로 나누어 제작!</li></ul><p id="d6c0f664-c2b7-4213-baf4-1b7cf42c3163" class="">
+</p><p id="ed1c841e-b39f-4461-9bac-5d063eabc4ee" class="">🌺 패키지 명세</p><ul id="2ad0b017-580e-403f-8924-ce95ed4f2607" class="bulleted-list"><li>패키지에 포함할 변수, 상수, 예외, 커서, PL/SQL 서브프로그램을 선언하는 용도로 사용</li></ul><ul id="5f5ad509-9eff-49c4-9a8f-1087616cae28" class="bulleted-list"><li>패키지 명세에서 선언한 여러 객체는 패키지 내부, 외부 모두에서 참조 가능!</li></ul><pre id="e580da67-d789-44df-8b02-95928c0e5b29" class="code"><code>CREATE [OR REPLACE] PACKAGE 패키지_이름
+IS|AS
+	서브프로그램을 포함한 다양한 객체 선언
+	--서브프로그램의 경우
+	서브프로그램_종류 서브프로그램_이름[(파라미터_이름 자료형) RETURN 자료형];
+END [패키지이름];</code></pre><pre id="110487c4-75db-4d16-a82b-7f17151a4210" class="code"><code>CREATE OR REPLACE PACKAGE PKG_EX
+IS
+    SPEC_NO NUMBER:=10;
+    FUNCTION FUNC_AFTERTAX(SAL NUMBER) RETURN NUMBER;
+    PROCEDURE PRO_EMP(IN_EMPNO IN EMP.EMPNO%TYPE);
+    PROCEDURE PRO_DEPT(IN_DEPTNO IN DEPT.DEPTNO%TYPE);
+END;
+/</code></pre><p id="b8a8d492-de46-4fd7-acca-5466d0d636ee" class="">🌻 이미 생성되어 있는 패키지 명세의 코드 혹은 선언한 서브 프로그램을 확인하는 방법</p><p id="65392dfa-f18a-4ed5-9eb8-a6abed160081" class="">(A) USER_SOURCE 데이터 사전 뷰 조회</p><pre id="aa1cfe21-4bc8-4a91-9f86-90b98164f113" class="code"><code>SELECT ~
+FROM USER_SOURCE
+[WHERE NAME=&#x27;~&#x27;];</code></pre><figure id="dd172b08-1592-4fa8-8ab0-68884d0a0b93" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80-USER_SOURCE%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%EB%B7%B0.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80-USER_SOURCE%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%EB%B7%B0.PNG?raw=true"/></a><figcaption>USER_SOURCE 데이터 사전 뷰- 패키지 명세의 코드 확인</figcaption></figure><figure id="0e4da50a-0d1f-4479-8852-a9f4359f202a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%84%A0%EC%96%B8%ED%95%9C%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%20%ED%99%95%EC%9D%B8-USER_SOURCE%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%20%EB%B7%B0.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%EC%84%A0%EC%96%B8%ED%95%9C%20%EC%84%9C%EB%B8%8C%20%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%20%ED%99%95%EC%9D%B8-USER_SOURCE%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%82%AC%EC%A0%84%20%EB%B7%B0.PNG?raw=true"/></a><figcaption>USER_SOURCE 데이터 사전 뷰 - 선언된 서브 프로그램 확인(위의 사진은 해당 부분에 대한 행을 보여주고 있지는 않음)</figcaption></figure><p id="2059197b-1d7e-4b01-9926-a254a2500f23" class="">(B) DESC 명령어 - 디비버에서는 사용이 어려움</p><pre id="941acc9b-61c2-4df7-9562-6f82ca327b0a" class="code"><code>DESC 패키지이름;</code></pre><figure id="e9f170e1-208e-4542-9cf6-0bf1db96d952" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80%20%EB%AA%85%EC%84%B8%20%ED%99%95%EC%9D%B8%20DESC.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80%20%EB%AA%85%EC%84%B8%20%ED%99%95%EC%9D%B8%20DESC.PNG?raw=true"/></a><figcaption>DESC 패키지이름-패키지 명세 정보 확인</figcaption></figure><p id="de65ff57-1371-4790-a22c-0fa528d72a2d" class="">
+</p><p id="3e11744c-481a-4012-bc34-e635c98990e1" class="">🌺 패키지 본문</p><ul id="870a2fb9-3224-4776-8ade-5c0b0faac421" class="bulleted-list"><li>패키지 명세에서 선언한 서브 프로그램의 코드를 작성</li></ul><ul id="008de2e6-e681-4848-b8e8-37f7812cd320" class="bulleted-list"><li>패키지 명세에 선언하지 않은 객체 및 서브프로그램 정의도 가능!</li></ul><ul id="c1b4805e-61f1-443b-8a8d-c9d5d2114ad2" class="block-color-yellow_background bulleted-list"><li>패키지 본문에만 존재하는 프로그램은 패키지 내부에서만 사용 가능!</li></ul><pre id="ee26d3d5-95d8-474b-91d3-768e43c9ecda" class="code"><code>CREATE [OR REPLACE] PACKAGE BODY 패키지_이름
+IS | AS
+	패키지 명세에서 선언한 서프 프로그램 및 객체 정의
+	경우에 따라 패키지 명세에 존재하지 않는 객체 및 서브프로그램도 정의 가능(BUT 패키지
+	내부에서만 사용 가능)
+END [패키지 이름];</code></pre><p id="06b50f0f-dd90-4cf7-8e2c-771435a5fde7" class="">🌟 패키지 명세에서 선언한 서브프로그램을 정의하는 방식은 기존에 정의하는 방식에서 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="dfca77d3-a910-4094-b259-53a09213ba53"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">CREATE OR REPLACE ~</div></figure><p id="d5b5ad15-ec15-4485-89cd-128c5d9c41c4" class="">를</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="c30e4ad6-73ed-4179-bd00-f0b22ae9e72e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">서브프로그램_종류 서브프로그램_이름[(파라미터_이름 자료형) RETURN 자료형]</div></figure><p id="665a858b-2178-4506-8dcc-c23f3d998d97" class="">으로 변경하여 적용하였다!</p><pre id="eda0c0d6-b4ca-47c7-bdb2-aa7594955a1a" class="code"><code>CREATE OR REPLACE PACKAGE BODY PKG_EX
+IS
+    --패키지 본문에서 생성한 객체
+    BODY_NO NUMBER:=10;
+    
+    FUNCTION FUNC_AFTERTAX(SAL NUMBER) RETURN NUMBER
+        IS
+            TAX NUMBER:=0.05;
+        BEGIN
+            RETURN (ROUND(SAL-(SAL*TAX)));
+        END FUNC_AFTERTAX;
+    
+    PROCEDURE PRO_EMP(IN_EMPNO IN EMP.EMPNO%TYPE)
+        IS
+            OUT_ENAME EMP.ENAME%TYPE;
+            OUT_SAL      EMP.SAL%TYPE;
+        BEGIN
+            SELECT ENAME, SAL INTO OUT_ENAME, OUT_SAL
+            FROM EMP
+            WHERE EMPNO=IN_EMPNO;
+    
+            DBMS_OUTPUT.PUT_LINE(IN_EMPNO || &#x27;      &#x27;||OUT_ENAME||&#x27;     &#x27;||OUT_SAL);
+        END PRO_EMP;
+        
+        PROCEDURE PRO_DEPT(IN_DEPTNO DEPT.DEPTNO%TYPE)
+            IS
+                OUT_DNAME DEPT.DNAME%TYPE;
+                OUT_LOC     DEPT.LOC%TYPE;
+            BEGIN
+                SELECT DNAME, LOC INTO OUT_DNAME, OUT_LOC
+                FROM DEPT
+                WHERE DEPTNO=IN_DEPTNO;
+                
+                DBMS_OUTPUT.PUT_LINE(IN_DEPTNO||&#x27;       &#x27;||OUT_DNAME||&#x27;         &#x27;||OUT_LOC);
+            END PRO_DEPT;
+END;
+/</code></pre><p id="49126695-a0de-45cc-b1b8-a8b0a36b5b74" class="">
+</p><p id="2f0b2ef3-47ba-4409-a2ab-5600147ef633" class="">🌟 서브 프로그램 오버로드</p><ul id="b8ac9a3a-6b2c-498c-8abc-e333a56133d5" class="bulleted-list"><li>기본적으로 서브 프로그램 이름은 중복될 수 없지만,</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="f3097869-f1e4-4ebb-96a9-542979f0e7aa"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">같은 패키지에서 사용하는 <mark class="highlight-blue"><strong>파라미터의 갯수, 자료형, 순서가 다를 경우</strong></mark></div></figure><p id="618b1a96-3218-4bda-9559-d4eb5be995ac" class="">이름이 같은 서브프로그램을 정의할 수 있다! 이를 &quot;서브 프로그램 오버로드 subprogram overload&quot; 라고 한다!</p><ul id="4981364c-c6fc-4ba2-b25c-d5e86a8b7619" class="bulleted-list"><li>같은 기능을 수행하는 여러 서브 프로그램이 입력 데이터를 각각 다르게 정의하고자 할 때 사용!</li></ul><ul id="1f8309e9-ee58-4777-a9ab-bde5c1d20079" class="bulleted-list"><li>자바에서의 오버로딩과 같은 개념!</li></ul><ul id="f9e77cb0-7b53-45f8-94a7-30ff22de3e92" class="block-color-yellow_background bulleted-list"><li>서브프로그램 종류가 같아야 오버로드가 가능!</li></ul><p id="21163b95-d9bc-471f-b757-8f954b998445" class="">◀️ 자바에서 오버로딩이 형이 다르면 오버로딩이라고 할 수없는 경우처럼!</p><p id="c52070a4-f9f9-4ff7-b877-97ab216de381" class="">
+</p><ul id="ebd0dd47-35bb-4096-8112-77a2b90fb2fe" class="bulleted-list"><li>서브 프로그램 오버로드는 명세에 선언 후 본문에서 정의하는 방식으로 사용이 되는데, 이렇게 되면 서브프로그램 내외부에서 접근하기 좋을것 같다! </li></ul><pre id="a70fe1d1-1b89-4240-ae68-2a4d8769cbef" class="code"><code>CREATE [OR REPLACE] PACKAGE 패키지 이름
+IS|AS
+	서브프로그램종류A 서브프로그램 이름B(파라미터 정의);
+	서브프로그램종류A 서브프로그램 이름B(파라미터의 갯수, 자료형, 순서가 다르게 정의);
+END [패키지 이름];</code></pre><p id="ad4d9fb9-a3d9-4dcb-9aa0-12937014fa56" class="">-패키지 명세</p><pre id="9c4e7178-f4e3-4529-8b64-0452a6cbbb74" class="code"><code>CREATE OR REPLACE PACKAGE PKG_OVL
+IS
+    PROCEDURE PRO_EMP(IN_EMPNO IN EMP.EMPNO%TYPE);
+    PROCEDURE PRO_EMP(IN_ENAME IN EMP.ENAME%TYPE);
+END;
+/</code></pre><p id="c57c5ffb-7968-4a6b-8fb7-fe3506d1306c" class="">-패키지 본문</p><pre id="47b8037a-7db6-40a1-af97-eaffe3710ab9" class="code"><code>CREATE OR REPLACE PACKAGE BODY PKG_OVL
+IS
+    PROCEDURE PRO_EMP(IN_EMPNO IN EMP.EMPNO%TYPE)
+        IS
+            OUT_ENAME EMP.ENAME%TYPE;
+            OUT_SAL     EMP.SAL%TYPE;
+        BEGIN
+            SELECT ENAME, SAL INTO OUT_ENAME, OUT_SAL
+            FROM EMP
+            WHERE EMPNO=IN_EMPNO;
+            
+            DBMS_OUTPUT.PUT_LINE(OUT_ENAME||&#x27;       &#x27;||OUT_SAL);
+        END PRO_EMP;
+    PROCEDURE PRO_EMP(IN_ENAME IN EMP.ENAME%TYPE)
+        IS
+            OUT_ENAME EMP.ENAME%TYPE;
+            OUT_SAL      EMP.SAL%TYPE;
+        BEGIN
+            SELECT ENAME, SAL INTO OUT_ENAME, OUT_SAL
+            FROM EMP
+            WHERE ENAME=IN_ENAME;
+            
+            DBMS_OUTPUT.PUT_LINE(OUT_ENAME|| &#x27;      &#x27;||OUT_SAL);
+        END PRO_EMP;
+END;
+/</code></pre><p id="b05d822c-0f63-43ce-8e7b-cd8c81dc35d3" class="">
+</p><p id="80860ba4-0380-4fbc-bd36-2f1ffd0b7acc" class="">🌹 패키지 사용하기</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="7a74866a-0d71-4def-8b25-0cdf5f04018d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">패키지 이름.객체 이름;</div></figure><p id="e81849e0-15a5-45c4-a5ef-a527ff5afa46" class="">으로 익명 블록 내부에서 사용 가능!</p><figure id="986094d2-1397-4247-a681-26f8b4f93a5a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.PNG?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/%ED%8C%A8%ED%82%A4%EC%A7%80%20%EC%84%9C%EB%B8%8C%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.PNG?raw=true"/></a><figcaption>익명 블록과 패키지이름.객체 이름으로 패키지 사용하기</figcaption></figure><p id="47cabe8d-ceb3-4c19-a50a-e7dfc341e20a" class="">🌹 패키지 삭제하기</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="1a4df9e8-5275-4261-bef8-b4aa66e10dc8"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(1) 패키지 명세와 본문을 한번에 삭제
+DROP PACKAGE 패키지 이름;</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="328cbd86-4c9b-4cb5-bd92-eeb2ab55326a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">(2) 패키지 본문만 삭제
+DROP PACKAGE BODY 패키지 이름;</div></figure><p id="e3e5a230-c3eb-4f4b-b1be-515c070e5fd3" class="">⚠️ 패키지에 포함된 객체 및 서브 프로그램만을 따로 수정, 삭제하는 것은 불가능하지만, </p><p id="9d24f59b-1637-4b6d-b4d6-e769982efd08" class=""> CREATE OR REPLACE로 패키지 내부에서 객체 및 서브프로그램을 먼저 수정, 삭제하는 것은 가능하다!</p><p id="32e636df-08bc-4a2d-af5d-5a7d3802590a" class="">
+</p><p id="6ce449e4-98ee-4e11-a338-c75de92a2391" class="">*오라클에서 제공하는 패키지: <a href="https://docs.oracle.com/cd/B28359_01/appdev.111/b28419/intro.htm#i1010103">https://docs.oracle.com/cd/B28359_01/appdev.111/b28419/intro.htm#i1010103</a></p><p id="3e641548-9837-4e2d-9879-724838544ad4" class="">🌟 패키지가 삭제되면 내부에 있던 객체, 서브 프로그램 모두 삭제된다!</p><p id="e2a7c912-c7e2-4098-8a85-9998c179e4be" class="">
+</p><hr id="2d3b1751-5baf-48d8-8803-1f405690d58a"/><p id="b88b773e-51dc-4284-b50e-9af921f5349e" class="">4. 트리거 Trigger</p><p id="431fa63a-0598-4f31-b610-e39624ea032a" class="">
+</p><ul id="c286955e-3ce4-4d19-bbe2-022ae52bd045" class="bulleted-list"><li>DB 내에서 이벤트가 발생할 경우, 자동으로 실행되는 기능을 정의한 서브 프로그램</li></ul><ul id="5cda4bd2-f0c5-4e8a-af40-7ad45890f4aa" class="bulleted-list"><li>예) 오라클 DB 가동 혹은 종료 시 DBA 등 관련 업무자에게 메일을 보내는 기능</li></ul><ul id="6587b494-a317-4ce9-bda7-9540e522d832" class="bulleted-list"><li>특정 작업이나 이벤트 발생으로 다른 데이터 작업을 추가 실행하므로 잘못 사용 시 성능 저하의 원인이 될 수도 있으므로 주의하기!</li></ul><ul id="f152f002-2c5c-4bf0-9964-ad2ebd679fd6" class="bulleted-list"><li>트리거가 동작을 지정할 수 있는 이벤트(테이블, 뷰, 스키마, DB 수준)</li></ul><p id="f92e4bdd-f9c5-47d7-a4bf-a91a987540f7" class="">-DML : INSERT, UPDATE, DELETE</p><p id="0b8e64ad-8409-4610-a4c5-ce4c4bbbaba9" class="">-DDL : CREATE, ALTER, DROP</p><p id="567ba48c-0377-453f-9acb-eec9b597be60" class="">-DB 동작 : SERVERERROR, LOGON, LOGOFF,STARTUP, SHUTDOWN</p><p id="11203756-29c9-446b-8fe2-e3d9dddb0fbc" class="">🌟 장점 🌟</p><p id="567f2f69-b61f-4426-907d-ac7604a2b5a0" class="">(1) 데이터 관련 작업을 좀 더 간편하게 수행 가능</p><p id="629f28fe-900b-4e21-8b57-c13e539ae469" class="">(2) 제약조건만으로 구현이 어렵거나 불가능한 좀 더 복잡한 데이터 규칙을 정할 수 있어서 더 수준 높은 데이터 정의가 가능</p><p id="d30ce95b-b4b0-441d-a4a8-90c343a0080b" class="">(3) 데이터 변경과 관련된 일련의 정보를 기록해 둘 수 있으므로 여러 사용자가 공유하는 데이터 보안성과 안정성, 문제가 발생했을 때 대처 능력을 높일 수 있음</p><p id="96c45034-4bf4-4694-9e05-0a176eab2fed" class="">🌻 트리거 종류</p><div id="8b3bd9c1-1514-4495-a081-861dc580c9e9" class="collection-content"><h4 class="collection-title">트리거 종류</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>종류</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="a8f07b21-48b2-4ef7-a8d7-22d54abd756f"><td class="cell-title"><a href="https://www.notion.so/DML-a8f07b2148b24ef7a8d722d54abd756f">DML 트리거</a></td><td class="cell-`U|}">INSERT, UPDATE, DELETE 와 같은 DML 명령어롤 기점으로 동작</td></tr><tr id="c04115cd-98ef-4f08-94cf-a9ac0663b381"><td class="cell-title"><a href="https://www.notion.so/DDL-c04115cd98ef4f0894cfa9ac0663b381">DDL 트리거</a></td><td class="cell-`U|}">CREATE, ALTER, DROP과 같은 DDL 명령어를 기점으로 동작</td></tr><tr id="43b2c415-7ff7-4272-b243-e19534dde992"><td class="cell-title"><a href="https://www.notion.so/INSTEAD-OF-43b2c4157ff74272b243e19534dde992">INSTEAD OF 트리거</a></td><td class="cell-`U|}">뷰에 사용하는 DML 명령어를 기점으로 동작</td></tr><tr id="2c247d78-81ff-4f1a-a3d9-0035b11f24d7"><td class="cell-title"><a href="https://www.notion.so/2c247d7881ff4f1aa3d90035b11f24d7">시스템 트리거</a></td><td class="cell-`U|}">데이터베이스나 스키마 이벤트로 동작</td></tr><tr id="41200adf-6a03-43fb-a9a9-d2de0cab0b86"><td class="cell-title"><a href="https://www.notion.so/41200adf6a0343fba9a9d2de0cab0b86">단순 트리거</a></td><td class="cell-`U|}">각 시점(timing point)에 동작
+-트리거를 작동시킬 &quot;문장이 실행되기 전/후&quot;, &quot;행에 영향을 미치기 전/후&quot; 시점</td></tr><tr id="c3ac2951-cae6-422d-9a01-8dea6c8df3ce"><td class="cell-title"><a href="https://www.notion.so/c3ac2951cae6422d9a018dea6c8df3ce">복합 트리거</a></td><td class="cell-`U|}">단순 트리거의 여러 시점에 동작</td></tr></tbody></table></div><p id="c16e0b7c-034d-47e9-b86c-6043d6a00be0" class="">🌷 트리거가 발생할 수 있는 이벤트 종류에 따른 트리거 분류</p><p id="47ac20a6-ac5a-4cc7-aa86-232aa3ff359b" class="">A. DML 트리거 : DML 명령어 실행 시 작동하는 트리거</p><pre id="fb66baad-342a-4cff-8dc9-40b78fe1d4ec" class="code"><code>CREATE [OR REPLACE] TRIGGER 트리거_이름
+BEFORE|AFTER
+INSERT|UPDATE|DELETE ON 테이블이름
+REFERENCING OLD as 변경전 값을 참조하는 변수명 | New as 변경 후 값을 참조하는 변수명
+FOR EACH ROW WHEN 조건식
+FOLLOWS 트리거이름2, 트리거이름3,...
+ENABLE|DISABLE
+
+DECLARE
+	선언부
+BEGIN
+	실행부
+EXCEPTION
+	예외처리부
+END;</code></pre><ul id="d1c64f95-0418-45d8-b799-de74cecb1660" class="bulleted-list"><li>BEFORE, AFTER는 트리거가 작동할 타이밍을 지정하는 데, 
+-BEFORE: DML 명령어가 실행되기 전 시점
+-AFTER   : DML 명령어가 실행된 후 시점
+에 트리거가 작동된다</li></ul><ul id="bbca8946-4ab9-4ddd-a844-982e5897684b" class="bulleted-list"><li>아래는, 트리거가 작동할 DML 명령어를 작성하는데, 여러 종류의 DML 명령어 지정시에는 OR로 구분한다!</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="7670eaca-6d29-4b56-81ae-8abad82bf247"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">INSERT|UPDATE|DELETE ON 테이블이름</div></figure><ul id="ad08905e-4fb7-436f-abce-c440ce5f7e59" class="bulleted-list"><li>REFERENCING 부분은 DML로 변경되는 행의 변경 전 값과 변경 후 값을 참조하는 데 사용(생략 가능)</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="453dce54-90fc-4668-837c-d8f0c71c012a"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">REFERENCING OLD as 변경전 값을 참조하는 변수명 | New as 변경 후 값을 참조하는 변수명</div></figure><ul id="ca0aadee-6d0c-4120-8cce-318f55dcba69" class="bulleted-list"><li>FOR EACH ROW 부분은 생략하게 되면 DML 명령어 실행 시 한 번만 실행하고, 생략하지 않으면 DML 문장에 영향을 받는 행 별로 실행할 지 지정하여 실행하게 한다! 그리고 WHEN과 함께 사용 시, 영향을 받는 행 중 특정 조건에 해당되는 경우에만 실행하게 할 수 있다!</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="3c432749-7dd3-4984-b779-f0c431e01855"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">FOR EACH ROW WHEN 조건식</div></figure><ul id="1d8d210b-b860-47e8-97a4-6d33cf33442c" class="bulleted-list"><li>FOLLOWS는 관련 트리거의 실행 순서를 지정(생략 가능. 11g부터 사용 가능)</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="b8ab3b86-435a-4f59-8e59-cce208d80f96"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">FOLLOWS 트리거이름2, 트리거이름3,...</div></figure><ul id="4bbe5429-061d-47a8-ab56-c8c909269bee" class="bulleted-list"><li>ENABLE|DISABLE은 트리거의 활성화 혹은 비활성화를 지정(생략 가능. 11g부터 사용 가능)</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="9d48c530-df2d-4e99-974a-b3930629f401"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">ENABLE|DISABLE</div></figure><p id="fb4a5bcd-63b9-4ba6-a7d5-b10dd8379d43" class="">*INSERTING : INSERT 명령어가 실행된 경우
+*UPDATING : UPDATE 명령어가 실행된 경우
+*DELETING : DELETE 명령어가 실행된 경우</p><p id="ef7f37d5-f54f-432a-bdf1-4a21f82bc55b" class="">
+</p><p id="06a1639d-a166-4aa6-8390-b3bc5f79cffa" class="">(EXERCISE)- BEFORE DML 트리거 생성</p><pre id="524a97ae-02ae-4b28-a83e-19f58ed3ace6" class="code"><code>CREATE OR REPLACE TRIGGER trg_emp_nodml_weekend
+BEFORE
+INSERT OR UPDATE OR DELETE ON EMP_TRG
+BEGIN
+    IF TO_CHAR(SYSDATE, &#x27;DY&#x27;) IN (&#x27;토&#x27;,&#x27;일&#x27;) THEN
+        IF INSERTING THEN
+            RAISE_APPLICATION_ERROR(-20000,&#x27;주말 사원 정보 추가 불가&#x27;);
+        ELSIF UPDATING THEN
+            RAISE_APPLICATION_ERROR(-20001, &#x27;주말 사원 정보 수정 불가&#x27;);
+        ELSIF DELETING THEN
+            RAISE_APPLICATION_ERROR(-20002,&#x27;주말 사원 정보 삭제 불가&#x27;);
+        ELSE
+            RAISE_APPLICATION_ERROR(-20003,&#x27;주말 사원 정보 변경 불가&#x27;);
+        END IF;
+    END IF;
+END;
+/</code></pre><p id="b3b49766-a65c-4028-915b-c3995c442673" class="">위의 경우, 현재 요일이 토요일이나 일요일인 경우, INSERT 혹은 UPDATE, DELETE 작업 전 이면</p><p id="a6fd5a67-e6c4-4c12-a598-6b1e0183c920" class="">RAISE_APPLICATION_ERROR(-20000~-20999 사이 코드, 에러메시지)[사용자 에러 코드 함수]를 이용해서 에러를 발생시키는 트리거를 생성하였다</p><p id="d1598339-c073-4064-a615-241bdc98a1c2" class="">
+</p><p id="757f428d-014f-42f7-9564-d8d9849fc859" class="">EMP_TRG 테이블에 UPDATE를 해보자(실행하는 지금이 마침 딱! 일요일이라서 적합하다 😄)</p><pre id="3c743a53-d721-480d-ba79-e1045667b088" class="code"><code>UPDATE EMP_TRG
+SET    SAL=3500
+WHERE EMPNO=7788;</code></pre><figure id="8870f650-868a-43aa-b841-3c88c921c234" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-BEFORE%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-UPDATE%20%EC%8B%A4%ED%96%89.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-BEFORE%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-UPDATE%20%EC%8B%A4%ED%96%89.PNG?raw=true"/></a></figure><p id="302e6aae-c0fe-4097-ab1a-9fa35762249f" class="">그러면 위와 같이, &quot;ORA-20001: 주말 사원 정보 수정 불가&quot;와 같은 오류가 발생하는 것을 확인해볼 수 있다!</p><p id="139d4d74-d055-4b8c-a285-679b2ff9db3c" class="">(EXERCISE)- AFTER DML 트리거 생성</p><p id="85a9f0c4-a48d-411e-9688-6c323c0869f9" class="">먼저, EMP_TRG 테이블에 DML 명령어를 실행했을 경우, 테이블에 수행된 명령어 종류와 사원번호, 사용자 이름, 수행된 날짜를 기록하기 위한 로그 테이블을 생성해보자</p><pre id="23ea5117-fd84-47d4-80f1-fc97b156a6ba" class="code"><code>CREATE TABLE EMP_TRG_LOG(
+    TABLENAME VARCHAR2(10), --DML이 수행된 테이블 이름
+    DML_TYPE    VARCHAR2(10), --DML 명령어 종류
+    EMPNO        NUMBER(4), --DML 대상이 된 사원 번호
+    USER_NAME VARCHAR2(30), --DML을 수행한 USER 이름
+    CHANGE_DATE DATE --DML이 수행된 날짜
+);</code></pre><p id="25b6faee-d9d9-4921-a70d-4b3904372bad" class="block-color-yellow_background">🌟 :NEW.필드명 은 필드에 새로 추가된 값을 의미!</p><p id="342bba37-ba1a-40f4-a6f6-bd32c8f1b195" class="block-color-yellow_background">🌟:OLD.필드명 은 변경 전 필드값을 의미!</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="6ce39568-7a85-47de-9085-8f0aeade50a6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">SYS_CONTEXT(&#x27;NAMESPACE&#x27;, &#x27;Parameter&#x27;)
+-세션 정보를 얻어오는 함수
+-namespace와 관계되는 파라미터 값을 반환
+-오라클에서는 namespace로 USERENV사용
+-파라미터는 <a href="https://docs.oracle.com/cd/E11882_01/olap.112/e23381/row_functions079.htm#OLAXS472">여기</a>를 참고
+-SESSION_USER는 로그인에서 식별된 사용자의 사용자 이름 혹은 스키마 이름</div></figure><pre id="2018646a-8e27-443e-a51e-e8403b9df58a" class="code"><code>CREATE OR REPLACE TRIGGER trg_emp_log
+AFTER
+INSERT OR UPDATE OR DELETE ON EMP_TRG
+FOR EACH ROW
+BEGIN
+    IF INSERTING THEN
+        INSERT INTO EMP_TRG_LOG
+        VALUES(&#x27;EMP_TRG&#x27;, &#x27;INSERT&#x27;, :NEW.EMPNO,SYS_CONTEXT(&#x27;USERENV&#x27;,&#x27;SESSION_USER&#x27;),SYSDATE);
+        
+    ELSIF UPDATING THEN
+         INSERT INTO EMP_TRG_LOG
+        VALUES(&#x27;EMP_TRG&#x27;, &#x27;UPDATE&#x27;, :OLD.EMPNO,SYS_CONTEXT(&#x27;USERENV&#x27;,&#x27;SESSION_USER&#x27;),SYSDATE);       
+    
+    ELSIF DELETING THEN
+         INSERT INTO EMP_TRG_LOG
+        VALUES(&#x27;EMP_TRG&#x27;, &#x27;DELETE&#x27;, :OLD.EMPNO,SYS_CONTEXT(&#x27;USERENV&#x27;,&#x27;SESSION_USER&#x27;),SYSDATE);
+    END IF;
+END;
+/</code></pre><p id="988befc8-deb7-4527-a960-040564dafe50" class="">이번에는 일련의 로그를 저장하는 테이블을 미리 만들어두고, 트리거가 DML 명령어 발생 후에 작동되도록 하는데, 
+-INSERT 작업이면, 새로운 EMPNO값이 대상이므로 :NEW를 이용해서 EMPNO에 기록을 하고 그 외에는 이전 EMPNO값이 대상이므로 :OLD를 이용해서 EMPNO에 기록을 하였다</p><p id="87bb0e9e-207a-4895-b662-0f17badf897f" class="">-DML을 수행한 사용자 이름은 세션 객체를 얻어오는 SYS_CONTEXT를 통해서 사용자의 이름을 얻어오도록 하였다</p><p id="b876f33e-dec2-4433-882d-85c577624873" class="">-그리고 FOR EACH ROW로, 영향을 받는 행마다 작동될 수 있도록 하였다</p><p id="230cd24f-673f-4c47-a2bc-83f3fbf29495" class="">
+</p><p id="d357544e-7743-4458-8b58-c3480d382d97" class="">이제 INSERT하고 COMMIT을 해보자</p><figure id="610f0dcc-76a2-4bc9-8b89-b758ea7ebac7" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-AFTER%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-INSERT%20%EC%8B%A4%ED%96%89.PNG?raw=true"><img style="width:912px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-AFTER%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-INSERT%20%EC%8B%A4%ED%96%89.PNG?raw=true"/></a></figure><p id="349e6bbf-533d-4926-9a13-61f3e35057ec" class="">위의 일련의 작업을 하게 되면, EMP_TRG의 최하단에는 사원번호가 9999, 이름이 TEST인 레코드가 추가되고, EMP_TRG_LOG에서는 해당 작업 요약을 확인해볼 수 있다!</p><p id="c0848d6c-0fc3-444a-8583-7b7cec0cd71f" class="">
+</p><p id="0c1ed3b2-4e39-46dd-9dff-b95d2c38259d" class="">이번에는 UPDATE를 수행해보자</p><p id="e2b8a1c1-4ac5-4f65-93f7-854cb755ea83" class="">그러면, 이번에는 사원번호가 9999인 사람들이 3분이 계셨던 것 같다! </p><p id="2fd8e453-10b4-4079-9957-00e1e8010c4e" class="">그래서 UPDATE 작업 갯수만큼 EMP_TRG_LOG 내부 데이터도 추가되었고, 현재까지의 작업을 모두 확인해볼 수 있다!</p><figure id="a7ce979c-10db-4b71-b20e-cf0de54018db" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-AFTER%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-UPDATE%EC%8B%A4%ED%96%89.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/DML%ED%8A%B8%EB%A6%AC%EA%B1%B0-AFTER%20%ED%8A%B8%EB%A6%AC%EA%B1%B0-UPDATE%EC%8B%A4%ED%96%89.PNG?raw=true"/></a></figure><p id="59de378f-3510-4548-99d3-0e493b8c6c94" class="">🌟 트리거 정보 조회</p><ul id="fba57287-f47b-44f1-8256-e293fac84a2e" class="bulleted-list"><li>USER_TRIGGERS 데이터 사전 뷰를 이용!</li></ul><pre id="5dc552d9-944d-4cc5-a838-d11d87994650" class="code"><code>SELECT TRIGGER_NAME, TRIGGER_TYPE, TRIGGERING_EVENT, TABLE_NAME, STATUS
+FROM USER_TRIGGERS;</code></pre><figure id="749ad0b9-633e-4978-a8a6-3e5257c85743" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/USER_TRIGGERS%EB%A5%BC%20%ED%86%B5%ED%95%B4%20%EC%82%AC%EC%9A%A9%EC%9E%90%EA%B0%80%20%EC%83%9D%EC%84%B1%ED%95%9C%20%ED%8A%B8%EB%A6%AC%EA%B1%B0%20%EC%A0%95%EB%B3%B4%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0.PNG?raw=true"><img style="width:960px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Database/Oracle/Basic/PLSQL/storedSubProgram/USER_TRIGGERS%EB%A5%BC%20%ED%86%B5%ED%95%B4%20%EC%82%AC%EC%9A%A9%EC%9E%90%EA%B0%80%20%EC%83%9D%EC%84%B1%ED%95%9C%20%ED%8A%B8%EB%A6%AC%EA%B1%B0%20%EC%A0%95%EB%B3%B4%20%ED%99%95%EC%9D%B8%ED%95%98%EA%B8%B0.PNG?raw=true"/></a><figcaption>트리거 정보 조회- 데이터 사전 뷰 USER_TRIGGERS</figcaption></figure><p id="ffaa9406-d8c0-448c-be4c-a66653dbd15b" class="">위의 경우, 각 행별 이벤트 발생 후에 수행하므로 AFTER EACH ROW가 트리거 TYPE으로 확인되었다. 그리고 활성화된 트리거이면서 DML 작업 이벤트를 수행할 때 그 대상이 EMP_TRG 테이블에 대한 것임을 확인해볼 수 있다!</p><p id="f396fbf8-7f1b-4835-9b72-3d895ee63f3b" class="">🌟 트리거 변경</p><p id="cb435f6f-a2e8-4a6c-a08f-069072d6d0d5" class="">-특정 트리거 활성화 혹은 비활성화</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="3722f5ac-ab05-4da8-8700-dd017e960850"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">ALTER TRIGGER 트리거_이름 ENABLE|DISABLE;</div></figure><p id="14c28933-0e59-481d-b6ff-09e59dad4f54" class="">-특정 테이블과 관련된 모든 트리거 상태를 활성화 혹은 비활성화</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="06f91947-9f73-4840-af42-b3a3e0325d5f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">ALTER TABLE 테이블_이름 ENABLE|DISABLE ALL_TRIGGERS;</div></figure><p id="a9c31388-c1aa-4df3-b504-b6f9d222527c" class="">🌟 트리거 삭제</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="57423da0-47fc-4b01-8d0b-ae2ea112e435"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">DROP TRIGGER 트리거_이름;</div></figure><p id="7ede37a3-5b85-447d-ab63-102baca643ee" class="">
+</p><p id="35d96c86-58b7-47ae-9dd3-d377f6595c9f" class="">
+</p></div></article></body></html>

@@ -1,0 +1,1284 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>CSS 선택자</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="c20afe58-30d2-4f39-888d-31ad127d9ca7" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">CSS 선택자</h1></header><div class="page-body"><p id="a7d308ab-5868-4cc1-9004-7b875011c1fb" class="">(역할) 
+<mark class="highlight-orange_background"><strong>작성한 css 스타일을 원하는 특정 html 요소에 적용</strong></mark>하기 위해 필요한 사인</p><p id="55fa0994-d8a5-4ecb-b398-5e430dd3aa68" class="">
+</p><hr id="e5251174-14e6-452f-be8a-18ee301b71e1"/><h2 id="29c41f68-847d-433d-8b5e-8fb73f203394" class="">기본 선택자 Basic Selectors</h2><p id="9f56119b-c65d-4456-a86a-1e2dee84ab2d" class="">
+</p><h3 id="a8b3c562-5c2f-4959-b830-7dd87b360159" class="">태그 선택자 </h3><ul id="27348e3f-921e-4c00-b73f-c7ceeda58ec4" class="bulleted-list"><li>태그로 찾기</li></ul><pre id="5cd6a870-1474-4cc6-affc-c4ab0b96b3ca" class="code"><code>h1{
+}
+
+p{
+}
+
+/*태그이름{} 은 태그이름인 곳들은 모두 스타일 ~로 통일해줘!*/</code></pre><ul id="2190b23f-4e85-4202-a49e-3f91aaef90f6" class="bulleted-list"><li>단점 : 원하는 핵심 부분에 접근하기에는 태그만으로는 부족함
+➡️이런 점에서 클래스로 찾는 방법 등이 필요!</li></ul><p id="cb0b7cdc-21f8-4a90-a61d-3cc81d35e16d" class="">
+</p><h3 id="bfd09f46-3bc1-4029-9670-375bf23775f4" class="">클래스 선택자<mark class="highlight-pink_background"><strong> . </strong></mark>&#x27;</h3><ul id="1529fc5b-00ae-4c16-9bb2-f19f38528b81" class="bulleted-list"><li>클래스로 찾기</li></ul><p id="f9e09854-a71d-4f3e-a21c-b5f255c4094a" class="">▶️ 활용도가 높음(중복되어 사용할 수 있기 때문!)</p><pre id="850c4aa3-6046-4368-8ef2-5da0fa91eef7" class="code"><code>.클래스명{
+	속성:값;
+}</code></pre><p id="bfb78b49-ad2b-439f-b8eb-9280aff5464c" class="">
+</p><p id="106718c8-10f6-426c-99b8-3166f88ed52e" class="">
+</p><p id="afeb8187-bff2-4cd2-85db-e0d50b6d56f1" class="">적용 예제</p><pre id="8e1900e3-fb1d-4341-8463-3cec083c52c7" class="code"><code>&lt;h1 class=&quot;title&quot;&gt;제목1&lt;/h1&gt;
+&lt;h2&gt;제목2&lt;/h2&gt;
+&lt;p class=&quot;main-text&quot;&gt;본문1&lt;/p&gt;
+&lt;p&gt;본문2&lt;/p&gt;</code></pre><p id="cfef76c6-98ee-4dbc-a48e-672b61f6c35f" class="">
+</p><pre id="31b8905a-9c83-4edd-b508-f06c8fc4dbf4" class="code"><code>.title{
+	color:red;
+}
+.main-text{
+	color:blue;
+}</code></pre><p id="47239faf-a362-431b-bf3f-fe23fc206790" class="">➡️ h2태그 자체, 혹은 p태그 자체에 적용되는 스타일은 없음!(위의 예제에서!)</p><p id="169e0490-1309-45d5-90bb-90ffde8aa4ba" class="">
+</p><h3 id="b0e076da-4b29-42bd-9d26-dfb53c895673" class="">전체 선택자 * Universal Selector (Asterisk)</h3><ul id="0dd440c8-a236-4dfd-983a-76ce1d938590" class="bulleted-list"><li>모든 요소를 선택</li></ul><p id="33200251-a2da-484e-97d8-696c9abfe537" class="">
+</p><h3 id="accc2912-1d3b-46cc-982d-dba83b8b0ef1" class="">아이디 선택자 #E</h3><ul id="0b95ec01-7bb0-47d4-a54e-109781301b35" class="bulleted-list"><li>HTML id 속성의 값이 E인 요소 선택</li></ul><hr id="92245376-9adb-468b-9124-57064aef95e4"/><ul id="6ea8a41c-dfbb-46ed-ac4c-c9497bd82cb6" class="bulleted-list"><li>전체 선택자의 단점: 모든 태그에 대해서 적용되기 때문에 활용도가 떨어짐</li></ul><p id="86c8d015-4561-4c7c-a658-838a7af993ce" class="">
+</p><ul id="283f252a-7822-44be-960c-d768b0029768" class="bulleted-list"><li>태그 선택자의 단점 : 태그 중 특정 요소에만 적용하는 경우에 대한 활용도가 떨어짐</li></ul><p id="3a499dcb-fe22-4299-8efb-79dd3c6c67bc" class="">
+</p><pre id="7cd696c9-21db-4c09-9f3e-7ca4b4914269" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;CSS 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./sel.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;사과&lt;/li&gt;
+            &lt;li&gt;딸기&lt;/li&gt;
+            &lt;li&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div id=&quot;carrot&quot; class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="dfabf2de-3ed6-4ef4-9775-4ace0a7a5bcc" class="code"><code>*{
+    /*universal selector*/
+    background-color: tomato;
+}
+
+li{
+    /*tag selector*/
+    margin:5px;
+    width:70px;
+    border:2px solid white;
+    border-radius:30px;
+    text-align: center;
+    color:white;
+    font-weight:bold;
+}
+#carrot{
+    /*id selector*/
+    font-size:30px;
+    font-weight:bold;
+}
+.carrot{
+    /*class selector*/
+    color:white;
+    border:3px dashed purple;
+}</code></pre><figure id="b81a6863-aa28-4e08-b569-520db788734e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%EA%B8%B0%EB%B3%B8%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%EA%B8%B0%EB%B3%B8%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a></figure><p id="83ec7351-3780-4d2f-8003-09bc1716224d" class="">위의 경우, 전체에 대해서 배경색을 스타일링하고</p><p id="7a31ef67-1e4d-49c8-ba7a-2a073439d4b7" class="">carrot 클래스에 대해서 글자색과 border를 스타일링하였다</p><p id="e533e18c-998f-4534-a4da-5716f569d39f" class="">그 후 carrot 이라는 id를 가진 고유한 요소에 대해서 글자 크기와 굵기를 변경해주었다!</p><p id="49a58e3b-65ec-4a1e-9faf-4cccd953b338" class="">
+</p><p id="dde16106-cff2-49b0-ae03-c67fff53b767" class="block-color-yellow_background">선택자 우선순위는 전체 &lt; 태그&lt; 클래스&lt; 아이디 순서!</p><p id="effea600-1bff-4a36-be38-7c40e388e4cb" class="">
+</p><hr id="dd042b54-9008-4812-9097-fd662c04d629"/><h2 id="9de94a4c-15cc-4c71-b017-63ddc1dd1559" class="">복합 선택자</h2><p id="2d8d96df-f931-45cc-98b1-fa81097c26bc" class="">
+</p><h3 id="1c249e19-3ab7-4c8c-b00a-37cedcb2c5ee" class="">일치 선택자 Basic Combinator</h3><ul id="51d9cac9-c54a-424d-abb5-5657e4725c12" class="bulleted-list"><li>기본 선택자 두개가 붙어있는 형태!</li></ul><ul id="5835f226-0d88-46c0-a66e-bc5edb06b192" class="bulleted-list"><li>E와 F를 동시에 만족하는 요소를 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="dbca28b1-57f4-41d7-b72a-5a5827b8a70c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">EF</div></figure><p id="903bf4d0-eeee-4ec0-b6cc-daa4b9740d49" class="">(예시)</p><pre id="d5f41193-7436-4d60-94ae-5d384a9034f9" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;복합 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./complex.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;사과&lt;/li&gt;
+            &lt;li&gt;딸기&lt;/li&gt;
+            &lt;li&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="f6270c35-d60c-4aa0-8df7-f4cd3816bc3a" class="code"><code>span.carrot{
+    font-weight: bolder;
+    color:teal;
+}</code></pre><ul id="a2e66d48-09e3-441d-b414-25a20aeb4d63" class="bulleted-list"><li>span 태그이면서 클래스가 carrot인 요소를 선택하여 스타일링</li></ul><p id="aae0f81b-5e32-4264-b884-af1fb28aa65f" class="">
+</p><h3 id="bb5895dc-63ab-403d-b280-0f6531bc8585" class="">자식 선택자 Child Combinator</h3><ul id="53edf25b-9dac-4f82-a43c-b3361f8d3e01" class="bulleted-list"><li>부모 요소를 중심으로 자식 요소를 선택하는 것!</li></ul><ul id="824e10b4-060e-453d-93a5-b47506d4946f" class="bulleted-list"><li>기본선택자(<mark class="highlight-orange"><strong>부모. 조건</strong></mark>) &gt; 기본선택자(<mark class="highlight-blue"><strong>자식. 검색 대상</strong></mark>)</li></ul><ul id="089800cc-6bef-4251-9066-5e053e888786" class="bulleted-list"><li>E의 자식 요소 F를 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="dd016a3f-8e13-4611-a5da-972a0ad44882"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%"><mark class="highlight-blue"><strong>E</strong></mark> &gt; <mark class="highlight-orange"><strong>F</strong></mark></div></figure><p id="1e00f5a6-a146-4ee6-9a79-5eedf83b1aeb" class="">(예시)</p><p id="a54dd6e9-70fe-4b6a-8043-b75ae2d3366e" class="">
+</p><pre id="be167941-3dbd-4850-a4fd-53b27ca7060a" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;복합 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./complex.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;사과&lt;/li&gt;
+            &lt;li&gt;딸기&lt;/li&gt;
+            &lt;li class=&quot;orange&quot;&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="ea962cf8-3b3c-419a-8149-4b25be7703cf" class="code"><code>ul&gt;.orange{
+    color:salmon;
+    font-weight: bold;
+}</code></pre><ul id="c501b4b7-781f-4158-ae60-556c4ec36519" class="bulleted-list"><li>태그선택자 ul을 선택한 후, .orange 클래스 선택자로 한번 더 필터링함으로써 자식요소를 선택하여 스타일링!</li></ul><p id="448ee9e7-f6e1-4d90-9775-3440ac4cd6d0" class="">
+</p><h3 id="1a81d600-e719-4a09-b4a0-5c822ad94d77" class="">후손/하위/자식 선택자 Descendant Combinator</h3><p id="6a7c265d-977d-46f5-b6f5-52592e35979b" class="">
+</p><ul id="4ea015e0-79fe-40d9-9c2f-f40222d9c1c4" class="bulleted-list"><li>선택자 사이에 띄어쓰기를 넣음</li></ul><ul id="c26866d3-5e9b-46d9-823b-64afdbd335d1" class="bulleted-list"><li>E의 후손(하위) 요소 F를 선택</li></ul><ul id="ff567203-0e67-4f90-be87-4169766aac95" class="bulleted-list"><li>E가 조건이 되고, F가 실질적인 검색 사항에 해당됨!</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1e8d21ea-b4d0-4cdc-a59d-9d485b7251d7"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E F</div></figure><ul id="01e818f2-11ea-45a2-9ee3-14c578312191" class="bulleted-list"><li>후손의 개념을 아래의 예시와 함께 설명</li></ul><pre id="812504ec-0523-4c5d-9049-21a49f1796b1" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;복합 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./complex.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;사과&lt;/li&gt;
+            &lt;li class=&quot;straw&quot;&gt;딸기&lt;/li&gt;
+            &lt;li class=&quot;orange&quot;&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="63e0b851-8f60-4f12-9f7e-cb87401cb3e9" class="">
+</p><ul id="5940a61f-ab68-40ec-9b29-f538706b1813" class="block-color-orange_background bulleted-list"><li><mark class="highlight-red"><strong>후손(하위) 요소</strong></mark> : 자식의 자식 ➕ 자식 = 즉, <strong><mark class="highlight-red">자신 아래의 모든 요소!</mark></strong></li></ul><ul id="4d658985-1d1f-4220-aa12-023680989538" class="block-color-orange_background bulleted-list"><li><mark class="highlight-purple"><strong>조상(상위) 요소</strong></mark> : 부모의 부모 ➕ 부모 = 즉, <mark class="highlight-purple"><strong>자신 위의 모든 요소!</strong></mark></li></ul><p id="689120f3-4d84-48a4-8a43-331ee153accb" class="">위의 예제와 위의 간략한 설명을 생각해보자</p><p id="2f8c319b-7315-4d28-861f-1433c8e60b34" class="">그렇다면, div 요소의 후손 요소는 li가 될 것이고, li의 조상 요소는 div 요소가 될 것이다!</p><p id="6a0a9f79-5cdf-41ba-815e-1b21904f3b5a" class="">
+</p><p id="e1b522d6-737e-47b2-a4f0-2383293105c5" class="">⚠️하지만! div 입장에서는 자식도 후손이고, 자식의 자식도 후손으로 보기 때문에! ul, li 태그 모두 후손 요소로 볼 수 있음!</p><p id="51013043-c68c-46bf-8463-5ff9648827e3" class="">
+</p><pre id="42500fbb-0ce7-4497-b583-7a3e7df5f122" class="code"><code>div .straw{
+    color:orangered;
+}</code></pre><p id="cf647fdf-5f41-4c12-8136-be15c935e33f" class="">
+</p><p id="d59ee82c-2162-4ec8-9f0b-5d166409181d" class="">이러한 후손 요소를 이해했을 때, 위의 css는 div의 후손 요소 중 straw 클래스를 지닌 요소를 찾아내어 스타일링한다</p><p id="1f07cbe9-4a24-4cac-8737-8430742cb7f8" class="">
+</p><p id="41b18085-1db1-487b-a000-5bd3959a3f48" class="">즉, 딸기에 대해서 orangered 색의 글자 스타일링이 적용될 것이다!</p><p id="c13745c4-ac40-4fd2-990d-0bda970ea298" class="">
+</p><h3 id="9d4b3a31-40c4-4901-a9d3-1b4b5ccd5c9c" class="">인접 형제(자매) 요소 선택자 Adjacent Sibling Combinator</h3><p id="57a9d75b-880b-4610-bc91-accbc46ae94f" class="">
+</p><ul id="0cb363f7-ee54-4d7b-aadc-f000968e04a7" class="bulleted-list"><li>E의 <mark class="highlight-red"><strong>다음 형제</strong></mark> 요소 F 하나만 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f1cc59f3-7d73-4545-8223-70435b18f002"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E  + F</div></figure><p id="2ac36c07-44fe-4d0a-a101-87f6d5d156cb" class="">⚠️ 형제/자매 요소 : 같은 부모를 갖는 요소들 간의 관계</p><p id="3a5c3be7-105e-4f87-988c-64e4219b804b" class="">📌 여기까지 잠깐 CSS에서 요소간 관계에 따른 명칭을 정리해보기! 📌</p><figure id="b403fa7d-93d3-4f28-b147-68c5e6b378f5" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9A%94%EC%86%8C%20%EA%B4%80%EA%B3%84.png?raw=true"><img style="width:672px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9A%94%EC%86%8C%20%EA%B4%80%EA%B3%84.png?raw=true"/></a><figcaption>요소들의 관계</figcaption></figure><p id="d3a4c6de-765d-4e05-8999-ac6a8a9e62b6" class="">
+</p><pre id="54c70f16-0407-470c-9365-86f6a219fc41" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;복합 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./complex.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li&gt;사과&lt;/li&gt;
+            &lt;li class=&quot;straw&quot;&gt;딸기&lt;/li&gt;
+            &lt;li class=&quot;orange&quot;&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="f093ae4d-8571-4a4b-b7d4-6b79c7483f64" class="">
+</p><pre id="c85cd510-6e32-48d8-a1ec-57890a953951" class="code"><code>span.carrot{
+    font-weight: bolder;
+    color:teal;
+}
+
+ul&gt;.orange{
+    color:salmon;
+    font-weight: bold;
+}
+
+div .straw{
+    color:orangered;
+}
+
+📌 .straw + li{📌 
+    width:100px;
+    text-align: center;
+    border-top:2px solid orangered;
+    border-bottom:2px solid palegreen;
+    border-left:2px solid palevioletred;
+    border-right:2px solid violet;
+    border-radius:5px;
+}</code></pre><figure id="f7835e0b-cff5-49ab-8ca9-2925d3a56abf" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9D%B8%EC%A0%91%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9D%B8%EC%A0%91%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>인접 형제 요소 선택자</figcaption></figure><ul id="1aebe37c-548e-4e85-9853-34bae309f8f6" class="bulleted-list"><li>위의 경우, straw 클래스를 갖는 요소의 다음 인접 형제 요소가 orange 클래스인 요소이므로, 해당 부분이 스타일링된다</li></ul><p id="90132010-e819-41b9-912c-d9f1799f4c76" class="">
+</p><h3 id="6ca1b71a-2e40-4e36-b2f8-22d32b396ce3" class="">일반 형제 선택자 General Sibling Combinator</h3><p id="30c265c2-ad47-4cb6-9446-07da56e9bd5f" class="">
+</p><ul id="58cd798c-c671-4bd7-9c32-44fe2582fafa" class="bulleted-list"><li>E의 <mark class="highlight-red"><strong>다음 형제 요소 F </strong></mark><span style="border-bottom:0.05em solid"><mark class="highlight-red"><strong>모두 선택</strong></mark></span></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="cb224d20-4b73-48fc-8430-cf20e7260d9b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E ~ F</div></figure><p id="443337d3-a911-4a5b-88ac-efecd0836ede" class="">
+</p><pre id="a66db640-c2e4-4fbe-85c3-84fefcdb41d4" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;복합 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./complex.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        &lt;ul&gt;
+            &lt;li class=&quot;apple&quot;&gt;사과&lt;/li&gt;
+            &lt;li class=&quot;straw&quot;&gt;딸기&lt;/li&gt;
+            &lt;li class=&quot;orange&quot;&gt;오렌지&lt;/li&gt;
+        &lt;/ul&gt;
+        &lt;div class=&quot;carrot&quot;&gt;당근&lt;/div&gt;
+        &lt;p&gt;토마토&lt;/p&gt;
+        &lt;span class=&quot;carrot&quot;&gt;당근&lt;/span&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="47e3c359-aaa0-4f1a-8e10-5d5897513212" class="code"><code>span.carrot{
+    font-weight: bolder;
+    color:teal;
+}
+
+ul&gt;.orange{
+    color:salmon;
+    font-weight: bold;
+}
+
+div .straw{
+    color:orangered;
+}
+
+.apple ~ li{
+    width:100px;
+    text-align: center;
+    border-top:2px solid orangered;
+    border-bottom:2px solid palegreen;
+    border-left:2px solid palevioletred;
+    border-right:2px solid violet;
+    border-radius:5px;
+}</code></pre><p id="00e247cc-e461-42d9-a258-ee10000a5ad7" class="">이번에는 인접 형제 요소 1개만 선택하는 것이 아닌, apple 요소 다음에 오는 요소 중 형제 요소를 모두 선택하게 되어, 위와 다르게, 딸기 &amp;&amp; 오렌지 부분이 스타일링 된다</p><p id="cb5f6971-3b5c-4676-9d44-4a96e72e6fd3" class="">
+</p><figure id="b8d589bf-e109-4b1c-9dbb-56df80e7f727" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9D%BC%EB%B0%98%ED%98%95%EC%A0%9C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EC%9D%BC%EB%B0%98%ED%98%95%EC%A0%9C%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>일반 형제 요소 선택자</figcaption></figure><p id="336dfa24-c38f-4433-ba38-bffc92e09b94" class="">
+</p><hr id="7667d1e0-b81b-4e9f-bd2d-9312ad79d455"/><h2 id="edbe5862-a0b7-48c4-9a2c-c1a6e99da927" class="">가상 클래스 선택자 Pseudo-Classes Selectors</h2><p id="d365c6a4-1368-4764-9821-e3b0189c801b" class=""> </p><ul id="ea6067fb-9250-4d88-8268-0fb0714a6c0c" class="bulleted-list"><li>기본 선택자 부분에 붙여서 사용하는 선택자</li></ul><ul id="aa9f7a08-d42d-4607-a4c5-db6fbdac0513" class="bulleted-list"><li>기본 선택자 : ~</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="08ab105f-5d55-4944-849a-420f418e349e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">비교! 가상 요소 선택자 ▶️ 기본 선택자 :: ~</div></figure><p id="a3057822-866e-491f-a7f5-76128980a4eb" class="">
+</p><h3 id="d6cf3439-8023-4716-9511-90e138b6dc9a" class="">:hover</h3><p id="05f8a47b-dedc-468b-a112-5550fd6b3741" class="">
+</p><p id="036ec955-0cff-47cc-8eaf-7eb98dce85b2" class="">E에 <mark class="highlight-red"><span style="border-bottom:0.05em solid"><strong>마우스(포인터)가 올라가 있는 동안</strong></span></mark>에만 E 선택</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="64339c21-3e0a-4703-a974-f0b6efe51c39"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:hover</div></figure><pre id="7eaf8bcc-8bbd-4858-b5b7-42fc84b928a0" class="code"><code>&lt;a href=&quot;https://www.google.com&quot;&gt;Google!&lt;/a&gt;</code></pre><pre id="d946542f-55a4-4fed-9b94-05b6760435cf" class="code"><code>a:hover{
+    font-weight: bold;
+    color:orangered;
+}</code></pre><figure id="c407b8e6-be48-4daf-8b14-88003eb2474e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20hover.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20hover.gif?raw=true"/></a><figcaption>가상 클래스 선택자 hover</figcaption></figure><p id="1bdd4dae-2d01-460a-8539-c7dc4d07d47f" class="">
+</p><p id="932d8b82-1015-44e4-a58f-23782c81375c" class="">위의 경우, 링크 위에 마우스를 올렸을 때 색상과 글자 두께가 변하는 것을 확인해 볼 수 있다!</p><p id="e77ee937-b569-491f-8bdc-c15ebdda9cb9" class="">
+</p><p id="9f8234e6-8109-43c4-b99f-8cf0dda7dca2" class="">또한, 아래와 같이, 애니메이션 효과와 접목한다면, 마우스를 올려놓았을 때 크기를 커지게 했다가, 줄어들게 하는 효과도 구현해볼 수 있다!</p><pre id="4b8b0041-95bb-40b3-8e28-1e14f80d450f" class="code"><code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;</code></pre><pre id="e511c158-8092-4a8b-8308-b0593702490d" class="code"><code>.box{
+    width: 100px;
+    height: 100px;
+    background-color: orangered;
+    transition:3s;
+}
+.box:hover{
+    width: 300px;
+}</code></pre><figure id="f0a23caf-9c4e-4fa8-b02e-1183f89b6d88" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20hover%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%20%ED%9A%A8%EA%B3%BC.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20hover%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%20%ED%9A%A8%EA%B3%BC.gif?raw=true"/></a><figcaption>가상 클래스 선택자 hover</figcaption></figure><p id="28b60e23-9a82-46c6-834b-0e8049fbf951" class="">
+</p><h3 id="90233359-f638-45a4-8395-ec96abf28916" class="">:active</h3><p id="5f731593-0637-49d3-b06f-851d281ae062" class="">
+</p><ul id="1768305f-1c9e-408f-a709-1cba75737100" class="bulleted-list"><li>E를 <mark class="highlight-red"><span style="border-bottom:0.05em solid"><strong>마우스로 클릭하는 동안</strong></span></mark>에만 E 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6650e6bc-84aa-421e-93dd-2bbcf7e68d73"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:active</div></figure><ul id="a6d5163b-51d5-4a0e-bba8-81ee653a388a" class="bulleted-list"><li>active는 hover와 다르게, 마우스를 클릭하는 동안에만 해당 요소에 스타일링을 입힐 수 있다</li></ul><pre id="0f8a0695-be09-4128-824e-648f70ceeed0" class="code"><code>&lt;div class=&quot;box&quot;&gt;&lt;/div&gt;</code></pre><pre id="1f1ba040-8c7a-424c-a727-a9b91389552f" class="code"><code>.box{
+    width: 100px;
+    height: 100px;
+    background-color: orangered;
+    transition:3s;
+}
+
+.box:active{
+    width: 500px;
+}</code></pre><figure id="618ce179-9afe-4e72-8c51-115272c5e937" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20active.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20active.gif?raw=true"/></a><figcaption>가상 클래스 선택자 active</figcaption></figure><p id="31ca20dd-8f0d-4d48-9754-87d750b0755b" class="">위의 예시에서처럼, 클릭을 하고 있는 동안에만 스타일링이 적용되어, 크기가 변하게 되는 것을 확인해볼 수 있다!</p><p id="1b3f9f4a-4b97-4604-ad15-2f783fe983ca" class="">
+</p><h3 id="45e9fd6a-4072-4687-879d-369186d6c676" class="">:focus</h3><p id="86e58ad2-d9fd-4e36-a914-757dac5527f4" class="">
+</p><ul id="40958f16-5467-48ca-a2b5-43bfbde864b9" class="bulleted-list"><li>E가 포커스된 동안(대화형 컨텐츠에 해당)에만 E 선택</li></ul><ul id="cd3ff87a-1687-4713-b1b9-c30873bd1c16" class="bulleted-list"><li>tabindex가 부여될 수 있는 요소, input 태그, img 태그 등이 해당됨</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="6dd40f54-f711-42f0-a063-0536975e6fbd"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:focus</div></figure><p id="cd26e97b-67be-4223-a6b7-11c4805d8e83" class="">(예시)</p><pre id="86529484-6ac3-4042-bc40-e6c4e0cf2465" class="code"><code>&lt;div class=&quot;focus-ex&quot;&gt;
+        &lt;h3 tabindex=&quot;-1&quot;&gt;Info-focus&lt;/h3&gt;
+        &lt;label&gt;이름
+            &lt;input type=&quot;text&quot; id=&quot;name&quot;&gt;
+        &lt;/label&gt;
+        &lt;label&gt;나이
+            &lt;input type=&quot;text&quot;id=&quot;age&quot;&gt;
+        &lt;/label&gt;
+&lt;/div&gt;</code></pre><pre id="4c4031b8-9ae1-4669-95ee-8715fad1cc83" class="code"><code>input{
+	/*input 태그에는 테우리가 outline으로 
+    들어가 있음 하지만 까다로워서
+    사용하지 않을 것!*/
+    outline:none;
+}
+*:focus{
+    border:5px solid violet;
+    border-radius: 10px;
+    padding:10px;
+}</code></pre><figure id="47189a2c-f192-4d62-ac8d-285fa9f9b07e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20focus.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20focus.gif?raw=true"/></a><figcaption>가상 클래스 선택자 focus</figcaption></figure><p id="b4b96a53-429f-455b-9232-a73350043191" class="">위의 예제에서 확인할 수 있는 것과 같이, 대화형 컨텐츠 혹은 tabindex가 지원되는 요소에 대해서 focus 선택자를 사용하였을 때, 그에 맞는 스타일링이 적용됨을 확인해볼 수 있다</p><p id="6bf12ed7-ec8f-4037-8ca6-3a1290494c7e" class="">
+</p><p id="73ef53af-712f-4b47-ac70-d1886933395d" class="">여기에 input 태그에 대해서 transition: 0.4s를 추가해주면, 아래와 같은</p><p id="153f7892-70ce-4759-bc27-e915eba4819f" class="">애니메이션 효과도 확인해볼 수 있다!</p><figure id="fe6008b2-fde5-4c3c-94c5-bae7fbc32db6" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20focus%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%20%ED%9A%A8%EA%B3%BC.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%ED%81%B4%EB%9E%98%EC%8A%A4%EC%84%A0%ED%83%9D%EC%9E%90%20focus%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98%20%ED%9A%A8%EA%B3%BC.gif?raw=true"/></a></figure><h3 id="b7f6ba4c-f4d8-47d2-9746-e1368e211821" class="">:first-child</h3><ul id="1a8760c9-db62-4217-bd8e-94f5b2ed33fd" class="bulleted-list"><li>E가 형제 요소 중 첫번째 요소라면 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="1c7adfdd-2a75-4f3b-b6cd-9ee80db41900"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:first-child</div></figure><p id="7e131b2a-6a03-4c09-9ba2-c98fd6ae8a5e" class="">*참고: first-child 이전의 선택자들은 이벤트 역할과 관련된 것처럼 생각하면 된다!</p><p id="e503061f-96e2-4bdd-8a56-2902757e9ef4" class="">
+</p><pre id="5c4519c7-6695-4fad-ae54-e9b5fd4b5173" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;가상 클래스 선택자&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./child.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;ul class=&quot;fruits&quot;&gt;
+        &lt;li&gt;딸기&lt;/li&gt;
+        &lt;li&gt;사과&lt;/li&gt;
+        &lt;li&gt;오렌지&lt;/li&gt;
+        &lt;li&gt;망고&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="c72d2da8-19d7-477a-afbb-a1a0fa0cc96a" class="">
+</p><pre id="cd8d04b1-8dcd-4d6e-9eec-2341ef466978" class="code"><code>.fruits li:first-child{
+    width:100px;
+    background-color:orchid;
+    border:1px solid violet;
+    border-radius:10px;
+    color:rebeccapurple;
+    font-weight: bold;
+    text-align: center;
+}</code></pre><figure id="0ae194e5-6c1c-48e7-be82-3946d13d6cc4" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EC%84%A0%ED%83%9D%EC%9E%90-first-child.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/%EA%B0%80%EC%83%81%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EC%84%A0%ED%83%9D%EC%9E%90-first-child.PNG?raw=true"/></a></figure><p id="edb244fe-2af8-4838-888a-b4e09c95dbfa" class="">위와 같은 html 문서 구조를 가진 형태에서, fruits 클래스 주변에 있는 후손 중 li 태그의 첫 번째 자식 요소에 대해서 위와 같이</p><p id="d068c905-926a-44c8-a5f1-bc1b50449451" class="">orchid 배경과 violet 텍스트 컬러 등의 스타일링을 적용된 것을 확인해볼 수 있다</p><p id="20467935-4a26-4d68-beea-187d9892f840" class="">
+</p><ul id="29829dc5-920d-4b25-9d9f-8061781f84f5" class="bulleted-list"><li>장점: 모든 요소에 class 별칭을 붙이기에 현실적으로 어려울 때, 유용하게 사용할 수 있다!</li></ul><p id="3a602604-9e2c-418e-8e15-614757f0710f" class="">
+</p><h3 id="021275ad-08b5-48c8-991c-e46606b7b9b9" class="">:last-child</h3><ul id="789cd6b1-04fe-4be4-bf02-fd742e445a91" class="bulleted-list"><li>E의 형제 요소 중 가장 마지막 요소를 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="4c84bfd0-e02d-47c7-bf20-86adf6d02f13"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:last-child</div></figure><p id="3d22e224-26b6-4470-813a-df74ffcd5069" class="">html 구조는 위와 동일하고, css 스타일링은 아래와 같이 추가해보자</p><pre id="e50244ae-d06f-4119-925b-bab4c08ef27d" class="code"><code>.fruits li:last-child{
+    color:orangered;
+    font-weight: bold;
+}</code></pre><p id="11e0f5f3-e095-4c5a-9111-941a2ffc548d" class="">그러면 가장 마지막 형제 요소인 망고 부분이 붉고 굵게 표시되는 것을 확인해볼 수 있다!</p><p id="77119f02-52cc-4313-a274-38bf61c0061a" class="">
+</p><h3 id="7f46c2d6-e698-474f-a426-a88617403a43" class="">:nth-child(n)</h3><ul id="20a09e09-1fc9-468a-847b-f3cb414f47f0" class="bulleted-list"><li>E가 형제 요소 중 n 번째 요소라면 선택</li></ul><p id="f93a577e-9c37-498a-9563-08889ba76016" class="">(n키워드 사용시 n은 0부터 해석됨(zero-base))</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f33091cb-145f-448c-8157-ea649e7e6ba5"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:nth-child(n)</div></figure><p id="55b57215-648b-4d25-b0b8-5d36fd35b68e" class="">마찬가지로 html 문서는 그대로 사용하고, css만 아래부분을 추가해주면</p><pre id="eae68ad8-f315-410f-943f-215d6f0c7586" class="code"><code>.fruits li:nth-child(3){
+    color:blueviolet;
+}</code></pre><figure id="db8983f7-1f5e-40d2-8c7a-fafa38af68f4" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/nth-child.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/nth-child.PNG?raw=true"/></a></figure><p id="5c12666b-40ac-48a1-a0cb-afe0e32f5e36" class="">위와 같이, 세 번째 형제요소인 오렌지에 blueviolet 색깔이 색칠되게 된다!</p><p id="09323a3f-3ad9-48d6-9971-7fd78dc1bf96" class="">
+</p><p id="684ccb83-6ee8-42b2-84be-4dd59c7df00d" class="">그리고</p><pre id="cde2e1db-7fba-42fb-bfdc-8ecee7fbac73" class="code"><code>.fruits li:nth-child(2n){
+    color:red;
+}</code></pre><p id="43a31a6f-4350-4601-b475-7d38c1836525" class="">와 같이 n을 사용하게 되면 n=0,1,2,...를 적용하여</p><p id="fa638fd3-e491-4022-8057-f7dea546f1e4" class="">사과와 망고에 빨간색으로 글씨가 칠해지게 된다!</p><p id="56812cbd-32d6-4511-9511-7e203a2ba710" class="">(왜냐하면 0번째 요소는 없기 때문!)</p><hr id="ca20362c-25d5-4066-ba57-bca104786b70"/><h3 id="b78af508-25ed-40bf-bae1-738526252f5d" class="">xxx-child에서 주의할 점</h3><p id="3f8343d6-68d6-48ed-901a-a0884378675f" class="">
+</p><pre id="1243bf8a-7290-409e-b2ea-ab5de01308d3" class="code"><code>&lt;div class=&quot;fruits&quot;&gt;
+	&lt;div&gt;딸기&lt;/div&gt;
+	&lt;p&gt;사과&lt;/p&gt;
+	&lt;p&gt;망고&lt;/p&gt;
+	&lt;span&gt;오렌지&lt;/span&gt;
+&lt;/div&gt;</code></pre><pre id="5293f36f-bb1c-4b03-8f72-d09699cb4833" class="code"><code>.fruits p:nth-child(1){
+	color:red;
+}</code></pre><p id="54ecda73-7b98-425f-b3fc-b2f861b06138" class="">위의 경우에는, .fruits의 첫 번째 자식 요소가 p태그가 아니기 때문에 선택되지 않는데,(오른쪽에서 왼쪽으로 해석!!)</p><pre id="31b50c6a-bef3-40da-8fc4-5518aa64e23d" class="code"><code>.fruits p:nth-of-type(1){
+	color:red;
+}</code></pre><p id="832dff73-96ac-48c8-a3bd-9c1604dba587" class="">로 고치면, 보다 올바른 해석!</p><p id="b4867d7a-51bb-45d8-96f0-6e90e0d8b81f" class="">
+</p><p id="b438f449-6e02-44d3-a299-325d2f85e3f7" class="">그리고</p><pre id="cf9007eb-5c02-4f9b-a53f-055504a604e4" class="code"><code>&lt;div class=&quot;box-group&quot;&gt;
+        &lt;div&gt;1&lt;/div&gt;
+        &lt;div&gt;2&lt;/div&gt;
+        &lt;div&gt;3
+            &lt;div&gt;3-1&lt;/div&gt;
+            &lt;div&gt;3-2&lt;/div&gt;
+            &lt;div&gt;3-3&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;</code></pre><pre id="27ee13ce-8bc5-4b7c-8baf-57d68e0e24b0" class="code"><code>.box-group div:first-child{
+    color:red;
+    font-weight: bold;
+}</code></pre><p id="c4c54ef1-ec10-4ca7-b8b0-7a17aafdcb4a" class="">위와 같은 경우도, 후손에 자식도 포함되기 때문에 1과 3-1에 모두 색칠된다!</p><p id="c02f0cf6-28a8-4d31-bda6-ae7d13a30cd4" class="">따라서 이러한 점들을 주의해주어야 한다</p><p id="125357ea-65fc-47de-95ca-96c549f05ace" class="">
+</p><p id="8d4905f0-bd70-4eb1-8649-082529c3f640" class="">만약 1에만 색칠하고 싶다면</p><pre id="5d5be281-cb41-4413-9896-fb1df0645fd1" class="code"><code>.box-group&gt;div:first-child{
+    color:red;
+    font-weight: bold;
+}</code></pre><p id="1ca1cee0-6381-4c31-9251-8ad7dd2484dd" class="">와 같이 스타일링을 적용해주면 된다</p><p id="0f5bead3-5392-44d8-aad2-a5776c831efe" class="">
+</p><p id="998e4dab-3115-410e-8004-f7158c372752" class="">만약 3-1에만 색칠하고 싶다면</p><pre id="2aeff5ff-d156-4e1b-bb58-67ea3fb1b848" class="code"><code>.box-group&gt;div:nth-child(3) div:first-child{
+    color:red;
+    font-weight: bold;
+}</code></pre><p id="b6fe4779-386c-4011-89a0-aad4db96f568" class="">와 같이 스타일링을 적용해주면 된다!</p><p id="062d17bf-4bdd-464e-9abe-fe1625277bd1" class="">
+</p><hr id="563a6dd0-5366-40ab-bcd4-1586f3cbb43c"/><p id="f54b5603-1b80-4dd9-aac1-5891792ef4ba" class="">조금 더 들어가보자</p><pre id="6a0035ec-0fd2-4eda-b5ea-cd7e7dcee213" class="code"><code>&lt;div class=&quot;box-group&quot;&gt;
+        &lt;div&gt;1&lt;/div&gt;
+        &lt;div&gt;2&lt;/div&gt;
+        &lt;div&gt;3
+            &lt;p&gt;3-1&lt;/p&gt;
+            &lt;div&gt;3-2&lt;/div&gt;
+            &lt;div&gt;3-3&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;</code></pre><p id="630c8043-4f60-4330-8f8e-ad5c091ef7aa" class="">와 같은 구조가 있다고 생각해보았을때</p><p id="4bc56908-b8ba-4d96-83d1-c1274588aab9" class="">1과 3-1 모두에 색칠을 하고 싶다면</p><p id="ed32cf2c-80db-4480-8f35-10d4e908a655" class="">
+</p><pre id="1dcc1a61-73e1-44f8-b28b-c6b22e68c73f" class="code"><code>.box-group :first-child{
+    color:red;
+}</code></pre><p id="777f4bac-eea9-4404-904d-57e1dff7f532" class="">와 같은 경우에서 사용할 수 있다!</p><p id="39f2d92d-9def-4395-b3a4-2cabdb826128" class="">
+</p><h3 id="58932f6f-7b1e-44d0-99bf-28f1421aec6f" class="">:nth-of-type(n)</h3><ul id="de6056a1-26cc-4ff1-accf-4fcda77bb6ac" class="bulleted-list"><li>E의 타입(태그 이름)과 동일한 타입인 형제요소 중 E가 n번째 요소라면 선택</li></ul><p id="6590cd7d-4c1a-4f9e-b8df-dd95f8ecd225" class="">(n 키워드 사용시 0부터 해석(zero base)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e778e172-a092-41e6-abae-ffac0d09f132"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E: nth-of-type(n)</div></figure><p id="f9c15f1b-ace8-447c-a4a5-1593f3b16c9e" class="">⚠️ 클래스 선택자와 혼용하면 안됨!!</p><p id="cc94c617-c733-433f-9b82-f8fb6313406b" class="">(예)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7284fdcf-b4db-47a9-92fc-8d6c618eaa72"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">.fruits li.red:nth-of-type(1){
+    color:red;
+    font-weight: bold;
+} ❌</div></figure><p id="55de363c-6d72-4a4a-a11f-db444e542bae" class="">
+</p><h3 id="ab29f501-d8c7-4b9b-8b4b-228d999cdbad" class="">부정 선택자 Negation Selector</h3><ul id="ba980992-f45e-49f7-9b84-f24aac68afd7" class="bulleted-list"><li>S가 아닌 E선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="b87be5b3-6852-4044-b20f-bc1db82af15d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E:not(S)</div></figure><ul id="6f54d496-c023-41d0-a072-83a36e6745ed" class="bulleted-list"><li>S: 선택자</li></ul><pre id="1dc8dea0-3de0-451c-aebc-813bd8bd0c4e" class="code"><code>&lt;ul class=&quot;fruits&quot;&gt;
+        &lt;li&gt;오렌지&lt;/li&gt;
+        &lt;li class=&quot;straw&quot;&gt;딸기&lt;/li&gt;
+        &lt;li&gt;망고&lt;/li&gt;
+        &lt;li&gt;사과&lt;/li&gt;
+    &lt;/ul&gt;</code></pre><pre id="3a782c3a-623f-4520-ad4e-9fd677816ea9" class="code"><code>.fruits li:not(.straw){
+    color:red;
+}</code></pre><p id="f22bc411-d7ea-480b-a6ae-90359d2012d7" class="">위와 같이 사용하면 되는데, 위에서는 straw 클래스 외의 요소를 선택하고, 그 요소들에 한해서, 빨간색으로 표시하게 된다. 즉, 딸기 외의 모든 요소가 빨간색 글자로 변하게 된다!</p><p id="00701ef7-fbd2-48c4-a808-649152fce6ef" class="">
+</p><h2 id="d1047440-449b-4d72-8a6d-07719ff4f13b" class="">가상 요소 선택자 Pseudo-Elements Selectors <mark class="highlight-pink">::</mark></h2><ul id="a4f294c8-4608-45d0-b4ab-e8eba2d9937f" class="bulleted-list"><li>어떤 요소의 앞 혹은 뒤 등에 어떤 컨텐츠를 표시하기 위해서 사용하기 때문에, content 속성과 값 지정을 잃지 말자!</li></ul><h3 id="3207cf77-bd11-4a04-95f5-66f9e87ba39d" class="">::before</h3><ul id="f8473bd1-13d5-4605-97d6-7088f0fc431d" class="bulleted-list"><li>E 요소 내부의 앞에 내용(content) 삽입</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7fe7c1b4-452b-48e1-8250-6ad8eaa65e1e"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E::before</div></figure><p id="d41db5e6-8390-4e8a-bea4-81eb63082651" class="">
+</p><h3 id="00a7f385-014b-40b1-b03c-e16d9e577c81" class="">::after</h3><ul id="9cea7b40-ee01-47cd-9315-677cddc1af57" class="bulleted-list"><li>E 요소 내부의 뒤에 내용 삽입</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bd89824c-7173-4c2e-8d02-5a31ff38377b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">E::after</div></figure><p id="62961e22-c1a3-43fe-9fd3-8d827d4ca052" class="block-color-blue_background">🐻 css 에서 이미지를 삽입할 때에는 <mark class="highlight-blue"><strong>url()</strong></mark>을 이용! 🐻</p><pre id="996e3ed6-5b88-423d-9a05-1dc0f6a5c8f7" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./pseudoEle.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;ul&gt;
+        &lt;li&gt;숫자1&lt;/li&gt;
+        &lt;li&gt;숫자2&lt;/li&gt;
+        &lt;li&gt;숫자3&lt;/li&gt;
+        &lt;li&gt;숫자4&lt;/li&gt;
+        &lt;li&gt;숫자5&lt;/li&gt;
+        &lt;li&gt;숫자6&lt;/li&gt;
+        &lt;li&gt;숫자7&lt;/li&gt;
+        &lt;li&gt;숫자8&lt;/li&gt;
+        &lt;li&gt;숫자9&lt;/li&gt;
+        &lt;li&gt;숫자10&lt;/li&gt;
+        &lt;li&gt;숫자11&lt;/li&gt;
+        &lt;li&gt;숫자12&lt;/li&gt;
+        &lt;li&gt;숫자13&lt;/li&gt;
+        &lt;li&gt;숫자14&lt;/li&gt;
+        &lt;li&gt;숫자15&lt;/li&gt;
+        &lt;li&gt;숫자16&lt;/li&gt;
+        &lt;li&gt;숫자17&lt;/li&gt;
+        &lt;li&gt;숫자18&lt;/li&gt;
+        &lt;li&gt;숫자19&lt;/li&gt;
+        &lt;li&gt;숫자20&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="0b710c22-e7c5-440a-a5a7-28ebd14f5b76" class="code"><code>ul li{
+    margin:5px;
+    font-size: 100px;;
+}
+
+ul li::after{
+    content:&quot;.0 &quot;url(&quot;https://heropy.blog/css/images/logo.png&quot;);
+}</code></pre><p id="a46aebfe-efe1-4d57-ba42-fe5a6a1dd927" class="">위와 같이 컨텐츠에는 url도 삽입할 수 있다!</p><figure id="b74ec5d1-fd38-46a8-af55-7b28fd36024f" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EA%B0%80%EC%83%81%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90%20after.PNG?raw=true"><img style="width:100%" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EA%B0%80%EC%83%81%EC%9A%94%EC%86%8C%EC%84%A0%ED%83%9D%EC%9E%90%20after.PNG?raw=true"/></a></figure><p id="dc503a1e-3407-466a-b11c-ff6117826d5e" class="">⚠️ 가상 요소 선택자는 :before, :after로도 사용할 수는 있지만, ::로 작성하는 것이 권장되는 문법이다!</p><p id="bf2138e3-37cd-45b8-9a12-a561ed8c89bf" class="">
+</p><h3 id="726a5976-d5aa-4087-8f58-38ae0ae62a0c" class="">문자 선택자</h3><p id="d9496397-f8a8-4618-b03c-3f84b237f8f2" class="">
+</p><p id="e36af25b-6643-43c2-8fdf-e279775c8400" class="">🌻 시작 문자 선택자</p><p id="df554863-00ad-4499-b536-2324411e8fb5" class="">🌺 :: first-letter - 첫 번째 글자를 선택</p><p id="3b50c18f-f868-4c28-94c5-2bd9de9ac621" class="">🌺 :: first-line    - 첫 번째 줄을 선택</p><pre id="9e325219-a972-4fd8-ac35-7c2998d5016c" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;CSS3 Selector Basic Page&lt;/title&gt;
+    &lt;style&gt;
+        p::first-letter{font-size:30px;}
+        pre::first-letter{font-size:30px;}
+        pre::first-line{color:red;}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Lorem ipsum dolor sit amet&lt;/h1&gt;
+    &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p&gt;
+    &lt;pre&gt;Aenean ac erat et massa vehicula laoreet consequat et sem.
+        가나다라마바사아자차카타파하
+    &lt;/pre&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="7dac7fbf-d4e9-4f8e-aa5b-4964cb7c670c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%EC%84%A0%ED%83%9D%EC%9E%90_%EB%AC%B8%EC%9E%90%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"><img style="width:864px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%EC%84%A0%ED%83%9D%EC%9E%90_%EB%AC%B8%EC%9E%90%EC%84%A0%ED%83%9D%EC%9E%90.PNG?raw=true"/></a><figcaption>시작 문자 선택자</figcaption></figure><ul id="f9430082-3835-414a-b631-56ba5e72ca18" class="bulleted-list"><li>시작 문자 선택자도 &quot;가상 요소 선택자&quot; 이다!!</li></ul><ul id="26cf8f83-6c03-40d3-ab29-b50bb5b58d93" class="bulleted-list"><li>p::first-letter와 pre::first-letter를 통해서 각각 L과 A가 선택되고</li></ul><ul id="1d779375-7f06-458f-aad7-17e2884ccd0a" class="bulleted-list"><li>pre::first-line을 통해서 Anean~이 선택된다!!</li></ul><p id="a1d41e79-6398-47a1-835a-a42493b5ffa8" class="">
+</p><p id="b07169ac-2388-4fcb-9254-69f82c488054" class="">
+</p><p id="062c42dd-f612-4d8b-8876-3aa603bce93d" class="">
+</p><h2 id="7133c82d-59dd-45e6-bdfa-3887ac1d4564" class="">속성 선택자 Attribute(Attr) Selectors</h2><p id="99ea7f63-356f-47da-b84b-a738a871d68f" class="">
+</p><ul id="800cae3d-acf1-403b-bb07-a546fc3dd995" class="bulleted-list"><li>CSS에서는 속성을 Property라고 함</li></ul><p id="656c69c7-e122-4c8e-9951-0512c555175e" class="">
+</p><h3 id="fe870d01-dc8c-4de7-9557-766bcd52da0a" class="">[attr]</h3><ul id="644d63d7-a838-4d78-b5c7-277b576b9306" class="bulleted-list"><li>속성 attr을 포함한 요소 선택</li></ul><pre id="28f70e11-11ec-46cc-a8af-d3bc1ce235b8" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./attr.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;input type=&quot;text&quot; value=&quot;Heropy&quot;&gt;
+    &lt;input type=&quot;password&quot; value=&quot;1234&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;disabled text&quot; disabled&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="790ae796-994a-48fd-914e-b4a32b0f57c6" class="code"><code>[disabled]{
+    opacity: 0.3;
+    color:red;
+}</code></pre><figure id="c9452a10-b2a9-4431-ab3f-241b9da4bb5b" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr%5D.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr%5D.PNG?raw=true"/></a></figure><ul id="4cf5ac14-df68-4c84-a905-ba4f34e84195" class="bulleted-list"><li>속성 선택자는 해당 속성을 가진 모든 요소에 적용할 수 있는데, 이 경우 클래스를 통한 별칭을 생성하지 않아도 된다는 장점이 있다</li></ul><p id="ee8d2f9a-7e92-4f3a-bf16-4c9c2489291c" class="">
+</p><h3 id="0c697e5d-4356-456b-bf6b-5736b8009ab9" class="">attr=value</h3><ul id="952ff6ed-9242-4110-be9f-55ed35aeadcf" class="bulleted-list"><li>속성 attr을 포함하며 속성값이 value 인 요소 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="7050b241-46c7-4268-8233-b0d11dfdae5b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">[attr=value]</div></figure><p id="4c57c3ef-f4b8-4272-96b0-3aac3b3206e3" class="">-html문서는 위와 동일하게 사용하고 css 스타일링만 변경해보겠다</p><pre id="98dc2a36-2b50-4a64-8804-e6fc84dd2df1" class="code"><code>[type=password]{
+    border:3px dashed tomato;
+    border-radius: 10px;
+}</code></pre><p id="542a8961-2614-4884-a848-1838fe3b9c38" class="">↔️</p><pre id="b2c57848-6553-44b1-96a0-83b024d3ea0e" class="code"><code>[type=&quot;password&quot;]{
+    border:3px dashed tomato;
+    border-radius: 10px;
+}</code></pre><figure id="7d1a17d2-17c5-4986-8f31-5b2fab3dc32e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr=value%5D.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr=value%5D.PNG?raw=true"/></a></figure><p id="bf66ca08-8b27-415b-b1d8-61ed2d2a3e9c" class="">위와 같이 속성=값 혹은 속성=&quot;값&quot;으로 표시하면 해당 속성 및 값에 일치하는 요소에 대해서 스타일링을 적용해볼 수 있다!(위의 그림에서 노란색으로 테두리 표시해둔 부분처럼 말이다!)</p><p id="0b10cb6f-3497-469b-b3d9-cf52b096d2bf" class="">
+</p><h3 id="e77eee70-130c-4e43-b891-2240847c99be" class="">[attr~=value]</h3><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="2e9a0fa1-9af1-41a2-976a-c26bd7ed07d2"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">[name~=abc]</div></figure><ul id="efa7237e-f510-486f-827c-440c90660d04" class="bulleted-list"><li>쓰임새는 위의 [attr=value]와 유사!</li></ul><p id="c6fe8416-7b07-4de2-9278-4508bd09a07b" class="">
+</p><h3 id="42b3d5d1-56f6-4fc2-9746-ff7d85cc1025" class="">[attr^=value]</h3><ul id="b3202889-4093-408e-bea5-585896f27eec" class="bulleted-list"><li>^: 캐럿기호</li></ul><ul id="cdf1fa34-d6ab-4dd9-a0c3-a2bde54b4ef0" class="bulleted-list"><li>속성 attr을 포함하여 속성값이 value로 시작하는 요소 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="33871a11-8e27-421a-95cd-33211d09e1b4"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">[attr^=value]</div></figure><pre id="86303799-d7da-43e1-b627-63f2ea3162d6" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;link rel=&quot;stylesheet&quot; href=&quot;./attr.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;input type=&quot;text&quot; value=&quot;Heropy&quot;&gt;
+    &lt;input type=&quot;password&quot; value=&quot;1234&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;disabled text&quot; disabled&gt;
+
+    &lt;button class=&quot;btn-success&quot;&gt;Success&lt;/button&gt;
+    &lt;button class=&quot;btn-danger&quot;&gt;Danger&lt;/button&gt;
+    &lt;button&gt;Normal&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><pre id="46866ecb-6a3b-415f-837e-b567f799f9de" class="code"><code>[disabled]{
+    opacity: 0.3;
+    color:red;
+}
+
+[type=password]{
+    border:3px dashed tomato;
+    border-radius: 10px;
+}
+
+[class^=&quot;btn-&quot;]{
+    background-color: yellowgreen;
+    border-radius: 10px;
+    border: 1px dashed red;
+}</code></pre><figure id="e2b9c20d-eecc-4bda-ab80-f54eaba1d70e" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%20%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr%5E=value%5D.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/%EC%86%8D%EC%84%B1%20%EC%84%A0%ED%83%9D%EC%9E%90%20%5Battr%5E=value%5D.PNG?raw=true"/></a></figure><p id="98d9dace-582f-4957-a61e-2176f8ff8e16" class="">위와 같이 btn-으로 시작하는 클래스에 한해서 yellowgreen 배경에 border 스타일링이 적용된 버튼 요소를 확인해볼 수 있다</p><p id="814f26d7-bc2f-4933-9eb0-6cc4f7712916" class="">
+</p><h3 id="68ae9ec2-1525-48fb-b762-1b9c557f7067" class="">[attr$=value]</h3><ul id="0dfd637b-09ce-4e8f-a991-4becdfa15973" class="bulleted-list"><li>속성 attr을 포함하며 속성값이 value로 끝나는 요소 선택</li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="5c153a33-a837-4518-8678-b7f271757484"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">[attr$=value]</div></figure><pre id="0c5e3ace-f6cb-4039-a35e-ccc6dbac83db" class="code"><code>[class$=er]{
+    color: teal;
+    font-weight: bold;
+}</code></pre><p id="5a92cdf9-ce57-4c53-8ef7-9e8d478ca1a5" class="">위의 html을 동일하게 이용한 후 위의 속성 선택자처럼 er로 끝나는 요소를 선택하게 된다면, btn-danger 클래스 요소의 글자 색상을 teal 색상으로, 글자 굵기는 굵게 하여 나타나게 될 것이다!</p><p id="c56cf966-66bb-4f2c-92ef-71ccabe39d64" class="">
+</p><hr id="1b464ed1-331d-465e-88e8-553bb1f5b9a8"/><h2 id="954e69c1-34ec-421c-9b27-d35632af2798" class="">CSS 선택자- 상속(Inherit)</h2><ul id="7c16653a-1236-4533-afc5-33fe2a8c0950" class="bulleted-list"><li>조상 요소로 부터 하위 요소로 CSS 스타일링 속성이 전달되는 것!(extends)</li></ul><p id="3ae2746e-910e-4717-a496-902d70801cd6" class="">
+</p><p id="2da2dca0-94af-4a17-b956-937210714fe4" class="">예시를 통해서 차근차근 짚어가보자</p><pre id="38f09e3f-31b1-4a21-ad25-672ae873b1ce" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .ecosystem{
+            color:red;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;ecosystem&quot;&gt;생태계
+        &lt;div class=&quot;animal&quot;&gt;동물
+            &lt;div class=&quot;tiger&quot;&gt;호랑이&lt;/div&gt;
+            &lt;div class=&quot;lion&quot;&gt;사자&lt;/div&gt;
+            &lt;div class=&quot;elephant&quot;&gt;코끼리&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;plant&quot;&gt;식물&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="8eb66aeb-44e5-45f5-b0c3-5630aa1badd3" class="">위의 예제에서는 조상요소(부모요소)인 생태계 내부에 동물과 식물이 위치하고, 동물 내부에 몇 가지 동물들이 포함되어 있다</p><p id="f1e7d2a6-da2d-4a5f-83bb-788cf6fa23f1" class="">그런데 css에서 부모요소에 대해서 color:red 를 지정하게 되면, 그 안의 모든 자식 요소들에 대해서도 스타일링이 적용된다!</p><p id="1afac038-4c7f-4bed-9eac-10ef7fd598bd" class="">
+</p><p id="00594a5f-3d50-4e75-a74b-2e0404ac73aa" class="block-color-orange_background">▶️ 🌟 모든 CSS 속성이 해당되는 것은 아니지만, 특정 CSS 속성들은 부모 요소에 대해서 적용을 해주기만 하여도, 그 내부 하위 요소들 전체에 대해서 스타일링 적용이 가능하다!</p><p id="32b181ab-f1df-4bff-99f3-fcd356f97f3e" class="">➡️ 상속의 개념!</p><p id="8daa2943-e75a-4c2b-833a-9e07273f8c51" class="">
+</p><p id="58b36af9-37d3-4fe8-9852-e3dc541002c9" class="">✅ 대부분 글자(text)를 다루는 속성들이 상속됨!(암기 x)</p><p id="e0b80df3-b0c1-496f-938e-001cae5a9526" class=""><em>참고-상속을 지원하는 속성들</em></p><ol id="e3432809-7a6f-4a45-bdcb-46dd7965ce47" class="numbered-list" start="1"><li>폰트 굵기 등을 다루는 font-* 속성들
+- font-size
+-font-weight
+-font-style
+-font-height
+-font-family : 외부 폰트 링크시 사용되는 속성</li></ol><ol id="511f1f6b-a9f8-4b2e-9230-4fe3fbe6925b" class="numbered-list" start="2"><li>color</li></ol><ol id="74789f6d-7365-4acc-ad3d-8240441f0dfe" class="numbered-list" start="3"><li>text-align</li></ol><ol id="a5e76e99-c133-495b-bd19-a935c9c9b4d7" class="numbered-list" start="4"><li>text-indent : 들여쓰기 속성</li></ol><ol id="9e751fed-7b6e-4d4f-840e-ce12684c9c77" class="numbered-list" start="5"><li>letter-spacing : 자간</li></ol><ol id="4e2a39af-2f41-49b8-9fee-34c04ea11072" class="numbered-list" start="6"><li>opacity - 투명도(0~1)</li></ol><p id="d5ae1b77-1d7f-4830-85a8-8f29a8600f2b" class="">...</p><h3 id="ffb331d6-4c5a-45af-a411-7982ad232812" class="">강제 상속</h3><ul id="3e59d9a9-c1cf-447a-a2e1-93fa59c60b56" class="bulleted-list"><li>모든 속성들이 강제 상속을 할 수 있는 것도 아니지만, 후손 요소를 제외한 자식요소에 대해서 상속 가능!(속성값:inherit)</li></ul><pre id="3448f2fc-8b38-490c-a06e-55246a6f65b3" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin:0;
+        }
+        .parent{
+            position:absolute;
+            top:10px;
+            left:30px;
+            width: 300px;
+            height: 300px;
+            background-color: teal;
+            border:1px solid red;
+        }
+        .child{
+            position:inherit;
+            border:inherit;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        parent node
+        &lt;div class=&quot;child&quot;&gt;child node&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script&gt;
+        const parent = document.querySelector(&quot;.parent&quot;),
+             child  =document.querySelector(&quot;.child&quot;);
+        const checker=`parent: top ${parent.offsetTop} left ${parent.offsetLeft}|
+        child: top ${child.offsetTop} left ${child.offsetLeft}`;
+        console.log(checker);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="7f372253-dd1d-41cc-92c2-566c3f877da1" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/css%EC%84%A0%ED%83%9D%EC%9E%90-%EA%B0%95%EC%A0%9C%EC%83%81%EC%86%8D%20inherit.PNG?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/css%EC%84%A0%ED%83%9D%EC%9E%90-%EA%B0%95%EC%A0%9C%EC%83%81%EC%86%8D%20inherit.PNG?raw=true"/></a></figure><p id="0ebb34c3-0160-4d39-b41a-55ef33fa52f0" class="">위의 경우처럼, inherit을 지정해주면, 해당 속성의 값을 물려받아서 , 위의 경우에는 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="4d84cd8f-dca2-4b4c-afcd-c910a1890382"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">position:absolute;</div></figure><p id="767e30b4-e582-469a-aa17-0bee50266a2c" class="">가 child 요소에 포함되게 된다</p><p id="dd416072-d89c-4542-bd14-d70697f778cc" class="">
+</p><hr id="d6df01ae-ad5d-4bf4-a5cc-97c6261f13aa"/><h2 id="595f65a6-c3fa-49c6-813a-8581afc96302" class="">CSS 선택자 우선순위</h2><ul id="e835873d-3a3e-4459-9bad-5f924836244a" class="bulleted-list"><li>브라우저의 규칙 중 아래와 같이, 같은 요소를 가리키는 CSS 선택자 중 어떤 것을 선택할 지 결정하는 지에 관한 규칙(선택은 브라우저가!)</li></ul><ul id="47108084-22c0-4b49-9ca9-4cd18ae6989d" class="bulleted-list"><li>우선순위 결정 방법</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="a87fec00-9e8a-4728-9ce0-9f7e87508336"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">1.명시도-<a href="https://specificity.keegan.st/">명시도 점수</a>가 높은 선언이 우선됨</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="b8cfa55b-edee-40f2-bc7a-965bbe1bd199"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">2.선언 순서-명시도 점수가 같은 경우, 가장 마지막에 기술된 선택자를 이용하여 해석
+[그래서 처음에 공부한 부분 중에서, html 구조 순서대로 선택하여 기술하는 것이 매우 중요!]</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="8e12e10d-ce42-4b47-9eb4-070435e4d896"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">3. 중요도 - 명시도가 상속 규칙보다 우선시됨(간접적으로 지정되는 특성이라서)
+-아래의 !important를 이용하게 되면, 강제적으로 부여할 수 있음</div></figure><p id="b8bdad42-e959-4804-bfc7-9736c6646235" class="">🌟 명시도 점수 🌟</p><ol id="beb0803f-081a-4d6c-a3c1-1d72179ef966" class="block-color-yellow_background numbered-list" start="1"><li>!important : 점수 =∞(무한대) pt ➡️ 무한대이기 때문에 다른 선언들을 모두 제치고, 가장 먼저 선택되게 됨!</li></ol><ol id="3e0112c5-e71a-486b-9cbf-11e6d3d5f794" class="numbered-list" start="2"><li>style 인라인 방식(style attribute) :  1000 pt
+</li></ol><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="543073f9-fec7-4b20-9d24-e2afd04b5287"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">&lt;div style=&quot;color:orange;&quot;&gt;Hello World!&lt;/div&gt;</div></figure><p id="d04e7fce-a43c-49aa-abfc-1f482fbc65ae" class="">✅ 단점 : JS DOM 객체 등을 활용해서 속성을 덮어쓰기 할 경우, 점수가 꽤 높아서 적용이 어려워질 수 있음! ▶️ <mark class="highlight-blue"><strong>유지 보수에 많은 제약이 존재하게 됨! 그래서 보통 CSS 인라인 선언 방식은 비추임!!</strong></mark></p><p id="8e01ce1e-c374-4680-b070-b714422ea4cb" class="">
+</p><p id="f25b7770-6f67-498c-a89e-4e5473f30ba9" class="">3. 아이디 선택자 #E  → 100 pt</p><p id="0dcb768d-5fb3-4286-94e5-c55aceb13da5" class="">🌟 고유한 요소를 지정하기 때문에 우선순위 명시도 점수가 꽤 높음</p><p id="3ee47cd2-6451-40f7-b51f-21a4fa934475" class="">4. 클래스 선택자 .E →10pt[가상 클래스 선택자도 가상이지만 클래스이기 때문에 해당됨]</p><p id="210063e2-3de3-4ef0-a061-7b08ff48a80d" class="">5. 태그 선택자 → 1pt[가상 요소 선택자도 가상이지만 요소이기 때문에 해당될 수 있음]</p><p id="0fbe47d8-2a03-403a-99eb-ea053bbd32db" class="">6. 전체(Universal) 선택자 → 0 pt</p><p id="d3dd55a0-08f7-4605-a0c7-baa45d37ed0a" class="block-color-teal_background">7. 상속은 점수를 계산하지 않음!!</p><p id="8ec2bb3c-59c1-4ff9-9761-94a192b7b300" class="block-color-teal_background"><mark class="highlight-red"><strong>8. 부정 선택자 :not은 점수가 없음!!-가상 클래스 선택자 중에서 예외적!!</strong></mark></p><p id="742c9d56-4f72-4dec-95a8-c109cf919b86" class="">
+</p><p id="26f93017-0529-4402-af2e-a02b6065c7f2" class="block-color-orange_background">▶️ 전체 &lt; 태그 &lt; 클래스 &lt; 아이디 [선택자 우선순위!!]</p><p id="6c894d4f-96b6-41fd-82bc-07eb241fdb37" class="">
+</p><p id="6d893bd3-15a7-465a-8829-68e3e2a6af74" class="">✴️ !important</p><p id="32a8860b-8d06-4017-a88c-1d54110f86d8" class="">.</p><pre id="b78d6736-a188-4204-81db-b7393ff7e3cd" class="code"><code>&lt;div id=&quot;here&quot;&gt;abcdefg&lt;/div&gt;
+&lt;!---중략, css--&gt;
+&lt;!--main.css--&gt;
+#here{
+	background-color: teal !important;
+}
+div{
+	background-color:orange;
+}</code></pre><p id="07c56b53-e542-44d7-bcf3-ea5a4c4858c0" class="">!important는 동일한 요소를 선택자 등을 이용해서 같은 속성을 다양하게 나열했을 때, (위와 같이)</p><p id="cfd84d11-6842-4010-bbe0-c78e464046d9" class="">이런이런 방식으로 스타일링을 기술했는데,<mark class="highlight-red"><strong> 이중에서 이 아이를 가장 먼저로 생각해줘! </strong></mark>라는 개념!!</p><p id="1d562204-1d80-4408-8a03-b0c7a369f95b" class=""><a href="https://www.w3schools.com/css/css_important.asp">https://www.w3schools.com/css/css_important.asp</a></p><pre id="03617e2e-3f1f-4a1f-8821-4eaa9dccd243" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            color:teal;
+        }
+        body{
+            color:violet;
+        }
+        div{
+            color:red !important;
+        }
+        #color_yellow{
+            color: yellow;
+        }
+        .color_green{
+            color:green;
+        }
+        div{
+            color:blue;
+        }
+
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;color_yellow&quot; class=&quot;color_green&quot; style=&quot;color:orange;&quot;&gt;Hello World!&lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="767fd437-73dc-4b41-aca2-42df674df702" class="">즉, 위와 같이 !important를 해주게 된다면, 비록 body나 전체 html문서에 대해서 color 속성을 상속시켰더라도, 또한 다른 선택자를 이용해서 지정했더라도 !important가 붙은 선택자의 스타일링이 적용된다. 따라서 위의 경우는 color:red;가 적용된다!</p><p id="434abb99-49fe-4b45-84dd-b0946fb490e8" class="">
+</p><p id="d0dd6cc2-3012-406b-aa24-cfb910cf0833" class="">명시도 점수를 계산해보자!</p><p id="f41f4264-e5e1-43ff-a258-5d1c06fd278c" class="">[example]</p><pre id="be3d771f-6fff-4b5b-b90f-f251eb385d47" class="code"><code>.list li.item{}
+.list li:hover{}
+.box::before{}
+#submit span{}
+header .menu li:nth-child(2){}
+h1{}
+:not(.box){}
+.not(span){}</code></pre><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="69e415cb-57ff-4bc6-a540-7e6c1c97b99d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">1. 먼저 .list li.item은 클래스선택자 2개와 태그선택자 1개가 사용되었기 때문에
+명시도 점수=10*2+1=21pt 가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="a4e55c3a-df7e-4e96-8be4-54a97160bbff"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">2. .list li:hover 는 클래스선택자1개와 가상 클래스 선택자 1개, 태그 선택자 1개가 사용되어
+명시도 점수= 10+10+1=21pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="cce70f97-3993-4414-b44a-419cbabd55f8"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">3. .box::before는 클래스 선택자 1개와 가상 요소 선택자 1개가 사용되어
+명시도 점수=10+1=11pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="355a9d9f-2421-4a02-81b8-3710a6a2a15d"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">4. #submit span는 아이디 선택자 1개와 태그 선택자 1개가 사용되어
+명시도 점수 = 100+1=101pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="4ad6744e-629c-4176-b5f2-a507fe6f761f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">5. header .menu li:nth-child(2)는 태그 선택자 2개와 클래스 선택자 1개, 가상 클래스 선택자 1개가 사용되어
+명시도 점수 = 1*2+10*2=22pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="eee2b725-6d02-499c-a02c-eaf6560f3f8c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">6. h1은 태그 선택자이기 때문에 명시도 점수는 1pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="11b1fef3-6091-44be-8630-314ceb40c5d5"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">7. :not(.box)은 부정 선택자는 계산되지 않으므로 클래스 선택자 만이 계산되어 10pt가 된다</div></figure><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="95d668cb-27cb-411f-b300-d6da3695297f"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">8. :not(span)은 부정 선택자는 계산되지 않으므로 태그 선택자 만이 계산되어 1pt가 된다</div></figure><p id="64ce3085-812f-42cc-97f6-124ebf2fb96a" class="">
+</p></div></article></body></html>

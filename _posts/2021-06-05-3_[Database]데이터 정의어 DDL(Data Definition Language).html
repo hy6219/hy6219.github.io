@@ -1,0 +1,662 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>데이터 정의어 DDL(Data Definition Language)</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="773c447e-f9f2-4ae1-9801-7084641fe59c" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🐻</span></div><h1 class="page-title">데이터 정의어 DDL(Data Definition Language)</h1></header><div class="page-body"><ul id="35e2bf36-03dd-448b-920e-98e81734ea77" class="bulleted-list"><li>명령어를 수행하자마자 데이터베이스에 수행한 내용이 바로 반영됨 ↔️ ROLLBACK을 이용한 작업 취소가 불가!!</li></ul><ul id="a3ccc7ef-8bbd-4e6e-9a88-5333d678ddb6" class="bulleted-list"><li>DDL의 종류 : CREATE, ALTER, DROP, RENAME, TRUNCATE</li></ul><p id="f5df5bb8-4183-4d42-a4b1-a7b6c04d1e9c" class="">
+</p><h2 id="b324043b-4191-4a42-8d62-fed266953b1e" class="">CREATE- 테이블 생성!</h2><p id="8ee2f61d-949b-4838-a9b4-634fbba8c267" class="">[USAGE]</p><pre id="0f85f8c5-25e7-4d95-aa61-963606dbbf05" class="code"><code>CREATE TABLE [소유계정.]테이블 이름(
+	열1이름 열1자료형,
+  ...
+  열n이름 열n자료형
+);</code></pre><p id="1acd508c-dfef-482c-9de8-e2820da326d6" class="">
+</p><p id="247becec-c40b-4e17-8af2-5eb6e0c1031f" class="block-color-orange_background">⭐ 테이블 이름 생성 규칙</p><ol id="6e35e1b5-d315-4db7-9eea-d9c5643096d8" class="numbered-list" start="1"><li>테이블 이름은 문자로 시작!(한글 ⭕ 숫자 🚫)</li></ol><ol id="151fa950-8eff-493f-beb6-305e2b364d25" class="numbered-list" start="2"><li>테이블 이름 ≤ 30 Byte (↔️ Eng: 30자, 한글 : 15자 까지 허용)</li></ol><ol id="8b90e252-f181-4569-ac08-fe35cc0aeea9" class="numbered-list" start="3"><li>같은 사용자 소유의 테이블 이름은 중복될 수 없음</li></ol><ol id="ebec505e-5caa-4d5b-8081-e05f4bf6223c" class="numbered-list" start="4"><li>테이블 이름은 영문자, 한글, 숫자, 특수문자 $ # _ 사용 가능</li></ol><ol id="f2a0fef4-6574-49ea-b7a1-c934897af3b3" class="numbered-list" start="5"><li>SQL 키워드는 테이블 이름으로 사용 불가!!</li></ol><p id="2754c9c9-9fcd-45ac-b31c-4aa6bb0702d7" class="">
+</p><p id="ab50fa68-cb19-416f-8f66-05762b8bca31" class="">🌟 열 이름 생성 규칙</p><ol id="a28a69c1-8061-4fd1-8276-0db1856e10dd" class="numbered-list" start="1"><li>열 이름은 문자로 시작!! (테이블 1번과 유사)</li></ol><ol id="7e939ead-9ef2-40aa-818e-1f82ec6dbbe1" class="numbered-list" start="2"><li>열 이름 ≤ 30 Byte (테이블 2번과 유사)</li></ol><ol id="23e8b193-1d9f-400d-894b-359becb0d345" class="numbered-list" start="3"><li>한 테이블의 열 이름은 중복 불가(테이블 3번과 유사)</li></ol><ol id="b16a69c8-e032-404d-82ff-e387779eaafd" class="numbered-list" start="4"><li>열 이름은 영문자, 한글, 숫자, 특수문자 $ # _ 사용 가능 (테이블 4번과 유사)</li></ol><ol id="9a03a989-bf3b-4827-8820-dda39976ebe9" class="numbered-list" start="5"><li>SQL 키워드는 열 이름으로 사용 불가!!(테이블 5번과 유사)</li></ol><p id="6b19ee36-774f-4ed1-98d2-e0510c3de65c" class="">
+</p><h3 id="e4cbc6e2-3290-441a-bb1a-891c13800913" class="">기존 테이블 열 구조와 데이터를 복사하여 새 테이블 생성하기</h3><pre id="a9bf3388-658f-4db8-998f-39d93ef8ed40" class="code"><code>CREATE TABLE 테이블명
+AS SELECT * FROM 기존 테이블 이름;</code></pre><p id="9b9288e0-ea6e-46ca-b294-aedd1593bbf3" class="">
+</p><h3 id="e573b98c-66c8-4689-8057-6783acf55b84" class="">기존 테이블 열 구조와 일부 데이터만 복사하여 새 테이블 생성하기</h3><pre id="ef999a8f-8dd4-4bbe-be88-9163a9291d3a" class="code"><code>CREATE TABLE 테이블명
+AS SELECT * FROM 기존 테이블 WHERE 조건식;</code></pre><h3 id="cf9821a3-1834-4370-9383-cc9439b4e0ca" class="">기존 테이블의 열 구조만 복사하여 새 테이블 생성하기</h3><ul id="39d8f1e3-40c4-48be-847a-80edf99f73d7" class="bulleted-list"><li>위에서 &quot;기존 테이블의 열 구조와 일부 데이터만 복사하여 새 테이블 생성하기&quot;에서 조건식을 무조건 어떤 상황에서라도 false 인 경우로 지정하면 된다!</li></ul><pre id="c2d76125-8525-46ff-87f9-cb4a8f66090b" class="code"><code>CREATE TABLE 테이블명
+AS SELECT * FROM 기존 테이블 WHERE 어떤 상황에서도 false가 되는 조건식;</code></pre><pre id="b37b0221-9c54-40d9-b2d1-b94364ee3df1" class="code"><code>CREATE TABLE EMP_DDL2
+AS SELECT E.EMPNO, E.ENAME, E.JOB, E.MGR, E.HIREDATE,E.SAL, E.COMM,E.DEPTNO 
+          FROM EMP E
+          WHERE 1^=1;</code></pre><p id="26d490bc-a009-45bd-9bc3-468dd980b56b" class="">
+</p><h2 id="921b109e-4dbe-4df8-bd05-f9432cdbf489" class="">ALTER- 이미 생성된 오라클 DB 객체를 변경!</h2><p id="5416ebbb-c5cb-4136-8f4e-b6275740c35f" class="">1) ADD :테이블에 열 추가</p><p id="ea7987b5-f82a-4314-8e93-4b0803327b77" class="">[USAGE]</p><pre id="072f5907-4113-4ada-8293-ce4cba5a2d8c" class="code"><code>ALTER TABLE 테이블명
+ADD 컬럼명 자료형;</code></pre><p id="034b8b98-1fed-4800-8ad3-a77fb7ef0b14" class="">(예) EMP_ALTER2 테이블에 VARCHAR2 자료형(크기=20)인 컬럼 HP 추가하기</p><pre id="81fbb8e0-94e7-4e34-85f1-0acf993f760f" class="code"><code>ALTER TABLE EMP_ALTER2
+ADD HP VARCHAR2(20);</code></pre><p id="0bea588f-b57a-4057-8917-d2fe69b41553" class="">
+</p><p id="671b87ae-43db-4476-99bd-6b11f05376ff" class="">2) RENAME : 열 이름을 변경</p><p id="18560076-01dd-496a-8fa5-3a7452a9661e" class="">[USAGE]</p><pre id="4fb458e6-3a6a-44d9-b235-e3e4bcaeaca2" class="code"><code>ALTER TABLE 테이블명
+RENAME COLUMN 기존 컬럼명 TO 바꿀 이름;</code></pre><p id="0590421c-cd3f-470c-ab33-772cfabe0704" class="">(예) EMP_ALTER2 테이블의 HP 컬럼을 TEL로 이름만 변경하기</p><pre id="805b84b2-c5d2-40e1-9e79-41c72a9b205a" class="code"><code>ALTER TABLE EMP_ALTER2
+RENAME COLUMN HP TO TEL;</code></pre><p id="ee9fc629-a5f7-4722-a716-a64f25ba3201" class="">
+</p><p id="e2c0d044-0562-4bf0-91c3-d80f08f0ede8" class="">3) MODIFY : 열의 자료형을 변경 OR  이미 존재하는 테이블에서 특정 컬럼에 제약 조건 추가하기</p><p id="a97bd47d-b7d5-4924-ac4b-c38c7ce9dcd5" class="">A. 열의 자료형 변경</p><p id="fdefa43c-d519-41ea-b013-1c632dd30390" class="block-color-orange_background">⭐ 기존 테이블 데이터에 영향을 주지 않는 범위 내에서 가능! 즉, 길이를 늘이는 것은 괜찮지만, 길이를 줄이거나,<mark class="highlight-purple"><strong> 기존 열의 자료형을 다른 자료형으로 바꾸는 것은 데이터 상태에 따라 결정됨!</strong></mark></p><pre id="bdc07d97-eadf-4714-a63c-59f37645e478" class="code"><code>ALTER TABLE 테이블명
+MODIFY 컬럼명 바꿀_자료형;</code></pre><p id="b955ac62-8a83-4135-b640-8eb7d53b6a03" class="">(예) EMP_ALTER2 테이블의 JOB의 자료형이 VARCHAR2(9)로 되어있는데, VARCHAR2(10)으로 변경하기</p><pre id="856d81ca-abaa-4b30-a054-b0fd15f0ddef" class="code"><code>ALTER TABLE EMP_ALTER2
+MODIFY JOB VARCHAR2(10);</code></pre><p id="a0d4a8c0-bf3f-402b-bfd7-1840dc67997c" class="">
+</p><p id="ac53e021-8cb1-4c53-b752-a00fb6758a3f" class="">B. 이미 존재하는 테이블에서 특정 컬럼에 제약 조건 추가하기 ▶️ 제약조건 부분에서 확인하기!</p><pre id="7c6c99bb-e6e5-4f50-88d2-e21efdbe31cc" class="code"><code>ALTER TABLE 테이블명
+MODIFY(컬럼명 제약조건);</code></pre><p id="0bb737fb-5248-4123-bfae-67f252d19b43" class="">
+</p><p id="899e974b-f245-4b46-83bd-bfc73aca706e" class="">4) DROP : 특정 열을 삭제</p><p id="31c28a0b-9667-40e9-904d-30261ad9263b" class="">[USAGE]</p><pre id="75441228-5537-45cd-aede-d08a129d502d" class="code"><code>ALTER TABLE 테이블명
+DROP COLUMN 컬럼명;</code></pre><p id="88e199db-9846-4064-b80f-7f924c1e56e7" class="">
+</p><p id="71ab2ed4-d62b-4a03-addc-aacd933b0f5d" class="">(예시) 테이블 EMP_ALTER2에서 TEL 열 삭제하기</p><pre id="617bde36-b8ed-464c-a4e7-0ab976127c25" class="code"><code>ALTER TABLE EMP_ALTER2
+DROP COLUMN TEL;</code></pre><p id="034538dd-9991-4b7e-b103-25b5c13b377c" class="">
+</p><h2 id="43b8aefb-652a-4e79-bea6-23edc2598b7d" class="">RENAME - 테이블의 이름을 변경</h2><p id="1c9c3cea-3f75-4418-908a-28244fa54774" class="">[USAGE]</p><pre id="ec035a1a-0da3-408f-a666-1322e1cf0c26" class="code"><code>RENAME 기존_테이블_이름 TO 바꿀_테이블_이름;</code></pre><p id="a2bfb6dd-c13d-4b90-b391-832f509c2083" class="">(예시)</p><ul id="c625b483-3db9-4b22-b929-9ab72fb45e73" class="bulleted-list"><li>위에서 사용되었던 테이블 EMP_ALTER2를 EMP_RENAME으로 바꾸기</li></ul><pre id="a0bbca1d-d4e2-4a37-967c-3db308cacc6f" class="code"><code>RENAME EMP_ALTER2 TO EMP_RENAME;</code></pre><p id="5463d5cd-2cae-4fd9-bf5c-2b2ef363c794" class="">⭐ 한 번 테이블 이름을 바꾼 후, 이전 테이블 이름으로 조회를 시도할 경우,</p><pre id="aed2c212-57e9-41bb-83e3-4a7a354964f9" class="code"><code>SELECT * FROM EMP_ALTER2;</code></pre><p id="5497648b-218d-47eb-930a-0390290f6971" class="">
+</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e30fd960-1ec7-4bc3-9ed9-81682a831553"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">SQL Error [942] [42000]: ORA-00942: table or view does not exist</div></figure><p id="c23acb39-8cd0-4a8d-a15d-2aa83191463b" class="">와 같은 에러가 발생한다!!</p><p id="b9ce0081-b68a-4035-a5c5-3694826e913c" class="">즉, 이제는 이전 이름으로 지정된 테이블의 흔적이 없어지고, EMP_RENAME이라는 테이블로 접근할 수 있게된 것이다!!</p><p id="f21285e7-b4b1-4f79-b5cb-79da6f652a0d" class="">
+</p><h2 id="71dd2d73-659a-4840-b1e4-5435574fba5e" class="">TRUNCATE - 테이블의 데이터를 삭제</h2><p id="6cfba613-8c64-43f4-830e-1622f63d2c67" class="block-color-orange_background">⭐ TRUNCATE 는 WHERE 조건식이 붙지 않은 DELETE 문의 수행과 동일하지만, ROLLBACK이 되지 않는다는 점에서 다르다!!</p><p id="280487d2-861c-427f-840b-33d50cd28b5c" class="">
+</p><p id="3b641f03-01b4-4fd4-baea-e0477a62363d" class="">[USAGE]</p><pre id="5a0aad90-9edc-4a71-ae40-94a560233419" class="code"><code>TRUNCATE TABLE 테이블명;</code></pre><p id="518055aa-c625-49a0-b2e7-212256782ca8" class="">
+</p><h2 id="2031ce60-90ab-4bf3-ac70-3ebd480f4562" class="">DROP - 테이블을 삭제</h2><ul id="fc1e35bb-2a27-4188-82ad-428ecca6b315" class="bulleted-list"><li>테이블이 삭제되므로 데이터도 모두 삭제됨</li></ul><p id="301d6362-c4b1-410c-98d2-5fd63590700f" class="">[USAGE]</p><pre id="a72bc7c8-5ce2-4c2d-b355-6534a1803c0a" class="code"><code>DROP TABLE 테이블명;</code></pre><p id="1099e862-f2ab-4997-a59f-13c141130c4c" class="">⭐ RENAME 때와 유사하게, DROP TABLE을 한 후 해당 테이블을 조회하면</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="8c05c2b3-fa49-444f-86f0-ae4bcd5e505b"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">SQL Error [942] [42000]: ORA-00942: table or view does not exist</div></figure><p id="304fb2a1-a214-4386-9cab-f1d4677fc6df" class="">와 같은 에러가 발생한다!</p></div></article></body></html>
