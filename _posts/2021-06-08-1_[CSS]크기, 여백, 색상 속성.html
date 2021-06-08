@@ -1,0 +1,1363 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>CSS 속성-크기, 여백, 색상</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0f881569-6b8e-49a0-a121-0a35aef7616e" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">💚</span></div><h1 class="page-title">CSS 속성-크기, 여백, 색상</h1></header><div class="page-body"><p id="0b5b40f5-8816-4502-a1f3-18796480abd0" class=""><span style="border-bottom:0.05em solid">크기, 여백, 색상과 같은 실질적으로 눈에 보이는 스타일을 지정 가능!</span></p><p id="d6a89726-891a-4fd8-9841-bdcb02ca803d" class="">
+</p><ol id="1ea0fa7d-99e4-4b50-b088-fbfaf45b8254" class="numbered-list" start="1"><li>크기</li></ol><p id="ec4374e5-075a-4d46-9f03-8e06301f424d" class=""><div class="indented"><p id="98671ac5-b10c-4201-971c-45435e58f0a6" class="">a) width </p><ul id="ebc756b2-857c-43a7-bd67-e84a4d957a7e" class="bulleted-list"><li>요소의 가로 너비를 지정</li></ul><ul id="b3074690-8fe9-4277-a3b9-280d4b8dc10a" class="bulleted-list"><li>auto : 브라우저가 너비를 계산-기본값</li></ul><ul id="663918cd-e9bf-43d8-a1e9-b24bb694e00c" class="bulleted-list"><li>단위(px, em, rem)를 이용하여 너비를 지정</li></ul><p id="5756b178-87f5-47a4-8f76-99c63f0f25d4" class="">🌟 블록 요소에 대해서 width: auto로 지정됐을 경우, 브라우저는 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="73e9fc84-e811-4bc7-bde9-e13c28dbf3f6"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">width:100%;</div></figure><p id="ff0a18ce-8b74-479b-b071-d600dea10dd5" class="">로 인식</p><p id="f7fbaf7d-5396-45cd-a6e0-7e595ef10501" class="">🌟 (텍스트 등 내용이 없을때)인라인 요소에 대해서 width: auto로 지정됐을 경우, 브라우저는 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="25df9ac6-a8b9-40a5-a41a-a5afd1a17ab0"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">width:0;</div></figure><p id="e28c82a1-b08a-4ee9-b426-28b349ee7ca7" class="">로 인식</p><pre id="b3250a75-596e-427e-bb39-5f28e6e9639c" class="code"><code>div{
+	width: 300px;
+}
+
+div{
+	요소가로너비: 너비값;
+}</code></pre><p id="bb8ad40f-d501-4b5f-b0ac-eb0af65815e8" class="">
+</p><p id="1697a571-3789-48bd-a33e-e9500687e0eb" class="">b) height</p><ul id="e85e5cbc-2efd-41c2-bf51-b1147c58be1d" class="bulleted-list"><li>요소의 세로 너비를 지정</li></ul><ul id="f984bbc4-aad0-473b-9b65-b75c8790b1cd" class="bulleted-list"><li>auto : 브라우저가 높이를 계산-기본값</li></ul><ul id="d13100e4-99dd-45f9-88b4-1bab0f3b022f" class="bulleted-list"><li>단위(px, em, rem)를 이용하여 높이를 지정</li></ul><p id="9515e396-c3e7-4d7d-80af-36b1f1758584" class="">
+</p><p id="eacb54b7-35ce-4a44-a041-60f8d1784672" class="">✨ 블록 요소와 인라인 요소는 브라우저에서 해석되는 방식이 다르다! ⬇️</p><p id="deaf359a-8d79-4585-9c74-f3e7a5e3b3b1" class="">🌟 (텍스트 등 내용이 없을때)블록 요소 및 인라인 요소에 대해서 height: auto로 지정됐을 경우, 브라우저는 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="42f2ac46-2382-4db0-8737-ace8fe504e59"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">height:0;<mark class="highlight-teal"><strong>/*값이 0일 경우는 어떤 단위가 와도 같으므로, CSS에서는 0뒤에 단위를 붙이지 않는 것이 원칙!*/</strong></mark></div></figure><p id="5c7ea489-f9d4-4c54-8ccf-673ec58d11ca" class="">로 인식</p><p id="f6531ed9-2fc4-4d94-a12d-b19b4af3a5bf" class="block-color-pink_background">🌟 블록요소는 내용 유무에 상관없이 width, height을 특정 값으로 지정해줄 수 있지만, 인라인 요소는 그렇게 할 수 없다 </p><p id="c6e8486a-be9b-4b30-84eb-9aa83ef6aeb4" class="block-color-pink_background">🌟 인라인 요소는 너비와 높이를 지정할 수 없기 때문에 auto이든, 특정값으로 지정해주려고 하든지, 두 경우 모두 묵시된 것같은 느낌을 준다! 즉, 그저 컨텐츠를 감싸는 너비와 높이로 속성이 지정될 수 있게 된다! </p><pre id="1b9fca12-bfab-4ade-ac22-6ac6e7273332" class="code"><code>div{
+	height: 150px;
+}
+
+div{
+	요소세로너비:너비값;
+}</code></pre><p id="4b2aab28-21ea-4650-9c77-f2198cb7df68" class="">🌟 만약 아래와 같이 텍스트를 블록요소와 인라인요소에 추가해준 후, auto 속성값을 넣어주면</p><pre id="e5dadb85-5015-46bf-a423-5e3e804f63c1" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin:0;
+        }
+       span{
+           width: auto;
+           height: auto;
+           background-color: tomato;
+       }
+       div{
+           width: auto;
+           height: auto;
+           background-color: tomato;
+       }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;span&gt;가나다&lt;/span&gt;
+   &lt;div&gt;라마바&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="45c53bc4-b03d-4d5c-ab19-10340913f295" class="">인라인 요소인 span과 div는 높이가 모두 글자 높이를 감싸는 정도로 지정된다. 하지만 너비는 span은 글자컨텐츠를 감싸는 너비정도까지, div는 기준요소(위의 경우는 document)를 가득 채우는 100%로  지정됨을 확인해볼 수 있다!</p><p id="00c1698e-ea2a-420d-a314-9d0a95f849a6" class="">즉, 인라인 요소는 너비와 높이는 항상 컨텐츠를 감싸는 정도까지 지정될 수 있다!</p><p id="4f778a99-6b20-49e5-bb04-9c5e7b46a093" class="">
+</p><p id="9720e607-da32-4577-a781-ff91c3c1f208" class="">⭐ 블록요소는 레이아웃을 위한 목적으로, 인라인 요소는 텍스트를 다루기 위한 목적으로 자주 다루어질 수 있는 유용한 요소!</p><p id="050f9238-d9bc-4f6d-922a-5add8bf42ec1" class="">
+</p><p id="b7f669da-a62e-4f7a-8698-ba501217107c" class="">c)  max-width</p><ul id="1731c020-d233-46e7-9107-e4785402716a" class="bulleted-list"><li>요소의 최대 가로 너비를 지정</li></ul><ul id="cb3d258a-9c76-4c29-b087-9523192c6940" class="bulleted-list"><li>기본값 - none</li></ul><ul id="f15a1f67-5dc4-403a-a8f6-26036dc76386" class="bulleted-list"><li>단위를 이용해서 지정 가능</li></ul><ul id="997977f2-268d-4159-a84b-637ed2397818" class="bulleted-list"><li>auto 속성값도 지원됨</li></ul><p id="c1307bc0-cb24-4eff-b4ed-edab4c631f9e" class="">d) min-width</p><ul id="d63caa52-53a1-4c62-9de9-a5a0c2ca7324" class="bulleted-list"><li>요소의 최소 가로 너비를 지정</li></ul><ul id="1feb8963-de5d-4754-9b77-d3c5237b9e12" class="bulleted-list"><li>기본값 - 0</li></ul><ul id="c6565999-cf80-4456-9dae-0c606fdc3f87" class="bulleted-list"><li>단위를 이용해서 지정 가능</li></ul><ul id="628ca144-1c5b-406f-88df-33a1592b670f" class="bulleted-list"><li>auto 속성값도 지원됨</li></ul><p id="30fcb935-a162-4792-a117-148c5bc82eb1" class="">
+</p><p id="88250437-e6ea-4c0f-891b-1e0653eef584" class="">max-width와 min-width를 이용해서 간단한 예제를 연습해보자</p><pre id="322ebd48-3e3b-44a1-8e99-a13e44823679" class="code"><code> &lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .parent{
+            width: 100px;
+            height: 300px;
+            border:3px dashed red;
+            margin:20px;
+        }
+
+        .child{
+           /*child의 100%는 parent에
+            맞춰져서 auto를 width에 
+            설정하게 된다면 width는 500px*/
+            max-width:400px;
+            min-width:200px;
+            height: 200px;
+            background-color: yellow;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="fe5a6372-c164-4280-9a82-a89801c42a27" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20max-width,%20min-width.gif?raw=true"><img style="width:720px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20max-width,%20min-width.gif?raw=true"/></a><figcaption>CSS 크기속성 max-width, min-width</figcaption></figure><p id="190e5887-e43b-48b3-837f-da08e7106534" class="">위와 같이 어떠한 부모-자식 관계가 존재할 경우, </p><p id="2438d13c-19e4-4cec-acf6-be665422a9f4" class="">🌹 자식 요소에서 min-width와 max-width를 지정해준 후</p><p id="be7a48cb-8d6f-47d1-a956-ec6a8f647c95" class="">🌹 (i) 부모요소에서 min-width이하의 값을 width로 지정하면, 자식요소는 min-width값이 width값이 되고</p><p id="2dbd1782-b598-43fc-8d91-33324d28b67d" class="">(ii) 부모요소에서 max-width 이상의 값을 width로 지정하면, 자식요소는 max-width값이 width값이 된다!</p><p id="f0eaeb43-e496-4d51-885c-6a15d2309b79" class="">🌟 max-width, min-width로 width와 관련된 일련의 설정을 걸어주었다면, 그 범위 외로는 벗어날 수 없다!!</p><p id="24dc0c65-810c-4856-8b5a-45708d005e7a" class="">
+</p><p id="c0271939-ae83-4d38-85a7-18153d7efe18" class="">e) max-height</p><ul id="3607e95b-f279-42b8-8651-913491b05363" class="bulleted-list"><li>요소의 최대 세로 크기를 지정</li></ul><p id="054579d7-a87c-446a-89ae-b31704d23c1a" class="">f) min-height</p><ul id="9dbeff2b-38d4-48e2-9fd1-72f380d8121e" class="bulleted-list"><li>요소의 최소 세로 크기를 지정</li></ul><p id="8629f02f-db7c-4853-b3fe-9f500e792594" class="">-높이의 경우 min-height와 max-height을 같이 지정해주면, 부모요소의 높이와 관계없이 min-height로 지정될 수 있다</p><p id="8c109216-e12b-45c3-9637-c804fa9e9fdf" class="">-높이의 경우 min-height으로 어떤 속성값을 지정하면, 최소한 그 높이는 확보하라는 의미라고 생각하면 된다. 그리고 max-height은 만약 이 값을 넘는다면, overflow등의 속성을 이용해서 처리할 것이다 라는 의미가 짙다고 보면 된다!</p><pre id="f46a8193-885b-4685-a130-0d3dea2f670f" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin:0;
+        }
+        #lorem{
+            border:1px solid black;
+            max-width:500px;
+            min-height:100px;
+            overflow-y: scroll;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p id=&quot;lorem&quot;&gt;
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&#x27;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    &lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="274ef4be-c6e1-4f0e-9898-4785e0654a93" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20max-height.gif?raw=true"><img style="width:720px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20max-height.gif?raw=true"/></a><figcaption>CSS 크기속성 max-height</figcaption></figure><p id="8a0c965f-9a4f-45e3-b1e9-fbcfe6d36bfd" class="">위의 경우, max-height을 지정하고 이후에 overflow-y로 scroll을 생성해줌으로써 넘치는 부분은 스크롤하여 볼 수 있도록 처리하였다. 즉, 어떤 한계까지를 높이로 볼 수 있게 된 것이다!</p><p id="3704f078-4829-4594-993b-1be78eaa9a16" class="">
+</p><p id="075ed78d-39c1-4967-a487-a6de4f8cc7c7" class="">2. 여백(margin/padding)</p><figure id="bb790dd7-6c35-4aa0-8947-199f6d47b48a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/%ED%8C%A8%EB%94%A9%EA%B3%BC%20%EB%A7%88%EC%A7%84.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/%ED%8C%A8%EB%94%A9%EA%B3%BC%20%EB%A7%88%EC%A7%84.png?raw=true"/></a><figcaption>여백개념: margin과 padding의 개념</figcaption></figure><p id="1e3b30e6-d575-4a72-a50d-817df457cc93" class=""><mark class="highlight-red"><strong>a) margin </strong></mark>🌟</p><ul id="5dce1d5b-cdfd-4848-a7a1-01fb08debc26" class="bulleted-list"><li><mark class="highlight-teal"><strong>요소 바깥에 존재하는 여백</strong></mark>으로, 시각적으로는 두 개 요소 간 거리가 있는 것 처럼 보임</li></ul><ul id="065e5e8b-5374-4afc-a7bd-5111e7f913a5" class="bulleted-list"><li>음수값을 사용할 수도 있음</li></ul><ul id="73a74622-4220-4e94-ac85-6c4162a9d040" class="bulleted-list"><li>속성값
+1) 기본값 : 0
+2) 단위    : px, em, cm 등
+3) auto   : 브라우저가 너비를 계산
+4) %      : 부모 요소의 너비(width)에 대한 비율로 지정</li></ul><pre id="1ab0ef06-46b4-4121-8b56-9d19b120f841" class="code"><code>div{
+	margin:20px;/*상하좌우 방향으로 모두 20px의 마진으로 설정하자*/
+}
+
+div{
+	요소바깥여백: 여백값;
+}</code></pre><p id="8a318e1b-ff1e-47ef-84dd-76b394caa533" class="">%의 경우, 부모 요소의 너비를 기준으로 비율로 계산되어 사용되는데 아래의 예제를 살펴보자</p><pre id="3e9dd2e9-6ac3-4bc1-b253-b93e8b1873c8" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .parent{
+            width: 400px;
+            height: 200px;
+            border:4px solid red;
+        }
+        .child{
+            width: 100px;
+            height: 100px;
+            border:4px solid black;
+            margin:50%;/*200px*/
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="3a4acf57-7743-43db-8d4f-54897ddc4f26" class="">위의 경우, 부모요소인 parent 요소의 너비가 현재 400px 이므로 이의 절반인 200px이 child 요소의 상하좌우 여백에 대한 값으로 적용된다</p><figure id="446a22d9-065d-49b6-a38e-9f220cab4afc" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20percent.PNG?raw=true"><img style="width:576px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20percent.PNG?raw=true"/></a><figcaption>CSS margin 속성</figcaption></figure><p id="967bee39-26f9-476e-b766-8468bb53c784" class="">
+</p><ul id="7784a6ee-19f1-4957-be14-2fb6094e8909" class="bulleted-list"><li>마진을 보다 세분화하기 위해서 한 방향씩 지정 가능(&quot;개별 속성&quot;)</li></ul><pre id="05ec186b-6e77-4b96-9450-4f8d10afb64c" class="code"><code>div{
+	margin-top: 20px;
+	margin-right:20px;
+	margin-bottom:20px;
+	margin-left:20px;
+}
+
+div{
+	요소바깥여백-위쪽: 여백값;
+	요소바깥여백-오른쪽:여백값;
+	요소바깥여백-아래쪽:여백값;
+	요소바깥여백-왼쪽: 여백값;
+}</code></pre><p id="4dfc81cf-6bc0-4744-91c8-18e1321f2c18" class="">
+</p><p id="33318393-1469-423d-b7f4-ed550c0790fb" class="">
+</p><ul id="a5836c00-b3c2-4f55-8cd3-273a1605fbf4" class="bulleted-list"><li>margin 을 설정할때 코드를 보다 짧게 하기 위하여 다음과 같이 작성하는 방법들이 존재
+(&quot;Margin - Shorthand Property&quot; &quot;단축 속성&quot;)
+<mark class="highlight-orange_background"><strong>(개별 속성이 있는 경우, 단축속성이 있을 확률이 높음!)</strong></mark></li></ul><figure id="22c73f0b-b9c4-4f46-968d-3fc126689753" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/margin%20%EC%86%8D%EC%84%B1-margin%20shorten%20hand.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/margin%20%EC%86%8D%EC%84%B1-margin%20shorten%20hand.png?raw=true"/></a><figcaption>margin shortenhand! </figcaption></figure><p id="c57574dd-309a-4fa7-8e89-bb9febc36ad2" class="">i. margin: top right bottom left</p><ul id="bb05eed4-88ff-4a07-85a5-57c566766de0" class="bulleted-list"><li>상 ➡️ 우 ➡️ 하 ➡️좌 (윗쪽부터 시계순서대로) 마진을 설정</li></ul><p id="f843ead7-dd24-4861-b046-2cd7dfbd2ec9" class="">
+</p><p id="a12be0b5-2dfe-4d71-82e9-7112fab5ef2a" class="">
+</p><p id="c387e015-9e13-48db-9232-ef9478d099ea" class="">ii. margin: top right&amp;left bottom</p><ul id="a2f51ce8-c848-4c53-927e-1b79201ab2d0" class="bulleted-list"><li>상 ➡️ 좌우 ➡️ 하 순서대로 마진 설정(위, (좌우), 아래 의 삼등분으로 생각하기!)</li></ul><p id="b427db71-8339-4503-8d2e-a95a57ea2b52" class="">
+</p><p id="0b5fb5bf-5bf4-4452-863e-290c8cdac7c6" class="">
+</p><p id="ddd9b2e8-3e39-4f8e-89c9-9a3250e55e7c" class="">iii. margin: top&amp;bottom right&amp;left</p><ul id="186c7539-1447-4f38-9ff0-89f2ed57bc2d" class="bulleted-list"><li>상하 ➡️ 좌우 순서로 마진을 설정</li></ul><p id="b7c99e81-97ff-41db-8219-4868c98ab6e2" class="">
+</p><p id="4ec9a1a3-fbca-4bd5-971b-a50f2ea726f9" class="">
+</p><p id="729024ef-c6be-449a-a953-1f8b4f94f70a" class="">iv. margin: all</p><ul id="7254e419-8acf-4f15-a4b9-6e3b57dc4915" class="bulleted-list"><li>적용 순서는 관련 없이, 모든 방향으로 일정 마진값 동일하게 마진 설정</li></ul><p id="b1740ea2-0c0b-4788-b3e9-f22a9491ae89" class="">
+</p><ul id="8e1a8302-a292-465c-9aaf-29baa3df4cab" class="bulleted-list"><li>reference: <a href="https://www.w3schools.com/css/css_margin.asp">w3cschools-margin</a></li></ul><p id="f7ea0b15-32b9-4a68-aa9f-d4ec0b687250" class="">
+</p><p id="722cd78c-d6b6-42e1-89bc-933ba12642ac" class="">🌟 기본적으로 단축속성을 가진 속성들은 개별 속성들이 존재함</p><p id="40294bd2-1977-4f9a-a4d9-48d85bdf51b6" class="">-margin-top, margin-bottom, margin-left, margin-right: 각각 상/하/좌/우의 여백을 설정</p><p id="d817e676-def9-4719-b0fe-b4ef96bc2d7c" class="">
+</p><p id="d807931a-86b3-4d95-b02b-9f6510e086e8" class="">🌟 단축속성을 사용하면 코드가 보다 깔끔해짐!</p><p id="8dc33ba6-f09e-4b40-9880-a61690902b00" class="">
+</p><p id="208e01a2-80fd-43cc-b7e7-d98e9a6c49bc" class="">✨ 마진 중복(병합, Collapse)</p><ul id="d3f3cf61-9a02-4140-bb18-3c13082d5449" class="bulleted-list"><li>마진의 특정 값들이 중복되어 합쳐지는 현상</li></ul><figure id="3a3456bf-4d80-469b-b9f7-58fecc3a533c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20collapse%20%EA%B0%80%20%EB%B0%9C%EC%83%9D%ED%95%98%EB%8A%94%20%EC%83%81%ED%99%A9.png?raw=true"><img style="width:768px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20collapse%20%EA%B0%80%20%EB%B0%9C%EC%83%9D%ED%95%98%EB%8A%94%20%EC%83%81%ED%99%A9.png?raw=true"/></a><figcaption>CSS margin collapse가 일어나는 상황</figcaption></figure><ul id="5e75ef4e-936a-4c34-b411-dfd20ed0fae4" class="bulleted-list"><li>CSS에서 마진 중복이 일어나는 경우는 위의 그림에서 확인할 수 있는 것처럼
+
+1) 형제 요소들 간 margin-bottom과 margin-top이 만나는 경우
+
+2) 부모-자식요소 간 margin-top 이 만나는 경우
+
+3) 부모-자식요소 간 margin-bottom이 만나는 경우
+➡️ <mark class="highlight-orange_background"><strong>형제 요소간에는 반대 방향</strong></mark>이 맞물리고,
+<mark class="highlight-orange_background"><strong>부모-자식요소간에는 같은 방향</strong></mark>이 맞물리면 중복되게 된다!
+
+가 존재한다! 단!! margin collapse는 버그(오류)가 아니고, 이를 우회하는 방법을 사용하면 충분히 해결할 수 있다!</li></ul><p id="e12bb8c4-fecd-4709-98ba-62eeb38c90f4" class="">🌟 형제 요소간 margin은 기본적으로 (중복되지 않는다면) 더해지게 된다!</p><pre id="75dc8313-6dc4-49f3-9331-9af808c46a2d" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin : 0;
+        }
+        .parent{
+            
+        }
+        .child{
+            float :left;
+            margin:20px;
+            width: 100px;
+            height: 100px;
+            background-color: tomato;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="4e9819a4-8295-4f97-90c9-f4f4f114496c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%EA%B0%84.PNG?raw=true"><img style="width:576px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20%ED%98%95%EC%A0%9C%EC%9A%94%EC%86%8C%EA%B0%84.PNG?raw=true"/></a><figcaption>CSS margin - 형제 요소간 margin 누적</figcaption></figure><ul id="6520060b-a8e0-4a90-8bd5-cecc0b49bc18" class="bulleted-list"><li>위의 예시에서 확인해볼 수 있는 것은, float:left를 통해서 형제 요소들이 같은 공간 내에서 같은 방향으로 정렬되어있을 때 margin이 누적되어 측면 margin이 40px이 실질적인 여백으로써 존재함을 확인해볼 수 있다</li></ul><p id="d0bef357-40ae-44a7-b48d-39def5a487dc" class="">
+</p><p id="d7eaca82-e4d7-4379-b3dc-eb8cf3f5556d" class="">❓ 그런데 만약 위에서 기술된 바와 같이, 두 형제 요소간 margin-top , margin-bottom이 접하게 된다면 ❓</p><pre id="9e42cbb8-8583-418d-90a0-09d6b742d8d0" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin : 0;
+        }
+        .parent{
+            
+        }
+        .child{
+            margin:20px;
+            width: 100px;
+            height: 100px;
+            background-color: tomato;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="202d8a50-f911-4636-9b68-916ab841ab35" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%ED%98%95%EC%A0%9C%20%EC%9A%94%EC%86%8C%EA%B0%84%20margin%20collapse.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%ED%98%95%EC%A0%9C%20%EC%9A%94%EC%86%8C%EA%B0%84%20margin%20collapse.png?raw=true"/></a><figcaption>margin collapse between siblings</figcaption></figure><ul id="7efabea5-8171-4229-8d0e-5e48eb1d51c0" class="bulleted-list"><li>위의 경우에는 수직으로 형제 요소들이 정렬되어, margin - top과 margin - bottom이 접하는 상태가 되었다. 이 경우에는 개발자 도구를 통해 확인해보았을 때, margin이 실질적으로 위 혹은 아래에 대해서 20px이 됨을 확인해볼 수 있다. 이 상황이 바로 여백이 중복된 상황이다.</li></ul><p id="424fdf1a-cc4c-4ef9-9be9-2417780716bd" class="">🌟 즉 접하게 된 margin 중 하나가 누락된 것이다</p><p id="ad53abd2-c46f-4442-b77b-85fb7bc597ea" class="">
+</p><p id="0dda1ee7-a237-4856-a12d-a6a202aa0efa" class="">다음은 부모-자식 요소간 마진 상쇄(충돌)에 대해서 알아보자</p><pre id="f50619e2-09ac-4ee6-b998-7ebdefc60c08" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin : 0;
+        }
+        .parent{
+            width: 300px;
+            height: 200px;
+            background-color: cyan;
+            
+        }
+        .child{
+            margin-top:50px;
+            width: 100px;
+            height: 100px;
+            background-color: tomato;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;parent&quot;&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;!-- &lt;div class=&quot;child&quot;&gt;&lt;/div&gt;
+        &lt;div class=&quot;child&quot;&gt;&lt;/div&gt; --&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="d7467a45-6889-4b44-9d61-031026e7e194" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20collapse%20between%20parent%20and%20child%20ele.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20margin%20collapse%20between%20parent%20and%20child%20ele.PNG?raw=true"/></a><figcaption>CSS margin collapse between parent and child</figcaption></figure><p id="e7c36051-df94-4680-84f5-85fd2d956391" class="">먼저, 한 가지 확인할 필요가 있는 사실은, 브라우저에서 position 속성을 어떤 특정 요소에서 지정하지 않았다면 static 속성값이 지정된다는 사실이다</p><p id="0d426fdb-2065-4211-a263-86a7308dfba1" class="">
+</p><p id="8c9d8dea-9da9-4064-8b35-2dd166b2c102" class="">이 점을 뒷받침하여 보았을 때, 모든 요소들은 position:static 으로 적용되어, from top to bottom 순서로 렌더링됨을 알 수 있다</p><p id="788cdcb4-c361-4900-9bdc-f748964a0067" class="">
+</p><p id="e2c8cfff-de68-49ae-863a-1115f3147110" class="">그리고, 기본적으로 CSS에서는 parent-child 관계를 맺고 있는 하나의 단위체에 대해서, parent 요소에서 padding이 주어지지 않았다면(현제, 처음 CSS에서 padding, margin을 초기화해준 상태였다) , child요소의 margin값을 브라우저에서 비교/확인하여 parent 요소에 적용시키게 된다!</p><p id="e794ff1b-698e-42b7-9453-05da4da1453d" class="">
+</p><p id="576be77b-d1ab-4f1b-bafd-2332e8c77678" class="">그렇기 때문에 부모의 margin-top과 자식의 margin-top이 동일하게 적용되면서 여백충돌(상쇄)가 일어나게 되어, 실질적인 margin-top은 child요소의 50px만이 존재하게 된다. 즉 이번에도 어떤 한쪽의 margin 값이 묵시되는 것이다</p><p id="dee042f8-665b-452c-9f91-e80eeba567e4" class="">
+</p><p id="28d6d9ed-9182-46cc-b122-5cf8deef81b3" class="">앞서서 position의 기본값이 언급된 이유는 얕은 관계성이기는 하지만, child요소의 position을 absolute로 지정하게 된다면 document를 대상으로 렌더링하기 시작하게 되고, 여전히 parent 요소는 static이므로, parent요소의 margin-top과 child요소의 margion-top은 겹쳐지는 일이 없다! 그렇기 때문에 잠시 언급한 것이다!</p><p id="3b030521-9bf1-4257-a55c-761573230c70" class="">
+</p><p id="ffe8cd24-8bb1-43f7-a3b5-52b393d4bf3c" class="">아래는 관련 참고 사이트이다</p><p id="085e7482-dd25-4835-8087-b787f1cc0cbd" class=""><a href="https://stackoverflow.com/questions/1762539/margin-on-child-element-moves-parent-element">https://stackoverflow.com/questions/1762539/margin-on-child-element-moves-parent-element</a></p><p id="1a57bbab-3d48-43eb-9430-98f852dfc45d" class="">
+</p><p id="895f472b-a120-481d-b7aa-ef8260a53664" class="">margin-bottom도 마찬가지로 적용될 수 있는데, 마찬가지로, child 요소의 margin-bottom이 (부모요소에 대해서 padding이 존재하지 않거나 position 값이 기본값일 경우 등에서) parent요소의 margin-bottom의 값으로 전달되게 되고, (공유된 면이 margin-top에서의 상황처럼 존재한다면 ) 마진 중복이 일어나고, child 요소의 margin-bottom이 실질적인 margin-bottom이 된다</p><ul id="8dcf1ae9-e6d2-4620-a305-ce8c6207e3ef" class="bulleted-list"><li>마진 중복은 padding을 이용해서 우회할 수도 있다</li></ul><p id="492c6b20-8075-40d4-85d6-0da216fdfbca" class="">📌 마진 중복 계산법 📌</p><p id="f40ea09a-7cd4-45b6-8dda-e08066a56fcd" class="">마진 중복 계산은 먼저  작게 세 가지로 볼 수 있지만 , 간단하게 본다면 크게  두 가지가 존재한다(설명은 형제 요소를 대상으로 그림으로 표현하였지만, 부모-자식 요소간에도 그림의 1 &amp;&amp;2가 해당될 수 있다!)</p><p id="5d5a7db6-eea9-481b-94e5-39bdd786ccfc" class="">
+</p><ol id="ae3eaca6-e8a9-41f0-ab35-73c51eb348ef" class="numbered-list" start="1"><li>두 요소의 마진값이 둘다 양수거나 둘다 음수인 경우, 절댓값이 더 큰 값이 마진값이 된다</li></ol><ol id="0ebbc297-5713-4282-ae7a-649344786b2d" class="numbered-list" start="2"><li>두 요소의 마진값이 각각 음수, 양수인 경우, 두 값을 더한 값이 마진값이 된다</li></ol><figure id="9c4c4c8f-0ad4-4828-9196-47b8ee487c07" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%EB%A7%88%EC%A7%84%20%EC%A4%91%EB%B3%B5%20%EA%B3%84%EC%82%B0%EB%B2%95.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20%EB%A7%88%EC%A7%84%20%EC%A4%91%EB%B3%B5%20%EA%B3%84%EC%82%B0%EB%B2%95.png?raw=true"/></a><figcaption>형제 요소간 마진 중복 계산법</figcaption></figure><p id="2548fc45-3b35-46d1-95f6-f0550c9f2548" class="">
+</p><p id="d46689a0-8286-4efa-977b-1c8d18204145" class=""><mark class="highlight-red"><strong>b) padding </strong></mark>🌟</p><p id="f2d67320-2443-433e-a677-fc4204278d3d" class="">
+</p><ul id="7d6416d4-a37f-44d7-bc2c-77c1db86dd38" class="bulleted-list"><li><mark class="highlight-teal"><strong>요소의 내부 여백</strong></mark>을 지정 ➡️ <mark class="highlight-orange_background"><strong>기존의 요소 크기보다 부피가 커짐</strong></mark></li></ul><ul id="ca94eb17-588c-4fe8-8793-efbc74440367" class="bulleted-list"><li>내부 여백 = 자식 요소를 감싸는 여백</li></ul><ul id="a3af7d7c-60bd-469a-8f5e-1b050c66d0e2" class="bulleted-list"><li>속성값
+- 기본값 :0
+- 단위로 지정   : px, em, cm 등
+- %로 지정      : 부모요소의 너비에 대한 비율로 지정</li></ul><pre id="9e25719a-6a19-4bb5-ad61-56f2bc33e921" class="code"><code>div{
+	padding: 20px;/*단축속성 all*/
+}
+
+div{
+	요소내부여백:여백값;
+}</code></pre><p id="d0ad2180-bd70-4832-afbd-ea2468586790" class="">
+</p><ul id="be11ca70-bb57-43cd-9773-c8d50b3dbd84" class="bulleted-list"><li>개별 속성( 한 방향씩 지정 )</li></ul><pre id="cc311619-b07e-4324-8acd-f1a33c71ebb7" class="code"><code>div{
+	padding-top:20px;
+	padding-right:20px;
+	padding-bottom:20px;
+	padding-left:20px;
+}
+
+div{
+	요소내부여백-위쪽:여백값;
+	요소내부여백-오른쪽:여백값;
+	요소내부여백-아래쪽:여백값;
+	요소내부여백-왼쪽:여백값;
+}</code></pre><p id="43397fbb-668f-4be7-8a69-96a97e7aac07" class="">
+</p><ul id="3907c370-a707-4500-9edd-d272386996bd" class="bulleted-list"><li>padding shortenhand property! 단축속성! 속기 속성!</li></ul><figure id="02fe77b3-19db-4d57-b8e6-abdfc140b6bd" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/padding%20%EC%86%8D%EC%84%B1-padding%20shortenhand%20property!.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/Properties/padding%20%EC%86%8D%EC%84%B1-padding%20shortenhand%20property!.png?raw=true"/></a><figcaption>Padding shortenhand property</figcaption></figure><p id="b72866c7-7b51-446e-9cc0-31c6d16619a0" class="">
+</p><p id="28efef58-b134-42dc-9345-5c38cee8ff15" class="">i. padding: top right bottom left</p><ul id="8f4c07b9-d68f-408e-98bd-e82949e06589" class="bulleted-list"><li>상 ➡️ 우 ➡️ 하 ➡️좌 (윗쪽부터 시계순서대로) 패딩을 설정</li></ul><p id="7f8019b3-f752-44fc-811a-a6862217d197" class="">
+</p><p id="d46c42ec-d08a-4658-8da2-907c940b9304" class="">
+</p><p id="a68d5055-9df7-48d1-9e21-2c02a2f6ac1b" class="">ii. padding: top right&amp;left bottom</p><ul id="000f7a2c-06de-4749-9756-7df06dc6bb10" class="bulleted-list"><li>상 ➡️ 좌우 ➡️ 하 순서대로 패딩 설정</li></ul><p id="ddec3e3c-0035-4ebc-a86e-24a1e1d8a46b" class="">
+</p><p id="1090f44e-8185-4950-acf9-9a664454f748" class="">
+</p><p id="7e9de807-8aa0-48a2-b56e-1d4efc150021" class="">iii. padding: top&amp;bottom right&amp;left</p><ul id="475d716e-4eb5-4798-83f0-492cd1e4a2ea" class="bulleted-list"><li>상하 ➡️ 좌우 순서로 패딩을 설정</li></ul><p id="0328657c-9e3d-4c24-ab07-a9f195295377" class="">
+</p><p id="9c6634df-11f4-4149-a692-03291ba4b549" class="">
+</p><p id="7d23b81b-b6ce-4855-9426-86093c793bb8" class="">iv. padding: all</p><ul id="e8aaa533-f77c-4148-a704-4d8ba007a079" class="bulleted-list"><li>적용 순서는 관련 없이, 모든 방향으로 일정 마진값 동일하게 패딩 설정</li></ul><p id="5bae343c-63df-4f20-a1ed-bbaeb8da1454" class="">
+</p><ul id="c3f1bca3-8ad7-43f5-ad77-4b0febead282" class="bulleted-list"><li>reference:<a href="https://www.w3schools.com/css/css_padding.asp"> w3cschool-padding</a></li></ul><p id="4ae7d47a-fe6b-4da3-9885-eebe302d70b0" class="">
+</p><p id="0118b2a7-74ca-41d5-9401-84aa1874b364" class="">🌹 개별 속성으로 padding-top, padding-bottom, padding-left, padding-right도 존재(상/하/좌/우 padding)</p><p id="bd4efe13-6b3c-46b9-8e1f-2d943566f28a" class="">
+</p><p id="9931b4dc-8a75-4cad-8b8c-6931e9344598" class="">🌺 크기 증가</p><ul id="b7e09e47-d93f-4427-8ba4-1f8113e272b1" class="bulleted-list"><li>추가된 padding 값만큼 요소의 크기가 커지는 현상</li></ul><pre id="23e644a5-22c4-47ab-b8c7-cef55e283b51" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            padding: 10px 20px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;Hello World!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="da5bcb90-43c0-4047-ae44-bc26c7ef277d" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/padding%EC%9C%BC%EB%A1%9C%20%EC%9D%B8%ED%95%9C%20%ED%81%AC%EA%B8%B0%EC%A6%9D%EA%B0%80%20%ED%98%84%EC%83%81.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/padding%EC%9C%BC%EB%A1%9C%20%EC%9D%B8%ED%95%9C%20%ED%81%AC%EA%B8%B0%EC%A6%9D%EA%B0%80%20%ED%98%84%EC%83%81.PNG?raw=true"/></a><figcaption>CSS padding 으로 인한 크기 증가</figcaption></figure><p id="e3fc3e8c-bc93-43c8-a819-3b2b0ace9e6c" class="">위의 경우, 처음 div 요소의 가로와 세로 크기를 100px로 설정하였지만, padding , 즉 내부 여백을 지정해줌으로써 이 내부여백도 너비와 높이에 반영이 되면서 크기가 커진 것을 확인해볼 수 있다(padding으로 인해서 가로너비는 100px+20px+20px = 140px, 세로 높이는 100px + 10px+10px=120px이 되었다)</p><p id="e1fc530c-d7ff-4584-af79-6c10f4379809" class="">
+</p><p id="2fe3f690-dcec-41d6-8931-843c1ca4b1f6" class=""><mark class="highlight-orange_background"><strong>해결방법</strong></mark></p><p id="0d3df476-f519-4ff6-a417-04886c3968d2" class="">방법 1. 직접 계산</p><p id="e1b586ca-1b19-45c5-a3e5-56b610f03f7b" class="">➡️ 크기가 커지지 않도록 padding을 포함한 크기를 직접 계산해야!</p><p id="fd60f364-6d4f-4aa0-bda4-e7280dedc608" class="">(예) 가로너비가 200px, 세로 높이가 200px인 div 요소로 만들 것인데 padding을 단축속성으로 10px 20px을 지정하고 싶은 경우</p><p id="48d0555a-26a5-41ac-bb94-779e47433604" class="">
+</p><ul id="41bec846-3a14-4d0d-a396-1d8c042c6631" class="bulleted-list"><li>가로 총 너비 = 200 px = x(실질적인 div 요소의 너비)+ 20px + 20px
+↔️ 200px = 40px + x px
+↔️ x px = 160px</li></ul><ul id="f97f0c79-ccae-44cb-82fb-372e1a49f9c6" class="bulleted-list"><li>세로 총 높이 = 200px = y(실질적인 div요소의 높이) + 10px + 10px
+↔️ 200 px = y px +  20px
+↔️ y px = 180px</li></ul><p id="bd03d509-ff47-458b-a3a8-10b68944e999" class="">
+</p><p id="fa96d440-308e-4ab8-86cf-ccd559bce403" class="">방법 2. 자동 계산</p><ul id="155b0822-ba5c-40e3-8900-86d7f5979a0e" class="bulleted-list"><li>box-sizing: border-box; 속성-속성값을 이용</li></ul><ul id="1e1c2821-929f-4b8c-a6ed-17b3a39926a9" class="bulleted-list"><li>이 속성을 이용하면 padding뿐 아니라 border까지 포함한 너비 , 높이를 계산, 적용하게 됨
+
+즉,<mark class="highlight-red"><strong> width or height속성에 지정한 값 = 실질적 요소의 크기 + padding, border 크기</strong></mark></li></ul><p id="53517d7f-05b9-4873-bbf3-d4b53120d01d" class="">로 계산, 적용하게 됨</p><pre id="439d090f-b3d6-4397-9a81-27ae451a0fd0" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin :0;
+        }
+        div{
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;Hello World!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="eed464b1-82cd-4cb3-99fd-96fbf7327ab9" class="">먼저 어떻게 화면에 렌더링되는지 살펴보기 전에,  위에서 학습한 내용을 토대로 추측해보자</p><p id="baf512e1-d902-47ee-8f0c-f3201b6baf69" class="">
+</p><p id="416831e8-2b85-4d53-b266-ffbf0bae24bf" class="">먼저, width로는 100px, height으로는 100px, padding-top &amp; padding-bottom으로는 10px, padding-left &amp; padding-right로는 20px이 적용되었으며, <span style="border-bottom:0.05em solid"><mark class="highlight-orange_background"><strong>여백과 border 두께까지 &quot;포함&quot;</strong></mark></span><mark class="highlight-orange_background"><strong>한 너비로써 요소를 만들기 위해서</strong></mark> box-sizing:border-box 를 설정해두었다</p><p id="3bdeed3c-fc43-4751-a133-debece86d0f3" class="">
+</p><p id="fd4dad36-67ef-4ff1-ad26-82ecd99d6fd6" class="">즉,
+width 100 px = padding-left 20px + padding-right 20 px + contents가 담긴 부분(content-box)의 너비 60px</p><p id="bdb5e00c-16f8-401c-b21f-e0d0ee9e700b" class="">
+</p><p id="98be8ac2-030a-4beb-9e6f-f8f3ecea896a" class="">height 100px = padding-top 10px + padding-bottom 10px + contents가 담긴 부분(content-box)의 크기 80px</p><p id="57bd786d-08e5-4156-906b-95dd2f270c77" class="">
+</p><p id="05f8224b-83d5-4bf7-b74e-789f8f8c4229" class="">로 계산되어 적용될 것이다</p><p id="e1091948-6675-45de-a050-da0cd8ea4126" class="">이제, 개발자도구로 요소를 pick하여 computed 부분으로 어떻게 여백과 너비가 지정되었는지 살펴보자</p><figure id="a1b14a66-a4ea-4ae0-abc7-f82c664cd556" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20padding%20%ED%81%AC%EA%B8%B0%20%EC%A6%9D%EA%B0%80%EB%A5%BC%20%EB%A7%89%EA%B8%B0%20%EC%9C%84%ED%95%9C%20border-box.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20padding%20%ED%81%AC%EA%B8%B0%20%EC%A6%9D%EA%B0%80%EB%A5%BC%20%EB%A7%89%EA%B8%B0%20%EC%9C%84%ED%95%9C%20border-box.PNG?raw=true"/></a><figcaption>CSS box-sizing: border-box</figcaption></figure><p id="9f4b4978-20e3-42e1-a09e-1d35c1931d95" class="">위와 같이, width와 height으로 지정해준 크기값이 요소의 전체 크기가 되는 틀은 변하지 않으면서, padding이 적용되는 것을 확인해볼 수 있다!</p><p id="d1288cd9-77ec-4aba-9666-3240e8e5acb2" class="">
+</p><p id="223b3ad3-9d27-4fef-8384-aca68485e593" class="">✴️ 참고로, content(s)가 담긴 부분을 &quot;content-box&quot;라고 하는데, box-sizing의 기본값은 content-box로 내재되어 있다!</p><p id="f6ab38fe-da4e-4006-bdee-b8808a1d579f" class="">
+</p><p id="67f72458-5630-45ad-b45f-b854d1b9f707" class=""><mark class="highlight-red"><strong>c) border</strong></mark></p><ul id="629d3003-022d-4e82-8549-20b100874142" class="bulleted-list"><li>요소의 &#x27;<mark class="highlight-yellow_background"><strong>테두리 선</strong></mark>&#x27;을 지정</li></ul><ul id="9e7c68f3-63e5-43cf-a265-901aa3b66b6b" class="bulleted-list"><li>단축, 개별 속성을 지원</li></ul><ul id="3962fa5c-389d-499e-b1dd-c5db72b4affd" class="bulleted-list"><li>속성값
+- border-width : 선의 두께(너비)[기본값 medium]
+-border-style   : 선의 종류[기본값 none][solid, dashed 등이 존재]
+-border-color : 선의 색상[기본값 black]</li></ul><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="c7670519-f7a9-4b2b-8cb8-76a2d10825dd"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">단축 속성 :
+<mark class="highlight-red"><strong>border: border-width  border-style border-color;</strong></mark>
+
+예) border: 1px solid red;</div></figure><ul id="f66d62a9-4bc2-42b4-af94-dc16bf054165" class="bulleted-list"><li>border-width</li></ul><p id="62b91d59-c44a-4b2c-97af-5a44ad473093" class="">속성값</p><p id="9d1ef216-1e35-4486-9c2b-896e7194ced6" class="">-medium (기본값) : 중간두께</p><p id="89115bc8-f838-4085-b63e-7f745ce3cbdd" class="">-thin                      : 얇은 두께</p><p id="8d1f0aee-7d37-4019-b182-07c6bd59b0e0" class="">-thick                    : 두꺼운 두께</p><p id="984bf8f0-cbeb-4c7b-a837-b073e8dcc9f7" class="">-단위 이용            : px, em, cm 등 단위를 이용하여 지정</p><p id="64990964-f89e-4231-a7d0-5768b6d6f0fc" class="">🌟 medium, thin, thick 은 두께 크기가 다소 추상적이기 때문에 단위를 이용함이 보다 권장됨</p><p id="0772eda5-b8d1-4834-8d46-cee4f0baea75" class="">
+</p><p id="ec0c5478-c2b1-4d9f-8695-23696f94b375" class="">🌹 border-width에 적용할 수 있는 단축 속성</p><p id="76ee27ac-f7d0-4587-97cd-aa5d367111b9" class="">-이번에도 위의 여백에서 적용된 순서에 착안하여 사용할 수 있다!</p><pre id="152a476d-1038-45ae-843e-5f4837f76d2b" class="code"><code>border-width : 윗쪽 오른쪽 아랫쪽 왼쪽;/*윗쪽부터 시작하여 시계방향*?
+예) border-width: 10px 30px 20px 10px;
+
+/*---------------------------------------------------------------*/
+
+border-width : 윗쪽 왼쪽&amp;오른쪽 아랫쪽;/*윗쪽부터 차례대로 3등분*/
+예) border-width: 10px 20px 30px;
+/*---------------------------------------------------------------*/
+
+
+border-width : 윗쪽&amp;아랫쪽 왼쪽&amp;오른쪽;
+예) border-width : 10px 20px;
+
+/*---------------------------------------------------------------*/
+
+border-width  : 위&amp;아래&amp;오른쪽&amp;왼쪽;
+예) border-width: 10px;</code></pre><p id="d05265fb-05f0-408d-bbab-5b124c0124f5" class="">
+</p><ul id="40e2d2c8-5ae8-48fe-a525-acb85dba074e" class="bulleted-list"><li>border-style : 선의 종류를 지정 (단축속성이면서 개별속성)<p id="15f3a258-c7f0-495f-a9da-bf5a9ecd50e1" class="">-기본값-none
+- solid : 실선
+-dashed : 파선(일반적으로 우리가 아는 점선인데 이의 정식 명칭은 &quot;파선&quot;이다!!)</p></li></ul><p id="05e7536b-6eae-4e2c-8347-421a1f919a95" class="">border-style에 대해서 몇 가지 속성값들을 알아보자</p><p id="e9596cf4-34a4-453c-a6bb-104ee723d16f" class="">
+</p><p id="3e5e4d90-b18e-477c-9f79-93e6166a6eed" class="">먼저 none과 hidden은 선이 없다는 점에서 동일하지만, hidden은 table 요소에서 사용된다는 점이 약간의 차이점인 것 같다(그래서 hidden은 일반 요소에서는 잘 사용하지 않는 것 같다)</p><figure id="296db2b3-5993-4e77-996a-08ef431c0932" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20none,%20hidden.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20none,%20hidden.PNG?raw=true"/></a><figcaption>border-style: none, border-style:hidden</figcaption></figure><p id="0a986786-5d0b-4400-a6fe-3963bb548ea7" class="">그다음은 일반적으로 잘 알고 있는 선 종류들이라서 한번에 살펴보자</p><p id="cd04f373-1290-46af-b148-a6b863590e26" class="">바로 solid와 dotted, dashed, double 속성값이다! 이름이 직관적이라서, 추측할 수 있듯이,</p><p id="5c0b87f7-631f-44a8-9e1a-5f13a3d797c4" class="">-solid : 실선</p><p id="febddb76-6d00-4af8-8af1-0281d49d1acb" class="">-dotted : 점선(점선의 점의 두께는 border-width로 설정된 값이 적용된다!)</p><p id="4c3ff4d4-4838-43bc-becb-1a0951d8dfc4" class="">-dashed: 파선
+-double : 이중선</p><p id="236a4c52-0070-411a-931a-44d44c6459af" class="">이라는 특징을 지닌다!</p><figure id="64f6519e-3ef2-43f3-ab71-8c79c407a6cb" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20solid,%20dotted.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20solid,%20dotted.PNG?raw=true"/></a><figcaption>border-style: solid, border-style:dotted</figcaption></figure><figure id="db861307-616b-4797-a29e-63d0b6e0d4b7" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20dashed.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20dashed.PNG?raw=true"/></a><figcaption>border-style:dashed</figcaption></figure><figure id="a34648c5-01b5-456b-86ab-1de0207ad3c3" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20double.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20double.PNG?raw=true"/></a><figcaption>border-style:double</figcaption></figure><p id="55c7d233-2db7-4678-9e3b-a5c3a416edaa" class="">
+</p><p id="4f2af697-ab97-482f-b63c-6537060ab4a5" class="">그리고 이번에는 조금 특이한? border-style인데, 보통 파워포인트에서 액자형식으로 사진이 꾸며질 수 있는 형태와 매우 흡사하다!</p><p id="2d14527b-3e03-47ed-9ccb-c57f3c1a0844" class="">바로 groove, ridge, inset, outset인데 groove와 inset을 먼저 살펴보자</p><p id="de52a1be-2262-457b-ac7c-6a7cdd00bdfa" class="">
+</p><figure id="3f187131-ba63-45dd-8bc4-d4ac2bd47f9f" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20groove.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20groove.PNG?raw=true"/></a><figcaption>border-style:groove</figcaption></figure><figure id="c11c9981-9b89-466b-a835-12be8db25b11" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20ridge.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20ridge.PNG?raw=true"/></a><figcaption>border-style:ridge</figcaption></figure><p id="0764a7a7-14ed-45a0-9b81-3a480dc9e2c8" class="">이 둘을 먼저 살펴본 것은 이 둘은 요소가 마치 어떤 &quot;홈&quot;을 기점으로 </p><p id="e8f7c8e1-932e-4494-9bdc-9a8761fcc799" class="">-groove는 그 안에 들어간 느낌(움푹까지는 아닌 것 같다)</p><p id="54fa3a21-61e9-401f-ad08-bb863bc5573a" class="">-ridge는 그 홈에서 튀어 나와있는 느낌</p><p id="1da8aff8-3f11-49a8-b654-808ad063794b" class="">을 주기 때문에 살펴보게 되었다.</p><p id="1048ef16-d271-464d-b910-d35b1e1611ad" class="">이 둘의 공통점은 그 홈과 어느정도 간격이 있는 듯한 느낌인 것 같다</p><p id="25ac7156-af40-4794-8cd2-c6e9bc3bcb61" class="">
+</p><p id="e1a9df2c-3f5b-462f-b80c-53b40b133a82" class="">그 다음은 inset과 outset을 살펴보자</p><figure id="60ace6bc-cee0-4989-ae16-823df7f867bc" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20inset.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20inset.PNG?raw=true"/></a><figcaption>border-style:inset</figcaption></figure><figure id="b5e25bf2-4204-4c50-a374-b3e1bad661bb" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20outset.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/border-style%20outset.PNG?raw=true"/></a><figcaption>border-style:outset</figcaption></figure><p id="bcf6fa23-5987-449e-803b-34f8149c1f36" class="">이 둘은 어떤 크기가 딱맞는 상자 내부를 기준으로</p><p id="a607770a-0534-4fb8-912e-e0b3735f321d" class="">-inset은 움푹 들어가 있는 형태이고</p><p id="21700043-a0ca-4cd8-bb32-8777aa7b960c" class="">-outset은 그 위에 튀어나와 있는 형태</p><p id="1dc520e1-6c84-4db5-8d91-80d9103f0c3a" class="">라는 점에서 차이점을 보이면서, 기준이 유사하기 때문에 묶어서 살펴보았다</p><p id="3f5386bd-39c4-4874-89e7-cf3173ae4d66" class="">
+</p><p id="54bbced2-21ef-4b73-a961-df6aef5ba304" class="">🌹 앞서 언급했다시피, border-style도 단축속성임과 동시에 개별속성을 지원한다. 그리고 CSS margin 등에서 사용된 기본적인 단축속성 진행방향 원리에 따라서</p><pre id="5fe9e304-0c00-49fd-9982-137ba7e1be2b" class="code"><code>border-style: 위 오른쪽 아래 왼쪽;
+예)border-style: solid dotted double inset;
+
+border-style: 위 오른쪽&amp;왼쪽 아래;
+예)border-style:solid dashed inset;
+
+border-style: 위&amp;아래 오른쪽&amp;왼쪽;
+예)border-style:solid dashed;
+
+border-style: 위&amp;오른쪽&amp;아래&amp;왼쪽;
+예)border-style:solid;</code></pre><p id="8de2efa5-b3fe-4112-97ec-4f1a1d9d08bc" class="">(ex)</p><pre id="c03e0090-3b7f-4592-9c0b-0f8257ccdf28" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin :0;
+        }
+        div{
+            width: 500px;
+            height: 500px;
+            background-color: tomato;
+            margin:30px 10px;
+        }
+        div:nth-of-type(1){
+            border-width:3px;
+            border-style:solid outset dashed double;
+        }
+        div:nth-of-type(2){
+            border-width:3px;
+            border-style:solid ridge dotted;
+        }
+        div:nth-of-type(3){
+            border-width:3px;
+            border-style:dashed solid;
+        }
+        div:nth-of-type(4){
+            border-width:3px;
+            border-style:double;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;border-style:위 오른쪽 아래 왼쪽&lt;/div&gt;
+    &lt;div&gt;border-style:위  오른쪽&amp;amp;왼쪽 아래&lt;/div&gt;
+    &lt;div&gt;border-style:위&amp;amp;아래 오른쪽&amp;amp;왼쪽&lt;/div&gt;
+    &lt;div&gt;border-style:위&amp;amp;아래&amp;amp;오른쪽&amp;amp;왼쪽&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><ul id="051afa36-9952-4b0e-bbbc-bd30485e9cac" class="bulleted-list"><li>border-color: 선의 색상을 지정(단축속성, 개별속성 지원)</li></ul><p id="1a52f5b1-8d38-41c0-a652-3c70a9ecdb09" class="">-속성값: rgb 혹은 색상명, hex 로 선의 색상을 지정
+: transparent(투명한 선 ➡️ 요소의 배경색이 보이게 됨)</p><p id="774ab30a-d171-43be-8342-c7c58b260375" class="">:기본값 - black</p><p id="d2e002a9-b60e-4be7-a3b5-4b6aaf9f20d3" class="">-단축속성은 다른 margin 등에서의 원리와 동일하게 아래와 같이 사용할 수 있다!</p><pre id="00fcc3eb-e2f2-44fc-b322-9efaed37ef07" class="code"><code>border-color:위  오른쪽  아래      왼쪽 ;
+예)border-color:red orange orangered violet;
+
+border-color:위 오른쪽&amp;왼쪽 아래;
+예)border-color:red orange  pink;
+
+border-color:위&amp;아래 오른쪽&amp;왼쪽;
+예)border-color:pink red;
+
+border-color:위&amp;아래&amp;오른쪽&amp;왼쪽;
+예)border-color:pink;</code></pre><p id="006103df-37c0-4af1-83ec-91ccf347d82e" class="">
+</p><p id="a5a9f357-8124-48fd-858b-ee6597559260" class="">🌟   border-width의 medium 값은 그 크기가 몇 px인지가 명확하지 않아서, 적어도 단축 속성을 사용하고자 한다면, 두께와 종류는 명시해주어야한다!(종류는 왜❓ : 명시하지 않으면 기본값인 none이 적용되어 선이 생겨나지 않기 때문)</p><p id="a682fc12-1966-460f-a88d-ec645be2368e" class="">
+</p><ul id="e82d694c-a269-45eb-b588-41491ec8d147" class="bulleted-list"><li>개별속성
+- border- width: 선의 두께(너비) 지정 [개별속성이면서 단축속성]
+-border-style   :  선의 종류를 지정(예-실선, 점선 등)
+-border-color    : 선의 색상
+-border-top / border- bottom/border-left/border-right     : 상/하/좌/우 방향의 경계에 대하여 속성을 단축속성처럼 사용 가능</li></ul><p id="f497413c-e4ba-4985-8073-1609c33ae335" class="">     -border-top-width, border-top-style, border-top-color : 위쪽 border에 대해서 두께나 종류, 색상을 지정</p><p id="6eadb54c-0a8b-4bd1-a29b-76c0cf7ba597" class="">     -border-bottom-width, border-bottom-style, border-bottom-color : 아래쪽 border에 대해서 두께나 종류, 색상을 지정</p><p id="45f0ac5c-ca49-4c32-ab45-5ecb47f4d735" class="">     -border-left-width, border-left-style, border-left-color : 왼쪽 border에 대해서 두께나 종류, 색상을 지정</p><p id="97e67a7a-b356-47e9-8037-d4c150e59563" class="">     -border-right-width, border-right-style, border-right-color : 오른쪽 border에 대해서 두께나 종류, 색상을 지정</p><p id="2dbcbd67-828c-4473-b637-9068e01dd74b" class="">
+</p><p id="d28f291a-e61a-4b8b-b0d3-75796793c77f" class="">🌺 border도 padding처럼 요소의 크기에 반영되기 때문에 크기에 반영되는데, 이를 해결하는 방식은 padding의 크기 증가에 대해서 수동/자동으로 계산하는 방식과 동일하게 해결해볼 수 있다!</p><p id="5e6342f1-88a5-454b-93e2-033a0809dc55" class="">-참고: 수동 계산</p><pre id="3bf74284-8ded-4318-9501-4271c32abf97" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .box{
+            /*실질적인 너비를 300, 높이를 300으로 하고
+            싶은 경우 수동계산방식 적용*/
+            width: 274px;
+            height: 274px;
+            padding:10px;
+            border:3px solid salmon;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;box&quot;&gt;Hello!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="8f14dace-622d-4557-afa0-b82fc410a6da" class="">
+</p><p id="247b3669-d63d-4d5e-af74-459275c10011" class="">-참고:자동 계산</p><p id="f207af04-90a5-4b90-984a-13c52f2aeb39" class="">▶️ box-sizing:border-box 이용</p><pre id="c32e3434-f990-45bd-bbef-72f51947d085" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        .box{
+            width: 300px;
+            height: 300px;
+            padding:10px;
+            border:3px solid salmon;
+            box-sizing: border-box;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;box&quot;&gt;Hello!&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="9aeb9e49-993a-482f-9e0a-6e3658cee207" class="">
+</p><p id="4386a611-9782-4438-ade3-b9c552684bb5" class="">3. box-sizing </p><ul id="47cd1675-3889-4f3a-a397-53ced708a713" class="bulleted-list"><li>요소의 크기 계산 기준을 지정</li></ul><p id="2df2e5dd-5dbf-4207-8375-1129b2394d1e" class=""><strong><mark class="highlight-pink_background">😎 [리마인드!!] </mark></strong>padding과 border는 그 값에 따라 요소의 크기가 증가되는 현상이 발생하는데 , 이때 box-sizing:border-box를 사용하면 원하는 요소크기내에서 padding과 border가 적용될 수 있다. 그러면서 자동계산되어 content-box의 크기가 줄어들게 되어 해결된다</p><p id="07f2007d-7929-4b62-b6ef-8b6b43592e04" class="">
+</p><p id="d8aaddd6-bf06-487f-8bab-a88417021e7c" class="">🌹 속성값</p><ul id="173d649a-af9e-4d44-ae0a-893e24ca310a" class="bulleted-list"><li>content-box : content-box의 크기를 보존하게 되면서, 실질적 요소 크기는 padding과 border로 인해 증가(=width 혹은 height+padding+border)[기본값]</li></ul><ul id="2ac2941c-0743-4d64-9fc8-c8fe80f48cdf" class="bulleted-list"><li>border-box : 해당 요소의 크기는 고유하게 유지하면서, content-box 크기를 조정하게 됨(요소크기==width 혹은 height, 그 안에 padding도, border도 포함되게 됨)(width 혹은 height=content-box크기+padding+border)</li></ul><pre id="34270f0b-c1b3-4c05-9c18-597cd38cd6cb" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin :0;
+        }
+        .box1{
+            box-sizing:content-box;
+            width: 300px;
+            height: 300px;
+            border:10px solid red;
+            margin-bottom:10px;
+        }
+        .box2{
+            box-sizing: border-box;
+            width: 300px;
+            height: 300px;
+            border:10px dashed pink;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;box1&quot;&gt;content-box&lt;/div&gt;
+    &lt;div class=&quot;box2&quot;&gt;border-box&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="50a82d96-37b2-49ee-80eb-5c0f0747d13f" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/css%20box-sizing%20%EC%86%8D%EC%84%B1.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/css%20box-sizing%20%EC%86%8D%EC%84%B1.png?raw=true"/></a><figcaption>css box-sizing</figcaption></figure><p id="5fabe400-a5a1-4c62-a5aa-076fe781f588" class="">위에서 확인해볼 수 있는 것은</p><p id="1ea4caa7-471f-4f77-a12a-f5ff19145d5b" class="">1) 먼저, content-box로 설정했을 때에는</p><p id="28a0210a-591d-46a5-b749-f1f2110c4fe8" class="">전체 요소 너비 혹은 높이 = width혹은 height(=content-box 크기)+border</p><p id="43fa9226-ca7a-4789-b0e8-bbb1df189159" class="">
+</p><p id="4dc0e096-ae79-4a27-9403-1eed0ba9d2c8" class="">2) border-box로 지정했을 때에는</p><p id="4ea8d3e3-7a7c-48be-8531-a6c0c53cd98a" class="">width 혹은 height = 전체 요소 너비 혹은 높이 = content-box 크기+border</p><p id="e7aa4b1c-bf09-4cbd-852a-0d4ceb3ee5f7" class="">
+</p><p id="e22540ac-17e6-4183-a160-75f5ad83a567" class="">가 됨을 확인해볼 수 있다!</p><p id="87ec8206-39be-4aa9-bc98-cb68350829fb" class="">*padding-box라는 속성도 존재는 하지만, 브라우저 호환성이 떨어지는 경향이 있다</p><p id="8e2da913-76d1-47b1-84f7-7d22c030718a" class="">
+</p><p id="fe86348f-cb01-4b56-a5de-6247ea8364ce" class="">4. display</p><ul id="8d30942f-8439-42de-8c5f-43d83d5f1196" class="bulleted-list"><li>요소의 박스 타입(유형)을 설정</li></ul><ul id="59b51fd0-9d0e-40af-a21b-fdcbcce240af" class="bulleted-list"><li>요소가 화면에 보여지는 형태를 결정</li></ul><ul id="b3eb55de-dae7-4d1f-b6d3-417f77e563e7" class="bulleted-list"><li>속성값</li></ul><p id="baded0bd-b56e-4ef1-9bc8-7affab387b78" class="">1) block - 블록 요소(&lt;div&gt; 등)</p><p id="48a46497-1a5e-4fc7-93b3-c6d3830f83ba" class="">2) inline - 인라인요소(&lt;span&gt; 등)</p><p id="8be8bbdc-e2e9-4049-99de-4949f683f91b" class="">기본적으로 우리는 div요소가 블록요소로 알고 있는데, inline으로 display를 변경하게 되면, 크기를 가질 수 없는데, 지금 컨텐츠가 없기 때문에 화면에는 아무것도 표시되지 않게 된다!</p><pre id="1543588b-4581-4330-9949-482936aa3109" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+       div{
+           display:inline;
+           width: 100px;
+           height: 100px;
+           background-color: tomato;
+       }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div&gt;&lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="d372f1a1-fa7e-4184-886e-670b85cbfcfc" class="">3) inline-block - 인라인-블록요소(&lt;input&gt; 등)</p><p id="96fcc237-23f3-4b87-a925-622257f2c985" class="">-기본 베이스는 인라인이기 때문에 수평으로 쌓이는데, 가로&amp;세로&amp;margin-top&amp;margin-bottom을 가질 수 있다는 부분적인 블록요소의 특성을 가짐</p><pre id="191e9317-c2e9-4e13-a652-d8037fbfaf1d" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        span {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: tomato;
+            margin-right:5px;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><p id="93e28e8a-abe7-4c49-ae76-4ecd4d9fbc95" class="">위의 경우, 원래 span 태그는 display: inline으로 설정되어 있어서, 텍스트 등 컨텐츠가 없으면 어떤 공간을 차지할 수도 없고, width와 height을 가질 수 없다</p><p id="45dc37d9-d8eb-4bf0-9cf4-42218db8a8fe" class="">
+</p><p id="bbaf6e27-466b-4605-8116-dad6b4cd714a" class="">하지만, display:inline-block을 설정해주면서, inline의 기본 성질인 수평으로 누적되는 성질은 지켜지면서, 크기를 가지게 되어 외관상 블록요소와 인라인 요소의 중간처럼 보이게 된다!</p><figure id="f0072305-dad0-405f-9d67-78289066126a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20inline-block.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20inline-block.PNG?raw=true"/></a><figcaption>display:inline-block</figcaption></figure><p id="04853287-cf4a-42f3-a669-8ce19c7588c9" class="">
+</p><p id="545f78e7-7f8a-4223-8bc2-9c838c36c808" class="">이러한 성질은 display:inline-block 이 설정되어 있는 input 태그에서도 확인해볼 수 있다</p><p id="58cde550-99a7-4b1d-9be2-513dcb2ddd0f" class="">.</p><pre id="116fa316-60dc-4c67-9b95-63cf2a7a74dd" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+       input{
+           width: 100px;
+       }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;input type=&quot;text&quot; value=&quot;1&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;2&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;3&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;4&quot;&gt;
+    &lt;input type=&quot;text&quot; value=&quot;5&quot;&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre><figure id="c24df231-3d35-4051-9d8f-c7af559e876c" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20inline-block%EC%9D%B8%20%EC%9A%94%EC%86%8C%20input%20%ED%83%9C%EA%B7%B8.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20inline-block%EC%9D%B8%20%EC%9A%94%EC%86%8C%20input%20%ED%83%9C%EA%B7%B8.PNG?raw=true"/></a><figcaption>display:inline-block 성질을 갖는 input 태그</figcaption></figure><p id="f11cbc41-fcfd-4bd0-89df-44fc58607332" class="">위와 같이 display:inline-block 속성-속성값을 갖는 input 태그는 수평으로 누적되지만, 크기와 margin-top &amp; margin-bottom을 가질 수 있다!(위에서는 마진은 설정하지는 않았지만 이 속성의 특성상 이렇게 작동될 수 있다!)</p><p id="2c7a72b6-b8f9-442a-b3cf-87222fa87cae" class="">
+</p><p id="a2a28af1-fb17-420b-96ab-420d1d2306b9" class="">4) 기타 - table, table-cell(&lt;td&gt;태그), flex 등</p><p id="aaea48df-2ce4-48df-837b-7206552aca98" class="">5) none  - 요소가 있는데 안보이는 개념은 아니고, 완벽하게 존재하지 않는 개념으로 바뀌게 됨!</p><p id="fb108407-7415-4c8b-9ca9-842a32e56ff4" class="">
+</p><p id="5e1f0bb5-88ef-4aa1-8e74-5c6d67f38629" class="">display:none은 보통 자바스크립트와 함께 사용되곤 하는데, 아래의 예시는 html에서 골격을 잡아둔 후, 자바스크립트에서 클래스를 부여했다가 제거하였을 때, 이에 따라 display를 none으로 함으로써 영구히 제거했다가 다시 또 보이게 하였다</p><pre id="5ed85bb7-c859-4db0-aa55-0a0658278ec0" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        *{
+            padding:0;
+            margin:0;
+        }
+        div{
+            width: 200px;
+            height: 200px;
+            background-color: tomato;
+            display:flex;
+            justify-content: center;
+            align-items: center;
+        }
+        div.ele{
+            display:none;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;button&gt;toggle&lt;/button&gt;
+    &lt;div&gt;요소&lt;/div&gt;
+    &lt;script&gt;
+        const btn = document.querySelector(&quot;button&quot;);
+        const ELE = &quot;ele&quot;;
+        const DIV = document.querySelector(&quot;DIV&quot;);
+
+        const handleClick=()=&gt;{
+            DIV.classList.toggle(ELE);
+        };
+
+        btn.addEventListener(&quot;click&quot;,handleClick);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="8202fdca-01df-4bc2-8ab6-501f676bb8dc" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20none%20%EC%86%8D%EC%84%B1.gif?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/display%20none%20%EC%86%8D%EC%84%B1.gif?raw=true"/></a><figcaption>display:none</figcaption></figure><p id="a5aaa90a-71c1-4e9e-8d33-818562ec835a" class="">
+</p><p id="bbaca438-357c-46ae-9107-ad4940396758" class="">5. overflow</p><ul id="32c26497-e187-4863-ad7a-e884876d36e3" class="bulleted-list"><li>요소의 크기 이상으로 내용(자식요소)이 넘쳤을 때 어떻게 내용을 화면에 보여줄 지 그 보여짐을 제어</li></ul><ul id="17c0d93b-e30c-4394-83e3-a4281e56cef2" class="bulleted-list"><li>단축 속성 지원</li></ul><ul id="d7a63b88-3654-42c0-a1c0-c5acf8442573" class="bulleted-list"><li>속성값</li></ul><p id="7c71c674-4a89-4aff-8184-53e3ca3a6b71" class="">1) visible : 넘친 부분을 자르지 않고 그대로 보여줌(기본값)</p><figure id="1114c7ff-d7ca-4ea9-8ac2-472d3a052cdf" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20visible.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20visible.PNG?raw=true"/></a><figcaption>overflow:visible</figcaption></figure><ul id="bf38869e-6fba-48b5-a7b3-bc00686a4f01" class="bulleted-list"><li>먼저 우리가 overflow 속성을 지정하지 않더라도, 기본값으로 visible이 적용되는데, 이는 넘치든지 말든지, 보여줄 컨텐츠는 틀 밖을 넘쳐서라도 보여주겠다는 의미이다!</li></ul><p id="df58a46e-9af3-43de-87c6-cb20bec03df2" class="">
+</p><p id="d0e27388-6b8e-4a92-90dd-93b8fed4a800" class="">2.) hidden</p><ul id="b7228b77-e1e6-4554-9a5b-af85eab4b6d3" class="bulleted-list"><li>hidden은 이 속성값에서 풍겨지는 것처럼, 틀 밖을 넘치는 content는 보여주지 않겠다는 의미를 갖고 있다</li></ul><figure id="3cb5d054-5cb0-4990-92c5-2bb7dabfea46" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20hidden.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20hidden.PNG?raw=true"/></a><figcaption>overflow:hidden</figcaption></figure><p id="6fb5981c-36ca-4b62-8fd1-549f38297026" class="">
+</p><p id="6931fa6c-e0f3-4634-8f1f-5a7d89aff938" class="">3.) scroll, auto</p><ul id="804ff41b-8ba9-4e62-867d-4d580ed08bb3" class="bulleted-list"><li><mark class="highlight-orange_background"><strong>scroll은 auto와 차이점 중 하나는 &quot;틀 밖으로 overflow되기 전에도 스크롤바는 없지만 스크롤바가 가로와 세로에 스크롤바에 대한 프레임이 존재</strong></mark>&quot;한다는 점이다</li></ul><ul id="a90879ef-57af-4821-b37f-7975a412c5c5" class="bulleted-list"><li>또 다른 차이점은<mark class="highlight-pink_background"><strong> scroll은 별다른 설정(예: overflow-x:hidden)을 하지 않는 한, 가로와 세로방향으로 스크롤바를 생성</strong></mark>하지만, auto는 overflow-x:scroll;을 별도 선언해주지 않는 한 세로방향으로만 스크롤바가 생성된다(▶️ scroll은 강제성을 갖음)</li></ul><ul id="b9a9372e-76f0-4021-999a-3198edf14751" class="bulleted-list"><li>이러한 차이점에 기반하여 보통은 auto속성이 scroll 속성보다 많이 사용된다!</li></ul><ul id="f470cbae-e931-40cd-9dab-33205fd6a9e1" class="bulleted-list"><li>아래의 그림은 두 속성값의 차이점 중 하나인 첫 번째 차이점을 잘 보여준다</li></ul><p id="eac42aad-e2c8-41d1-a0a9-e2cf7a297a76" class="">
+</p><figure id="c094fea0-baff-4cfa-80d7-466a58ab16bf" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20scroll.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20scroll.PNG?raw=true"/></a><figcaption>overflow되었을 때 scroll의 형태</figcaption></figure><figure id="80942435-0e9d-4f03-bd4f-7ce180794c05" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20auto.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20auto.PNG?raw=true"/></a><figcaption>overflow되었을 때 auto의 형태</figcaption></figure><figure id="793995f4-9ef0-4b3a-996a-ad0cb36d37ad" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20scroll_case2.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20scroll_case2.PNG?raw=true"/></a><figcaption>overflow가 되지 않았을 때 scroll의 형태</figcaption></figure><figure id="e2181e2e-3c69-4f31-96c8-50650df53b52" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20auto_case2.PNG?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20auto_case2.PNG?raw=true"/></a><figcaption>overflow가 되지 않았을 때 auto의 형태</figcaption></figure><p id="b5badb56-963f-4af7-9803-2c97804e14d0" class="block-color-yellow_background">🌟 overflow 속성이 적용될 부분은 content가 담긴 요소의 부모 요소가 되어야 한다! 위의 경우에는 그저 div 태그 내부에 컨텐츠를 담았을 뿐이라서 div요소에 overflow를 적용해도 괜찮다!</p><p id="2ab36342-a86b-4a09-b3d9-11588697ff1c" class="">
+</p><p id="df65756a-f803-4fde-896d-fb8653fed62f" class="">6. opacity</p><ul id="3d5f3bf8-97fa-490e-8208-755f2f6494bc" class="bulleted-list"><li>요소의 투명도를 지정</li></ul><ul id="afdd0fd0-fc5d-4f31-9813-8c8d8386083d" class="bulleted-list"><li>[0,1] 범위 내의 실수 값으로 설정(속성값)(기본값=1)</li></ul><ul id="cf89dd43-6fa1-4dbb-a561-b600527f1740" class="bulleted-list"><li>0: 투명, 0.5: 반투명, 1: 투명x(원래 그대로 잘 보임)</li></ul><ul id="cb293ea4-86e2-42b5-919b-7acc60887804" class="block-color-pink_background bulleted-list"><li>수치가 높아질수록 투명해지지 않음</li></ul><ul id="e3e10ee5-37fa-4643-ab93-255c25d24574" class="block-color-pink_background bulleted-list"><li>수치가 낮아질수록 투명해짐</li></ul><pre id="6b5ddaa4-4fcb-49cc-a414-3cc2b3af301e" class="code"><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;ko&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Document&lt;/title&gt;
+    &lt;style&gt;
+        div{
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: tomato;
+            border:1px solid black;
+        }
+        .box2{
+            opacity:0;
+        }
+        .box3{
+            opacity:1;
+        }
+        .box4{
+            opacity:0.5;
+        }
+        .box5{
+            opacity:0.85;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class=&quot;box1&quot;&gt;box1&lt;/div&gt;
+    &lt;div class=&quot;box2&quot;&gt;box2&lt;/div&gt;
+    &lt;div class=&quot;box3&quot;&gt;box3&lt;/div&gt;
+    &lt;div class=&quot;box4&quot;&gt;box4&lt;/div&gt;
+    &lt;div class=&quot;box5&quot;&gt;box5&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><figure id="2ffc9ceb-f3a8-425f-a5e8-2fd0e2376750" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/opacity.png?raw=true"><img src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/opacity.png?raw=true"/></a><figcaption>opacity</figcaption></figure><p id="7c357b47-b222-4d46-ab01-214c76e0f2ea" class="">위에서 볼 수 있듯이, opacity를 지정해주지 않으면 기본값으로 1이 적용되어 불투명(투명x)해지고, 0이 적용되면 완전투명해진다. <mark class="highlight-pink"><strong>주의할 점은 완전히 투명해지는 것은 요소가 삭제된 것이 아니라, 존재하지만 보이지 않는 것이다!</strong></mark><span style="border-bottom:0.05em solid"><mark class="highlight-pink"><strong>(display:none과 다르다!)(지금 위에서 box2자리가 비어있다는 것은 요소가 존재하지만 보이지 않을뿐임을 명확히 해준다!)</strong></mark></span></p><p id="f249e2ca-4bed-49e7-a058-22a76f38959b" class="">
+</p><p id="8c6d5e76-e851-404f-80a7-37685675b166" class="">그리고 box4와 box5에서 확인해볼 수 있듯이, 수치가 점점 1애 가까워질수록 투명도가 떨어짐을 알 수 있다!</p><p id="bcc5c5b6-35ca-4f4f-a22f-fa8721a459e4" class="">
+</p><p id="df084dad-c2e5-40a9-a935-c6dfad1cd5c6" class="">➕ opacity는 요소 내부의 content에도 영향을 미쳐서 흐리게 보이거나 명확하게 보이게 될 수도 있다!(위의 box4에서 알아볼 수 있다!)</p><p id="d4cdf5d4-b03a-498f-9174-56999413a96b" class="">
+</p><p id="c61822dd-b927-4adc-b43c-5cdd93599b23" class="">🌟 아래와 같이 투명도 수치에서 .75와 같이 앞의 정수부분인 0을 생략해줄 수도 있다!</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="b3035bf0-eb2b-4541-9393-0b19c0382e46"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">opacity: .75;</div></figure><p id="cfc14bf0-7736-4b8b-9e18-5e7ba4d7e969" class="">
+</p><p id="2c24c818-7809-4031-a193-19115f949ecc" class="">7. 색상</p><p id="2c6f40a9-b0a1-43b5-afe9-469f9a0c2094" class="">a) color</p><ul id="b61dc24b-7be7-4c70-8cab-2b53f3b936af" class="bulleted-list"><li>글자 색상을 지정</li></ul><ul id="13570e0f-cc8b-49df-8d6c-023e6305c059" class="bulleted-list"><li><mark class="highlight-pink"><strong>주의!! font-color, text-color 속성은 없음!!</strong></mark></li></ul><p id="916d5ff4-4022-4c23-ac06-b49b969b1a24" class="">
+</p><pre id="4692b7c2-5669-4e5e-b40f-12a365d93f7a" class="code"><code>div{
+	color:red;
+}
+
+div{
+	글자색상:빨강;
+}</code></pre><p id="2485d0de-a882-411a-88b4-599c8ee3f49b" class="">
+</p><p id="19c22509-45f6-43a9-a1b2-ae0a45d1a0e6" class="">b) background</p><ul id="98a8ea49-a8eb-409b-9287-7449256f2d5a" class="bulleted-list"><li>요소의 배경 색상을 지정(color와 비교하여 차이를 알고 있기!)
+(background-color와 같은 개별 속성으로 지정 가능)
+(background는 단축 속성!)</li></ul><pre id="9483bf46-29c6-499b-90ae-9456fd8dca66" class="code"><code>div{
+	background-color:red;
+}
+
+div{
+	요소배경색상 : 빨강;
+}</code></pre><p id="6474396c-2885-4980-95fe-d792b89d1d6b" class="">
+</p><ul id="23fbbbbc-11a8-4f6a-b713-39b6da1b34de" class="bulleted-list"><li>TOC: Table of contents; 목차</li></ul></div></p><p id="def07654-026f-4918-9239-0e424e571172" class=""><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow%20visible.PNG?raw=true">https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/overflow visible.PNG?raw=true</a></p></div></article></body></html>
