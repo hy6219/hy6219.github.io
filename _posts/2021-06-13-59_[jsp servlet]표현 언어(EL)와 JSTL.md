@@ -575,9 +575,9 @@ request.setAttribute("name",value);
 		if(choice.equals("떡볶이")){
 	%>
 			<span>떡볶이 맛있죠!</span><hr>
-			<%}else if(choice.equals("튀김")){%>
+			<%}else if(choice.equals("튀김"))%>{
 			<span>튀김은 다음에!</span><hr>
-			<%}else if(choice.equals("순대")){ %>
+			<%}else if(choice.equals("순대"))%>{ 
 			<span>순대도 다음에!</span><hr>
 			<%} %>
 </body>
