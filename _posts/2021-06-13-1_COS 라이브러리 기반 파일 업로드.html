@@ -1,0 +1,918 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>COS 라이브러리 기반 파일 업로드</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="b932b411-37fe-4191-9217-0865af58f64e" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">📁</span></div><h1 class="page-title">COS 라이브러리 기반 파일 업로드</h1></header><div class="page-body"><p id="d455ceea-1eb2-4423-9670-83a8d8836270" class="">🌺 WHAT IS COS?</p><ul id="ae78d7ad-7405-423d-a55e-ff0ba88467eb" class="bulleted-list"><li>자바에서 파일 업로드 시에 자주 사용되는 라이브러리</li></ul><ul id="604a96fc-b9e9-4859-9f79-74e19009c636" class="bulleted-list"><li>우리는 cos.jar 파일을 이용할 것!</li></ul><ul id="9dfb136a-21dd-442e-abc1-92e1bb96420c" class="bulleted-list"><li>com.oreilly.servlet의 약자!</li></ul><p id="edd2395e-5ee1-41e3-b6d8-6a0e7b970acc" class="">
+</p><p id="62fab0b3-4a63-4b18-b480-03bb0344f836" class="">📌 COS 라이브러리의 cos.jar 파일 설정 방법</p><ol id="14d2174c-3a21-4b69-b82c-0eee1586490e" class="numbered-list" start="1"><li><a href="http://www.servlets.com/cos">http://www.servlets.com/cos</a> 접속</li></ol><ol id="d6225383-bb53-4819-9076-bdd93356a959" class="numbered-list" start="2"><li>스크롤을 내려서(왼쪽 네비게이션 바 부분이 아니라 본문 부분을 내리다 보면 존재!) download 카테고리의 cos-26Dec2008.zip 파일 다운로드(21.06.08 기준 현재 cos-20.08.zip으로 갱신되어있었다!)[<a href="http://www.servlets.com/">http://www.servlets.com/</a> 로 접속 수 네비게이션 바에서 COS~로 시작하는 카테고리를 눌러도 된다!]</li></ol><ol id="188cda0b-04b9-4a99-a6db-24f2be9c03eb" class="numbered-list" start="3"><li>압축파일을 받아 압축을 해제하고,  lib 폴더의 cos.jar 파일을 확인해둔다</li></ol><ol id="17d197ec-499a-4564-8118-4d7f1a033481" class="numbered-list" start="4"><li>이 cos.jar 파일을 WebContent의 WEB-INF 폴더의 하위 폴더인 lib 폴더에 import 해주면 서블릿에서 사용할 수 있게 된다!</li></ol><p id="550e205e-9358-44b5-a1ac-fcba0e427d13" class="">
+</p><p id="7d21041b-7d17-41d0-9d73-b6d728ac0289" class="block-color-pink_background">🌟 파일을 서버에 전송하기 위해서 form 태그 및 input 태그에서 설정해주어야 할 몇 가지 사항들 🌟</p><ol id="e3f55b49-630b-4f26-92a1-a519abe519cb" class="numbered-list" start="1"><li> form 태그의 method는 post로!</li></ol><ol id="2fe4f448-07db-4fb4-8002-d45b26ad1a40" class="numbered-list" start="2"><li>form 태그의 enctype은 multipart/form-data 로 설정하기!!</li></ol><ol id="e28f92d6-21c9-4eac-8e68-b6553b1d5b5e" class="numbered-list" start="3"><li>input 태그의 type은 file로!</li></ol><p id="021e2efd-2fc5-492f-bf93-b6be2122d44a" class="">
+</p><p id="5ae56f76-8ade-4f85-b910-f2ff99b7aff0" class="">❓ what is enctype  ❓</p><p id="25aeae4a-e5ae-428e-8719-849ca4729904" class="">ref : <a href="http://tcpschool.com/html-tag-attrs/form-enctype">http://tcpschool.com/html-tag-attrs/form-enctype</a></p><p id="12f8b8f2-c152-4882-9417-b156c9c5e5f8" class="">
+</p><p id="020cffc3-3fb0-4655-9da4-eb5e37d3c919" class="">enctype은 서버로 양식을 전송하기 전 인코딩하는 방식을 다루는 속성으로, post method인 경우에만 사용이 가능하다</p><p id="ee544eef-169f-4e95-87fe-daefd7789175" class="">
+</p><p id="a77ebb61-c326-4115-99e0-b730608a7b7a" class="">이 속성의 값으로는</p><ul id="c7503f72-9ca3-44eb-baa2-de5ae2a0af1c" class="bulleted-list"><li>application/x-www-from-urlencoded : 기본값! 모든 문자들은 서버로 전송되기 전에 인코딩 됨을 명시</li></ul><ul id="857d2522-7515-4962-af4b-06fe8c37f527" class="bulleted-list"><li>multipart/form-data : 주로 파일을 다룰 때 사용되는 값으로, 모든 문자를 인코딩하지 않음을 나타냄</li></ul><ul id="b9d4724d-b33a-4707-a3d5-4f1d309ba31e" class="bulleted-list"><li>text-plain : 공백문자만 + 기호로 인코딩하고, 나머지 문자는 모두 인코딩하지 않음을 명시</li></ul><p id="654ad587-8b20-41a9-ba40-a0e84687ae03" class="">
+</p><p id="441c718d-1d7d-4d8c-9f07-8e2c2447f6c3" class="">❓ enctype을 설정해주는 이유 ❓</p><ul id="288586d2-0fc1-413b-870b-07d842d4c493" class="bulleted-list"><li>이 속성이 설정되지 않으면 파일명만 텍스트로 서버로 전송되고, 파일 객체는 전달되지 않기 때문!</li></ul><p id="66b866b3-7497-40e0-a781-10e0f27038cc" class="">
+</p><p id="a975f352-8e07-4d7e-9fb3-a7f0e8ca3b26" class="">❓ post method를 사용하는 이유❓</p><ul id="e24fabad-722c-4953-9e1b-db15707ddde0" class="bulleted-list"><li>get 방식을 이용하게 되면 쿼리스트링에 해당 정보를 노출하여 정보를 전송하게 되는데, 이는 파일과 같은 전송할 데이터의 용량이 큰 경우에 부적합하기 때문!(get 방식으로는 255자(=<style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.13.2/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">2^8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141079999999999em;vertical-align:0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141079999999999em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">8</span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> -1 =즉 8비트를 이용])이하의 적은 용량의 데이터만 전송할 수 있음]</li></ul><p id="3805a28c-9254-4c02-9bd0-289f3be29318" class="">
+</p><ul id="a4404ffb-48fd-48cd-8696-f370bb6c2dac" class="bulleted-list"><li>post 방식은 255자 이상의 대용량 데이터를 전송할 수 있음!</li></ul><p id="9337df69-ca63-4b62-bf6a-f5589524ae60" class=""><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Type</a></p><hr id="f7c7aaba-89b6-4bc2-b1e7-3fc796434b7f"/><p id="2989405f-ddba-41b5-bf91-5710c5ab1663" class="">
+</p><ul id="e1ea10c5-efd8-43ec-b089-978e402d930b" class="bulleted-list"><li>참고로, cos.jar에서 제공되는 MultipartRequest 클래스(이름에서 풍겨지는.. enctype의 속성값의 향기..?)를 확인하기 위해서는 Build Path- Add to Build Path를 눌러준다!</li></ul><p id="7237e08c-a775-4e92-921c-431d8449b6fb" class="">▶️ 그러면 java resources의 Libraries 의 Referenced Libraries 아래에서 cos.jar 하위에 com.oreilly.servlet 밑에서 <a href="http://multipartrequest.java">MultipartRequest.</a>class 파일을 확인해볼 수 있다</p><p id="ef759dd4-314d-4548-a084-3b791d6b94a8" class="">(클래스 파일을 확인해보고 싶었는데 attach 문제가 발생하여 문서로 확인해보기로 하였다 😭)</p><p id="b6da302b-6319-4201-af98-e7bc1205afa0" class=""><a href="http://www.servlets.com/cos/javadoc/com/oreilly/servlet/MultipartRequest.html">http://www.servlets.com/cos/javadoc/com/oreilly/servlet/MultipartRequest.html</a></p><p id="79815920-67f9-4ee3-ae5b-9ff0afbe84e2" class="">위의 문서 등을 확인해보면 MutlipartRequest클래스의 생성자는 아래와 같은 파라미터를 이용함을 알 수 있다</p><div id="a2b3122d-4a3c-44e2-adb6-fe62cfb024be" class="collection-content"><h4 class="collection-title">MultipartRequest 생성자의 필드</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>매개변수</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>참고하면 좋은 사이트</th></tr></thead><tbody><tr id="5e229c7b-e130-40d1-99f0-7a3226b82a7f"><td class="cell-title"><a href="https://www.notion.so/request-5e229c7be13040d199f07a3226b82a7f">request</a></td><td class="cell-X[RD">MultipartRequest와 연결할 request 객체</td><td class="cell-BjNz"></td></tr><tr id="3e7a2cb0-ea53-4b13-a64a-b54ac2c04303"><td class="cell-title"><a href="https://www.notion.so/saveDirectory-3e7a2cb0ea534b13a64ab54ac2c04303">saveDirectory</a></td><td class="cell-X[RD">서버 측에 저장될 경로</td><td class="cell-BjNz"></td></tr><tr id="31be7b4a-d310-4ff1-998d-4021b805e53d"><td class="cell-title"><a href="https://www.notion.so/maxPostSize-31be7b4ad3104ff1998d4021b805e53d">maxPostSize</a></td><td class="cell-X[RD">최대 파일 크기</td><td class="cell-BjNz"></td></tr><tr id="f6ad106d-ace2-4ff4-b996-fb781f967bc0"><td class="cell-title"><a href="https://www.notion.so/encoding-f6ad106dace24ff4b996fb781f967bc0">encoding</a></td><td class="cell-X[RD">파일의 인코딩 방식(파일이름이 한글인 경우 매개변수값을 utf-8로 설정)</td><td class="cell-BjNz"></td></tr><tr id="cf0beaf7-38f1-457a-86c3-2fa0c4047113"><td class="cell-title"><a href="https://www.notion.so/policy-FileRenamePolicy-cf0beaf738f1457a86c32fa0c4047113">policy(FileRenamePolicy)</a></td><td class="cell-X[RD">파일 중복 처리를 위한 매개변수
+-매개변수로는 new DefaultFileRenamePolicy()를 사용
+[▶️ 다형성 적용됨(DefaultFileRenamePolicy]</td><td class="cell-BjNz"><a href="http://www.servlets.com/cos/javadoc/com/oreilly/servlet/multipart/FileRenamePolicy.html">http://www.servlets.com/cos/javadoc/com/oreilly/servlet/multipart/FileRenamePolicy.html</a></td></tr></tbody></table></div><p id="e4812a70-aed3-407a-9aa2-0dfab88ac7df" class="">
+</p><div id="4ece9b43-b45b-4ea5-9e79-b26e6c31dd94" class="collection-content"><h4 class="collection-title">MultipartRequest 클래스에서 사용되는 메서드들</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>메서드명</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesText"><path d="M7,4.56818 C7,4.29204 6.77614,4.06818 6.5,4.06818 L0.5,4.06818 C0.223858,4.06818 0,4.29204 0,4.56818 L0,5.61364 C0,5.88978 0.223858,6.11364 0.5,6.11364 L6.5,6.11364 C6.77614,6.11364 7,5.88978 7,5.61364 L7,4.56818 Z M0.5,1 C0.223858,1 0,1.223858 0,1.5 L0,2.54545 C0,2.8216 0.223858,3.04545 0.5,3.04545 L12.5,3.04545 C12.7761,3.04545 13,2.8216 13,2.54545 L13,1.5 C13,1.223858 12.7761,1 12.5,1 L0.5,1 Z M0,8.68182 C0,8.95796 0.223858,9.18182 0.5,9.18182 L11.5,9.18182 C11.7761,9.18182 12,8.95796 12,8.68182 L12,7.63636 C12,7.36022 11.7761,7.13636 11.5,7.13636 L0.5,7.13636 C0.223858,7.13636 0,7.36022 0,7.63636 L0,8.68182 Z M0,11.75 C0,12.0261 0.223858,12.25 0.5,12.25 L9.5,12.25 C9.77614,12.25 10,12.0261 10,11.75 L10,10.70455 C10,10.4284 9.77614,10.20455 9.5,10.20455 L0.5,10.20455 C0.223858,10.20455 0,10.4284 0,10.70455 L0,11.75 Z"></path></svg></span>설명</th></tr></thead><tbody><tr id="c6d76390-8f84-480b-ae35-287df0cc8de0"><td class="cell-title"><a href="https://www.notion.so/getParameterNames-c6d763908f84480bae35287df0cc8de0">getParameterNames()</a></td><td class="cell-lS:j">폼에서 전송된 <mark class="highlight-pink_background"><strong>파라미터의 이름을 </strong></mark><mark class="highlight-pink_background"><strong><span style="border-bottom:0.05em solid">Enumeration 타입</span></strong></mark><mark class="highlight-pink_background"><strong>으로 리턴</strong></mark></td></tr><tr id="a2b2e07b-0df6-47dc-8c1c-f9f7fd88402d"><td class="cell-title"><a href="https://www.notion.so/getParameterValues-String-name-a2b2e07b0df647dc8c1cf9f7fd88402d">getParameterValues(String name)</a></td><td class="cell-lS:j"><span style="border-bottom:0.05em solid"><strong>폼에서 전송된 파라미터들을 String배열</strong></span>로 받아옴</td></tr><tr id="2fc6bc8c-2f9b-4a62-8b6f-2a23ffb814e3"><td class="cell-title"><a href="https://www.notion.so/getParameter-String-name-2fc6bc8c2f9b4a628b6f2a23ffb814e3">getParameter(String name)</a></td><td class="cell-lS:j">객체에 있는 해당 파라미터의 값을 String형태로 받아옴</td></tr><tr id="e93b9c84-b3bb-4104-b33f-d5079b3d7118"><td class="cell-title"><a href="https://www.notion.so/getFileNames-e93b9c84b3bb4104b33fd5079b3d7118">getFileNames()</a></td><td class="cell-lS:j"><mark class="highlight-pink_background"><span style="border-bottom:0.05em solid"><strong>파일을 여러개 업로드할 경우, 업로드된 모든 파일들의 이름을 Enumeration 타입</strong></span></mark>으로 리턴</td></tr><tr id="0ce65261-4125-4bfa-8dad-6415128f999e"><td class="cell-title"><a href="https://www.notion.so/getFilesystemName-String-name-0ce6526141254bfa8dad6415128f999e">getFilesystemName(String name)</a></td><td class="cell-lS:j"><mark class="highlight-pink_background"><strong>서버에 실제로 업로드된 파일의 이름</strong></mark>을 String으로 리턴</td></tr><tr id="23676347-2163-46e4-9cad-a4932092ca4b"><td class="cell-title"><a href="https://www.notion.so/getOriginalFileName-String-name-23676347216346e49cada4932092ca4b">getOriginalFileName(String name)</a></td><td class="cell-lS:j"><mark class="highlight-pink_background"><strong>클라이언트가 업로드한 파일의 원본 이름</strong></mark>을 String으로 리턴</td></tr><tr id="91265071-3c18-4d5f-9158-86b4ae5324f2"><td class="cell-title"><a href="https://www.notion.so/getContentType-String-name-912650713c184d5f915886b4ae5324f2">getContentType(String name)</a></td><td class="cell-lS:j">업로드 파일의 콘텐트 타입을 얻을 때 사용(예-text/html)[서버에 어떤 유형으로 해석되고 인코딩은 어떤 방식으로 진행할 지 미리 알려둔 정보를 가져옴]</td></tr><tr id="14844ca8-5bda-443c-ae91-62ef94f75877"><td class="cell-title"><a href="https://www.notion.so/getFile-String-name-14844ca85bda443cae9162ef94f75877">getFile(String name)</a></td><td class="cell-lS:j">서버로 업로드된 파일의 정보를 파일 객체로 리턴</td></tr></tbody></table></div><p id="2d8a5375-450b-4873-a27e-617c04a5891c" class="">🌟 클라이언트가 jsp 페이지 요청 시, 컴파일된 파일들이 워크스페이스 디렉토리 내의 .metadata/.plugins/org.exlipse.wst.server.core/tmp/wtpwebapps 폴더에 저장된다!</p><p id="fd8bd828-455e-45e2-ac4e-96a6514f17e8" class="">(나의 경우 D:\ji_study\jsp servlet\eclipse_jsp_servlet\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\web-study-10 에 저장됨을 확인하였다)</p><p id="99e3e731-f414-4d32-92a7-8fef59bbf123" class="">
+</p><p id="75303743-7cb4-4758-9565-7e622cdb32f6" class="">아래의 예제와 함께 몇가지 주의할 사항을 확인하면서 연습해보자</p><p id="00ae4261-8dfd-42e3-8b65-681a79172d25" class="">먼저, 파일을 업로드 하는 페이지를 작성해보자</p><pre id="829a06f8-0562-49f7-ad30-6a40c353e658" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;파일업로드 테스트&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;section&gt;
+		&lt;article id=&quot;fileUpload&quot;&gt;
+			&lt;form action=&quot;upload.do&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+				&lt;label&gt;글쓴이&amp;nbsp;:&lt;input type=&quot;text&quot; name=&quot;writer&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;제목&amp;nbsp;&amp;nbsp;:&lt;input type=&quot;text&quot; name=&quot;title&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;파일 지정하기 : &lt;input type=&quot;file&quot; name=&quot;uploadFile&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;input type=&quot;submit&quot; value=&quot;파일 업로드하기&quot;&gt;
+			&lt;/form&gt;
+		&lt;/article&gt;
+	&lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="9533463d-02ab-44ca-b1fa-b112183a0a76" class="">이번에는 위의 페이지와 post method로 연결될 upload.do에 해당되는 서블릿이다</p><pre id="16172493-ac99-4697-98b7-73808c1becfe" class="code"><code>package com.saeyan.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+/**
+ * Servlet implementation class UploadServlet
+ */
+@WebServlet(&quot;/upload.do&quot;)
+public class UploadServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public UploadServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//response.getWriter().append(&quot;Served at: &quot;).append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//doGet(request, response);
+		//post 방식으로 업로드 처리
+		request.setCharacterEncoding(&quot;UTF-8&quot;);
+		//content-type 설정(header setting)
+		response.setContentType(&quot;text/html;charset=UTF-8&quot;);
+		PrintWriter out = response.getWriter();
+		
+		//파일을 다운받는 경로
+		String savePath = &quot;upload&quot;;
+		//최대 업로드 파일 크기를 5MB로 제한
+		int uploadFileSizeLimit = 5 * 1024 * 1024;//MB=1024^2 B
+		//인코딩
+		String encType=&quot;UTF-8&quot;;
+		
+		//서버 상 실제 경로 찾기
+		ServletContext context = getServletContext();
+		String uploadFilePath = context.getRealPath(savePath);
+		System.out.println(&quot;서버 상 실제 디렉토리:&quot;+uploadFilePath);
+		// https://coding-factory.tistory.com/283
+		// java.lang.IllegalArgumentException: Not a directory 는 디렉토리가 없어서 생긴 문제이므로
+		//이를 체킹 후 생성
+		File folder = new File(uploadFilePath);
+		if(!folder.exists()) {
+			//폴더 생성(폴더가 없으면)
+			folder.mkdir();
+		}
+		
+		//HttpServletRequest 객체, 업로드할 경로, 업로드할 사이즈 제한값, 인코딩 방법, 중복된 파일명에 대한
+		//새로운 이름 부여를 매개변수로 하는 MultipartRequest객체 생성 -&gt; 서버로 파일이 업로드됨
+		try {
+			MultipartRequest req = new MultipartRequest(
+					request,//multipart request와 연결될 request 객체
+					uploadFilePath,//서버 상 실제 디렉토리
+					uploadFileSizeLimit,//파일 용량 제한
+					encType,//인코딩 방법
+					new DefaultFileRenamePolicy()//동일 이름 존재시 새로운 이름 부여
+					);
+			//업로드된 파일의 서버상 이름 얻기
+			String fileName = req.getFilesystemName(&quot;uploadFile&quot;);
+			
+			if(fileName == null) {
+				//파일이 업로드되지 않았을 때
+				System.out.print(&quot;파일이 업로드되지 않았음&quot;);
+			}else {
+				//파일이 업로드되었을 때
+				out.println(&quot;&lt;br&gt;글쓴이 : &quot;+req.getParameter(&quot;writer&quot;));//request가 연결된 req객체에서도 이제 파라미터를 마음껏 가져올 수 있음
+				out.println(&quot;&lt;br&gt;제&amp;nbsp;목: &quot;+req.getParameter(&quot;title&quot;));
+				out.println(&quot;&lt;br&gt;파일명: &quot;+fileName);//서버에 저장된 파일이름 출력
+			}
+		}catch(Exception e1) {
+			e1.printStackTrace();
+		}
+	}
+
+}</code></pre><p id="d2979a4a-288a-467a-a777-b754af742f3f" class="">주의할 점이 있다면, 위에서 저장되는 위치에 폴더명이 존재하지 않으면 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="397c9d31-e2ff-4369-9ae4-3c03a2ec93ac"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">java.lang.IllegalArgumentException: Not a directory</div></figure><p id="2d1cf6b2-3ea0-4eb0-99c0-a3a8668d5b0b" class="">에러가 발생하는데, 이는 당연하다! 왜냐하면 지금 서버에 폴더가 없으니까!</p><p id="f30d81cc-49e7-41f9-a7e9-1a86e8d2ecc1" class="">
+</p><p id="5f2f2895-601a-4a24-af1e-c9f70135a0d7" class="">그래서 폴더를 생성하는 방식을 찾아보았는데,</p><p id="f5ccd121-fa16-428e-9d5b-41cc51115ca6" class=""><a href="https://coding-factory.tistory.com/283">https://coding-factory.tistory.com/283</a></p><p id="99183ab6-628a-4ad2-8d84-c0db40a5b6ad" class="">위의 글을 참조하였다! 리눅스의 명령어인 mkdir이 떠오르는 메서드를 이용하여</p><pre id="651dd10d-5e97-4b85-bcbe-6dc9732bf565" class="code"><code>File folder = new File(폴더명);
+if(!folder.exists()){
+	folder.mkdir();
+}</code></pre><p id="96ad89f6-4527-498b-86af-7da598b940c2" class="">위와 같이 폴더가 존재하지 않으면 폴더를 생성하도록 해주는 것이다!</p><p id="12e21783-ae2d-45d7-a57f-e7c86e01b6ea" class="">
+</p><p id="d16f9eac-4933-4f49-80f4-f87383b02a40" class="">그러면 위에 페이지 등 파일이 저장되는 위치에 upload라는 이름의 폴더가 생성됨을 확인해볼 수 있다</p><p id="2ebe510b-6a4b-41c0-aae0-10916dee3f44" class="">
+</p><p id="0a11c7b3-6d55-4c43-a56c-8b14d64f9688" class="">서블릿 부분에서 몇 가지 짚고 넘어갈 사항이 있어서 이 부분을 확인하고 넘어가보자!</p><p id="bcc4d4a1-84c6-482f-b7f8-e095d9b2833f" class="">
+</p><p id="e6dd1ae8-d7d0-40ad-843e-2409cd4773cb" class="">
+</p><figure id="31d69402-a8f8-4dc9-ad9e-da10eeb68137" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%ED%8C%8C%EC%9D%BC%EC%97%85%EB%A1%9C%EB%93%9C.gif?raw=true"><img style="width:1056px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%ED%8C%8C%EC%9D%BC%EC%97%85%EB%A1%9C%EB%93%9C.gif?raw=true"/></a><figcaption>COS 라이브러리를 이용한 파일 업로드</figcaption></figure><p id="68103011-7806-478d-a1b5-c766de639048" class="">먼저 위에서 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="1afc033b-2e88-4a3f-aa32-99c198ac06b1"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">new DefaultFileRenamePolicy()</div></figure><p id="d530ce5e-e27e-41db-abbc-0f8e09234593" class="">로 파일 rename 여부에 대한 기준을 세워두었기 때문에, 아래처럼, 동일한 파일명을 가진 파일의 경우, 서버에서 파일명을 새로운 이름으로 변경하여 적용하게 된다!</p><figure id="f7ad18dc-ecc1-499f-9708-73428d5e591a" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-RenamePolicy.gif?raw=true"><img style="width:1008px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%20%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-RenamePolicy.gif?raw=true"/></a><figcaption>COS 라이브러리- new DefaultFileRenamePolicy</figcaption></figure><p id="902f0cd4-4fb9-4bfa-9838-d6e89f735d76" class="">
+</p><p id="aa2e374d-d86d-4570-b9e4-85ea20fa3e5d" class="">그 다음은, multipart/form-data를 지원하기 위한 MultipartRequest 클래스 객체를 생성하기 위한 </p><ul id="b88c35c2-fba3-43ab-80e7-7e1a6a6ecf22" class="bulleted-list"><li>클라이언트가 업로드한 파일을 서버에서 다운받는 경로(String savePath)</li></ul><ul id="df23e390-30f2-4bcb-abc3-6e278dd3aa47" class="bulleted-list"><li>파일 업로드 크기 제한(int uploadFileSizeLimit)</li></ul><ul id="9920dac8-d413-4c32-a35d-7150797e5597" class="bulleted-list"><li>인코딩(String encType)</li></ul><p id="fafd201d-6483-4794-963c-c1be2ccca82e" class="">를 미리 선언, 정의해둔 후 객체를 생성한 부분이다</p><pre id="33398178-9f8b-415b-8e96-9f96669f6e33" class="code"><code>	//파일을 다운받는 경로
+		String savePath = &quot;upload&quot;;
+		//최대 업로드 파일 크기를 5MB로 제한
+		int uploadFileSizeLimit = 5 * 1024 * 1024;//MB=1024^2 B
+		//인코딩
+		String encType=&quot;UTF-8&quot;;
+
+...
+
+MultipartRequest req = new MultipartRequest(
+					request,//multipart request와 연결될 request 객체
+					uploadFilePath,//서버 상 실제 디렉토리
+					uploadFileSizeLimit,//파일 용량 제한
+					encType,//인코딩 방법
+					new DefaultFileRenamePolicy()//동일 이름 존재시 새로운 이름 부여
+					);</code></pre><p id="e1c90411-e4e5-45e7-810b-d150fac9ed6f" class="">
+</p><p id="e8979369-d860-4f3f-ace1-788bf5a2b746" class="">그리고 위의 필드 중 uploadFilePath와 관련된 부분이 지금 짚고 넘어갈 부분인데, 서버 상의 실제 경로를 찾아내기 위해 ServletContext 객체를 이용하여 getRealPath 메서드를 이용하였다</p><pre id="639974a2-a6f9-4f78-80b7-d82b6f322eaf" class="code"><code>//서버 상 실제 경로 찾기
+		ServletContext context = getServletContext();
+		String uploadFilePath = context.getRealPath(savePath);</code></pre><p id="ff02d145-c9c7-491b-b194-9b0717dc160d" class="">
+</p><p id="587db9aa-cb2d-43a5-bb86-4b7f5224b7c7" class="">🌟 마지막으로 ,  파일의 서버상 이름을 얻기 위한 부분인데, 이 부분에서 파라미터는 input type=file의  name 값이 들어가야 한다!</p><pre id="2a3df13b-9bce-4a21-9bce-182ef6029a4d" class="code"><code>	//업로드된 파일의 서버상 이름 얻기
+			String fileName = req.getFilesystemName(&quot;uploadFile&quot;);
+
+/*
+input type=file name=uploadFile에서의 name과 일치시켜야!!
+*/</code></pre><p id="0a8d73a2-cb4a-4b19-b35c-adcdf40eb663" class="">
+</p><p id="62bfabbc-0934-4624-bb6d-b1ad63a84f95" class="">❓ 음.. 그런데 파일을 한개만 올리는 상황만 있는 것도, 아니고, 여러 개 파일을 받아올 수 있어야 하지 않을까요 ❓</p><p id="2ae6559c-b6d5-4183-aff3-ddb4558f5d28" class="">
+</p><p id="6066476e-0c88-4c5c-89ce-7d1adc62b6f4" class="">그래서 존재하는 것이 바로 </p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="91a668c9-872c-456e-8813-d6b3532b6f72"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">MultipartRequest 객체.getFileNames()</div></figure><p id="ee866938-727b-4d10-bc22-678d64d027d6" class="">이다! 이 메서드는 Enumeration 형으로 업로드된 파일명들을 반환해준다!</p><p id="698f3038-78dc-444b-9e3a-cf267069b785" class="">이를 이용하여</p><p id="68831c82-8440-4dcc-a57c-d8eb01e58b37" class="">먼저 화면단에 보여질 화면은 다음과 같이 변경해주고</p><pre id="92069084-1233-4c81-a482-7e3b7f53b7a9" class="code"><code>&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;파일업로드 테스트&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+	&lt;section&gt;
+		&lt;article id=&quot;fileUpload&quot;&gt;
+			&lt;form action=&quot;multiUpload.do&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;
+				&lt;label&gt;글쓴이&amp;nbsp;:&lt;input type=&quot;text&quot; name=&quot;writer&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;제목&amp;nbsp;&amp;nbsp;:&lt;input type=&quot;text&quot; name=&quot;title&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;1.파일 지정하기 : &lt;input type=&quot;file&quot; name=&quot;uploadFile01&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;2.파일 지정하기 : &lt;input type=&quot;file&quot; name=&quot;uploadFile02&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;label&gt;3.파일 지정하기 : &lt;input type=&quot;file&quot; name=&quot;uploadFile03&quot;&gt;&lt;/label&gt;&lt;br&gt;
+				&lt;input type=&quot;submit&quot; value=&quot;파일 업로드하기&quot;&gt;
+			&lt;/form&gt;
+		&lt;/article&gt;
+	&lt;/section&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p id="6dfc7187-344a-4a36-b067-38f38ec968ce" class="">요청이 들어올 컨트롤러에서는 아래와 같이</p><pre id="9d24cd31-da2d-4965-b92d-02ec2b092fbd" class="code"><code>package com.js.controller;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
+import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+
+/**
+ * Servlet implementation class MultiUploadServlet
+ */
+@WebServlet(&quot;/multiUpload.do&quot;)
+public class MultiUploadServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public MultiUploadServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		//encoding setting
+		request.setCharacterEncoding(&quot;UTF-8&quot;);
+		response.setContentType(&quot;text/html;charset=UTF-8&quot;);
+		
+		PrintWriter out = response.getWriter();
+		
+		//클라이언트에서 업로드한 파일(들)을 서버에서 다운로드할 경로
+		String savePath  = &quot;upload&quot;;
+		File   folder    = new File(savePath);
+		
+		if(!folder.exists()) {
+			folder.mkdir();
+		}
+		//최대 5MB로 제한
+		int maxFileSize  = 5 * 1024 * 1024;
+		//multipart request객체의 인코딩
+		String encType   = &quot;UTF-8&quot;;
+		
+		//서버에서의 파일의 실제 경로를 얻기 위함
+		ServletContext context = getServletContext();
+		String        realPath = context.getRealPath(savePath);
+		
+		try {
+			
+			MultipartRequest mr = new MultipartRequest(
+					request,//request객체-서버와 주고받게될 request 객체
+					realPath,//서버에서 관리되는 파일의 실제 경로
+					maxFileSize,//파일 최대 용량 지정
+					encType,//인코딩
+					new DefaultFileRenamePolicy()
+					);
+			
+			//연결된 페이지에서 Enumeration 형태로 여러개의 파일 받아오기
+			Enumeration files = mr.getFileNames();
+			int i = 0;
+			while(files.hasMoreElements()) {
+				//파일이 존재한다면
+				
+				//파일 이름들을 저장 후 그 파일명으로 서버에 저장된 파일 이름을 가져오고
+				String file = (String)files.nextElement();
+				String serverFileName = mr.getFilesystemName(file);
+				//클라이언트에서 업로드한 파일명도 가져오기
+				String originalFileName = mr.getOriginalFileName(file);
+				
+				out.print(&quot;&lt;p&gt;#&quot;+i+&quot;업로드된 파일명: &quot;+serverFileName+&quot;&lt;/p&gt;&quot;);
+				out.print(&quot;&lt;p&gt;업로드된 파일 원본명: &quot;+originalFileName+&quot;&lt;/p&gt;&quot;);
+				out.print(&quot;&lt;hr&gt;&quot;);
+				i++;
+			}
+			
+		}catch(Exception e1) {
+			System.out.println(&quot;[ERR]서블릿 multipart request 객체 생성 에러&quot;);
+			e1.printStackTrace();
+		}
+	}
+
+}</code></pre><figure id="7248969d-8196-4e38-9fce-b81f88c01c67" class="image"><a href="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%97%AC%EB%9F%AC%EA%B0%9C%20%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C.gif?raw=true"><img style="width:1104px" src="https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/COS/fileUpload/COS%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%A5%BC%20%EC%9D%B4%EC%9A%A9%ED%95%9C%20%EC%97%AC%EB%9F%AC%EA%B0%9C%20%ED%8C%8C%EC%9D%BC%20%EC%97%85%EB%A1%9C%EB%93%9C.gif?raw=true"/></a><figcaption>Enumeration MultipartRequest.getFileNames()- 여러 개의 파일 업로드</figcaption></figure><p id="c72fedca-8edc-4f10-acad-79b446e97c3d" class="">위의 MultipartRequest객체.getFilesystemName(name속성명)으로는 하나의 파일만 접근하여 String으로 받아올 수 있었는데, 이 방식으로 접근하였을때는 보다 많은 파일을 처리할 수 있다는 점이 매력적이다!</p><figure class="block-color-teal_background callout" style="white-space:pre-wrap;display:flex" id="99696700-908a-4e36-9614-8eca38b90165"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">Enumeration getFileName()</div></figure><p id="90dc6327-ca64-418a-9cf6-2ded69ed16ab" class="">
+</p><p id="f1e49085-b163-4587-b2d0-b0cd3876d81e" class="">꺼내는 방법은 자바 컬렉션의 구 iterator인 Enumeration이므로, hasMoreElements()로 접근하여 한개씩 한개씩 커서를 옮기면서 수행하면 된다!</p></div></article></body></html>
