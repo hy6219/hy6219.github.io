@@ -559,7 +559,7 @@ request.setAttribute("name",value);
 
 (떡볶이 , 튀김, 순대 중 하나가 선택되면 그에 맞는 문구를 출력해준다고 상황을 가정해보자!)
 
-```java
+```j
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -573,11 +573,15 @@ request.setAttribute("name",value);
 		String choice="떡볶이";
 		
 		if(choice.equals("떡볶이")){
-			%>
+	%>
 			<span>떡볶이 맛있죠!</span><hr>
 			<%}else if(choice.equals("튀김"))%>{
 			<span>튀김은 다음에!</span><hr>
+<<<<<<< HEAD
 			<%}else if(choice.equals("순대"))%>{
+=======
+			<%}else if(choice.equals("순대"))%>{ 
+>>>>>>> 5451a6c3e038a9529e71f4909c9f7cebca8a3a05
 			<span>순대도 다음에!</span><hr>
 			<%} %>
 </body>
