@@ -75,18 +75,6 @@ MVC 패턴 2
 - MVC 구조에 대한 이해가 필요
 - 개발자의 높은 스킬이 요구됨
 
-MVC 패턴2로 작은 게시판을 구현해보면서 보다 세부적인 패턴을 학습해보자
-
-![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/MVCPattern/MVC%ED%8C%A8%ED%84%B42%20%ED%98%95%ED%83%9C%EC%9D%98%20%EA%B2%8C%EC%8B%9C%ED%8C%90%20%EC%97%B0%EC%8A%B5%ED%95%98%EA%B8%B0.png?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/MVCPattern/MVC%ED%8C%A8%ED%84%B42%20%ED%98%95%ED%83%9C%EC%9D%98%20%EA%B2%8C%EC%8B%9C%ED%8C%90%20%EC%97%B0%EC%8A%B5%ED%95%98%EA%B8%B0.png?raw=true)
-
-MVC 패턴2로 게시판 연습해보기 - 플로우
-
-학습할 게시판의 플로우는 아래와 같다
-
-- 게시판 리스트를 통해서 게시판 상세보기 및 게시글 등록이 가능하다
-- 게시판 상세보기에서는 게시판 수정과 삭제가 가능하다
-- 게시글 수정,삭제 시에는 게시글 비밀번호가 필요하다(마치 비밀댓글처럼)
-
 🌟 컨트롤러를 위한 패턴- Front Controller 패턴, Command 패턴
 
 - 컨트롤러 계층을 위한 패턴은 다양한 패턴이 존재하지만, 그 중에서 Front Controller 패턴과 Command 패턴을 공부해보자
