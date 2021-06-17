@@ -1,0 +1,966 @@
+# CSS 속성-글자
+
+1. font
+
+- .글자 관련 속성들을 지정
+- 단축 속성 지원
+- 속성값(**font-size, font-family**는 필수!)
+
+[font 속성의 속성값](https://www.notion.so/33f1e9d5cf454575abff51dfff385f5b)
+
+font 단축속성 사용 예시
+
+```css
+font: 기울기   두께   **글자크기** / 행간격 **font-family**;
+
+예)
+.box{
+	font: italic bold     20px / 1.5      "Arial",sans-serif;
+}   
+
+/*
+20px / 1.5로 글자크기/행간격을 정해두게 되면
+행간격은 글자크기인 20px 의 1.5배인 30px이 됨!
+
+"Arial",sans-serif 는 Arial 글꼴로 설정하는데, 그 글꼴이 없으면
+sans-serif 계열의 글꼴을 사용하겠다는 의미
+*/
+```
+
+🌟 글꼴 크기와 줄 높이 사이에 / 이 들어간 이유 🌟
+
+- 단축속성을 사용할 때, 순서가 바뀌어도 괜찮지만,  크기와 줄높이는 순서를 명확히 하지 않으면 혼동을 줄 수 있기 때문!
+
+✅ 단축속성은 모든 속성값을 다 쓰지 않아도 된다! 필수적인 font-size, font-family만 입력해주면 괜찮다!
+
+```css
+.box{
+   font: 30px/1.5; /*ERROR*/
+   font: bold;  /*ERROR*/
+   font: bold sans-serif;/*ERROR*/
+   font: 30px / 1.5 sans-serif;/*OK!*/
+   font: bold 30px sans-serif;/*OK!*/
+   font: italic 30px/1.5 "Arial",sans-serif;;/*OK!*/
+}
+```
+
+위의 예를 보다 시각적으로 확인해보기 위해서 아래의 코드로 브라우저에서 확인해보자!
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 300px;
+            margin-bottom:10px;
+            background-color: cyan;
+        }
+        .box1{
+            font: 30px/1.5;/*글자크기/행간격*/
+        }
+
+        .box2{
+            font: bold;/*글자 두께*/
+        }
+
+        .box3{
+            font:bold sans-serif;/*글자두께 글꼴*/
+        }
+
+        .box4{
+            font:30px / 1.5 sans-serif;/*글자크기 / 행간격 글꼴*/
+        }
+
+        .box5{
+            font:bold 30px sans-serif;/*글자두께 글자크기 글꼴*/
+        }
+
+        .box6{
+            font:italic 30px / 1.5 "Arial",sans-serif;/*글자기울기 글자크기/행간격 글꼴*/
+        }
+
+    </style>
+</head>
+<body>
+    <div class="box1">I'm box1</div>
+    <div class="box2">I'm box2</div>
+    <div class="box3">I'm box3</div>
+    <div class="box4">I'm box4</div>
+    <div class="box5">I'm box5</div>
+    <div class="box6">I'm box6</div>
+</body>
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20font%20%EB%8B%A8%EC%B6%95%EC%86%8D%EC%84%B1.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20font%20%EB%8B%A8%EC%B6%95%EC%86%8D%EC%84%B1.PNG?raw=true)
+
+CSS font 단축속성
+
+물론 CSS는 에러가 났다고 보여주지는 않지만, box1~box3는 font-size와 font-family를 포함시키지 않은 케이스였는데, 이 때 지정한 스타일링이 잘 적용되지 않음을 확인해볼 수 있다!
+
+반면, font-size와 font-family를 포함시킨 box4~box6은 지정한 스타일링이 잘 적용된 것을 확인해볼 수 있다!
+
+🌺 개별 속성 🌺
+
+1. font-style : 글자 스타일(기울기)을 지정
+- 속성값
+
+a) normal : 기울어지지 않은 상태 (기본값)
+
+b) italic    : 이텔릭체(활자)
+
+c) oblique: 기울어진 글자
+
+✴️ italic과 oblique는 둘 다 기울어진 글자라는 점에서 공통적인 특성을 가지지만, italic은 특수 설계된 활자라고 한다!
+
+[https://stackoverflow.com/questions/1680624/font-style-italic-vs-oblique-in-css](https://stackoverflow.com/questions/1680624/font-style-italic-vs-oblique-in-css)
+
+▶️ 보통 기울어진 글자를 사용하고자 한다면 italic을 사용
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-style.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-style.PNG?raw=true)
+
+font 개별 속성인 font-style
+
+2. font-weight: 글자의 두께를 설정(지정)
+
+- 속성값
+
+[font-weight의 속성값](https://www.notion.so/1d5c1adde70c428e9575484cae09c064)
+
+🌟 보통은 bold와 숫자를 가장 많이 사용하게 될 것(weight이 필요한 경우)
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2&display=swap" rel="stylesheet">
+    <style>
+        .parent{
+            background-color: greenyellow;
+            font:30px sans-serif;
+            width: 500px;
+            margin:10px;
+            padding:5px;
+        }
+        .font-weight1{
+            background-color: darkseagreen;
+            width: 300px;
+            font:800 30px 'Baloo Tammudu 2', cursive;
+        }
+        .font-weight2{
+            background-color:deepskyblue;
+            width: 300px;
+            font:30px sans-serif;
+        }
+        .font-weight3{
+            background-color:dodgerblue;
+            width: 300px;
+            font:bold 30px sans-serif;
+        }
+
+        .font-weight4{
+            background-color:hotpink;
+            width: 300px;
+            font:bolder 30px sans-serif;
+        }
+        .font-weight5{
+            background-color: khaki;
+            width: 300px;
+            font:lighter 30px sans-serif;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="parent">
+        I'm your font
+        <div class="font-weight1">I'm numeric</div>
+        <div class="font-weight2">I'm normal</div>
+        <div class="font-weight3">I'm bold</div>
+        <div class="font-weight4">I'm bolder</div>
+        <div class="font-weight5">I'm lighter</div>
+    </div>
+</body>
+
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-weight.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-weight.PNG?raw=true)
+
+font-weight
+
+위에서는 사용될 수 있는 모든 font-weight 속성값을을 확인해보기 위해서, 부모요소와, 그 자식요소들을 구성해둔 후, font-weight속성을 다르게 해주었다!
+
+실습에 앞서서, 사용된 폰트 정보는 아래와 같다
+
+-Google font api Baloo Tammudu 2([https://fonts.google.com/specimen/Baloo+Tammudu+2](https://fonts.google.com/specimen/Baloo+Tammudu+2))
+
+이 폰트를 선택한 이유는 bold, normal 등 의 값 외에 400, ..등의 숫자로 지원될 수 있어서 상대적인 값인 bolder와 lighter를 사용하기 위해서 이용하게 되었다
+
+먼저 부모요소에는 두께를 설정하지 않았기에, 400에 육박하는 두께가 설정되었고, 이 부모요소의 자식요소인 font-weight4,5는 상대적으로 더 두껍거나(bolder) 얇게(lighter) 지정되었다. 
+
+이번에는 나머지 자식요소들을 살펴보자
+
+먼저 font-weight1의 경우, 숫자 800을 두께로 지정하여 이에 대응되는 두께가 설정되었다
+
+font-weight2의 경우 font-weight에 대해서 지정하지 않아, 기본값인 normal에 대응되는 두께가 설정되었다
+
+font-weight3의 경우 font-weight에 bold를 지정하게 되어 약 700정도의 두께로 지정되었다
+
+참고로, 숫자로 지정할 때, 일반적인 두께에 대한 이름은 아래와 같다
+
+[일반적인 두께의 이름](https://www.notion.so/e367ba41efe849529b91a151d2ebeaeb)
+
+- 숫자가 커질수록 더더더 두꺼워진다!
+
+🌹 상대적 두께
+
+- bolder와 lighter의 계산 형태
+
+[상대적 두께 계산 방식](https://www.notion.so/31ffea90bd2847d9874c68e9da997772)
+
+위를 보았을 때, 상속값이 500을 기준으로 lighter는 100과 다른 값으로 구분지어지는 것 같다
+
+이 표를 보니, bolder와 lighter가 어떻게 계산되었을지 대략 이해가 되는듯하다!
+
+위에서 부모요소는 normal, 즉 두께가 400이었기 때문에
+
+bolder인 요소는 700의 두께가, lighter인 요소는 100의 두께가 지정되었을 것이다!
+
+이 개념은 참고만 하면 좋을 것 같다
+
+그리고 또 한가지 참고할 부분은, 숫자로 지정하는 두께가 지원되지 않는 경우(예: bold, normal만 지원하는 경우)는 아래와 같이 400이 주어졌을 때/500이 주어졌을 때/400미만으로 주어졌을때/500 초과의 값이 주어졌을때 각각 다르게 처리된다고 한다!
+
+구두로 적는것보다 그림으로 살펴보는것이 더 이해가 빠를것 같아 정리해보게 되었다!
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-weight_%EC%A7%80%EC%A0%95%ED%95%9C%20%EB%91%90%EA%BB%98%EA%B0%80%20%EC%A7%80%EC%9B%90%EB%90%98%EC%A7%80%20%EC%95%8A%EB%8A%94%20%EA%B2%BD%EC%9A%B0%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%9D%98%20%EC%A0%81%EC%9A%A9%20%EC%A0%88%EC%B0%A8.png?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-weight_%EC%A7%80%EC%A0%95%ED%95%9C%20%EB%91%90%EA%BB%98%EA%B0%80%20%EC%A7%80%EC%9B%90%EB%90%98%EC%A7%80%20%EC%95%8A%EB%8A%94%20%EA%B2%BD%EC%9A%B0%20%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EC%9D%98%20%EC%A0%81%EC%9A%A9%20%EC%A0%88%EC%B0%A8.png?raw=true)
+
+지원되지 않는 폰트두께에 대해 브라우저가 대응하는 방식(절차)["숫자값과 두께의 불일치"]
+
+예를 들어서, 어떤 폰트가 normal(400)과 bold(700)만을 지원할때,
+
+100~500(=500이 주어진 경우) 400을 먼저 적용해보았을때 지원이 되므로 400을 채용하고,
+
+600~900(=500을 초과하는 값)은 가장 가까운 두꺼운 숫자는 현재 bold(700)이 지원되므로 이를 채용하여 사용하게 된다!
+
+3. font-size
+
+- 글자 크기
+
+```css
+div{
+	font-size: 16px;
+}
+
+div{
+	글자크기:글자값;
+}
+```
+
+- **대부분의 브라우저에서 폰트크기의 기본값은 약 16px로 fix되어 있음!** 🌟
+- 속성값
+
+[font-size 기본값](https://www.notion.so/c896e351447b423cb085fc16b885df23)
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            width: 800px;
+        }
+        .parent{
+            background-color: lawngreen;
+            font-size:80px;
+            padding:10px;
+        }
+        .fontSize1{
+            background-color: lightcoral;
+            font-size:.3em;
+        }
+        .fontSize2{
+            background-color: lightskyblue;
+            font-size:medium;
+        }
+        .fontSize3{
+            background-color: magenta;
+            color:white;
+            font-size:xx-small;
+        }
+        .fontSize4{
+            background-color: mediumaquamarine;
+            font-size:x-small;
+        }
+
+        .fontSize5{
+            background-color: mediumpurple;
+            color:white;
+            font-size:small;
+        }
+        .fontSize6{
+            background-color: orange;
+            font-size:large;
+        }
+        .fontSize7{
+            background-color: paleturquoise;
+            font-size:x-large;
+        }
+        .fontSize8{
+            background-color: pink;
+            font-size:xx-large;
+        }
+        .fontSize9{
+            background-color: plum;
+            font-size:smaller;
+        }
+        .fontSize10{
+            background-color: red;
+            color:white;
+            font-size:larger;
+        }
+        .fontSize11{
+            background-color: rosybrown;
+            font-size:22.8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="parent">
+        I'm your font
+        <div class="fontSize1">I'm em</div>
+        <div class="fontSize2">I'm medium</div>
+        <div class="fontSize3">I'm xx-small~</div>
+        <div class="fontSize4">I'm x-small~</div>
+        <div class="fontSize5">I'm small</div>
+        <div class="fontSize6">I'm large</div>
+        <div class="fontSize7">I'm x-large~</div>
+        <div class="fontSize8">I'm xx-large~</div>
+        <div class="fontSize9">I'm smaller</div>
+        <div class="fontSize10">I'm larger</div>
+        <div class="fontSize11">I'm 22.8px</div>
+    </div>
+</body>
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-size.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-size.PNG?raw=true)
+
+font-size 개별속성
+
+위의 경우는, font-size 속성을 글로 이해하는 것보다 직접 해보는 것이 와닿기 때문에 간단하게 테스트해본 코드이다
+
+먼저, parent 요소를 둔 이유는, 상대적으로 폰트크기를 정하는 특성이 있는 smaller와 larger를 위해 설정해두었다
+
+먼저 parent 요소에서는 그 폰트 크기를 80px로 지정을 해두었기 때문에 smaller와 larger에는 각각, 이보다는 작은 혹은 큰 크기의 글자로 보이게 된다
+
+그리고 단위로도 속성값을 넣어줄 수 있는데, em을 이용하여 자기자신의 폰트크기를 1em=16px로 간주가 됨을 이용하여 .8em으로 테스트해보았는데, 이 요소는 맨 밑에 있는 "I'm 22.8px"과 비교할 필요가 있다(em의 의미를 되새김질하기 위하여)
+
+먼저 , 1 em = 16px이므로
+.8em = 16* .8px= 22.8px이 된다
+
+그렇기 때문에 fontSize1과 fontSize11의 폰트크기는 동일하게 보여질 것이다
+
+🌟 그리고 상하관계를 맺는 구조에서 스타일링을 적용하는데, font-size를 지정하지 않으면, 브라우저 입장에서는 부모요소의 폰트크기를 그대로 이용하는 것처럼 보일 수 있다
+
+그리고 medium은 기본값이라고 되어있는데, 이는 브라우저에서 지원되는 기본 폰트크기가 16px이기  때문인데 이 값이 medium 내에 들어있다!
+
+그외에 추상적이기는 하지만 xx-small, x-small, small, large, x-large, xx-large는 medium을 기준으로 점점 작아지거나 점점 커진 글자크기를 지님을 확인해볼 수 있다[추상적이기 때문에 이러한 속성값보다는 단위를 이용해 지정하는 방식이 보다 나을 것 같다]
+
+🌟 16px도 브라우저마다 그 기본값이 달라지기 때문에 절대적인 기준은 아니지만, 이를 기준으로 이해하는 것에는 무리는 없을 것같다!
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            font-size:30px;
+        }
+        .kick{
+            font-size:.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="kick">Hello World rep</div>
+</body>
+</html>
+```
+
+물론 앞서 학습했던 rem 단위를 이용하는 것도 당연히! 된다! 바로 위에처럼 body 부분에 대해서 폰트크기를 정해두고 사용하는 것이다! 그러면 rem의 특성상 중간에 삽입되는 요소에 대해서도 그 기준은 body이기 때문에 상대적인 폰트크기 설정이 보다 유용할 것이다
+
+/*위에서는 .kick의 폰트크기는?? 1 rem = 30px , 따라서 .3rem = 30 * 0.3px= 9px 이 된다!*/
+
+4. line-height
+
+- 줄 높이(줄 간격) 지정
+- 속성값
+
+[line-height의 속성값](https://www.notion.so/0a911f8cc1274904a94d498478999190)
+
+사실 line-height은 보통 "행간"의 의미로써, 첫번째 줄과 그 다음줄 사이의 간격이라고 생각하기 쉬운데 이는 결코 아니다!
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/line-height.png?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/line-height.png?raw=true)
+
+line-height의 진짜 의미
+
+line - height은 보여지는 그림과 같이 **한 행에서 글자와 위 아래 일정 간격까지 포함된 높이**를 의미한다. 영어 의미 그대로 직관적인 의미이지 않은가!!
+
+🌟 그런데, 만약에 "나는 이전에는 폰트크기를 y로 했었는데,  이번에는 y'로 바꾸고 싶어 그런데, 그만큼 행에서의 위아래 간격을 줄이지 않고, 폰트가 커지면 그 커진 비율만큼 간격도 바뀌었음 좋겠어!" 라면 line-height를 숫자를 이용한 배수로 지정하는 것도 하나의 방법이다!
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding:0;
+            margin:0;
+        }
+        body{
+            font-size:medium;
+        }
+        div{
+            background-color: yellowgreen;
+            margin-bottom:30px;
+        }
+        .lineH1{
+            line-height:normal;
+        }
+        .lineH2{
+            line-height:32px;
+            font-size:2rem;
+        }
+        .lineH3{
+            line-height: 1;
+            font-size:3rem;
+        }
+        .lineH4{
+            line-height: .8rem;/*22.8px*/
+        }
+        .lineH5{
+            line-height:90%;
+            /*지금 body에서의 폰트 속성을 상속받아
+            폰트크기는 16px인데 이것의 90%이면
+            14.4px에 해당!*/
+        }
+    </style>
+</head>
+<body>
+    <div class="lineH1">나는 normal입니다</div>
+    <div class="lineH2">나는 폰트 2rem, line-height 32px으로 설정된 경우입니다</div>
+    <div class="lineH3">나는 윗줄에서 폰트는 3rem으로, line-height를 배수로 바뀐 경우입니다</div>
+    <div class="lineH4">나는 .8rem입니다</div>
+    <div class="lineH5">나는 %입니다</div>
+</body>
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/line-height%20%EC%86%8D%EC%84%B1%EA%B0%92.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/line-height%20%EC%86%8D%EC%84%B1%EA%B0%92.PNG?raw=true)
+
+line-height의 속성값
+
+위에서 가장 중요한 부분은 lineH2 부분과 lineH3부분인데, 이를 먼저 살펴보자
+
+먼저 line-height에서 숫자로 , 즉 배수로 행 높이를 지정하게 된다면, "요소 자체 글꼴 크기의 배수"로 지정되게 되는데, 
+
+1)lineH2에서는 line-height이  32px
+
+2)lineH3에서는 line-height이 1이라고 되어있고, font-size가 3rem으로 되어있다
+
+그러면 lineH3에서의 폰트크기가 정확히 몇 px인지 생각해보자
+
+1 rem=medium=16px 이므로
+
+3 rem= 3*16px= 48px이 된다
+
+그런데 line-height이 1이므로 행 높이는 48px이 되는 것이다. 지금 폰트크기가 lineH2에서 lineH3로 1.5배가 증가되었는데(2 rem ▶️ 3 rem), line-height은 32px ▶️ 48 px로 1.5배 증가되었다. 즉 둘다 동일 비율만큼 변화한것이다. 만약 동일 비율이 아닌 더 커지거나 작아지고 싶다면 미리 계산하여 사용하는 것이 알맞다(하지만 미관상 [1.4, 1.7] 범위의 값을 이용하는 것이 가독성이 좋다(하지만 무조건 이 범위가 답은 아니고, 폰트 종류마다 달라질 수 있다!))
+
+다음에는 normal 부분인데 브라우저의 기본 정의에 따라 행 높이가 지정된다
+
+단위에서는 예시에서는 0.8rem을 이용하였는데 이는
+
+1 rem = medium = 16px 이므로
+
+0.8 rem = 0.8*16 px = 22.8px가 사용된다!
+
+%는 요소 자체의 글꼴크기의 비율로 지정되는데, 지금 lineH5의 폰트크기는 body로부터 상속받은 16px인데, 이의 90%가 행높이가 되어, 14.4px가 된다!
+
+5. font-family
+
+- 글꼴(서체) 지정
+- 속성값
+
+[font-family 속성값](https://www.notion.so/1f53cb7868294f41bdd945d4af1b9a71)
+
+- 글꼴 후보라 함은, 여러 개의 글꼴이름들을 말한다!
+
+[ 사용방법 ] -🌟 **글꼴 계열은 필수 입력!!**
+
+font-family: [글꼴후보1, 글꼴후보2,...] , 글꼴계열;
+
+(예시)
+
+```css
+.box{
+	font-family: Arial, "Open Sans", "돋움", dotum, sans-serif;
+}
+```
+
+위에서는 Arial 글꼴과, Open-Sans 글꼴, 돋움 글꼴, dotum 글꼴, sans-serif 계열을 font-family로 이용하겠다는 의미다
+
+이는 운영체제에 따라 존재하지 않는 경우도 있기 때문에, 운영체제에서 지원되는 폰트가 후보들 중에서 존재한다면 사용할 수 있도록 하기 위함이다!!
+
+🌻 후보들도 대부분 비슷한 계열로 구성함이 스타일의 일관성에 보다 나을 것!
+
+❓ 글꼴 후보들이 필요한 이유 ❓
+
+- 폰트는 용량이 큰 편이기 때문에, 웹 사이트에 올려두지 않는 경우, 브라우저를 통해서 운영체제에 맞는 폰트를 후보군 중에 골라서 사용할 수 있도록 한 것(리소스 등은 사이트 서버로부터)
+
+🌻 참고- font-family로 사용될 수 있는 글꼴 계열 🌻
+
+[글꼴 계열 Generic family](https://www.notion.so/32ccd2e8907445219f025a05cf9bc62d)
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .serif{
+            font-family:serif;
+        }
+        .sans-serif{
+            font-family:sans-serif;
+        }
+        .monospace{
+            font-family:monospace;
+        }
+        .cursive{
+            font-family: cursive;
+        }
+    </style>
+</head>
+<body>
+    <div class="serif">Hello World serif!</div>
+    <div class="sans-serif">Hello World sans-serif!</div>
+    <div class="monospace">Hello World monospace!</div>
+    <div class="cursive">Hello World cursive!</div>
+</body>
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-family.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/font-family.PNG?raw=true)
+
+- 기본적으로, 웹 폰트를 사용하지 않으면 시스템에 존재하는 폰트를 사용!!
+
+6. color
+
+- 문자의 색상을 지정
+
+- 속성값-색상명 혹은 색상코드(rgb,rgba, hex,hsl,hsla) [기본값 : rgb(0,0,0)]
+
+🌻 참고- 색상 표현 🌻
+
+[색상 표현](https://www.notion.so/3f2258e89f5e4d6abc8054a53555e2a2)
+
+*RGBA : Red, Green, Blue, Alpha channel
+
+*HSLA: Hue(색상), Saturation(채도), Lightness(명도), Alpha(투명도) channel
+
+#000000 : 검정, #ffffff: 흰색
+
+7. text-align : 문자 정렬 방식을 지정
+
+[text-align 속성값](https://www.notion.so/e5815942e5c847cab4729200a74cdeab)
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_left.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_left.PNG?raw=true)
+
+text-align:left
+
+위의 사진은 text-align의 속성값을 left로 하였을 경우의 화면단의 모습이다
+
+위와 같이 해당 속성값은 왼쪽정렬을 수행한다는 것을 확인해볼 수 있다
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_right.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_right.PNG?raw=true)
+
+text-align:right
+
+위의 사진은 text-align의 속성값을 right으로 하였을 경우의 화면단의 모습이다
+
+위와 같이 right 속성값은 오른쪽 정렬을 수행한다는 것을 확인해볼 수 있다
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_center.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_center.PNG?raw=true)
+
+text-align:center
+
+그리고 위의 그림에서 확인해볼 수 있듯, text-align의 속성값이 center이면 가운데 정렬을 함을 알 수 있다
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%201%EC%A4%84%20%EB%AF%B8%EB%A7%8C%EC%9D%B8%20%EA%B2%BD%EC%9A%B0.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%201%EC%A4%84%20%EB%AF%B8%EB%A7%8C%EC%9D%B8%20%EA%B2%BD%EC%9A%B0.PNG?raw=true)
+
+text-align:justify ➡️ 1줄 미만인 경우
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%20%EA%B0%95%EC%A0%9C%EC%A4%84%EB%B0%94%EA%BF%88%ED%95%98%EC%A7%80%20%EC%95%8A%EC%95%98%EC%9D%84%20%EB%95%8C.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%20%EA%B0%95%EC%A0%9C%EC%A4%84%EB%B0%94%EA%BF%88%ED%95%98%EC%A7%80%20%EC%95%8A%EC%95%98%EC%9D%84%20%EB%95%8C.PNG?raw=true)
+
+text-align:justify ➡️ 강제 줄바꿈이 이루어지지 않은 경우
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%20%EA%B0%95%EC%A0%9C%EC%A4%84%EB%B0%94%EA%BF%88%ED%96%88%EC%9D%84%20%EB%95%8C.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-align_justify%20%EA%B0%95%EC%A0%9C%EC%A4%84%EB%B0%94%EA%BF%88%ED%96%88%EC%9D%84%20%EB%95%8C.PNG?raw=true)
+
+text-align:justify ➡️ 강제 줄바꿈이 이루어진 경우
+
+justify 속성값은 다소 특이한데, 강제 줄바꿈되지 않은 2줄 이상인 경우에 대해서 양쪽정렬을 수행한다는 점이다
+
+위의 세 개 그림은 차례대로
+
+- 1줄 미만의 줄글이 있는 경우
+- br이나 p 태그 등으로 강제 줄바꿈이 이루어지지 않은 경우
+- br이나 p 태그 등으로 강제 줄바꿈이 이루어진 경우
+
+의 화면단 모습을 나타내고 있다
+
+보여지는 것처럼, 1줄 미만인 경우에는 양쪽정렬을 할 필요도 없어서 적용될 수 없고,
+
+강제 줄바꿈이 이루어진 경우에는 줄글의 흐름이 끊어져서 전반적인 양쪽정렬이 적용될 수 없다
+
+8. text-decoration
+
+- 문자의 장식(line)을 설정
+
+[text-decoration의 속성값](https://www.notion.so/f4edc7e81dfc4e6f80629efc0ae4a61d)
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-decoration.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-decoration.PNG?raw=true)
+
+text-decoration
+
+위와 같이 none의 경우, 그 어떤 선에 대한 스타일링이 적용되지 않음을 볼 수 있다
+
+그리고 underline은 밑줄, overline은 윗줄로 그어짐을 확인해볼 수 있는데
+
+그림에서는 overline과 underline의 데코레이션이 겹쳐있다(이를 확인해보기 위해서는 마진값을 주는 것이 좋다)
+
+그리고 line-through는 마치 취소선과 같은 화면 구성을 확인해볼 수 있다
+
+9. text-indent : (첫 번째 줄의) 들여쓰기를 지정
+
+- 음수값(negative values) 사용 가능
+- 음수값 적용 시 첫번째 줄은 왼쪽으로 들여쓰기(내어쓰기)됨
+- 들여쓰기와 내어쓰기를 모두 지원하는 속성
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-indent%20%EB%93%A4%EC%97%AC%EC%93%B0%EA%B8%B0.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-indent%20%EB%93%A4%EC%97%AC%EC%93%B0%EA%B8%B0.PNG?raw=true)
+
+들여쓰기
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-indent%20%EB%82%B4%EC%96%B4%EC%93%B0%EA%B8%B0.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/text-indent%20%EB%82%B4%EC%96%B4%EC%93%B0%EA%B8%B0.PNG?raw=true)
+
+내어쓰기
+
+위의 그림은 각각 text-indent 속성의 값으로 표현되는 들여쓰기와 내어쓰기의 예시이다
+
+text-indent가 양수인 경우에는 첫 번째 사진처럼 들여쓰기가 되고, 
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            text-indent:2em;
+            font-size:16px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Bacon ipsum dolor amet beef pastrami alcatra prosciutto, chuck tongue turducken tail burgdoggen ham capicola filet mignon. Jowl andouille buffalo frankfurter jerky venison. Rump pork chop pastrami sirloin ribeye. Meatball kielbasa leberkas, boudin salami frankfurter flank swine pork loin tongue venison sirloin shankle ham hock. Jowl boudin strip steak fatback. Ribeye short ribs strip steak jerky drumstick landjaeger buffalo shank, burgdoggen ham pastrami. Turkey spare ribs jowl t-bone burgdoggen.
+
+Pastrami jowl turkey cupim. Buffalo ham hock burgdoggen, filet mignon tail hamburger pig prosciutto pork chop tongue pancetta drumstick cupim strip steak. Swine venison burgdoggen, ribeye cupim sausage rump turkey fatback pig leberkas chuck tri-tip. Shank burgdoggen jowl, tongue swine capicola ground round sausage jerky. Brisket buffalo capicola rump pork belly short ribs sirloin pork burgdoggen chislic. Kielbasa t-bone kevin pig meatball beef ribs prosciutto.
+
+Beef turducken kielbasa ball tip ham hock brisket. Filet mignon cupim chislic sirloin. Ham hock ball tip strip steak beef ribs. Turkey flank pastrami salami. Capicola venison corned beef prosciutto cow. Tri-tip brisket kielbasa, meatball pastrami porchetta pork belly pork chop salami short ribs turkey strip steak bresaola ham chislic.
+
+Pork belly pig ground round venison ham. Ball tip strip steak short ribs fatback short loin, picanha shoulder pork chop leberkas rump frankfurter. Strip steak ground round pork loin filet mignon kevin pork belly ribeye pork chop flank ball tip sirloin meatball prosciutto tongue salami. Shank bacon turkey, salami jerky tri-tip kielbasa shankle flank chicken. Hamburger picanha filet mignon tail flank.
+
+Tri-tip chuck ham hock pork. Chuck ham doner porchetta filet mignon burgdoggen ball tip tri-tip boudin cow picanha jowl alcatra frankfurter. Pork chop pork shankle bresaola meatloaf. T-bone burgdoggen porchetta shankle prosciutto kielbasa swine pancetta pork belly jowl filet mignon venison. Hamburger pork loin doner, tri-tip cow pancetta leberkas shoulder beef ribs meatball shankle salami bresaola prosciutto t-bone. Tail tenderloin chuck jowl t-bone beef beef ribs, turkey pork loin shankle spare ribs.
+
+Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
+    </div>
+</body>
+</html>
+```
+
+음수인 경우에는 아래처럼 내어쓰기가 된다
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            text-indent:-10em;
+            font-size:16px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Bacon ipsum dolor amet beef pastrami alcatra prosciutto, chuck tongue turducken tail burgdoggen ham capicola filet mignon. Jowl andouille buffalo frankfurter jerky venison. Rump pork chop pastrami sirloin ribeye. Meatball kielbasa leberkas, boudin salami frankfurter flank swine pork loin tongue venison sirloin shankle ham hock. Jowl boudin strip steak fatback. Ribeye short ribs strip steak jerky drumstick landjaeger buffalo shank, burgdoggen ham pastrami. Turkey spare ribs jowl t-bone burgdoggen.
+
+Pastrami jowl turkey cupim. Buffalo ham hock burgdoggen, filet mignon tail hamburger pig prosciutto pork chop tongue pancetta drumstick cupim strip steak. Swine venison burgdoggen, ribeye cupim sausage rump turkey fatback pig leberkas chuck tri-tip. Shank burgdoggen jowl, tongue swine capicola ground round sausage jerky. Brisket buffalo capicola rump pork belly short ribs sirloin pork burgdoggen chislic. Kielbasa t-bone kevin pig meatball beef ribs prosciutto.
+
+Beef turducken kielbasa ball tip ham hock brisket. Filet mignon cupim chislic sirloin. Ham hock ball tip strip steak beef ribs. Turkey flank pastrami salami. Capicola venison corned beef prosciutto cow. Tri-tip brisket kielbasa, meatball pastrami porchetta pork belly pork chop salami short ribs turkey strip steak bresaola ham chislic.
+
+Pork belly pig ground round venison ham. Ball tip strip steak short ribs fatback short loin, picanha shoulder pork chop leberkas rump frankfurter. Strip steak ground round pork loin filet mignon kevin pork belly ribeye pork chop flank ball tip sirloin meatball prosciutto tongue salami. Shank bacon turkey, salami jerky tri-tip kielbasa shankle flank chicken. Hamburger picanha filet mignon tail flank.
+
+Tri-tip chuck ham hock pork. Chuck ham doner porchetta filet mignon burgdoggen ball tip tri-tip boudin cow picanha jowl alcatra frankfurter. Pork chop pork shankle bresaola meatloaf. T-bone burgdoggen porchetta shankle prosciutto kielbasa swine pancetta pork belly jowl filet mignon venison. Hamburger pork loin doner, tri-tip cow pancetta leberkas shoulder beef ribs meatball shankle salami bresaola prosciutto t-bone. Tail tenderloin chuck jowl t-bone beef beef ribs, turkey pork loin shankle spare ribs.
+
+Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
+    </div>
+</body>
+</html>
+```
+
+- text-indent는 실무에서 어떤 이미지를 배경으로 사용할 때 img 태그 요소가 아닌 다른 태그 요소와 함께 background 속성을 이용하고자 하는 경우, 배경으로 존재는 하지만 크기가 지정되지 않아 보인다. 이럴 때, 만약에 이미지가 보이지 않으면 대체 텍스트를 보이기 위해서 text-indent가 사용될 수 있다
+
+✴️  img 태그의 alt 속성은 웹 접근성 면에서 스크린 리더기가 읽을 수 있다는 점에서 좋다
+
+✴️ css에서 어떤 속성의 값, 특히 배경의 url 혹은 display 속성 등을 긁어올 때에는 style.속성명 만으로 그 값을 불러오기가 쉽지 않다. 그럴 경우에는
+
+window.getComputedStyle(해당요소).getPropertyValue(속성명)
+
+으로 접근하여 값을 가져올 수 있는데, background 속성은 이미지가 없어도 rgba 값 등이 rgba(0,0,0,0)을 출력할 수 있기 때문에, 오로지 이미지 url값 등 background로 사용된 사진의 url 값 등이 존재하는지 혹은 그 값이 존재한다면 어떤 값인지를 알고 싶다면 background-image 속성을 사용하는 것이 보다 낫다
+
+[https://webisfree.com/2014-01-12/[자바스크립트]-백그라운드(background)-경로-주소-불러오기-getcomputedstyle()https://webisfree.com/2014-01-12/[자바스크립트]-백그라운드(background)-경로-주소-불러오기-getcomputedstyle()](https://webisfree.com/2014-01-12/%5B%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%5D-%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C(background)-%EA%B2%BD%EB%A1%9C-%EC%A3%BC%EC%86%8C-%EB%B6%88%EB%9F%AC%EC%98%A4%EA%B8%B0-getcomputedstyle())
+
+그리고 해당 메서드는 속성이 존재하지 않으면 "none" , 요소가 존재하지 않으면 ""(빈 문자열)을 반환한다
+
+[https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration/getPropertyValue](https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleDeclaration/getPropertyValue)
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .pic {
+            background-image: url("https://cdn.pixabay.com/photo/2021/05/25/14/23/girl-6282604_960_720.jpg");
+            width: 500px;
+            height: 500px;
+            /*  text-indent: -9999px;*/
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pic">picture</div>
+    <script>
+        const pic = document.querySelector(".pic");
+      //  const back = pic.style.background;
+        const back = window.getComputedStyle(pic).getPropertyValue("background-image");
+        //console.log(img);
+        const ALT = "alt";
+
+        function act() {
+            console.log(back);
+            //console.log(back.value===undefined);
+            if (back=="none") {
+                pic.classList.add(ALT);
+                console.log('und');
+            } else {
+                pic.classList.remove(ALT);
+            }
+
+            if (!pic.classList.contains(ALT)) {
+                //alt속성이 없어도 되는 경우
+                pic.style.textIndent = "-9999px";
+            } else {
+                pic.style.textIndent = "100px";
+            }
+        }
+
+        act();
+    </script>
+</body>
+
+</html>
+```
+
+위에는 img 태그요소를 이용하지 않았지만, 어떤 일정 크기를 갖도록 한 그림 요소가 존재하지 않을때 마치 alt(대체텍스트)가 존재하는 것처럼 작동시키고자 한 간단한 구성이다
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20text-indent%EB%A5%BC%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%9D%98%20%EB%8C%80%EC%B2%B4%ED%85%8D%EC%8A%A4%ED%8A%B8%20%ED%91%9C%EC%8B%9C.gif?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/CSS%20text-indent%EB%A5%BC%20%ED%99%9C%EC%9A%A9%ED%95%9C%20%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%9D%98%20%EB%8C%80%EC%B2%B4%ED%85%8D%EC%8A%A4%ED%8A%B8%20%ED%91%9C%EC%8B%9C.gif?raw=true)
+
+CSS- text-indent 속성을 활용한 대체텍스트 표시
+
+참고로, "-9999px"을 text-indent값으로 사용한다는 것은, 암묵적으로 화면 밖으로 텍스트를 보내겠다는 용도로 사용되고 있다
+
+위의 경우는, 일괄적 혹은 효율적으로 background 속성이 존재하는지 아닌지에 따라 대체텍스트를 보여주는 것이 결정되기 때문에 클래스명을 alt로 부여 혹은 제거하고, 이에 따라 들여쓰기(이미지가 없는 경우) 혹은 내어쓰기(이미지가 존재하는 경우)를 수행하게 된다
+
+10. letter-spacing
+
+- 문자의 자간(글자 사이의 간격) 설정
+
+[letter-spacing 속성값](https://www.notion.so/9839b9fd11724690b2bd943b981a6838)
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/letter-spacing%20%EB%AC%B8%EC%9E%90%EC%9D%98%20%EC%9E%90%EA%B0%84%20%EC%84%A4%EC%A0%95.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/letter-spacing%20%EB%AC%B8%EC%9E%90%EC%9D%98%20%EC%9E%90%EA%B0%84%20%EC%84%A4%EC%A0%95.PNG?raw=true)
+
+letter-spacing 속성
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            margin-bottom: 50px;
+        }
+        .normal{
+            letter-spacing: normal;
+        }
+        .unit{
+            letter-spacing: 10px;
+        }
+    </style>
+</head>
+<body>
+    <p>normal letter-spacing</p>
+    <div class="normal">
+        Bacon ipsum dolor amet short loin chislic pork belly, meatloaf doner jowl shoulder sausage swine. Tenderloin
+        porchetta tri-tip alcatra filet mignon andouille pork salami kielbasa. Rump pancetta turducken strip steak,
+        shoulder corned beef capicola sausage pork loin flank tenderloin salami fatback. Cupim capicola pancetta tail,
+        pork belly corned beef kevin flank ribeye sausage brisket bresaola t-bone ground round pork. Capicola drumstick
+        shank boudin, tail tri-tip short ribs sirloin swine ribeye hamburger chicken ball tip. Andouille beef ribs
+        picanha, tail pancetta shankle shoulder pork belly chislic sausage pork chop leberkas. Pancetta venison rump
+        ribeye alcatra corned beef burgdoggen spare ribs kielbasa buffalo.
+    </div>
+    <p>unit letter-spacing</p>
+    <div class="unit">
+        Bacon ipsum dolor amet short loin chislic pork belly, meatloaf doner jowl shoulder sausage swine. Tenderloin
+        porchetta tri-tip alcatra filet mignon andouille pork salami kielbasa. Rump pancetta turducken strip steak,
+        shoulder corned beef capicola sausage pork loin flank tenderloin salami fatback. Cupim capicola pancetta tail,
+        pork belly corned beef kevin flank ribeye sausage brisket bresaola t-bone ground round pork. Capicola drumstick
+        shank boudin, tail tri-tip short ribs sirloin swine ribeye hamburger chicken ball tip. Andouille beef ribs
+        picanha, tail pancetta shankle shoulder pork belly chislic sausage pork chop leberkas. Pancetta venison rump
+        ribeye alcatra corned beef burgdoggen spare ribs kielbasa buffalo.
+    </div>
+</body>
+
+</html>
+
+```
+
+위와 같이, normal이라는 값을 이용한 letter-spacing의 경우에는 거의 0에 가까운 자간이 적용되고, 단위를 활용한 경우에는 그 수치만큼 자간이 적용된 모습을 확인해볼 수 있다
+
+음수값도 적용할 수는 있다!
+
+11. word-spacing
+
+- 단어사이(띄어쓰기)의 간격을 설정
+- 자간은 예를 들면,
+
+B a c o n 혹은 Bacon
+
+과 같이 철자하나하나마다의 간격을 의미한다면, 단어사이 간격은
+
+Bacon                   Ipsum
+
+과 같은 단어 단위로 끊어지는 단위 사이 간격을 조정하는 것을 말한다
+
+[word-spacing 속성값](https://www.notion.so/6c943f452b0740a89ecb9c42148035b7)
+
+word-spacing에서 normal은 띄어쓰기가 갖고 있는 기본 크기에 0을 더한다는 것(letter-spacing도)
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div{
+            margin-bottom: 50px;
+        }
+        .normal{
+            word-spacing: normal;
+        }
+        .unit{
+            word-spacing: 20px;
+        }
+    </style>
+</head>
+<body>
+    <p>word-spacing normal</p>
+    <div class="normal">Bacon ipsum dolor amet short loin chislic pork belly, meatloaf doner jowl shoulder sausage swine. Tenderloin
+        porchetta tri-tip alcatra filet mignon andouille pork salami kielbasa. Rump pancetta turducken strip steak,
+        shoulder corned beef capicola sausage pork loin flank tenderloin salami fatback. Cupim capicola pancetta tail,
+        pork belly corned beef kevin flank ribeye sausage brisket bresaola t-bone ground round pork. Capicola drumstick
+        shank boudin, tail tri-tip short ribs sirloin swine ribeye hamburger chicken ball tip. Andouille beef ribs
+        picanha, tail pancetta shankle shoulder pork belly chislic sausage pork chop leberkas. Pancetta venison rump
+        ribeye alcatra corned beef burgdoggen spare ribs kielbasa buffalo.</div>
+    <p>word-spacing 20px</p>
+    <div class="unit">
+        Bacon ipsum dolor amet short loin chislic pork belly, meatloaf doner jowl shoulder sausage swine. Tenderloin
+        porchetta tri-tip alcatra filet mignon andouille pork salami kielbasa. Rump pancetta turducken strip steak,
+        shoulder corned beef capicola sausage pork loin flank tenderloin salami fatback. Cupim capicola pancetta tail,
+        pork belly corned beef kevin flank ribeye sausage brisket bresaola t-bone ground round pork. Capicola drumstick
+        shank boudin, tail tri-tip short ribs sirloin swine ribeye hamburger chicken ball tip. Andouille beef ribs
+        picanha, tail pancetta shankle shoulder pork belly chislic sausage pork chop leberkas. Pancetta venison rump
+        ribeye alcatra corned beef burgdoggen spare ribs kielbasa buffalo.
+    </div>
+</body>
+
+</html>
+```
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/word-spacing.PNG?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/Basic/word-spacing.PNG?raw=true)
+
+CSS word-spacing 속성
+
+위에서 확인해볼 수 있듯, word-spacing은 단어 단위 사이의 간격이 설정됨을 word-spacing 20px과 normal을 비교해봄으로써 알 수 있다
+
+word-spacing도 음수값을 적용할 수는 있다!
