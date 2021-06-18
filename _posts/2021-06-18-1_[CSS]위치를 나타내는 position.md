@@ -620,7 +620,7 @@ position:sticky
 
 - 요소쌓임순서로 인해서, "Z축"의 개념을 살펴볼 필요가 있다!
 - Z축은, 요소가 사용자로부터 얼마나 가까이 있는지를 나타내는 지표로, 가까이 있을 수록 더 위에 쌓여있다는 의미를 가진다
-1. 당연한 말이지만, position:static은 기준을 정할 수 없어서 배치조차도 할 수 없기 때문에, 이를 제외한 모든 position 속성값에 대해서, 세부 속성인 top|bottom|left|right의 값과는 무관하게, 가장 위에 쌓이게 된다
+1. 당연한 말이지만, position:static은 기준을 정할 수 없어서 배치조차도 할 수 없기 때문에, 이를 제외한 모든 position 속성값에 대해서, 세부 속성인 top bottom left right의 값과는 무관하게, 가장 위에 쌓이게 된다
 2. position이 모두 존재한다면, z-index 값이 높을 수록 위에 쌓이게 된다
 3. position 속성 값이 존재하는데, z-index 값이 같은 경우에는 HTML의 마지막 코드가 위에 쌓이게 된다(from top to bottom)
 
