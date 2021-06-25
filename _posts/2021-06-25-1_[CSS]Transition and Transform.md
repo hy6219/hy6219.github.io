@@ -117,34 +117,6 @@ transition : width 3s, background-color 3s;
 </html>
 ```
 
-```html
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .box{
-            width: 100px;
-            height: 100px;
-            background-color: tomato;
-            margin:50px;
-            transition: all 3s;
-        }
-        .box:hover{
-            /*가상 클래스 선택자*/
-            width: 300px;
-            background-color: teal;
-        }
-    </style>
-</head>
-<body>
-    <div class="box"></div>
-</body>
-</html>
-```
 
 ![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/transition/transition_property%20all.gif?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/FE/CSS/transition/transition_property%20all.gif?raw=true)
 
