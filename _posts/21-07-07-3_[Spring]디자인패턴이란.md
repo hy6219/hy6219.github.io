@@ -1,0 +1,89 @@
+# 디자인 패턴
+
+- 자주 사용하는 설계 패턴을 정형화해서 유형별로 가장 최적의 방법으로 개발을 할 수 있도록 정해둔 설계
+- 알고리즘과 유사하지만, 명확한 정답이 있는 형태는 아니며, 프로젝트의 상황에 맞춰 적용 가능
+
+1. Gof 디자인 패턴(앞서 언급되었던 프레임워크에 대한 정의를 언급하신 분, 랄프 존슨님께서 창시)
+- Gang of Four
+- 총 23개
+- 객체지향 개념에 따른 설계 중 재사용할 경우 유용한 설계를 디자인 패턴으로 정리해둔 것
+- 경험편차가 있더라도 이 패턴들 중 몇 가지만 잘 알고 있다면 좋은 sw 설계가 가능!
+
+🌟 생성 패턴
+
+- **객체 생성**과 관련된 패턴
+- 객체 생성 및 변경이 전체 시스템에 미치는 영향을 최소화, 코드의 유연성을 증가시켜줌
+
+가. Factory Method 패턴
+
+나. 싱글톤 패턴
+
+다. Prototype 패턴
+
+라. Builder 패턴
+
+마. Abstract Factory 패턴
+
+바. Chaining 패턴 ▶️ GoF 디자인 패턴에 해당되지는 않음
+
+🌟 구조 패턴
+
+- **프로그램 구조 설계**에 활용될 수 있는 패턴
+- 클래스, 객체들의 구성을 통해서 더 큰 구조를 만들수 있게 해줌
+- 큰 규모의 시스템에서의 많은 클래스들 간 의존성이 존재하는 경우, 복잡한 구조 개발을 보다 쉽게 만들어주고 유지보수하기 쉽게 만들어 줌
+
+가. Adapter 패턴
+
+나. Composite 패턴(컴포짓)
+
+다. Bridge 패턴
+
+라. Decorator 패턴
+
+마. Facade 패턴
+
+바. Flyweight 패턴
+
+사. Proxy 패턴
+
+🌟행위 패턴
+
+- 반복적으로 사용되는 객체들의 상호작용을 패턴화한 것
+- **클래스나 객체들이 상호작용하는 방법**과 **책임을 분산하는 방법**을 제공
+- 행위 관련 패턴을 사용하여 독립적으로 일을 처리하고자 할 경우 사용
+
+가. Template Method
+
+나. Interpreter
+
+다. Iterator
+
+라. Observer
+
+마. Strategy
+
+바. Visitor
+
+사. Chain of responsibility
+
+아. Command 
+
+▶️[https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP Servlet/MVCPattern/[jsp servlet]MVC패턴.md](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/JSP%20Servlet/MVCPattern/%5Bjsp%20servlet%5DMVC%ED%8C%A8%ED%84%B4.md) 를 참고하자!
+
+자. Mediator
+
+차. State
+
+카. Momento
+
+2. 디자인 패턴의 장점
+
+- 개발자(설계자)간 원활한 소통
+- SW 구조 파악 용이
+- 재사용을 통한 개발 시간 단축
+- 설계 변경 요청에 대한 유연한 대처
+
+3. 디자인 패턴의 단점
+
+- 객체지향 설계/구현의 어려움
+- 초기 투자 비용 부담
