@@ -1,0 +1,148 @@
+# 디자인패턴2 - 어댑터 패턴
+
+SOLID 설계 원칙 중 개방폐쇄원칙인 OCP 원칙을 따름!
+
+중간에 인터페이스를 두어서 재사용성을 높여줌!
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Spring/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4/%EA%B5%AC%EC%A1%B0%ED%8C%A8%ED%84%B4/Adapter%20%ED%8C%A8%ED%84%B4/%EC%96%B4%EB%8C%91%ED%84%B0%ED%8C%A8%ED%84%B4.png?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Spring/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4/%EA%B5%AC%EC%A1%B0%ED%8C%A8%ED%84%B4/Adapter%20%ED%8C%A8%ED%84%B4/%EC%96%B4%EB%8C%91%ED%84%B0%ED%8C%A8%ED%84%B4.png?raw=true)
+
+구조패턴-Adapter 패턴
+
+어댑터 패턴은 110V와 220V 제품의 차이를 조절하는 돼지코를 생각해보면 그래도 보다 이해하기 쉽다!
+
+먼저 110V와 220V로 분류하기 위해서 110V,220V를 각각 나타내는 인터페이스가 아래와 같이 존재한다고 생각해보자
+
+```java
+package com.designPattern.adapter;
+
+public interface Electronic110 {
+    //전원켜기
+    void powerOn();
+}
+```
+
+```java
+package com.designPattern.adapter;
+
+public interface Electronic220 {
+
+    void connect();
+
+}
+```
+
+그리고 여기에서, 이 시점에서 
+
+- 110V 전자제품은 "헤어드라이기"
+- 220V 전자제품은 "에어컨"과 "청소기"가 있다고 가정하자
+
+실제 전자제품은 다양한 기능이 있지만 단순하게 전원의 on off만 각각 powerOn, connect 메서드로 생각/접근해보자
+
+```java
+package com.designPattern.adapter;
+
+public class HairDryer implements Electronic110{
+
+    @Override
+    public void powerOn() {
+        System.out.println("헤어드라이기 110v On");
+    }
+}
+```
+
+```java
+package com.designPattern.adapter;
+
+public class AirConditioner implements Electronic220{
+    @Override
+    public void connect() {
+        //alt+enter->implement methods
+        System.out.println("에어컨 220V ON");
+    }
+}
+```
+
+```java
+package com.designPattern.adapter;
+
+public class Cleaner implements Electronic220{
+    @Override
+    public void connect() {
+        System.out.println("청소기 220V ON");
+    }
+}
+```
+
+더불어서, 이 상황의 전제 속에서, 220V전자제품을 구매했는데, 110V로 변환해서 사용해야만 한다고 생각해보자
+
+그러면 이런 생각이 들 수 있다!
+
+Electronic110 인터페이스와 Electronic220을 연결해줄 수 없는데..?
+
+이 역할을 해주는 것이 바로 Adapter 클래스이다! 
+
+서로 상관이 없던 클래스를 연결해주는 것이다!
+
+준비해줄 사항은 추가적으로 아래와 같다!
+
+1. 외부에서 클라이언트(220v)가 요구하는 110v를 변환해주기 위한 메서드가 있는 클래스
+-AdapterMain클래스의 connect(Electronic110)이 해당됨
+2. 110v를 구현한 어댑터클래스
+-클라이언트를 필드로 가짐
+-클라이언트를 인자로 갖는 어댑터 생성자
+-110v를 구현하였기 때문에 이의 메서드를 물려받는데, 이 메서드 내부에서 220v의 메서드를 호출
+- Adapter클래스
+
+```java
+package com.designPattern.adapter;
+
+public class SocketAdapter implements Electronic110{
+    //자기자신이 110v(connect)인데 220v를 처리해야 하므로 220v를 내부에 가져야 함
+    private Electronic220 electronic220;
+    //기본 생성자에서 220v를 받게될것
+    public SocketAdapter(Electronic220 electronic220){
+        this.electronic220 = electronic220;
+    }
+
+    @Override
+    public void powerOn() {
+        electronic220.connect();
+    }
+}
+```
+
+- AdapterMain 클래스
+
+```java
+package com.designPattern.adapter;
+
+public class AdapterMain {
+    public static void main(String[] args){
+        HairDryer hd = new HairDryer();
+        //콘센트에 연결해보기
+        connect(hd);//헤어드라이기 110v On
+
+        Cleaner cl = new Cleaner();
+        Electronic110 electronic110= new SocketAdapter(cl);
+        electronic110.powerOn();//청소기 220V ON
+        connect(electronic110);//청소기 220V ON
+     //   connect(cl);//이 상황에서는 Cleaner는 220v인데 110v로 변환(형변환)하려고 하기 때문에 문제가 되는 것!
+        //이때 변환을 해주는 것이 Adapter!
+        AirConditioner airConditioner = new AirConditioner();
+        Electronic110 electronic110_2  = new SocketAdapter(airConditioner);
+        electronic110_2.powerOn();//에어컨 220V ON
+        connect(electronic110_2);//에어컨 220V ON
+
+    }
+    //콘센트
+    public static void connect(Electronic110 electronic110){
+        electronic110.powerOn();
+    }
+}
+```
+
+이렇게 되면 220V였던 청소기와 에어컨이 110V의 기능을 구현할 수 있는 것을 확인해볼 수 있다!
+
+나중에 조금 더 익숙해지면 아래의 블로그 글을 공부해보아도 좋을 것 같다! 메모!!
+
+[https://yaboong.github.io/design-pattern/2018/10/15/adapter-pattern/](https://yaboong.github.io/design-pattern/2018/10/15/adapter-pattern/)
