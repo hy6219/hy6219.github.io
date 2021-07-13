@@ -1,0 +1,104 @@
+# 디자인 패턴5- 옵저버 패턴
+
+- 행위패턴
+- "관찰자 패턴"
+- 변화가 일어났을 때, 미리 등록된 다른 클래스에 통보해주는 패턴
+- 이벤트 리스너에서 해당 패턴을 사용
+
+![https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Spring/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4/%ED%96%89%EC%9C%84%ED%8C%A8%ED%84%B4/%EC%98%B5%EC%A0%80%EB%B2%84%ED%8C%A8%ED%84%B4/%EC%98%B5%EC%A0%80%EB%B2%84%ED%8C%A8%ED%84%B4.png?raw=true](https://github.com/hy6219/TIL-Today-I-Learned-/blob/main/Spring/%EB%94%94%EC%9E%90%EC%9D%B8%ED%8C%A8%ED%84%B4/%ED%96%89%EC%9C%84%ED%8C%A8%ED%84%B4/%EC%98%B5%EC%A0%80%EB%B2%84%ED%8C%A8%ED%84%B4/%EC%98%B5%EC%A0%80%EB%B2%84%ED%8C%A8%ED%84%B4.png?raw=true)
+
+옵저버 패턴
+
+옵저버 패턴은 
+
+- 어떤 인터페이스와 관련된 필드
+- 인터페이스를 호출하는 메서드(위의 그림-addListener)
+- 인터페이스의 메서드를 연동할 수 있는 메서드(click메서드)
+
+로 이루어진 하나의 클래스 Subject("Button")이 존재할 때
+
+인터페이스의 메서드를 연동할 수 있는 메서드(click)만으로 어떤 알림을 실행할 수 있게 하는 것을 의미한다!
+
+지금부터 살펴볼 것은 위의 버튼 이벤트 리스너를 작게 만들어보는 것인데,
+
+이벤트리스너 인터페이스는
+
+- 클릭이벤트 메서드
+
+를 갖고
+
+```java
+package com.designPattern.action.observer;
+
+public interface IButtonListener {
+    void clickEvent(String event);
+}
+```
+
+Subject는
+
+- 메시지
+- 버튼 리스너
+
+를 필드로 가지며,
+
+- 버튼 리스너를 붙일 때 리스너를 생성시키는 메서드 - addListener
+- 버튼 리스너의 메서드를 호출하는 메서드 - click
+
+로 구성되어 있다고 생각해보자
+
+```java
+package com.designPattern.action.observer;
+
+public class Button {
+    //버튼이름
+    private String name;
+    //리스너
+    private IButtonListener iButtonListener;
+
+    public Button(String name){
+        this.name=name;
+    }
+
+    public void click(String message){
+        iButtonListener.clickEvent(message);
+    }
+
+    public void addListener(IButtonListener iButtonListener){
+        this.iButtonListener = iButtonListener;
+    }
+}
+```
+
+그리고, 메인클래스에서는 버튼을 하나 만드는데 
+
+- 버튼에 리스너를 붙이고(addListener)
+- 이 addListener의 매개변수가 IButtonListener인데, 간단하게 익명클래스로 전달
+
+하도록 한다
+
+이렇게 되면 addListener 내부에 생성된 리스너가 이의 메서드인 clickEvent를 부르고, addListener로 인해 생성된 리스너는 버튼 클래스의 click메서드에서 이와 관련된 메서드인 clickEvent를 부르기 때문에 click()을 통해서 clickEvent()를 수행할 수 있게 된다!
+
+```java
+package com.designPattern.action.observer;
+
+public class ObserverMain {
+    public static void main(String[] args){
+        Button button = new Button("버튼");
+        button.addListener(new IButtonListener() {
+            @Override
+            public void clickEvent(String event) {
+                //익명클래스로 전달
+                System.out.println(event);
+            }
+        });
+        button.click("메시지 전달: click 1");//메시지 전달: click 1
+        button.click("메시지 전달: click 2");//메시지 전달: click 2
+        button.click("메시지 전달: click 3");//메시지 전달: click 3
+        button.click("메시지 전달: click 4");//메시지 전달: click 4
+        button.click("메시지 전달: click 5");//메시지 전달: click 5
+    }
+}
+```
+
+그렇기 때문에 위와 같이 "메시지 전달: click1" 등과 같이 작동될 수 있게 된다!
