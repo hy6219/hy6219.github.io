@@ -1,0 +1,975 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>SimpleJpaRepository 분석</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="ab20bfac-7e7b-4f0c-9a7a-8e417290c76f" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🌺</span></div><h1 class="page-title">SimpleJpaRepository 분석</h1></header><div class="page-body"><nav id="3e5fd611-4569-4890-9884-3fe8e992779e" class="block-color-gray table_of_contents"><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#2a60da26-6340-4a01-9b7e-47731db372d6">📍UPDATE관련 해서 save메서드 확인해보기📍</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#7882abfd-ca9b-46fa-8bf5-e0cd3fe7ab9a">saveAndFlush</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#9b76ef9b-bbe6-4d72-8352-e79a39b61c7d">saveAll(Iterable)</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#509983f8-096b-4b4f-a428-c9856c67cfaf">findById와 getOne</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#9a41bfc7-3d13-4b43-bc12-ec2a36e7816e">existsById</a></div><div class="table_of_contents-item table_of_contents-indent-0"><a class="table_of_contents-link" href="#4e58d193-0a42-45d1-a92a-32a4e38cb599">deleteAll vs deleteAllInBatch</a></div></nav><h2 id="2a60da26-6340-4a01-9b7e-47731db372d6" class="">📍UPDATE관련 해서 save메서드 확인해보기📍</h2><p id="c728acb1-cc70-4b25-bf56-774d6d7f3331" class="">아직까지 살펴본 쿼리관련 메서드에서 UPDATE와 관련된 메서드를 확인해보지는 못했다</p><p id="36586d61-6444-4227-b316-afe46323e99a" class="">UPDATE쿼리는 어떻게 만드는지 살펴보자</p><p id="236f33c0-1156-4506-abaf-8845ac8ea674" class="">
+</p><p id="b28ae840-8a57-4121-876f-4aafcf6d3727" class=""><code>setter로 객체 인스턴스 값을 변경시켜주면 어떨까?</code></p><pre id="7016e15c-e978-4710-adbb-4cda4d2c5201" class="code"><code>package com.example.jpa_repository_interface.repository;
+
+import com.example.jpa_repository_interface.domain.User;
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
+
+//
+@SpringBootTest
+//@Transactional
+class UserRepositoryTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void crud(){
+      User userIdOne=userRepository.findById(1L).orElseThrow(RuntimeException::new);
+      System.out.println(&quot;--&quot;);
+      userIdOne.setEmail(&quot;martin-updated@fastcampus.com&quot;);
+      userRepository.save(userIdOne);
+      System.out.println(&quot;--&quot;);
+      userRepository.findAll().forEach(System.out::println);
+    }
+
+}</code></pre><p id="9313040a-3749-4bef-bde7-2e11b34f31ce" class="">위와 같이 setter를 이용해보면</p><ul id="a11efa4c-de91-4eb3-a81b-35d9276e4987" class="bulleted-list"><li>🌹 : findById(ID id)</li></ul><ul id="27c4af27-5fe4-4d94-b367-f6e92096a4d7" class="bulleted-list"><li>🌻 : save(Entity)</li></ul><ul id="04e0d7a2-8283-465a-946c-1fbb52a73e98" class="bulleted-list"><li>💐 : findAll()</li></ul><pre id="5a53cbee-dd34-45a0-8a9b-4362c04d0be9" class="code"><code>Hibernate: 
+  🌹  select
+        user0_.id as id1_0_0_,
+        user0_.created_at as created_2_0_0_,
+        user0_.email as email3_0_0_,
+        user0_.name as name4_0_0_,
+        user0_.updated_at as updated_5_0_0_ 
+    from
+        user user0_ 
+    where
+        user0_.id=?🌹
+--
+Hibernate: 
+   🌻 select
+        user0_.id as id1_0_0_,
+        user0_.created_at as created_2_0_0_,
+        user0_.email as email3_0_0_,
+        user0_.name as name4_0_0_,
+        user0_.updated_at as updated_5_0_0_ 
+    from
+        user user0_ 
+    where
+        user0_.id=?
+Hibernate: 
+    update
+        user 
+    set
+        created_at=?,
+        email=?,
+        name=?,
+        updated_at=? 
+    where
+        id=?🌻
+--
+Hibernate: 
+   💐 select
+        user0_.id as id1_0_,
+        user0_.created_at as created_2_0_,
+        user0_.email as email3_0_,
+        user0_.name as name4_0_,
+        user0_.updated_at as updated_5_0_ 
+    from
+        user user0_💐
+User(id=1, name=martin, email=martin-updated@fastcampus.com, createdAt=2021-08-14 15:00:24.835, updatedAt=2021-08-14 15:00:24.835)
+User(id=2, name=dennis, email=dennis@fastcampus.com, createdAt=2021-08-14 15:00:24.851, updatedAt=2021-08-14 15:00:24.851)
+User(id=3, name=sophia, email=sophia@slowcampus.com, createdAt=2021-08-14 15:00:24.852, updatedAt=2021-08-14 15:00:24.852)
+User(id=4, name=james, email=james@slowcampus.com, createdAt=2021-08-14 15:00:24.852, updatedAt=2021-08-14 15:00:24.852)
+User(id=5, name=martin, email=martin@another.com, createdAt=2021-08-14 15:00:24.853, updatedAt=2021-08-14 15:00:24.853)</code></pre><p id="c59e5743-6345-4bf7-8b66-fb079a98b65c" class="">
+</p><ol type="1" id="929754b9-6576-4db0-8a66-c1de9999558a" class="numbered-list" start="1"><li>기존의 데이터 중 아이디가 1L인 레코드를 가져오는데, orElseThrow로 예외처리를 떠넘겨주고 ▶️ findById🌹</li></ol><ol type="1" id="e3672cd9-5ec3-49fd-9b5d-579f1ca389a4" class="numbered-list" start="2"><li>이렇게 찾아온 데이터를 setEmail로 이메일 값을 setter로 변경해준 후</li></ol><ol type="1" id="e27b398a-67e7-4ca9-99f7-796020082cd7" class="numbered-list" start="3"><li>save해주면 <code>update</code>되는데, 이때 📌<code>select로 확인 후 update되는 것을 확인해볼 수 있다</code> 📌▶️ save 🌻</li></ol><ol type="1" id="3665d656-ae89-40c9-8916-9f127e2b71bf" class="numbered-list" start="4"><li>그리고 결과를 확인하기 위해서 findAll을 해주면, 아이디가 1인 martin레코드의 이메일이 수정된것을 확인해볼 수 있다 ▶️ findAll 💐</li></ol><p id="7121dcc2-2ba3-4178-9b21-9784c1795ae1" class="">
+</p><p id="9ab4efef-f12c-4100-9ca6-0b6e9d6e59d9" class="">그러면 어떨 때에는 update, 어떨 때에는 insert되는 이러한 설정이 어떻게 되어있는지 확인해보기 이해서 <code>shift키를 연속 두번 눌러서 확인해보자</code></p><p id="c768a3c5-1c87-4937-b375-b3ebf8553bf2" class=""><code>SimpleJpaRepository</code> 를 검색해보자!</p><pre id="54dc3ea1-156c-4403-a67d-9e90e3531677" class="code"><code>@Transactional
+	@Override
+	public &lt;S extends T&gt; S save(S entity) {
+
+		Assert.notNull(entity, &quot;Entity must not be null.&quot;);
+
+		if (entityInformation.isNew(entity)) {
+			em.persist(entity);
+			return entity;
+		} else {
+			return em.merge(entity);
+		}
+	}</code></pre><p id="ab667058-c703-4484-b758-ea62d697b1ec" class="">그리고 그중 이 save 메서드를 잘 보면, 먼저, null인 경우에는 IllegalArgumentException 에러와 함께 &quot;Entity must not be null&quot; 메시지를 띄우고</p><p id="611223ff-7e39-4478-9b94-27b9a397a4da" class="">
+</p><p id="e4142b58-d434-453a-bb15-50a5be6e91af" class="">엔티티가 기존의 엔티티라면 병합(merge, <code>update</code>)시키고, </p><p id="88ee44e3-9188-47fa-b2fb-fc172409cc22" class="">
+</p><p id="e12b8c63-3937-47b4-8db5-bbb4639722a2" class="">새로운 엔티티라면 새롭게 만들어 영구적으로 만들게 하는 것(persist(entity))을 확인해볼 수 있다</p><p id="fdbeecfa-ca55-4de2-a453-be6be7285f89" class="">
+</p><p id="f9ded978-8a04-46b6-adb8-2153df09b807" class="">그리고 @Transactional이 붙어있는데, @Transactional이 존재하지 않으면 save메서드에서 자체적으로 Tranasactional을 감싸서 실행한다</p><p id="4300868d-be77-4893-bdb9-8970af73f202" class="">
+</p><p id="85b416d1-98cd-403e-b392-b1481ae630d8" class=""><code>ctrl+T</code> 를 눌러서(설정의 키맵에서 확인가능하다) isNew메서드가 구현된 구현체를 확인해보자</p><p id="52eeb527-e8bc-4e68-96aa-aa8ffcc6c84f" class="">구현체를 타고 타고 따라가다보면 <code>AbstractPersistable</code> 클래스를 확인해볼 수 있고 여기서 isNew를 볼수 있다</p><pre id="2efefb0e-676c-4f06-a781-e3cb0fa85fe2" class="code"><code>@Transient // DATAJPA-622
+	@Override
+	public boolean isNew() {
+		return null == getId();
+	}</code></pre><p id="02fd3923-d21f-400b-ae8c-ea37c35cc55e" class="">위와 같이 isNew는 고유값이 널인지 체크하는 것을 확인해볼 수 있다</p><p id="96d8b625-1810-4b6d-9f90-3e9c2d294ebd" class="">더불어 isNew라는 플래그를 통해서 select +(insert혹은 update)를 실행하는 것을 확인해볼 수 있다</p><p id="76736529-7b45-405f-8845-65c49df17cc9" class="">
+</p><p id="a0c4fc17-88e0-4e13-b89c-2bcbb2b74121" class="">즉, 고유값이 null이면 insert, 아니라면 update를 실행하는데, 이를 위해서 select가 선행됨을 확인해볼 수 있다</p><p id="bb6208b8-bd58-419e-a554-eb50107f6765" class="">
+</p><p id="7c77956f-7d19-443c-8045-e727eb9f0eff" class="">이렇게 확인해봄으로써 JpaRepository의 메서드들은 SimpleJpaRepository에서 구현된 메서드들이 제공되고 있음을 확인해볼 수 있었다</p><p id="d995063c-9ebb-4937-8098-3ac5f2f4bca0" class="">
+</p><h2 id="7882abfd-ca9b-46fa-8bf5-e0cd3fe7ab9a" class="">saveAndFlush</h2><pre id="84583b66-39f7-4908-8bd8-ecaebb62ab92" class="code"><code>@Transactional
+	@Override
+	public &lt;S extends T&gt; S saveAndFlush(S entity) {
+
+		S result = save(entity);
+		flush();
+
+		return result;
+	}</code></pre><p id="6df55571-8d9a-4615-b751-f2092a123bb1" class="">saveAndFlush는 정말 직관적으로 save를 진행한 후, flush를 진행함을 확인해볼 수 있었다</p><p id="0c7a69ee-9bc2-4628-8b3c-62d84446bf94" class="">
+</p><h2 id="9b76ef9b-bbe6-4d72-8352-e79a39b61c7d" class="">saveAll(Iterable)</h2><pre id="c1e0e082-f072-408d-9f0e-c67fec362e5e" class="code"><code>@Transactional
+	@Override
+	public &lt;S extends T&gt; List&lt;S&gt; saveAll(Iterable&lt;S&gt; entities) {
+
+		Assert.notNull(entities, &quot;Entities must not be null!&quot;);
+
+		List&lt;S&gt; result = new ArrayList&lt;S&gt;();
+
+		for (S entity : entities) {
+			result.add(save(entity));
+		}
+
+		return result;
+	}</code></pre><p id="9787c176-5432-4475-8b18-f0720ce8087e" class="">위의 내용을 확인해보면 내부에는 저장할 모든 객체들의 정보가 담긴 List를 ArrayList로 구현한 &quot;result&quot; 객체가 마련되어 있고</p><p id="5c05cfb5-e9a9-49a6-ab1d-577ad2eed05a" class="">
+</p><p id="7f7a4049-32f8-4ef0-a9ea-356bdd464e1e" class="">파라미터로 들어온 iterable의 사이즈만큼 향상된 for문을 사용해서 리스트에는 매번 save 결과를 담아내는 것을 확인해볼 수 있다</p><p id="5fba8b3f-d418-4118-8f45-63dd81b4f195" class="">
+</p><p id="c4ab8611-4ef8-44db-9c62-f2986222e9b0" class="">그리고 result라는 List 객체를 반환시키는 것을 확인해볼 수 있다</p><p id="9113f0c5-89b5-444c-85ab-6281f722ac60" class="">
+</p><pre id="24555384-b686-49ff-a5a5-9fcb9a5e5785" class="code"><code>package com.example.jpa_repository_interface.repository;
+
+import com.example.jpa_repository_interface.domain.User;
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
+
+//
+@SpringBootTest
+//@Transactional
+class UserRepositoryTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void crud(){
+        User user1= new User(&quot;david&quot;,&quot;david@fastcampus.com&quot;);
+        User user2=new User(&quot;simons&quot;,&quot;simons@fastcampus.com&quot;);
+        List&lt;User&gt; res=userRepository.saveAll(Lists.newArrayList(user1,user2));
+        System.out.println(&quot;inserted result: &quot;+res);
+    }
+
+}</code></pre><pre id="2fe9d1c1-5f23-45c7-bbca-68aafc689c60" class="code"><code>Hibernate: 
+    call next value for hibernate_sequence
+Hibernate: 
+    call next value for hibernate_sequence
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, email, name, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, email, name, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+inserted result: [User(id=6, name=david, email=david@fastcampus.com, createdAt=null, updatedAt=null), User(id=7, name=simons, email=simons@fastcampus.com, createdAt=null, updatedAt=null)]</code></pre><p id="8df200cb-d07c-495d-a9d7-1bc616cb8b65" class="">이렇게 삽입되는 모든 객체들이 리스트에 담겨진 것을 확인해볼 수 있다</p><p id="2ca41d98-2a14-4a9d-afc6-060b6d7b2e4e" class="">
+</p><p id="5f4d6ed6-41fd-4a2c-bc16-1d4b8501f8c8" class="">이번에는 update와 insert를 모두 테스트해봐도 재밌을 것 같다</p><pre id="17be46e8-1e92-4cbf-932c-122b406ca61f" class="code"><code>package com.example.jpa_repository_interface.repository;
+
+import com.example.jpa_repository_interface.domain.User;
+import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+import java.util.List;
+
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.endsWith;
+
+//
+@SpringBootTest
+//@Transactional
+class UserRepositoryTest {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Test
+    public void crud(){
+        User user1= new User(&quot;david&quot;,&quot;david@fastcampus.com&quot;);
+        User user2=new User(&quot;simons&quot;,&quot;simons@fastcampus.com&quot;);
+        User userInOne=userRepository.findById(1L).orElseThrow(RuntimeException::new);
+        userInOne.setEmail(&quot;update_email_martin@gmail.com&quot;);
+        List&lt;User&gt; res=userRepository.saveAll(Lists.newArrayList(user1,user2,userInOne));
+        System.out.println(&quot;inserted&amp;updated result: &quot;+res);
+    }
+
+}</code></pre><pre id="6cfc5d6b-b643-4560-8c7a-b2153661f483" class="code"><code>--findById
+Hibernate: 
+    select
+        user0_.id as id1_0_0_,
+        user0_.created_at as created_2_0_0_,
+        user0_.email as email3_0_0_,
+        user0_.name as name4_0_0_,
+        user0_.updated_at as updated_5_0_0_ 
+    from
+        user user0_ 
+    where
+        user0_.id=? 
+Hibernate: 
+    call next value for hibernate_sequence
+Hibernate: 
+    call next value for hibernate_sequence
+--save전 isNew를 통한 select
+Hibernate: 
+    select
+        user0_.id as id1_0_0_,
+        user0_.created_at as created_2_0_0_,
+        user0_.email as email3_0_0_,
+        user0_.name as name4_0_0_,
+        user0_.updated_at as updated_5_0_0_ 
+    from
+        user user0_ 
+    where
+        user0_.id=?
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, email, name, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        user
+        (created_at, email, name, updated_at, id) 
+    values
+        (?, ?, ?, ?, ?)
+Hibernate: 
+    update
+        user 
+    set
+        created_at=?,
+        email=?,
+        name=?,
+        updated_at=? 
+    where
+        id=?
+inserted&amp;updated result: [User(id=6, name=david, email=david@fastcampus.com, createdAt=null, updatedAt=null), User(id=7, name=simons, email=simons@fastcampus.com, createdAt=null, updatedAt=null), User(id=1, name=martin, email=update_email_martin@gmail.com, createdAt=2021-08-14 15:43:36.754, updatedAt=2021-08-14 15:43:36.754)]</code></pre><p id="07c96e04-a83a-441b-8628-985d8cc293be" class="">확인해보니 <code>isNew를 통한 select가 처음에 확인되고</code></p><p id="d149b449-5388-4265-8a2c-8b8bc74a9ba9" class="">그 이후 <code>insert, update</code>가 확인되었으며</p><p id="20b7e5db-aa77-4482-a0a7-6d9716027e9c" class="">리스트에는 새로 담겨지는 데이터와 기존 데이터가 수정된 결과까지 담기게 되었음을 확인해볼 수 있었다</p><p id="76b555c2-0dea-4736-8806-9ba2e486ee4b" class="">
+</p><h2 id="509983f8-096b-4b4f-a428-c9856c67cfaf" class="">findById와 getOne</h2><pre id="7e479a34-574d-4f46-939c-65336d91fdd2" class="code"><code>@Override
+	public Optional&lt;T&gt; findById(ID id) {
+
+		Assert.notNull(id, ID_MUST_NOT_BE_NULL);
+
+		Class&lt;T&gt; domainType = getDomainClass();
+
+		if (metadata == null) {
+			return Optional.ofNullable(em.find(domainType, id));
+		}
+
+		LockModeType type = metadata.getLockModeType();
+
+		Map&lt;String, Object&gt; hints = new HashMap&lt;&gt;();
+		getQueryHints().withFetchGraphs(em).forEach(hints::put);
+
+		return Optional.ofNullable(type == null ? em.find(domainType, id, hints) : em.find(domainType, id, type, hints));
+	}</code></pre><pre id="2ef6ae06-eb67-424f-8556-878a893e4a0f" class="code"><code>@Deprecated
+	@Override
+	public T getOne(ID id) {
+
+		Assert.notNull(id, ID_MUST_NOT_BE_NULL);
+		return em.getReference(getDomainClass(), id);
+	}</code></pre><p id="6f353581-f272-444e-804f-736dca3d7a07" class="">findById는 find를 통해 직접 찾는 EAGER FETCH</p><p id="9cd7a681-cf34-4d31-b62b-d80c30031493" class="">getOne은 getReference를 통해 찾는 LAZY FETCH 의 양상을 보인다</p><p id="192422d9-6698-4704-b5d8-5c18a29fe26b" class="">
+</p><h2 id="9a41bfc7-3d13-4b43-bc12-ec2a36e7816e" class="">existsById</h2><p id="4a7ab507-d71d-4d2f-aa57-f9023e686ed4" class="">메서드 구현 부분 중 </p><pre id="0fb70178-bf94-4780-8893-d8423c3ce7e4" class="code"><code>String existsQuery = QueryUtils.getExistsQueryString(entityName, placeholder, idAttributeNames);</code></pre><p id="6035ab9f-2fe9-4549-97c8-9c6e0c3087a7" class="">이 부분을 통해 getExistsQueryString 메서드를 추적해보면(QueryUtils의 static 메서드)</p><pre id="31a9a983-8a82-4643-870b-5e5860ea34f3" class="code"><code>public static String getExistsQueryString(String entityName, String countQueryPlaceHolder,
+			Iterable&lt;String&gt; idAttributes) {
+
+		String whereClause = Streamable.of(idAttributes).stream() //
+				.map(idAttribute -&gt; String.format(EQUALS_CONDITION_STRING, &quot;x&quot;, idAttribute, idAttribute)) //
+				.collect(Collectors.joining(&quot; AND &quot;, &quot; WHERE &quot;, &quot;&quot;));
+
+		return String.format(COUNT_QUERY_STRING, countQueryPlaceHolder, entityName) + whereClause;
+	}</code></pre><pre id="ba8e2967-0779-4693-9cc1-8082d58a42de" class="code"><code>public static final String COUNT_QUERY_STRING = &quot;select count(%s) from %s x&quot;;</code></pre><p id="54ccfbdf-b77e-4404-8148-81c381878bfc" class="">COUNT_QUERY_STRING에 기반한다는 것을 확인해볼 수 있고, 이를 통해서 저번시간에 확인해봤던 existsById 실행 시 COUNT 함수 등장 이유를 확인해볼 수 있었다</p><p id="1287f9e3-c442-47de-a1e1-3d304346e093" class="">
+</p><h2 id="4e58d193-0a42-45d1-a92a-32a4e38cb599" class="">deleteAll vs deleteAllInBatch</h2><pre id="508ae136-ab9d-4578-8b35-3a2f3668b763" class="code"><code>@Override
+	@Transactional
+	public void deleteAll() {
+
+		for (T element : findAll()) {
+			delete(element);
+		}
+	}</code></pre><p id="bd4a0bb8-2242-4faa-bbf8-cdcbcf8661b1" class="">먼저 deleteAll의 경우에는 findAll을 통해 가져온 결과를 활용해서 반복문을 돌면서 delete를 반복한다는 것을 확인해볼 수 있다</p><pre id="2a028da9-902a-4fda-a3aa-627de4e0dac6" class="code"><code>@Override
+	@Transactional
+	public void deleteAllInBatch() {
+		em.createQuery(getDeleteAllQueryStringgetDeleteAllQueryString()).executeUpdate();
+	}</code></pre><pre id="28660c3b-00e1-4561-b12d-599395e0c91f" class="code"><code>private String getDeleteAllQueryString() {
+		return getQueryString(DELETE_ALL_QUERY_STRING, entityInformation.getEntityName());
+	}</code></pre><pre id="a7e2f967-0734-4be3-9f24-aa16859962d7" class="code"><code>public static final String DELETE_ALL_QUERY_STRING = &quot;delete from %s x&quot;;</code></pre><pre id="ffd8cd9f-10f9-4389-8e51-e66d5d766390" class="code"><code>//AbstractProducedQuery.java
+@Override
+	public int executeUpdate() throws HibernateException {
+		getProducer().checkTransactionNeededForUpdateOperation( &quot;Executing an update/delete query&quot; );
+
+		beforeQuery();
+		try {
+			return doExecuteUpdate();
+		}
+		catch ( QueryExecutionRequestException e) {
+			throw new IllegalStateException( e );
+		}
+		catch( TypeMismatchException e ) {
+			throw new IllegalArgumentException( e );
+		}
+		catch ( HibernateException e) {
+			throw getExceptionConverter().convert( e );
+		}
+		finally {
+			afterQuery();
+		}
+	}</code></pre><p id="1c8a4521-16a3-4ad9-b7a7-0157527f9545" class="">그에 반해 deleteAllInBatch는 getDeleteAllQueryString() 메서드를 이용함으로써 전체를 삭제하는 쿼리인 <code>DELETE * FROM 테이블</code> 로 쿼리를 만들고(createQuery), 마지막으로 한꺼번에 executeUpdate를 실행하여 작동하였음을 확인해볼 수 있었다! 즉, 쿼리는 deleteAll과 다르게 단 하나로 진행되었고, 수행도 단 한 번으로 진행되었음을 확인해볼 수 있었다</p><p id="cffc0465-923a-420e-a39d-e80f771953e3" class="">
+</p></div></article></body></html>
