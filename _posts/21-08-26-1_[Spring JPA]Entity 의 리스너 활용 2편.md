@@ -916,7 +916,7 @@ AccessType, createdBy 등 다양한 어노테이션이 있는 것을 알 수 있
 
 특히 createdBy나 LastModifiedBy는 스프링 시큐리티와 연동하면 더 쉽다고 하다! 나중에 스프링시큐리티를 공부하면서 생각해봐야겠다!
 
-[]()
+![https://github.com/hy6219/TIL/blob/main/Spring/JPA/Entity/Listener/Spring%20%EA%B8%B0%EB%B3%B8%20%EB%A6%AC%EC%8A%A4%EB%84%88%EB%A1%9C%20%EC%A0%91%EA%B7%BC%EA%B0%80%EB%8A%A5%ED%95%9C%20%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EB%93%A4.PNG?raw=true](https://github.com/hy6219/TIL/blob/main/Spring/JPA/Entity/Listener/Spring%20%EA%B8%B0%EB%B3%B8%20%EB%A6%AC%EC%8A%A4%EB%84%88%EB%A1%9C%20%EC%A0%91%EA%B7%BC%EA%B0%80%EB%8A%A5%ED%95%9C%20%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98%EB%93%A4.PNG?raw=true)
 
 ## 📌📌03. 실제로 사용되는 리스너의 모습 더 알아보기! `@MappedSuperClass를 이용한 공통 부분이 모여진 클래스를 만들어서 리스너와 연결해서 사용하기`
 
